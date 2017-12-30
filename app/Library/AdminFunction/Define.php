@@ -21,31 +21,21 @@ class Define{
     //server
 
     const DB_SOCKET = '';
-    const TABLE_USER = 'web_user';
-    const TABLE_GROUP_USER = 'web_group_user';
-    const TABLE_GROUP_USER_PERMISSION = 'web_group_user_permission';
-    const TABLE_PERMISSION = 'web_permission';
-    const TABLE_MENU_SYSTEM = 'web_menu_system';
-    const TABLE_MEMBER = 'web_member';
-    const TABLE_PROVINCE = 'web_province';
-    const TABLE_DISTRICTS = 'web_districts';
-    const TABLE_WARDS = 'web_wards';
-    const TABLE_SYSTEM_SETTING = 'web_system_setting';
-    const TABLE_CARRIER_SETTING = 'web_carrier_setting';
-    const TABLE_CUSTOMER_SETTING = 'web_customer_setting';
-    const TABLE_DEVICE_TOKEN = 'web_device_token';
-    const TABLE_MANAGER_SETTING = 'web_manager_setting';
-    const TABLE_MODEM = 'web_modem';
-    const TABLE_MODEM_COM = 'web_modem_com';
-    const TABLE_SMS_CUSTOMER = 'web_sms_customer';
-    const TABLE_SMS_LOG = 'web_sms_log';
-    const TABLE_SMS_REPORT = 'web_sms_report';
-    const TABLE_SMS_SENDTO = 'web_sms_sendTo';
-    const TABLE_USER_CARRIER_SETTING = 'web_user_carrier_setting';
-    const TABLE_USER_SETTING = 'web_user_setting';
-    const TABLE_SMS_PACKET = 'web_sms_packet';
-    const TABLE_ROLE_MENU = 'web_role_menu';
-    const TABLE_SMS_TEMPLATE = 'web_sms_template';
+    const TABLE_USER = 'admin_user';
+    const TABLE_GROUP_USER = 'admin_group_user';
+    const TABLE_GROUP_USER_PERMISSION = 'admin_group_user_permission';
+    const TABLE_PERMISSION = 'admin_permission';
+    const TABLE_MENU_SYSTEM = 'admin_menu_system';
+    const TABLE_MEMBER = 'admin_member';
+    const TABLE_PROVINCE = 'admin_province';
+    const TABLE_DISTRICTS = 'admin_districts';
+    const TABLE_WARDS = 'admin_wards';
+
+    const TABLE_HR_CATEGORY = 'hr_category';
+    const TABLE_HR_DEFINE = 'hr_define';
+    const TABLE_HR_DEPARTMENT = 'hr_department';
+    const TABLE_HR_DEVICE = 'hr_device';
+    const TABLE_HR_LOG = 'hr_log';
 
     /***************************************************************************************************************
     //Memcache
@@ -89,24 +79,6 @@ class Define{
     const ENGLISH_LANGUAGE = 2;
     static $arrLanguage = array(Define::VIETNAM_LANGUAGE => 'vi',Define::ENGLISH_LANGUAGE => 'en');
 
-    const PAYMENT_TYPE_FIRST = 1;
-    const PAYMENT_TYPE_AFTER = 2;
-    static $arrPayment = array(
-        Define::PAYMENT_TYPE_FIRST => 'Thanh toán trước',
-        Define::PAYMENT_TYPE_AFTER => 'Thanh toán sau');
-
-    const SCAN_AUTO_TRUE = 1;
-    const SCAN_AUTO_FASLE = 0;
-    static $arrScanAuto = array(
-        Define::SCAN_AUTO_TRUE => 'Có',
-        Define::PAYMENT_TYPE_AFTER => 'Không');
-
-    const SEND_AUTO_TRUE = 1;
-    const SEND_AUTO_FASLE = 0;
-    static $arrSendAuto = array(
-        Define::SEND_AUTO_TRUE => 'Tự động',
-        Define::PAYMENT_TYPE_AFTER => 'Qua kiểm duyệt');
-
     const STATUS_SHOW = 1;
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
@@ -121,19 +93,44 @@ class Define{
         Define::ROLE_TYPE_CUSTOMER => 'Customer');
 
 
-    //trang thái các tin nhắn
-    //Pending, Success, Fail
-    const SMS_STATUS_REJECT = -1;
-    const SMS_STATUS_SUCCESS = 1;
-    const SMS_STATUS_PROCESSING = 0;
-    const SMS_STATUS_FAIL = 3;
+    //Type define trong bảng define
+    const chuc_vu = 1;
+    const hoc_ham = 2;
+    const hoc_vi = 3;
+    const nghach_bac = 4;
+    const trinh_do_ql_nghe_nghiep = 5;
+    const trinh_do_ly_luan = 6;
+    const loai_phong_ban = 7;
+    const chuc_danh_nghe_nghiep = 8;
+    const chuc_danh_khoa_hoc_cong_nghe = 9;
+    const cap_uy = 10;
+    const dan_toc = 11;
+    const ton_giao = 12;
+    const thanh_phan_gia_dinh = 13;
+    const quan_ham = 14;
+    const trinh_do_hoc_van = 15;
+    const ly_luan_chinh_tri = 16;
+    const ngoai_ngu = 17;
+    const thang_bang_luong = 18;
+    const ngach_cong_chuc = 19;
+    const bac_luong = 20;
+    const danh_hieu = 21;
+    const khen_thuong = 22;
+    const ky_luat = 23;
+    const tinh_trang_suc_khoe = 24;
+    const nhom_mau = 25;
+    const hang_thuong_binh = 26;
+    const trinh_do_tin_hoc = 27;
+    const loai_hop_dong = 28;
+    const loai_dao_tao = 29;
+    const van_bang_chung_chi = 30;
+    const chuc_vu_doan_dang = 31;//chức vụ đoàn đảng
+    const quan_he_gia_dinh = 32;
+    const loai_phu_cap = 33;
 
-    const DIR_UPLOAD_EXCEL ='/upload/excel/';
-    const NANE_FORM ='formData';
-
-    static $arrSmsStatus = array(
-        Define::SMS_STATUS_PROCESSING => 'Processing',
-        Define::SMS_STATUS_SUCCESS => 'Successful',
-        Define::SMS_STATUS_REJECT => 'Reject',
-        Define::SMS_STATUS_FAIL => 'Fail');
+    static $arrOptionDefine = array(
+        Define::chuc_vu => '',
+        Define::hoc_ham => '',
+        Define::hoc_vi => '',
+        Define::nghach_bac => '');
 }

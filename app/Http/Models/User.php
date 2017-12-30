@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Cache;
 use App\library\AdminFunction\Define;
+use App\library\AdminFunction\CGlobal;
 use App\library\AdminFunction\Memcache;
 
 
@@ -65,7 +66,7 @@ class User extends BaseModel
      */
     public static function encode_password($password)
     {
-        return md5($password . '-haianhem!@!@!@13368');
+        return md5($password .CGlobal::project_name. '-haianhem!@!@!@13368');
     }
 
     public static function updateLogin($user = array())

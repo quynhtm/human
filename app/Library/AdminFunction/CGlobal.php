@@ -20,11 +20,12 @@ class CGlobal{
     public static $pageAdminTitle = 'Dashboard Admin';
     public static $pageShopTitle = '';
 
-    const code_shop_share = 'Manager SMS';
-    const web_name = 'Manager SMS';
-    const web_keywords= 'Manager SMS';
-    const web_description= 'Manager SMS';
-    public static $pageTitle = 'Manager SMS';
+    const project_name = 'manager_hr';
+    const code_shop_share = 'Manager HR';
+    const web_name = 'Manager HR';
+    const web_keywords= 'Manager HR';
+    const web_description= 'Manager HR';
+    public static $pageTitle = 'Manager HR';
 
     const phoneSupport = '';
 
