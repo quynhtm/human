@@ -65,7 +65,7 @@ class User extends BaseModel
      */
     public static function encode_password($password)
     {
-        return md5($password . '-haianhem!@13368');
+        return md5($password . '-haianhem!@!@!@13368');
     }
 
     public static function updateLogin($user = array())
