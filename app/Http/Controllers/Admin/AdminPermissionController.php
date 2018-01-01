@@ -9,7 +9,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Permission;
+use App\Http\Models\Admin\Permission;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\ArrayPermission;
 use App\Library\AdminFunction\Pagging;

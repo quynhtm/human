@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Models;
+namespace App\Http\Models\Admin;
+use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;

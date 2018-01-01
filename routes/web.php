@@ -2,7 +2,7 @@
 Auth::routes();
 
 const Admin = "Admin";
-
+const HResources = "Hr";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');
@@ -21,7 +21,12 @@ Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
 });
 
-//Router Site
+//Router HR
+Route::group(array('prefix' => 'manager', 'before' => ''), function(){
+	require __DIR__.'/hr.php';
+});
+
+//Router Api
 Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });

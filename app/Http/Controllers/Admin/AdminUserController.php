@@ -8,13 +8,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\GroupUser;
-use App\Http\Models\User;
-use App\Http\Models\MenuSystem;
-use App\Http\Models\UserSetting;
-use App\Http\Models\CarrierSetting;
-use App\Http\Models\UserCarrierSetting;
-use App\Http\Models\RoleMenu;
+use App\Http\Models\Admin\GroupUser;
+use App\Http\Models\Admin\User;
+use App\Http\Models\Admin\MenuSystem;
+use App\Http\Models\Admin\RoleMenu;
 
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -193,11 +190,6 @@ class AdminUserController extends BaseAdminController{
 
             if($id > 0){
                 if (User::updateUser($id, $dataInsert)) {
-                    $dataUpdateUserSetting['role_type'] = $dataInsert['role_type'];
-                    $dataUpdateUserSetting['role_name'] = $dataInsert['role_name'];
-                    DB::table(Define::TABLE_USER_SETTING)
-                        ->where('user_id', $id)
-                        ->update($dataUpdateUserSetting);
                     return Redirect::route('admin.user_view');
                 } else {
                     $this->error[] = 'Lỗi truy xuất dữ liệu';;

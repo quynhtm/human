@@ -9,12 +9,12 @@ namespace App\Http\Controllers;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use Illuminate\Support\Facades\Redirect;
-use App\Http\Models\User;
-use App\Http\Models\MenuSystem;
+use App\Http\Models\Admin\User;
+use App\Http\Models\Admin\MenuSystem;
+use Illuminate\Support\Facades\Session;
 use View;
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Http\Request;
 

@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Models;
+namespace App\Http\Models\Admin;
+use App\Http\Models\BaseModel;
 
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Database\Eloquent\Model;

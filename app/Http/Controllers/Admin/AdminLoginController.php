@@ -14,8 +14,8 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
 
-use App\Http\Models\User;
-use App\Http\Models\GroupUserPermission;
+use App\Http\Models\Admin\User;
+use App\Http\Models\Admin\GroupUserPermission;
 
 use App\Library\AdminFunction\CGlobal;
 

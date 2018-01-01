@@ -124,9 +124,6 @@ class AdminManageMenuController extends BaseAdminController
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
-        if(!$this->is_boss){
-            unset($data['menu_url']);
-        }
         $data['ordering'] = (int)($data['ordering']);
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0)?$id_hiden: $id;

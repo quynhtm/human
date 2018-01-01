@@ -1,12 +1,14 @@
 <?php
+/**
+ * QuynhTM
+ */
+namespace App\Http\Models\Admin;
+use App\Http\Models\BaseModel;
 
-namespace App\Http\Models;
-
-use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-
 use App\library\AdminFunction\Define;
+use App\Library\AdminFunction\FunctionLib;
 
 class MenuSystem extends BaseModel
 {

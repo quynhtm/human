@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Models;
+namespace App\Http\Models\Admin;
+use App\Http\Models\BaseModel;
+use Illuminate\Support\Facades\DB;
+use App\library\AdminFunction\Define;
 
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Facades\DB;
-
-use App\library\AdminFunction\Define;
-use App\Http\Models\User;
+use App\Http\Models\Admin\User;
 
 class RoleMenu extends BaseModel
 {

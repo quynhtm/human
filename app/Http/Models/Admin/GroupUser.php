@@ -6,8 +6,8 @@
  * Time: 12:37 PM
  * To change this template use File | Settings | File Templates.
  */
-namespace App\Http\Models;
-
+namespace App\Http\Models\Admin;
+use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
 use Illuminate\Database\Eloquent\Model;

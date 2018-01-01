@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\GroupUser;
-use App\Http\Models\GroupUserPermission;
-use App\Http\Models\Permission;
-use App\Http\Models\RoleMenu;
-use App\Http\Models\MenuSystem;
+use App\Http\Models\Admin\GroupUser;
+use App\Http\Models\Admin\GroupUserPermission;
+use App\Http\Models\Admin\Permission;
+use App\Http\Models\Admin\RoleMenu;
+use App\Http\Models\Admin\MenuSystem;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
