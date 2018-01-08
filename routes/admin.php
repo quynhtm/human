@@ -36,6 +36,10 @@ Route::post('groupUser/remove/{id}',array('as' => 'admin.groupUser_remove','uses
 Route::get('groupUser/viewRole',array('as' => 'admin.viewRole','uses' => Admin.'\AdminGroupUserController@viewRole'));
 Route::get('groupUser/editRole/{id?}', array('as' => 'admin.editRole','uses' => Admin.'\AdminGroupUserController@getRole'));
 Route::post('groupUser/editRole/{id?}', array('as' => 'admin.editRole','uses' => Admin.'\AdminGroupUserController@postRole'));
+/*thông tin role */
+Route::get('role/view',array('as' => 'admin.roleView','uses' => Admin.'\AdminRoleController@view'));
+Route::post('role/addRole',array('as' => 'admin.addRole','uses' => Admin.'\AdminRoleController@addRole'));
+Route::get('role/deleteRole',array('as' => 'admin.deleteRole','uses' => Admin.'\AdminRoleController@deleteRole'));
 
 
 /*thông tin menu */

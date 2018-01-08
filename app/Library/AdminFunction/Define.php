@@ -27,11 +27,11 @@ class Define{
     const TABLE_PERMISSION = 'admin_permission';
     const TABLE_MENU_SYSTEM = 'admin_menu_system';
     const TABLE_ROLE_MENU = 'admin_role_menu';
+    const TABLE_ROLE = 'admin_role';
     const TABLE_MEMBER = 'admin_member';
     const TABLE_PROVINCE = 'admin_province';
     const TABLE_DISTRICTS = 'admin_districts';
     const TABLE_WARDS = 'admin_wards';
-
 
     const TABLE_HR_CATEGORY = 'hr_category';
     const TABLE_HR_DEFINE = 'hr_define';
