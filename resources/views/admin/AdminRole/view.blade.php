@@ -108,7 +108,7 @@
             if (a){
                 $.ajax({
                     type: 'get',
-                    url: '/manager/role/deleteRole',
+                    url: WEB_ROOT+'/manager/role/deleteRole',
                     data: {
                         'id':id
                     },
@@ -119,8 +119,7 @@
                         if ((data.errors)) {
                             alert(data.errors)
                         }else {
-                            $("#element").html(data.view)
-                            reset();
+                            window.location.reload();
                         }
                     },
                 });
@@ -150,7 +149,6 @@
                 var role_order = $("#role_order").val()
                 var role_status = $("#role_status").val()
                 var id = $("#id").val()
-                alert(WEB_ROOT+'/manager/role/addRole');
                 $.ajax({
                     type: 'post',
                     url: WEB_ROOT+'/manager/role/addRole',

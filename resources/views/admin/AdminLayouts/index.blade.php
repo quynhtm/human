@@ -97,7 +97,7 @@
         </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="light-blue">
+                <li class="light-blue" style="display: none">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/vi.png"/>

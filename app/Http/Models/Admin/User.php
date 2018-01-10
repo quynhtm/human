@@ -24,7 +24,6 @@ class User extends BaseModel
         'user_edit_id', 'user_edit_name', 'user_created', 'user_updated',
         'role_type', 'role_name', 'address', 'number_code', 'address_register', 'telephone');
 
-
     /**
      * @param $name
      * @return mixed

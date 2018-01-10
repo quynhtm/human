@@ -20,8 +20,8 @@
                 <div class="panel panel-info">
                     {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                     <div class="panel-body">
-                        <div class="form-group col-lg-3">
-                            <label for="banner_name">Tên banner</label>
+                        {{--<div class="form-group col-lg-3">
+                            <label for="banner_name">Tên</label>
                             <input type="text" class="form-control input-sm" id="banner_name" name="banner_name" placeholder="Tiêu đề banner" @if(isset($search['banner_name']) && $search['banner_name'] != '')value="{{$search['banner_name']}}"@endif>
                         </div>
 
@@ -30,7 +30,7 @@
                             <select name="banner_status" id="banner_status" class="form-control input-sm">
                                 {{$optionStatus}}
                             </select>
-                        </div>
+                        </div>--}}
 
                         <div class="form-group col-lg-12 text-right">
                             @if($is_root || $permission_full ==1 || $permission_create == 1)

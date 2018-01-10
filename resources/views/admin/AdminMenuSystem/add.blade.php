@@ -41,13 +41,13 @@
                     </div>
 
                     <div class="clearfix"></div>
-                    <div class="col-sm-6">
+                    {{--<div class="col-sm-6">
                         <div class="form-group">
                             <label for="name" class="control-label">Tên menu English<span class="red"> (*) </span></label>
                             <input type="text" placeholder="Tên menu" id="menu_name_en" name="menu_name_en"  class="form-control input-sm" value="@if(isset($data['menu_name_en'])){{$data['menu_name_en']}}@endif">
                         </div>
-                    </div>
-                    <div class="col-sm-6">
+                    </div>--}}
+                    <div class="col-sm-12">
                         <div class="form-group">
                             <label for="name" class="control-label">Thuộc menu cha</label>
                             <select name="parent_id" id="parent_id" class="form-control input-sm">

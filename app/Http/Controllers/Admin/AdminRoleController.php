@@ -83,12 +83,6 @@ class AdminRoleController extends BaseAdminController
         if ($id>0){
             Role::deleteItem($id);
         }
-        $data_full = Role::getAll($this->user_id);
-        $data_view = [
-            'view' => View::make('admin.AdminRole.list')
-                ->with('data', $data_full)
-                ->render()
-        ];
-        return Response::json($data_view, 200);
+        return Redirect::route('admin.roleView');
     }
 }
