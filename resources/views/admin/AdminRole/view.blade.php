@@ -11,7 +11,7 @@
                 <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
             </li>
             <li class="active">Quản lý role</li>
-        </ul><!-- /.breadcrumb -->
+        </ul>
     </div>
 
     <div class="page-content">
@@ -19,7 +19,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading paddingTop1 paddingBottom1">
                     <h4><i class="fa fa-list" aria-hidden="true"></i> Danh sách</h4>
-                </div> <!-- /widget-header -->
+                </div>
                 {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                 <div style="margin-top: 10px">
                     <div class="col-sm-4" >
@@ -47,12 +47,12 @@
                             @foreach ($data as $key => $item)
                                 <td class="text-center middle">{{$key+1 }}</td>
                                 <td>{{$item['role_name']}}</td>
-                                <td>{{ $item['role_status']}}</td>
+                                <td>@if(isset($arrStatus[$item['role_status']])) {{$arrStatus[$item['role_status']]}} @endif</td>
                                 <td>{{ $item['role_order'] }}
                                 </td>
                                 <td class="center">
-                                    <a onclick="edit_item('{{FunctionLib::inputId($item['role_id'])}}','{{$item['role_name']}}','{{$item['role_order']}}','{{$item['role_status']}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
-                                    <a onclick="delete_item('{{FunctionLib::inputId($item['role_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                    <a class="editItem" onclick="edit_item('{{FunctionLib::inputId($item['role_id'])}}','{{$item['role_name']}}','{{$item['role_order']}}','{{$item['role_status']}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                    <a class="deleteItem" onclick="delete_item('{{FunctionLib::inputId($item['role_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
                                 </td>
                                 </tr>
                             @endforeach
@@ -63,20 +63,20 @@
                             {{FunctionLib::viewLanguage('no_data')}}
                         </div>
                     @endif
-                </div> <!-- /widget-content -->
-            </div> <!-- /widget -->
+                </div>
+            </div>
         </div>
-        <div class="col-md-4 panel-content">
+        <div class="col-md-4 panel-content loadForm">
             <div class="panel panel-primary">
                 <div class="panel-heading paddingTop1 paddingBottom1">
                     <h4><i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới</h4>
-                </div> <!-- /widget-header -->
+                </div>
                 <div class="panel-body">
                     <form id="form" method="post">
                         <input type="hidden" name="id" value="{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}" class="form-control" id="id">
                         <div class="form-group">
                             <label for="role_name">Tên role</label>
-                            <input type="text" name="role_name" title="Tên role" class="form-control input-required" id="role_name" value="">
+                            <input type="text" name="role_name" title="Tên role" class="form-control input-required" id="role_name">
                         </div>
                         <div class="form-group">
                             <label for="role_order">Thứ tự hiển thị</label>
@@ -84,15 +84,15 @@
                         </div>
                         <div class="form-group">
                             <label for="role_status">Trạng thái</label>
-                            <input type="text" name="role_status" title="Tên role" class="form-control" id="role_status">
+                            <select class="form-control input-sm" name="role_status" id="role_status">
+                                {!! $optionStatus !!}
+                            </select>
                         </div>
                         <a class="btn btn-success" id="submit" onclick="add_item()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</a>
                         <a class="btn btn-default" id="cancel" onclick="reset()"><i class="fa fa-undo" aria-hidden="true"></i> Reset</a>
                     </form>
-                </div> <!-- /widget-content -->
+                </div>
             </div>
-        </div>
-        <div class="row">
         </div>
     </div>
 </div>
@@ -102,10 +102,11 @@
             $("#role_name").val("");
             $("#role_order").val("");
             $("#id").val('{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}');
+            $('.frmHead').text('Thêm mới');
         }
         function delete_item(id) {
             var a = confirm(lng['txt_mss_confirm_delete']);
-            if (a){
+            if(a){
                 $.ajax({
                     type: 'get',
                     url: WEB_ROOT+'/manager/role/deleteRole',
@@ -174,10 +175,25 @@
         }
 
         function edit_item(id,role_name,role_order,role_status) {
+            /*
             $("#role_name").val(role_name);
             $("#role_order").val(role_order);
             $("#role_status").val(role_status);
             $("#id").val(id);
+            */
+
+            $.ajax({
+                type: "POST",
+                url: WEB_ROOT+'/manager/role/loadForm',
+                data: {id:id, role_name:role_name, role_order:role_order, role_status:role_status},
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function(data){
+                    $('.loadForm').html(data);
+                    return false;
+                }
+            });
         }
 
     </script>

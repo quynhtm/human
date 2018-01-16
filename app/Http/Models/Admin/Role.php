@@ -11,8 +11,7 @@ use App\library\AdminFunction\Define;
 use App\library\AdminFunction\Memcache;
 use Illuminate\Support\Facades\Cache;
 
-class Role extends BaseModel
-{
+class Role extends BaseModel{
     protected $table = Define::TABLE_ROLE;
     protected $primaryKey = 'role_id';
     public $timestamps = false;
@@ -101,7 +100,7 @@ class Role extends BaseModel
             }
 
             $total = $query->count();
-            $query->orderBy('role_id', 'desc');
+            $query->orderBy('role_order', 'asc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();

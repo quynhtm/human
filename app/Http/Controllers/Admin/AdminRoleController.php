@@ -13,8 +13,8 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use View;
 
-class AdminRoleController extends BaseAdminController
-{
+class AdminRoleController extends BaseAdminController{
+
     private $permission_view = 'role_view';
     private $permission_full = 'role_full';
     private $permission_delete = 'role_delete';
@@ -22,10 +22,11 @@ class AdminRoleController extends BaseAdminController
     private $permission_edit = 'role_edit';
 
     private $error = array();
-    private $viewPermission = array();//check quyen
+    private $viewPermission = array();
 
-    public function __construct()
-    {
+    private $arrStatus = array(-1 => 'Chọn trạng thái', CGlobal::status_hide => 'Ẩn', CGlobal::status_show => 'Hiện');
+
+    public function __construct(){
         parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản lý Role';
     }
@@ -55,21 +56,22 @@ class AdminRoleController extends BaseAdminController
 
         $this->viewPermission = $this->getPermissionPage();
 
+        $optionStatus = FunctionLib::getOption($this->arrStatus, '');
+
         return view('admin.AdminRole.view',array_merge([
             'data'=>$data,
             'search'=>$dataSearch,
             'size'=>$total,
             'start'=>($page_no - 1) * $limit,
             'paging'=>$paging,
+            'arrStatus'=>$this->arrStatus,
+            'optionStatus'=>$optionStatus,
         ],$this->viewPermission));
     }
 
     public function addRole(){
         $id = isset($_POST['id'])?FunctionLib::outputId($_POST['id']):0;
         $data = $_POST;
-        /*echo $id;
-        FunctionLib::debug($data);
-        die();*/
         if ($id!=0 && $id!="0" && $id>0){
             Role::updateItem($id,$data);
         }else{
@@ -84,5 +86,15 @@ class AdminRoleController extends BaseAdminController
             Role::deleteItem($id);
         }
         return Redirect::route('admin.roleView');
+    }
+
+    public function loadForm(){
+        $data = $_POST;
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status'] : CGlobal::status_show);
+        return view('admin.AdminRole.loadForm',
+            array_merge([
+                'data'=>$data,
+                'optionStatus'=>$optionStatus,
+            ],$this->viewPermission));
     }
 }
