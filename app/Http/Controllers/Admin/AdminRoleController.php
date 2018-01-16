@@ -24,7 +24,7 @@ class AdminRoleController extends BaseAdminController{
     private $error = array();
     private $viewPermission = array();
 
-    private $arrStatus = array(-1 => 'Chọn trạng thái', CGlobal::status_hide => 'Ẩn', CGlobal::status_show => 'Hiện');
+    private $arrStatus = array(-1 => '--Chọn--', CGlobal::status_hide => 'Ẩn', CGlobal::status_show => 'Hiện');
 
     public function __construct(){
         parent::__construct();

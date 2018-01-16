@@ -2,7 +2,13 @@
 <?php use App\Library\AdminFunction\Define; ?>
 <div class="panel panel-primary">
     <div class="panel-heading paddingTop1 paddingBottom1">
-        <h4><i class="fa fa-plus-square" aria-hidden="true"></i> <span class="frmHead">@if(isset($data['id']) && $data['id'] != '') Sửa quyền @else Thêm mới @endif</span></h4>
+        <h4>
+            @if(isset($data['id']) && $data['id'] != '')
+                <i class="fa fa-edit icChage" aria-hidden="true"></i> <span class="frmHead">Sửa quyền</span>
+            @else
+                <i class="fa fa-plus-square icChage" aria-hidden="true"></i> <span class="frmHead">Thêm mới</span>
+            @endif
+        </h4>
     </div>
     <div class="panel-body">
         <form id="form" method="post">

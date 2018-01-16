@@ -103,6 +103,7 @@
             $("#role_order").val("");
             $("#id").val('{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}');
             $('.frmHead').text('Thêm mới');
+            $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
         }
         function delete_item(id) {
             var a = confirm(lng['txt_mss_confirm_delete']);
@@ -175,13 +176,6 @@
         }
 
         function edit_item(id,role_name,role_order,role_status) {
-            /*
-            $("#role_name").val(role_name);
-            $("#role_order").val(role_order);
-            $("#role_status").val(role_status);
-            $("#id").val(id);
-            */
-
             $.ajax({
                 type: "POST",
                 url: WEB_ROOT+'/manager/role/loadForm',
