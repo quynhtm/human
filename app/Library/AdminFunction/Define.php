@@ -11,7 +11,7 @@ class Define{
     const DB_CONNECTION_MYSQL = 'mysql';
     const DB_CONNECTION_SQLSRV = 'sqlsrv';
     const DB_CONNECTION_PGSQL = 'pgsql';
-
+    const DB_SOCKET = '';
     //local
     const DB_HOST = 'localhost';
     const DB_PORT = '3306';
@@ -20,7 +20,6 @@ class Define{
     const DB_PASSWORD = '';
     //server
 
-    const DB_SOCKET = '';
     const TABLE_USER = 'admin_user';
     const TABLE_GROUP_USER = 'admin_group_user';
     const TABLE_PERMISSION = 'admin_permission';
