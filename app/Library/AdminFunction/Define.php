@@ -36,8 +36,10 @@ class Define{
     const TABLE_HR_CATEGORY = 'hr_category';
     const TABLE_HR_DEFINE = 'hr_define';
     const TABLE_HR_DEPARTMENT = 'hr_department';
-    const TABLE_HR_DEVICE = 'hr_device';
+    const TABLE_HR_DEVICE = 'hr_device';//thiết bị
     const TABLE_HR_LOG = 'hr_log';
+    const TABLE_HR_BONUS = 'hr_bonus';//khen thưởng
+    const TABLE_HR_RELATIONSHIP = 'hr_relationship';//quan hệ gia đình
 
     /***************************************************************************************************************
     //Memcache
@@ -65,12 +67,7 @@ class Define{
     const CACHE_INFO_USER = 'cache_info_user';
     const CACHE_OPTION_USER = 'cache_option_user';
     const CACHE_OPTION_CARRIER = 'cache_option_carrier';
-    const CACHE_OPTION_USER_MAIL = 'cache_option_user_mail';
-    const CACHE_OPTION_DEVICE = 'cache_option_device';
 
-    const CACHE_INFO_CARRIER = 'cache_info_carrier';
-
-    const CACHE_INFO_MODEM = 'cache_info_modem';
 
     /***************************************************************************************************************
     //Define

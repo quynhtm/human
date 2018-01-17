@@ -76,7 +76,7 @@
                         </thead>
                         <tbody>
                         @foreach ($data as $key => $item)
-                            
+
                         @endforeach
                         </tbody>
                     </table>
