@@ -178,7 +178,7 @@
         function edit_item(id,role_name,role_order,role_status) {
             $.ajax({
                 type: "POST",
-                url: WEB_ROOT+'/manager/role/loadForm',
+                url: WEB_ROOT+'/manager/role/ajaxLoadForm',
                 data: {id:id, role_name:role_name, role_order:role_order, role_status:role_status},
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
