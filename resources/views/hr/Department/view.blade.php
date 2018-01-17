@@ -61,7 +61,7 @@
                     </form>
                 </div>
                 @if(sizeof($data) > 0)
-                    <div class="span clearfix"> @if($size >0) Có tổng số <b>{{$size}}</b> tài khoản  @endif </div>
+                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> tài khoản  @endif </div>
                     <br>
                     <table class="table table-bordered">
                         <thead class="thin-border-bottom">
@@ -76,46 +76,7 @@
                         </thead>
                         <tbody>
                         @foreach ($data as $key => $item)
-                            <tr @if($item['user_status'] == \App\Library\AdminFunction\Define::STATUS_BLOCK)class="red bg-danger middle" {else} class="middle" @endif>
-                                <td class="text-center middle">{{ $start+$key+1 }}</td>
-                                <td>
-                                    <div><b>U: </b><b class="green">{{ $item['user_name'] }}</b></div>
-                                    @if($item['user_last_login'] > 0)<div class="green">{{ date("d-m-Y H:i",$item['user_last_login']) }}</div>@endif
-                                    <div><b>N: </b>{{ $item['user_full_name'] }}</div>
-                                    <div><b>E: </b>{{ $item['user_email'] }}</div>
-                                </td>
-                                <td>
-                                    @if(trim($item['user_phone']) != '')<div><b>Phone : </b>{{ $item['user_phone'] }}</div>@endif
-                                    @if(trim($item['telephone']) != '')<div><b>Telephone : </b>{{ $item['telephone'] }}</div>@endif
-                                    @if(trim($item['number_code']) != '')<div><b>Giấy phép KD : </b>{{ $item['number_code'] }}</div>@endif
-                                    @if(trim($item['address_register']) != '')<div><b>Địa chỉ KD : </b>{{ $item['address_register'] }}</div>@endif
-                                </td>
-                                <td class="text-center middle">
-                                    {{$item['role_name']}}
-                                </td>
-                                <td class="text-center middle">
-                                    @if($item['user_created'])
-                                        {{ date("d-m-Y",$item['user_created']) }}
-                                        @if(isset($arrStatus[$item['user_status']]) && $item['user_status'] == Define::STATUS_BLOCK)<br>{{$arrStatus[Define::STATUS_BLOCK]}}@endif
-                                    @endif
-                                </td>
-                                <td class="text-center middle" align="center">
-                                    @if(($is_root || $permission_edit) && $item['user_status'] != \App\Library\AdminFunction\Define::STATUS_BLOCK)
-                                        <a href="#" onclick="Admin.getInfoSettingUser('{{FunctionLib::inputId($item['user_id'])}}')" title="Setting item"><i class="fa fa-cog fa-2x"></i></a> &nbsp;&nbsp;&nbsp;
-                                    @endif
-                                    @if($is_root || $permission_edit)
-                                        <a href="{{URL::route('admin.user_edit',array('id' => FunctionLib::inputId($item['user_id'])))}}" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>&nbsp;&nbsp;&nbsp;
-                                    @endif
-                                    @if(($is_root || $permission_change_pass) && $item['user_status'] != \App\Library\AdminFunction\Define::STATUS_BLOCK)
-                                        <a href="{{URL::route('admin.user_change',array('id' => FunctionLib::inputId($item['user_id'])))}}" title="Reset mật khẩu"><i class="fa fa-refresh fa-2x"></i></a>&nbsp;&nbsp;&nbsp;
-                                    @endif
-                                    @if($is_boss || $permission_remove)
-                                        <a href="javascript:void(0)" class="sys_delete_user" data-content="Xóa tài khoản" data-placement="bottom" data-trigger="hover" data-rel="popover" data-url="user/remove/" data-id="{{FunctionLib::inputId($item['user_id'])}}">
-                                            <i class="fa fa-trash fa-2x"></i>
-                                        </a>
-                                    @endif
-                                </td>
-                            </tr>
+                            
                         @endforeach
                         </tbody>
                     </table>

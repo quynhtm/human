@@ -84,6 +84,7 @@ class HrDepartmentController extends BaseAdminController
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
+            'optionRoleType'=>$optionStatus,
         ],$this->viewPermission));
     }
 
