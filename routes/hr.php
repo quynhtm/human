@@ -1,7 +1,7 @@
 <?php
 
 /*thông tin Department */
-Route::match(['GET','POST'],'department/view', array('as' => 'admin.user_view','uses' => Admin.'\AdminUserController@view'));
-Route::get('department/edit/{id?}', array('as' => 'admin.departmentEdit','uses' => HResources.'\AdminManageMenuController@getItem'));
-Route::post('department/edit/{id?}', array('as' => 'admin.departmentEdit','uses' => HResources.'\AdminManageMenuController@postItem'));
-Route::post('department/deleteMenu', array('as' => 'admin.deleteDepartment','uses' => HResources.'\AdminManageMenuController@deleteMenu'));//ajax
+Route::match(['GET','POST'],'department/view', array('as' => 'hr.departmentView','uses' => HResources.'\HrDepartmentController@view'));
+Route::get('department/edit/{id?}', array('as' => 'hr.departmentEdit','uses' => HResources.'\HrDepartmentController@getItem'));
+Route::post('department/edit/{id?}', array('as' => 'hr.departmentEdit','uses' => HResources.'\HrDepartmentController@postItem'));
+Route::post('department/deleteMenu', array('as' => 'hr.deleteDepartment','uses' => HResources.'\HrDepartmentController@deleteMenu'));//ajax

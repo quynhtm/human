@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Admin\MenuSystem;
+use App\Http\Models\Hr\Department;
+
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -12,13 +13,13 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
 
-class AdminManageMenuController extends BaseAdminController
+class HrDepartmentController extends BaseAdminController
 {
-    private $permission_view = 'menu_view';
-    private $permission_full = 'menu_full';
-    private $permission_delete = 'menu_delete';
-    private $permission_create = 'menu_create';
-    private $permission_edit = 'menu_edit';
+    private $permission_view = 'department_view';
+    private $permission_full = 'department_full';
+    private $permission_delete = 'department_delete';
+    private $permission_create = 'department_create';
+    private $permission_edit = 'department_edit';
     private $arrStatus = array();
     private $error = array();
     private $arrMenuParent = array();
@@ -27,7 +28,7 @@ class AdminManageMenuController extends BaseAdminController
     public function __construct()
     {
         parent::__construct();
-        $this->arrMenuParent = MenuSystem::getAllParentMenu();
+        $this->arrMenuParent = Department::getAllParentMenu();
         CGlobal::$pageAdminTitle = 'Quản lý menu';
     }
 
@@ -64,9 +65,9 @@ class AdminManageMenuController extends BaseAdminController
         $search['active'] = (int)Request::get('active',-1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
-        $dataSearch = MenuSystem::searchByCondition($search, $limit, $offset,$total);
+        $dataSearch = Department::searchByCondition($search, $limit, $offset,$total);
         if(!empty($dataSearch)){
-            $data = MenuSystem::getTreeMenu($dataSearch);
+            $data = Department::getTreeMenu($dataSearch);
             $data = !empty($data)? $data :$dataSearch;
         }
         $paging = '';
@@ -76,7 +77,7 @@ class AdminManageMenuController extends BaseAdminController
         $optionStatus = FunctionLib::getOption($this->arrStatus, $search['active']);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('admin.AdminMenuSystem.view',array_merge([
+        return view('hr.Department.view',array_merge([
             'data'=>$data,
             'search'=>$search,
             'total'=>$total,
@@ -94,7 +95,7 @@ class AdminManageMenuController extends BaseAdminController
         }
         $data = array();
         if($id > 0) {
-            $data = MenuSystem::find($id);
+            $data = Department::find($id);
         }
 
         $this->getDataDefault();
@@ -105,7 +106,7 @@ class AdminManageMenuController extends BaseAdminController
         $optionMenuParent = FunctionLib::getOption($this->arrMenuParent, isset($data['parent_id'])? $data['parent_id'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('admin.AdminMenuSystem.add',array_merge([
+        return view('hr.Department.add',array_merge([
             'data'=>$data,
             'id'=>$id,
             'arrStatus'=>$this->arrStatus,
@@ -129,13 +130,13 @@ class AdminManageMenuController extends BaseAdminController
             $id = ($id == 0)?$id_hiden: $id;
             if($id > 0) {
                 //cap nhat
-                if(MenuSystem::updateItem($id, $data)) {
-                    return Redirect::route('admin.menuView');
+                if(Department::updateItem($id, $data)) {
+                    return Redirect::route('hr.departmentView');
                 }
             }else{
                 //them moi
-                if(MenuSystem::createItem($data)) {
-                    return Redirect::route('admin.menuView');
+                if(Department::createItem($data)) {
+                    return Redirect::route('hr.departmentView');
                 }
             }
         }
@@ -148,7 +149,7 @@ class AdminManageMenuController extends BaseAdminController
         $optionMenuParent = FunctionLib::getOption($this->arrMenuParent, isset($data['parent_id'])? $data['parent_id'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('admin.AdminMenuSystem.add',array_merge([
+        return view('hr.Department.add',array_merge([
             'data'=>$data,
             'id'=>$id,
             'error'=>$this->error,
@@ -168,7 +169,7 @@ class AdminManageMenuController extends BaseAdminController
             return Response::json($data);
         }
         $id = (int)Request::get('id', 0);
-        if ($id > 0 && MenuSystem::deleteItem($id)) {
+        if ($id > 0 && Department::deleteItem($id)) {
             $data['isIntOk'] = 1;
         }
         return Response::json($data);

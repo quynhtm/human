@@ -2,7 +2,7 @@
 /**
  * QuynhTM
  */
-namespace App\Http\Models\Admin;
+namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\Cache;
@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 
-class MenuSystem extends BaseModel
+class Department extends BaseModel
 {
     protected $table = Define::TABLE_MENU_SYSTEM;
     protected $primaryKey = 'menu_id';
@@ -22,9 +22,9 @@ class MenuSystem extends BaseModel
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new MenuSystem();
+            $checkData = new Department();
             $fieldInput = $checkData->checkField($data);
-            $item = new MenuSystem();
+            $item = new Department();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -44,9 +44,9 @@ class MenuSystem extends BaseModel
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new MenuSystem();
+            $checkData = new Department();
             $fieldInput = $checkData->checkField($data);
-            $item = MenuSystem::find($id);
+            $item = Department::find($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
@@ -78,7 +78,7 @@ class MenuSystem extends BaseModel
         if($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $item = MenuSystem::find($id);
+            $item = Department::find($id);
             if($item){
                 $item->delete();
             }
@@ -94,7 +94,7 @@ class MenuSystem extends BaseModel
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
-            $query = MenuSystem::where('menu_id','>',0);
+            $query = Department::where('menu_id','>',0);
             if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
                 $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
             }
@@ -125,7 +125,7 @@ class MenuSystem extends BaseModel
     public static function getAllParentMenu() {
         $data = Cache::get(Define::CACHE_ALL_PARENT_MENU);
         if (sizeof($data) == 0) {
-            $menu = MenuSystem::where('menu_id', '>', 0)
+            $menu = Department::where('menu_id', '>', 0)
                 ->where('parent_id',0)
                 ->where('active',Define::STATUS_SHOW)
                 ->orderBy('ordering','asc')->get();
@@ -145,9 +145,9 @@ class MenuSystem extends BaseModel
         $menuTree = Cache::get(Define::CACHE_TREE_MENU);
         if (sizeof($menuTree) == 0) {
             $search['active'] = Define::STATUS_SHOW;
-            $dataSearch = MenuSystem::searchByCondition($search, 200, 0,$total);
+            $dataSearch = Department::searchByCondition($search, 200, 0,$total);
             if(!empty($dataSearch)){
-                $data = MenuSystem::getTreeMenu($dataSearch);
+                $data = Department::getTreeMenu($dataSearch);
                 $data = !empty($data)? $data :$dataSearch;
             }
             if(!empty($data)){
@@ -243,7 +243,7 @@ class MenuSystem extends BaseModel
     public static function getListMenuPermission(){
         $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_LIST_MENU_PERMISSION) : array();
         if (sizeof($data) == 0) {
-            $result = MenuSystem::where('menu_id', '>', 0)
+            $result = Department::where('menu_id', '>', 0)
                 ->where('active',Define::STATUS_SHOW)
                 ->where('show_permission',Define::STATUS_SHOW)
                 ->orderBy('parent_id','asc')->orderBy('ordering','asc')->get();
