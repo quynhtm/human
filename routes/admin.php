@@ -41,7 +41,7 @@ Route::post('groupUser/editRole/{id?}', array('as' => 'admin.editRole','uses' =>
 Route::get('role/view',array('as' => 'admin.roleView','uses' => Admin.'\AdminRoleController@view'));
 Route::post('role/addRole',array('as' => 'admin.addRole','uses' => Admin.'\AdminRoleController@addRole'));
 Route::get('role/deleteRole',array('as' => 'admin.deleteRole','uses' => Admin.'\AdminRoleController@deleteRole'));
-Route::post('role/loadForm',array('as' => 'admin.loadForm','uses' => Admin.'\AdminRoleController@loadForm'));
+Route::post('role/ajaxLoadForm',array('as' => 'admin.loadForm','uses' => Admin.'\AdminRoleController@ajaxLoadForm'));
 
 /*thông tin menu */
 Route::get('menu/view',array('as' => 'admin.menuView','uses' => Admin.'\AdminManageMenuController@view'));
