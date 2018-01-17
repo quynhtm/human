@@ -67,8 +67,6 @@
                                             </ul>
                                         </div>
                                     </td>
->>>>>>> DUY
-
                                 </tr>
                                 <tr>
                                     <td class="text-center">2</td>
