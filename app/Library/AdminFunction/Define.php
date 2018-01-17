@@ -34,6 +34,7 @@ class Define{
     const TABLE_GROUP_USER_PERMISSION = 'admin_group_user_permission';
 
     const TABLE_HR_CATEGORY = 'hr_category';
+    const TABLE_HR_PERSON = 'hr_person';//nhân sự
     const TABLE_HR_DEFINE = 'hr_define';
     const TABLE_HR_DEPARTMENT = 'hr_department';
     const TABLE_HR_DEVICE = 'hr_device';//thiết bị
