@@ -88,7 +88,7 @@ class AdminRoleController extends BaseAdminController{
         return Redirect::route('admin.roleView');
     }
 
-    public function loadForm(){
+    public function ajaxLoadForm(){
         $data = $_POST;
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status'] : CGlobal::status_show);
         return view('admin.AdminRole.ajaxLoadForm',
