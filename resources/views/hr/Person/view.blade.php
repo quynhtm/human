@@ -9,7 +9,7 @@
                 <div class="panel-heading clearfix">
                     <div class="panel-title pull-left">Đơn vị</div>
                     <div class="btn-group btn-group-sm pull-right">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('admin.user_edit',array('id' => FunctionLib::inputId(0)))}}"><i class="fa fa-file"></i>&nbsp;Thêm mới</a>
+                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId(0)))}}"><i class="fa fa-file"></i>&nbsp;Thêm mới</a>
                     </div>
                 </div>
                 <div class="panel-body">

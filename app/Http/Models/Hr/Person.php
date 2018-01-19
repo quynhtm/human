@@ -108,8 +108,8 @@ class Person extends BaseModel
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Person::where('person_id','>',0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+            if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
+                $query->where('person_name','LIKE', '%' . $dataSearch['person_name'] . '%');
             }
             $total = $query->count();
             $query->orderBy('person_id', 'desc');

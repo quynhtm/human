@@ -9,3 +9,4 @@ Route::post('department/deleteMenu', array('as' => 'hr.deleteDepartment','uses' 
 
 /*thông tin Nhân sự */
 Route::match(['GET','POST'],'personnel/view', array('as' => 'hr.personnelView','uses' => HResources.'\PersonController@view'));
+Route::get('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@getItem'));

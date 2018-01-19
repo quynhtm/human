@@ -54,19 +54,19 @@ class PersonController extends BaseAdminController
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-        $pageNo = (int) Request::get('page_no',1);
+        $page_no = (int) Request::get('page_no',1);
         $sbmValue = Request::get('submit', 1);
         $limit = 200;
-        $offset = ($pageNo - 1) * $limit;
+        $offset = ($page_no - 1) * $limit;
         $search = $data = array();
         $total = 0;
 
-        $search['menu_name'] = addslashes(Request::get('menu_name',''));
+        $search['person_name'] = addslashes(Request::get('person_name',''));
         $search['active'] = (int)Request::get('active',-1);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset,$total);
-        $paging = '';
+        $paging = $total > 0 ? Pagging::getNewPager(3,$page_no,$total,$limit,$search) : '';
 
         //FunctionLib::debug($data);
         $this->getDataDefault();
@@ -77,7 +77,7 @@ class PersonController extends BaseAdminController
             'data'=>$data,
             'search'=>$search,
             'total'=>$total,
-            'stt'=>($pageNo - 1) * $limit,
+            'stt'=>($page_no - 1) * $limit,
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'optionRoleType'=>$optionStatus,
@@ -111,6 +111,8 @@ class PersonController extends BaseAdminController
             'optionShowContent'=>$optionShowContent,
             'optionShowPermission'=>$optionShowPermission,
             'optionShowMenu'=>$optionShowMenu,
+            'optionRoleType'=>$optionShowMenu,
+            'optionSex'=>$optionShowMenu,
             'optionMenuParent'=>$optionMenuParent,
         ],$this->viewPermission));
     }
