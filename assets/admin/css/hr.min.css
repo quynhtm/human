@@ -1,0 +1,40 @@
+a,a:hover {
+    cursor: pointer;
+    text-decoration: none;
+    color: #337ab7;
+}
+td,
+th {
+    vertical-align: middle;
+}
+.panel {
+    border-radius: 2px;
+}
+.table > thead > tr > th {
+    padding: 8px 15px;
+    border-bottom: 1px solid #eaeff0;
+    color:#222;
+}
+.table.not-bg > thead > tr {
+    background: none;
+}
+.list-group .list-group-item {
+    border-radius: 2px!important;
+}
+.treeview .list-group-item {
+    cursor: pointer;
+}
+.list-group .list-group-item:hover{
+    background: #f3f3f3;
+}
+.boxtitle{
+    color: #1b809e;
+    display: block;
+    overflow: hidden;
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+.clred{
+    color: #ff0000;
+}
