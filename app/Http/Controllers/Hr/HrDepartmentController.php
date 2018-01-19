@@ -23,10 +23,11 @@ class HrDepartmentController extends BaseAdminController
     private $arrStatus = array();
     private $error = array();
     private $arrMenuParent = array();
-    private $viewPermission = array();//check quyen
+    private $viewPermission = array();
 
-    public function __construct()
-    {
+    private $arrDepartmentType = array(-1 => '- Chọn loại đơn vị/ phòng ban -', 0 => 'Phòng ban / bộ phận trực thuộc', 1 => 'Đơn vị hạch toán độc lập (trực thuộc)', 2 => 'Đơn vị độc lập');
+
+    public function __construct(){
         parent::__construct();
         $this->arrMenuParent = Department::getAllParentMenu();
         CGlobal::$pageAdminTitle = 'Quản lý menu';
@@ -49,7 +50,7 @@ class HrDepartmentController extends BaseAdminController
         ];
     }
 
-    public function view() {
+    public function view(){
         //Check phan quyen.
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
@@ -72,7 +73,6 @@ class HrDepartmentController extends BaseAdminController
         }
         $paging = '';
 
-        //FunctionLib::debug($data);
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $search['active']);
 
@@ -100,22 +100,14 @@ class HrDepartmentController extends BaseAdminController
         }
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['active'])? $data['active']: CGlobal::status_show);
-        $optionShowContent = FunctionLib::getOption($this->arrStatus, isset($data['showcontent'])? $data['showcontent']: CGlobal::status_show);
-        $optionShowPermission = FunctionLib::getOption($this->arrStatus, isset($data['show_permission'])? $data['show_permission']: CGlobal::status_hide);
-        $optionShowMenu = FunctionLib::getOption($this->arrStatus, isset($data['show_menu'])? $data['show_menu']: CGlobal::status_show);
-        $optionMenuParent = FunctionLib::getOption($this->arrMenuParent, isset($data['parent_id'])? $data['parent_id'] : 0);
+        $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
+
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
             'id'=>$id,
-            'arrStatus'=>$this->arrStatus,
-            'optionStatus'=>$optionStatus,
-            'optionShowContent'=>$optionShowContent,
-            'optionShowPermission'=>$optionShowPermission,
-            'optionShowMenu'=>$optionShowMenu,
-            'optionMenuParent'=>$optionMenuParent,
+            'optionDepartmentType'=>$optionDepartmentType,
         ],$this->viewPermission));
     }
 
@@ -163,8 +155,7 @@ class HrDepartmentController extends BaseAdminController
         ],$this->viewPermission));
     }
 
-    public function deleteMenu()
-    {
+    public function deleteMenu(){
         $data = array('isIntOk' => 0);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
             return Response::json($data);

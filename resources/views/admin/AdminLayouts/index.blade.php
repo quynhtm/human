@@ -33,7 +33,8 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/ace-ie.min.css')}}"/>
     <![endif]-->
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin_css.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin.min.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/hr.min.css')}}"/>
     <!-- inline styles related to this page -->
 
     <!-- ace settings handler -->
@@ -70,6 +71,7 @@
     <script src="{{URL::asset('assets/admin/js/admin.js')}}"></script>
     <script src="{{URL::asset('assets/admin/js/format.js')}}"></script>
     <script src="{{URL::asset('assets/lib/datetimepicker/jquery.datetimepicker.js')}}"></script>
+    <script src="{{URL::asset('assets/admin/js/hr.js')}}"></script>
 
     {!!CGlobal::$extraHeaderCSS!!}
     {!!CGlobal::$extraHeaderJS!!}
