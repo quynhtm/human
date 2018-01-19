@@ -54,4 +54,8 @@ class CGlobal{
     const active = 1;
     const not_active = 0;
 
+    public static $arrLinkEditPerson = [
+        1=>['icons'=>'fa fa-edit','name_url'=>'Sửa thông tin chung','link_url'=>'/manager/personnel/edit/'],
+        2=>['icons'=>'fa fa-suitcase','name_url'=>'Thông tin đào tạo công tác','link_url'=>'/manager/personnel/edit/'],
+    ];
 }

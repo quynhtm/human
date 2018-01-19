@@ -17,8 +17,8 @@
     font-style: normal;
 }
 body {
-    font-family: 'SourceSansPro-Regular', 'RobotoRegular', Helvetica, Arial, sans-serif;
-    font-size: 15px
+    /*font-family: 'SourceSansPro-Regular', 'RobotoRegular', Helvetica, Arial, sans-serif; Quynhtm đóng*/
+    font-size: 13px;
     line-height: 1.42857143;
     color: #222;
 }
