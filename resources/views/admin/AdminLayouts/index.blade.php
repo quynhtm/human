@@ -33,7 +33,7 @@
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/ace-ie.min.css')}}"/>
     <![endif]-->
 
-    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin.min.css')}}"/>
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin_css.css')}}"/>
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/hr.min.css')}}"/>
     <!-- inline styles related to this page -->
 
