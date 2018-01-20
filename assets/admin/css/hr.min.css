@@ -50,3 +50,9 @@ th {
     font-size: 15px;
     font-weight: 700;
 }
+i.fa{
+    opacity: 0.8;
+}
+i.fa:hover{
+    opacity: 1;
+}

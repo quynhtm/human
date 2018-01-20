@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
 
     <!-- bootstrap & fontawesome -->
-    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin.min.css')}}" />
+    <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/admin/css/admin_css.css')}}" />
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/css/bootstrap.min.css')}}" />
     <link media="all" type="text/css" rel="stylesheet" href="{{URL::asset('assets/lib/font-awesome/4.2.0/css/font-awesome.min.css')}}" />
 

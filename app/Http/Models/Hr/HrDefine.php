@@ -1,17 +1,20 @@
 <?php
-/**
- * QuynhTM
- */
+/*
+* @Created by: HaiAnhEm
+* @Author    : nguyenduypt86@gmail.com
+* @Date      : 08/2016
+* @Version   : 1.0
+*/
+
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
-use App\Library\AdminFunction\FunctionLib;
 
-class HrDefine extends BaseModel
-{
+class HrDefine extends BaseModel{
+
     protected $table = Define::TABLE_HR_DEFINE;
     protected $primaryKey = 'define_id';
     public $timestamps = false;
@@ -40,7 +43,6 @@ class HrDefine extends BaseModel
             throw new PDOException();
         }
     }
-
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -55,12 +57,10 @@ class HrDefine extends BaseModel
             self::removeCache($item->define_id,$item);
             return true;
         } catch (PDOException $e) {
-            //var_dump($e->getMessage());
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
-
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();
@@ -73,7 +73,6 @@ class HrDefine extends BaseModel
         }
         return $dataDB;
     }
-
     public static function deleteItem($id){
         if($id <= 0) return false;
         try {
@@ -83,7 +82,7 @@ class HrDefine extends BaseModel
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->define_id,$item);
+            self::removeCache($item->define_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -91,14 +90,12 @@ class HrDefine extends BaseModel
             return false;
         }
     }
-
-    public static function removeCache($id = 0,$data){
+    public static function removeCache($id = 0, $data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
+            //Cache::forget(Define::CACHE_HR_DEFINED_ID.$id);
         }
     }
-
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+    public static function searchByCondition($dataSearch = array(), $limit=0, $offset=0, &$total){
         try{
             $query = HrDefine::where('define_id','>',0);
             if (isset($dataSearch['define_name']) && $dataSearch['define_name'] != '') {
@@ -110,12 +107,17 @@ class HrDefine extends BaseModel
             $total = $query->count();
             $query->orderBy('define_id', 'desc');
 
-            //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
             if(!empty($fields)){
-                $result = $query->take($limit)->skip($offset)->get($fields);
+                $result = $query->get($fields);
             }else{
-                $result = $query->take($limit)->skip($offset)->get();
+                $result = $query->get();
             }
             return $result;
 

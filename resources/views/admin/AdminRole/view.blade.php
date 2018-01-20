@@ -2,7 +2,7 @@
 <?php use App\Library\AdminFunction\Define; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+<meta name="csrf-token" content="{{ csrf_token() }}">
 <div class="main-content-inner">
     <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
         <ul class="breadcrumb">
@@ -10,24 +10,25 @@
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
             </li>
-            <li class="active">Quản lý role</li>
+            <li class="active">Quản lý Role</li>
         </ul>
     </div>
-
     <div class="page-content">
         <div class="col-md-8 panel-content">
             <div class="panel panel-primary">
                 <div class="panel-heading paddingTop1 paddingBottom1">
-                    <h4><i class="fa fa-list" aria-hidden="true"></i> Danh sách</h4>
+                    <h4><i class="fa fa-list" aria-hidden="true"></i> Quản lý Role</h4>
                 </div>
                 {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                 <div style="margin-top: 10px">
                     <div class="col-sm-4" >
                         <input @if(isset($search['role_name'])) value="{{$search['role_name']}}" @endif placeholder="Tên Role" name="role_name_s" class="form-control" id="role_name_s">
                     </div>
-                    <div style="float: left" class="form-group">
-                        <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1"><i
-                                    class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}</button>
+                    <div class="form-group pull-left">
+                        <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
+                            <i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}
+                        </button>
+                        <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/role/ajaxLoadForm')" title="Thêm mới">Thêm mới</a>
                     </div>
                 </div>
                 {{ Form::close() }}
@@ -35,31 +36,36 @@
                     @if(sizeof($data) > 0)
                         <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
-                            <tr class="">
-                                <th width="5%" class="text-center center">Stt</th>
-                                <th width="55%" class="center ">Tên role</th>
-                                <th width="15%" class="center ">Trạng thái</th>
-                                <th width="10%" class="center ">Order</th>
-                                <th width="15%" class="center ">Thao tác</th>
-                            </tr>
+                                <tr class="">
+                                    <th width="5%" class="text-center center">STT</th>
+                                    <th width="55%">Tên role</th>
+                                    <th width="15%">Trạng thái</th>
+                                    <th width="10%" class="center">Order</th>
+                                    <th width="15%" class="center">Thao tác</th>
+                                </tr>
                             </thead>
-                            <tbodys>
+                            <tbody>
                             @foreach ($data as $key => $item)
-                                <td class="text-center middle">{{$key+1 }}</td>
-                                <td>{{$item['role_name']}}</td>
-                                <td>@if(isset($arrStatus[$item['role_status']])) {{$arrStatus[$item['role_status']]}} @endif</td>
-                                <td>{{ $item['role_order'] }}
-                                </td>
-                                <td class="center">
-                                    <a class="editItem" onclick="edit_item('{{FunctionLib::inputId($item['role_id'])}}','{{$item['role_name']}}','{{$item['role_order']}}','{{$item['role_status']}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
-                                    <a class="deleteItem" onclick="delete_item('{{FunctionLib::inputId($item['role_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
-                                </td>
+                                <tr>
+                                    <td class="text-center middle">{{$key+1 }}</td>
+                                    <td>{{$item['role_name']}}</td>
+                                    <td>@if(isset($arrStatus[$item['role_status']])) {{$arrStatus[$item['role_status']]}} @endif</td>
+                                    <td>{{ $item['role_order'] }}
+                                    </td>
+                                    <td class="center">
+                                        @if($is_root || $permission_edit)
+                                            <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/ajaxLoadForm')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                        @endif
+                                        @if($is_boss || $permission_remove)
+                                            <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/deleteRole')"><i class="fa fa-trash fa-2x"></i></a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
-                            </tbodys>
+                            </tbody>
                         </table>
                     @else
-                        <div class="alert">
+                        <div class="alert line">
                             {{FunctionLib::viewLanguage('no_data')}}
                         </div>
                     @endif
@@ -73,7 +79,7 @@
                 </div>
                 <div class="panel-body">
                     <form id="form" method="post">
-                        <input type="hidden" name="id" value="{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}" class="form-control" id="id">
+                        <input type="hidden" name="id" value="{{FunctionLib::inputId(0)}}" class="form-control" id="id">
                         <div class="form-group">
                             <label for="role_name">Tên role</label>
                             <input type="text" name="role_name" title="Tên role" class="form-control input-required" id="role_name">
@@ -88,107 +94,12 @@
                                 {!! $optionStatus !!}
                             </select>
                         </div>
-                        <a class="btn btn-success" id="submit" onclick="add_item()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</a>
-                        <a class="btn btn-default" id="cancel" onclick="reset()"><i class="fa fa-undo" aria-hidden="true"></i> Reset</a>
+                        <a class="btn btn-success" id="submit" onclick="HR.addItem('form#form', 'form#form :input', '#submit', WEB_ROOT + '/manager/role/addRole/' + '{{FunctionLib::inputId(0)}}')"><i class="fa fa-floppy-o" aria-hidden="true"></i> Submit</a>
+                        <a class="btn btn-default" id="cancel" onclick="HR.resetItem('#id', '{{FunctionLib::inputId(0)}}')"><i class="fa fa-undo" aria-hidden="true"></i> Reset</a>
                     </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
-    <script>
-
-        function reset() {
-            $("#role_name").val("");
-            $("#role_order").val("");
-            $("#id").val('{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}');
-            $('.frmHead').text('Thêm mới');
-            $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
-        }
-        function delete_item(id) {
-            var a = confirm(lng['txt_mss_confirm_delete']);
-            if(a){
-                $.ajax({
-                    type: 'get',
-                    url: WEB_ROOT+'/manager/role/deleteRole',
-                    data: {
-                        'id':id
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        if ((data.errors)) {
-                            alert(data.errors)
-                        }else {
-                            window.location.reload();
-                        }
-                    },
-                });
-            }
-        }
-        function add_item() {
-            var is_error = false;
-            var msg = {};
-            $("form#form :input").each(function(){
-                var input = $(this); // This is the jquery object of the input, do what you will
-                if ($(this).hasClass("input-required") && input.val() == "") {
-                    msg[$(this).attr("name")] = "※" + $(this).attr("title") + lng['is_required'];
-                    is_error = true;
-                }
-            });
-
-            if (is_error == true) {
-                var error_msg = "";
-                $.each(msg, function (key, value) {
-                    error_msg = error_msg + value + "\n";
-                });
-                alert(error_msg);
-                return false;
-            }else {
-                $("#submit").attr("disabled","true");
-                var role_name = $("#role_name").val()
-                var role_order = $("#role_order").val()
-                var role_status = $("#role_status").val()
-                var id = $("#id").val()
-                $.ajax({
-                    type: 'post',
-                    url: WEB_ROOT+'/manager/role/addRole',
-                    data: {
-                        'role_name':role_name,
-                        'role_order':role_order,
-                        'role_status':role_status,
-                        'id':id
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        $('#submit').removeAttr("disabled")
-                        if ((data.errors)) {
-                            alert(data.errors)
-                        }else {
-                            window.location.reload();
-                        }
-                    },
-                });
-            }
-        }
-
-        function edit_item(id,role_name,role_order,role_status) {
-            $.ajax({
-                type: "POST",
-                url: WEB_ROOT+'/manager/role/ajaxLoadForm',
-                data: {id:id, role_name:role_name, role_order:role_order, role_status:role_status},
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data){
-                    $('.loadForm').html(data);
-                    return false;
-                }
-            });
-        }
-
-    </script>
 @stop

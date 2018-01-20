@@ -32,8 +32,12 @@
                     {!! $optionStatus !!}
                 </select>
             </div>
-            <a class="btn btn-success" id="submit" onclick="add_item()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a>
-            <a class="btn btn-default" id="cancel" onclick="reset()"><i class="fa fa-undo" aria-hidden="true"></i> Làm lại</a>
+            <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/defined/edit/' + '{{FunctionLib::inputId($data["define_id"])}}')">
+                <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
+            </a>
+            <a class="btn btn-default" id="cancel" onclick="HR.resetItem('#id', '{{FunctionLib::inputId($data["define_id"])}}')">
+                <i class="fa fa-undo" aria-hidden="true"></i> Làm lại
+            </a>
         </form>
     </div>
 </div>
