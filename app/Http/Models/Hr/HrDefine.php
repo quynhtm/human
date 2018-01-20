@@ -101,8 +101,11 @@ class HrDefine extends BaseModel
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = HrDefine::where('define_id','>',0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+            if (isset($dataSearch['define_name']) && $dataSearch['define_name'] != '') {
+                $query->where('define_name','LIKE', '%' . $dataSearch['define_name'] . '%');
+            }
+            if (isset($dataSearch['define_type']) && $dataSearch['define_type'] != -1) {
+                $query->where('define_type', $dataSearch['define_type']);
             }
             $total = $query->count();
             $query->orderBy('define_id', 'desc');

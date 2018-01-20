@@ -11,7 +11,7 @@ th {
     border-radius: 2px;
 }
 .table > thead > tr > th {
-    padding: 8px 15px;
+    padding: 8px;
     border-bottom: 1px solid #eaeff0;
     color:#222;
 }
@@ -37,4 +37,16 @@ th {
 }
 .clred{
     color: #ff0000;
+}
+.table.bg-head-table > thead > tr > th:last-child{
+    border: 1px solid #ddd;
+}
+.line{
+    display: inline-block;
+    clear: both;
+    width: 100%;
+}
+.panel-content h4 {
+    font-size: 15px;
+    font-weight: 700;
 }

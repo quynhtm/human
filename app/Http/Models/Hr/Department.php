@@ -16,8 +16,13 @@ class Department extends BaseModel
     protected $primaryKey = 'menu_id';
     public $timestamps = false;
 
-    protected $fillable = array('parent_id', 'menu_name_en', 'menu_url', 'menu_name', 'menu_type',
-        'role_id', 'showcontent','show_permission','show_menu','ordering','position','menu_icons','active','access_data','allow_guest');
+    protected $fillable = array('department_id', 'department_name', 'department_project', 'department_level', 'department_parent_id',
+        'department_link', 'department_status','department_order','department_creater_time','department_user_id_creater','department_user_name_creater',
+        'department_update_time','department_user_id_update','department_user_name_update',
+        'department_leader', 'department_phone', 'department_email', 'department_fax', 'department_postion','department_num_tax',
+        'department_num_bank', 'department_name_bank', 'department_position_bank'
+
+        );
 
     public static function createItem($data){
         try {

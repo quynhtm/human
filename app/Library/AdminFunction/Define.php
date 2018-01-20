@@ -126,10 +126,15 @@ class Define{
     const chuc_vu_doan_dang = 31;//chức vụ đoàn đảng
     const quan_he_gia_dinh = 32;
     const loai_phu_cap = 33;
+    const loai_donvi_phongban=34;
 
     static $arrOptionDefine = array(
-        Define::chuc_vu => '',
-        Define::hoc_ham => '',
-        Define::hoc_vi => '',
-        Define::nghach_bac => '');
+        Define::chuc_vu => 'Chức vụ',
+        Define::hoc_ham => 'Học hàm',
+        Define::hoc_vi => 'Học vị',
+        Define::nghach_bac => 'Ngạch bậc',
+        Define::loai_donvi_phongban => 'Loại đơn vị/phòng ban',
+    );
+
+
 }
