@@ -1,5 +1,4 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
-<?php use App\Library\AdminFunction\Define; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -22,12 +21,19 @@
                     {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                     <div style="margin-top: 10px">
                         <div class="col-sm-4" >
-                            <input @if(isset($search['define_name'])) value="{{$search['define_name']}}" @endif placeholder="Tên định nghĩa" name="define_name" class="form-control" id="define_name">
+                            <input @if(isset($search['define_name'])) value="{{$search['define_name']}}" @endif placeholder="Tên định nghĩa" name="define_name" class="form-control" id="define_name_s">
+                        </div>
+                        <div class="col-sm-4">
+                            <select class="form-control input-sm" name="define_type" id="define_type">
+                                {!! $optionDefinedType !!}
+                            </select>
                         </div>
                         <div style="float: left" class="form-group">
                             <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
                                 <i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}
                             </button>
+                            <a class="btn btn-warning btn-sm" onclick="edit_item('{{FunctionLib::inputId(0)}}')" title="Sửa item">Thêm mới</a>
+
                         </div>
                     </div>
                     {{ Form::close() }}
@@ -65,10 +71,10 @@
                                         <td class="text-center">{{isset($arrStatus[$item->define_status]) ? $arrStatus[$item->define_status] : 'Chưa xác định'}}</td>
                                         <td class="text-center middle" align="center">
                                             @if($is_root || $permission_edit)
-                                               <a class="editItem" onclick="edit_item('{{FunctionLib::inputId($item['defined_id'])}}','{{$item['defined_name']}}','{{$item['defined_order']}}','{{$item['defined_status']}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                               <a class="editItem" onclick="edit_item('{{FunctionLib::inputId($item['define_id'])}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
                                             @endif
                                             @if($is_boss || $permission_remove)
-                                               <a class="deleteItem" onclick="delete_item('{{FunctionLib::inputId($item['defined_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                               <a class="deleteItem" onclick="delete_item('{{FunctionLib::inputId($item['define_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
 
                                         </td>
@@ -90,8 +96,8 @@
                         <h4><i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới</h4>
                     </div>
                     <div class="panel-body">
-                        <form id="form" method="post">
-                            <input type="hidden" name="id" value="{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}" class="form-control" id="id">
+                        <form id="formAdd" method="post">
+                            <input type="hidden" name="id" value="{{FunctionLib::inputId(0)}}" class="form-control" id="id">
                             <div class="form-group">
                                 <label for="define_name">Tên định nghĩa</label>
                                 <input type="text" name="define_name" title="Tên định nghĩa" class="form-control input-required" id="define_name">
@@ -102,7 +108,7 @@
                             </div>
                             <div class="form-group">
                                 <label for="define_status">Kiểu định nghĩa</label>
-                                <select class="form-control input-sm" name="define_status" id="define_type">
+                                <select class="form-control input-sm" name="define_type" id="define_type">
                                     {!! $optionDefinedType !!}
                                 </select>
                             </div>
@@ -121,7 +127,6 @@
         </div>
     </div>
     <script>
-
         function reset() {
             $("#define_name").val("");
             $("#define_order").val("");
@@ -131,15 +136,16 @@
         }
         function delete_item(id) {
             var a = confirm(lng['txt_mss_confirm_delete']);
+            var _token = $('meta[name="csrf-token"]').attr('content');
             if(a){
                 $.ajax({
                     type: 'get',
-                    url: WEB_ROOT+'/manager/defined/remove',
+                    url: WEB_ROOT+'/manager/defined/deleteDefined',
                     data: {
                         'id':id
                     },
                     headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        'X-CSRF-TOKEN': _token
                     },
                     success: function(data) {
                         if ((data.errors)) {
@@ -154,8 +160,8 @@
         function add_item() {
             var is_error = false;
             var msg = {};
-            $("form#form :input").each(function(){
-                var input = $(this); // This is the jquery object of the input, do what you will
+            $("form#formAdd :input").each(function(){
+                var input = $(this);
                 if ($(this).hasClass("input-required") && input.val() == "") {
                     msg[$(this).attr("name")] = "※" + $(this).attr("title") + lng['is_required'];
                     is_error = true;
@@ -171,39 +177,31 @@
                 return false;
             }else {
                 $("#submit").attr("disabled","true");
-                var role_name = $("#role_name").val()
-                var role_order = $("#role_order").val()
-                var role_status = $("#role_status").val()
+                var data = getFormData('#formAdd');
                 var id = $("#id").val()
                 $.ajax({
                     type: 'post',
-                    url: WEB_ROOT+'/manager/role/addRole',
-                    data: {
-                        'role_name':role_name,
-                        'role_order':role_order,
-                        'role_status':role_status,
-                        'id':id
-                    },
+                    url: WEB_ROOT+'/manager/defined/edit/'+id,
+                    data: data,
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     success: function(data) {
                         $('#submit').removeAttr("disabled")
-                        if ((data.errors)) {
+                        if ((data.isOk == 0)) {
                             alert(data.errors)
                         }else {
-                            window.location.reload();
+                            window.location.href=data.url;
                         }
                     },
                 });
             }
         }
-
-        function edit_item(id,role_name,role_order,role_status) {
+        function edit_item(id) {
             $.ajax({
                 type: "POST",
-                url: WEB_ROOT+'/manager/role/ajaxLoadForm',
-                data: {id:id, role_name:role_name, role_order:role_order, role_status:role_status},
+                url: WEB_ROOT+'/manager/defined/ajaxLoadForm',
+                data: {id:id},
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
@@ -213,6 +211,14 @@
                 }
             });
         }
-
+        function getFormData(dom_query){
+            var out = {};
+            var s_data = $(dom_query).serializeArray();
+            for(var i = 0; i<s_data.length; i++){
+                var record = s_data[i];
+                out[record.name] = record.value;
+            }
+            return out;
+        }
     </script>
 @stop

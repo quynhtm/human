@@ -63,7 +63,7 @@
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Họ tên lãnh đạo</label>
-                                            <input class="form-control input-sm" id="Organization_Leader_Name" name="Organization.Leader.Name" value="" type="text">
+                                            <input class="form-control input-sm" id="department_leader" name="department_leader" @isset($data['department_leader'])value="{{$data['department_leader']}}"@endif type="text">
                                         </div>
                                     </div>
                                     <div class="col-md-6">
