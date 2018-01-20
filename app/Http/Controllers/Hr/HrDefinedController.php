@@ -103,8 +103,14 @@ class HrDefinedController extends BaseAdminController{
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden: $id;
             if($id > 0) {
+                $data['update_time'] = time();
+                $data['user_id_update'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+                $data['user_name_update'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 HrDefine::updateItem($id, $data);
             }else{
+                $data['creater_time'] = time();
+                $data['user_id_creater'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+                $data['user_name_creater'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 HrDefine::createItem($data);
             }
             $arrSucces['isOk'] = 1;

@@ -56,15 +56,15 @@
                                     <td>{{$item->define_name}}</td>
                                     <td>{{isset($arrDefinedType[$item->define_type]) ? $arrDefinedType[$item->define_type] : 'Chưa xác định'}}</td>
                                     <td>
-                                        Thứ tự: {{$item->define_order}}
+                                        Thứ tự: {{$item->define_order}}<br/>
                                         @if($item->user_name_creater != '')
-                                            Người tạo: {{$item->user_name_creater}}
-                                            Ngày tạo: {{date('d/m/Y', $item->creater_time)}}
+                                            Người tạo: {{$item->user_name_creater}}<br/>
+                                            Ngày tạo: {{date('d/m/Y', $item->creater_time)}}<br/>
                                         @endif
 
                                         @if($item->user_name_update != '')
-                                            Người cập nhật: {{$item->user_name_update}}
-                                            Ngày cập nhật: {{date('d/m/Y', $item->update_time)}}
+                                            Người cập nhật: {{$item->user_name_update}}<br/>
+                                            Ngày cập nhật: {{date('d/m/Y', $item->update_time)}}<br/>
                                         @endif
                                     </td>
                                     <td class="text-center">{{isset($arrStatus[$item->define_status]) ? $arrStatus[$item->define_status] : 'Chưa xác định'}}</td>
