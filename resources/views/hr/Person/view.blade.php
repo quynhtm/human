@@ -2,217 +2,114 @@
 <?php use App\Library\AdminFunction\Define; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <div class="main-content-inner">
-        <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
-            <ul class="breadcrumb">
-                <li>
-                    <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
-                </li>
-                <li class="active">Quản lý định nghĩa</li>
-            </ul>
-        </div>
-        <div class="page-content">
-            <div class="col-md-8 panel-content">
-                <div class="panel panel-primary">
-                    <div class="panel-heading paddingTop1 paddingBottom1">
-                        <h4><i class="fa fa-list" aria-hidden="true"></i> Danh sách</h4>
-                    </div>
-                    {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
-                    <div style="margin-top: 10px">
-                        <div class="col-sm-4" >
-                            <input @if(isset($search['define_name'])) value="{{$search['define_name']}}" @endif placeholder="Tên định nghĩa" name="define_name" class="form-control" id="define_name">
-                        </div>
-                        <div style="float: left" class="form-group">
-                            <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
-                                <i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}
-                            </button>
-                        </div>
-                    </div>
-                    {{ Form::close() }}
-                    <div class="panel-body line" id="element">
-                        @if(sizeof($data) > 0)
-                            <table class="table table-bordered bg-head-table">
-                                <thead>
-                                <tr>
-                                    <th class="text-center w10">STT</th>
-                                    <th>Tên định nghĩa</th>
-                                    <th>Kiểu định nghĩa</th>
-                                    <th>Thông tin</th>
-                                    <th class="text-center">Trạng thái</th>
-                                    <th class="text-center">Chức năng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                @foreach($data as $key => $item)
-                                    <tr>
-                                        <td>{{ $stt + $key+1 }}</td>
-                                        <td>{{$item->define_name}}</td>
-                                        <td>{{isset($arrDefinedType[$item->define_type]) ? $arrDefinedType[$item->define_type] : 'Chưa xác định'}}</td>
-                                        <td>
-                                            Thứ tự: {{$item->define_order}}
-                                            @if($item->user_name_creater != '')
-                                                Người tạo: {{$item->user_name_creater}}
-                                                Ngày tạo: {{date('d/m/Y', $item->creater_time)}}
-                                            @endif
-
-                                            @if($item->user_name_update != '')
-                                                Người cập nhật: {{$item->user_name_update}}
-                                                Ngày cập nhật: {{date('d/m/Y', $item->update_time)}}
-                                            @endif
-                                        </td>
-                                        <td class="text-center">{{isset($arrStatus[$item->define_status]) ? $arrStatus[$item->define_status] : 'Chưa xác định'}}</td>
-                                        <td class="text-center middle" align="center">
-                                            @if($is_root || $permission_edit)
-                                               <a class="editItem" onclick="edit_item('{{FunctionLib::inputId($item['defined_id'])}}','{{$item['defined_name']}}','{{$item['defined_order']}}','{{$item['defined_status']}}')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
-                                            @endif
-                                            @if($is_boss || $permission_remove)
-                                               <a class="deleteItem" onclick="delete_item('{{FunctionLib::inputId($item['defined_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
-                                            @endif
-
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        @else
-                            <div class="alert">
-                                {{FunctionLib::viewLanguage('no_data')}}
-                            </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4 panel-content loadForm">
-                <div class="panel panel-primary">
-                    <div class="panel-heading paddingTop1 paddingBottom1">
-                        <h4><i class="fa fa-plus-square" aria-hidden="true"></i> Thêm mới</h4>
-                    </div>
-                    <div class="panel-body">
-                        <form id="form" method="post">
-                            <input type="hidden" name="id" value="{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}" class="form-control" id="id">
-                            <div class="form-group">
-                                <label for="define_name">Tên định nghĩa</label>
-                                <input type="text" name="define_name" title="Tên định nghĩa" class="form-control input-required" id="define_name">
-                            </div>
-                            <div class="form-group">
-                                <label for="define_order">Thứ tự hiển thị</label>
-                                <input type="text" name="define_order" title="Thứ tự hiển thị" class="form-control" id="define_order">
-                            </div>
-                            <div class="form-group">
-                                <label for="define_status">Kiểu định nghĩa</label>
-                                <select class="form-control input-sm" name="define_status" id="define_type">
-                                    {!! $optionDefinedType !!}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="define_status">Trạng thái</label>
-                                <select class="form-control input-sm" name="define_status" id="define_status">
-                                    {!! $optionStatus !!}
-                                </select>
-                            </div>
-                            <a class="btn btn-success" id="submit" onclick="add_item()"><i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu</a>
-                            <a class="btn btn-default" id="cancel" onclick="reset()"><i class="fa fa-undo" aria-hidden="true"></i> Làm lại</a>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
+<div class="main-content-inner">
+    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+            </li>
+            <li class="active">Danh sách nhân sự</li>
+        </ul>
     </div>
-    <script>
 
-        function reset() {
-            $("#define_name").val("");
-            $("#define_order").val("");
-            $("#id").val('{{\App\Library\AdminFunction\FunctionLib::inputId(0)}}');
-            $('.frmHead').text('Thêm mới');
-            $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
-        }
-        function delete_item(id) {
-            var a = confirm(lng['txt_mss_confirm_delete']);
-            if(a){
-                $.ajax({
-                    type: 'get',
-                    url: WEB_ROOT+'/manager/defined/remove',
-                    data: {
-                        'id':id
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        if ((data.errors)) {
-                            alert(data.errors)
-                        }else {
-                            window.location.reload();
-                        }
-                    },
-                });
-            }
-        }
-        function add_item() {
-            var is_error = false;
-            var msg = {};
-            $("form#form :input").each(function(){
-                var input = $(this); // This is the jquery object of the input, do what you will
-                if ($(this).hasClass("input-required") && input.val() == "") {
-                    msg[$(this).attr("name")] = "※" + $(this).attr("title") + lng['is_required'];
-                    is_error = true;
-                }
-            });
-
-            if (is_error == true) {
-                var error_msg = "";
-                $.each(msg, function (key, value) {
-                    error_msg = error_msg + value + "\n";
-                });
-                alert(error_msg);
-                return false;
-            }else {
-                $("#submit").attr("disabled","true");
-                var role_name = $("#role_name").val()
-                var role_order = $("#role_order").val()
-                var role_status = $("#role_status").val()
-                var id = $("#id").val()
-                $.ajax({
-                    type: 'post',
-                    url: WEB_ROOT+'/manager/role/addRole',
-                    data: {
-                        'role_name':role_name,
-                        'role_order':role_order,
-                        'role_status':role_status,
-                        'id':id
-                    },
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(data) {
-                        $('#submit').removeAttr("disabled")
-                        if ((data.errors)) {
-                            alert(data.errors)
-                        }else {
-                            window.location.reload();
-                        }
-                    },
-                });
-            }
-        }
-
-        function edit_item(id,role_name,role_order,role_status) {
-            $.ajax({
-                type: "POST",
-                url: WEB_ROOT+'/manager/role/ajaxLoadForm',
-                data: {id:id, role_name:role_name, role_order:role_order, role_status:role_status},
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                },
-                success: function(data){
-                    $('.loadForm').html(data);
-                    return false;
-                }
-            });
-        }
-
-    </script>
+    <div class="page-content">
+        <div class="row">
+            <div class="col-xs-12">
+                <!-- PAGE CONTENT BEGINS -->
+                <div class="panel panel-info">
+                    <form method="Post" action="" role="form">
+                        {{ csrf_field() }}
+                        <div class="panel-body">
+                            <div class="form-group col-sm-2">
+                                <label for="user_name" class="control-label"><i>Tên đăng nhập</i></label>
+                                <input type="text" class="form-control input-sm" id="user_name" name="user_name" autocomplete="off" placeholder="Tên đăng nhập" @if(isset($dataSearch['user_name']))value="{{$dataSearch['user_name']}}"@endif>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="user_email"><i>Email</i></label>
+                                <input type="text" class="form-control input-sm" id="user_email" name="user_email" autocomplete="off" placeholder="Địa chỉ email" @if(isset($dataSearch['user_email']))value="{{$dataSearch['user_email']}}"@endif>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="user_phone"><i>Di động</i></label>
+                                <input type="text" class="form-control input-sm" id="user_phone" name="user_phone" autocomplete="off" placeholder="Số di động" @if(isset($dataSearch['user_phone']))value="{{$dataSearch['user_phone']}}"@endif>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="user_group"><i>Nhóm quyền</i></label>
+                                <select name="role_type" id="role_type" class="form-control input-sm" tabindex="12" data-placeholder="Chọn nhóm quyền">
+                                    <option value="0">--- Chọn nhóm quyền ---</option>
+                                    {!! $optionRoleType !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="panel-footer text-right">
+                    <span class="">
+                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId(0)))}}">
+                            <i class="ace-icon fa fa-plus-circle"></i>
+                            Thêm mới
+                        </a>
+                    </span>
+                            <span class="">
+                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
+                    </span>
+                        </div>
+                    </form>
+                </div>
+                @if(sizeof($data) > 0)
+                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
+                    <br>
+                    <table class="table table-bordered table-hover">
+                        <thead class="thin-border-bottom">
+                        <tr class="">
+                            <th width="3%" class="text-center">STT</th>
+                            <th width="8%">Chức năng</th>
+                            <th width="20%">Họ tên</th>
+                            <th width="5%" class="text-center">Giới tính</th>
+                            <th width="10%" class="text-center">Ngày làm việc</th>
+                            <th width="15%" class="text-center">Đơn vị/Bộ phận</th>
+                            <th width="15%" class="text-center">Chức danh nghề nghiệp</th>
+                            <th width="15%" class="text-center">Chức vụ</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @foreach ($data as $key => $item)
+                            <tr @if($item['user_status'] == \App\Library\AdminFunction\Define::STATUS_BLOCK)class="red bg-danger middle" {else} class="middle" @endif>
+                                <td class="text-center middle">{{ $stt+$key+1 }}</td>
+                                <td>
+                                    <div class="dropdown">
+                                        <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                            - Chọn -
+                                            <span class="caret"></span>
+                                        </button>
+                                        <ul class="dropdown-menu">
+                                            @foreach($arrLinkEditPerson as $kl=>$val)
+                                            <li><a title="Sửa" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ $item['person_name'] }}
+                                    <br/>SN:{{date('d-m-Y',time())}}
+                                </td>
+                                <td class="text-center middle">Nữ</td>
+                                <td class="text-center middle">{{date('d-m-Y',time())}}</td>
+                                <td class="text-center middle">Hành chính nhân sự</td>
+                                <td class="text-center middle">Tuyển sinh</td>
+                                <td class="text-center middle">Tuyển trách viên</td>
+                            </tr>
+                        @endforeach
+                        </tbody>
+                    </table>
+                    <div class="text-right">
+                        {!! $paging !!}
+                    </div>
+                @else
+                    <div class="alert">
+                        Không có dữ liệu
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div><!-- /.page-content -->
+</div>
 @stop

@@ -88,7 +88,6 @@ class HrDefinedController extends BaseAdminController{
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
-            'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
             'optionDefinedType'=>$optionDefinedType,
             'arrDefinedType'=>$this->arrDefinedType,
