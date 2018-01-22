@@ -56,26 +56,28 @@ class HrDepartmentController extends BaseAdminController
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
+        $search = array();
+
         $pageNo = (int) Request::get('page_no',1);
-        $limit = 200;
-        $offset = ($pageNo - 1) * $limit;
-        $search = $data = array();
+        $limit = CGlobal::number_limit_show;
         $total = 0;
+        $offset = ($pageNo - 1) * $limit;
 
-        $search['department_name'] = addslashes(Request::get('department_name',''));
-        $search['department_status'] = (int)Request::get('department_status', -1);
-        $search['field_get'] = 'department_id,department_type,department_name,department_phone,department_fax,department_parent_id,department_creater_time,department_update_time';
+        $dataSearch['department_name'] = addslashes(Request::get('department_name',''));
+        $dataSearch['department_status'] = (int)Request::get('department_status', -1);
+        $dataSearch['field_get'] = 'department_id,department_type,department_name,department_phone,department_fax,department_parent_id,department_creater_time,department_update_time';
 
-        $dataSearch = Department::searchByCondition($search, $limit, $offset,$total);
+        $data = Department::searchByCondition($search, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $search['department_status']);
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['department_status']);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.view',array_merge([
-            'data'=>$dataSearch,
-            'search'=>$search,
+            'data'=>$data,
+            'search'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
