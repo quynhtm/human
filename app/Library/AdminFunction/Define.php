@@ -69,7 +69,18 @@ class Define{
     const CACHE_OPTION_USER = 'cache_option_user';
     const CACHE_OPTION_CARRIER = 'cache_option_carrier';
 
+    //Hr key cache
+    const CACHE_ROLE_ID = 'cache_admin_role_id_';
+    const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';
+    const CACHE_DEPARTMENT_ID = 'cache_department_id_';
+    const CACHE_ALL_DEPARTMENT = 'cache_all_department';
+    const CACHE_ALL_CHILD_DEPARTMENT_PARENT_ID = 'cache_all_child_department_parent_id_';
+    const CACHE_TREE_DEPARTMENT= 'cache_tree_department_';
+    const CACHE_ALL_PARENT_DEPARTMENT= 'cache_all_parent_department_';
+    const CACHE_LIST_DEPARTMENT_PERMISSION= 'cache_list_department_permission';
 
+    //Cache key defined
+    const CACHE_DEFINED_TYPE = 'cache_defined_type_';
     /***************************************************************************************************************
     //Define
      ***************************************************************************************************************/
@@ -124,7 +135,7 @@ class Define{
     const loai_hop_dong = 28;
     const loai_dao_tao = 29;
     const van_bang_chung_chi = 30;
-    const chuc_vu_doan_dang = 31;//chức vụ đoàn đảng
+    const chuc_vu_doan_dang = 31;
     const quan_he_gia_dinh = 32;
     const loai_phu_cap = 33;
     const loai_donvi_phongban=34;
@@ -134,7 +145,36 @@ class Define{
         Define::hoc_ham => 'Học hàm',
         Define::hoc_vi => 'Học vị',
         Define::nghach_bac => 'Ngạch bậc',
-        Define::loai_donvi_phongban => 'Loại đơn vị/phòng ban',
+        Define::trinh_do_ql_nghe_nghiep => 'Trình độ quản lý nghề nghiệp',
+        Define::trinh_do_ly_luan => 'Trình độ lý luận',
+        Define::loai_phong_ban => 'Loại phòng ban',
+        Define::chuc_danh_nghe_nghiep => 'Chức danh nghề nghiệp',
+        Define::chuc_danh_khoa_hoc_cong_nghe => 'Chức danh khoa học công nghệ',
+        Define::cap_uy => 'Cấp ủy',
+        Define::dan_toc => 'Dân tộc',
+        Define::ton_giao => 'Tôn giáo',
+        Define::thanh_phan_gia_dinh => 'Thành phần gia đình',
+        Define::quan_ham => 'Quân hàm',
+        Define::trinh_do_hoc_van => 'Trình độ học vấn',
+        Define::ly_luan_chinh_tri => 'Lý luận chính trị',
+        Define::ngoai_ngu => 'Ngoại ngữ',
+        Define::thang_bang_luong => 'Thang bảng lương',
+        Define::ngach_cong_chuc => 'Ngạch công chức',
+        Define::bac_luong => 'Bậc lương',
+        Define::danh_hieu => 'Danh hiệu',
+        Define::khen_thuong => 'Khen thưởng',
+        Define::ky_luat => 'Kỷ luật',
+        Define::tinh_trang_suc_khoe => 'Tình trang sức khỏe',
+        Define::nhom_mau => 'Nhóm máu',
+        Define::hang_thuong_binh => 'Hạng thương binh',
+        Define::trinh_do_tin_hoc => 'Trình độ tin học',
+        Define::loai_hop_dong => 'Loại hợp đồng',
+        Define::loai_dao_tao => 'Loại đào tạo',
+        Define::van_bang_chung_chi => 'Văn bằng chứng chỉ',
+        Define::chuc_vu_doan_dang => 'Chức vụ Đoàn/Đảng',
+        Define::quan_he_gia_dinh => 'Quan hệ gia đình',
+        Define::loai_phu_cap => 'Loại phụ cấp',
+        Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
     );
 
 

@@ -1,14 +1,9 @@
 <?php
-
 namespace App\Http\Models\Admin;
+
 use App\Http\Models\BaseModel;
-
-use App\Library\AdminFunction\FunctionLib;
-use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
-
 use App\library\AdminFunction\Define;
-use App\library\AdminFunction\Memcache;
 use Illuminate\Support\Facades\Cache;
 
 class Role extends BaseModel{
@@ -39,7 +34,6 @@ class Role extends BaseModel{
             throw new PDOException();
         }
     }
-
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -59,7 +53,6 @@ class Role extends BaseModel{
             throw new PDOException();
         }
     }
-
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();
@@ -72,7 +65,6 @@ class Role extends BaseModel{
         }
         return $dataDB;
     }
-
     public static function deleteItem($id){
         if($id <= 0) return false;
         try {
@@ -90,45 +82,44 @@ class Role extends BaseModel{
             return false;
         }
     }
-
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
-//        FunctionLib::debug($dataSearch);
         try{
             $query = Role::where('role_id','>',0);
             if (isset($dataSearch['role_name']) && $dataSearch['role_name'] != '') {
                 $query->where('role_name','LIKE', '%' . $dataSearch['role_name'] . '%');
             }
-
             $total = $query->count();
             $query->orderBy('role_order', 'asc');
 
-            //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
             if(!empty($fields)){
-                $result = $query->take($limit)->skip($offset)->get($fields);
+                $result = $query->get($fields);
             }else{
-                $result = $query->take($limit)->skip($offset)->get();
+                $result = $query->get();
             }
             return $result;
         }catch (PDOException $e){
             throw new PDOException();
         }
     }
-
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
+            //Cache::forget(Define::CACHE_ROLE_ID.$id);
         }
-        Cache::forget(Define::CACHE_OPTION_CARRIER);
+        //Cache::forget(Define::CACHE_OPTION_CARRIER);
     }
-
     public static function getListAll() {
         $query = Role::where('role_id','>',0);
         $query->where('status','=', 1);
         $list = $query->get();
         return $list;
     }
-
     public static function getOptionCarrier() {
         $data = Cache::get(Define::CACHE_OPTION_CARRIER);
         if (sizeof($data) == 0) {
@@ -142,5 +133,4 @@ class Role extends BaseModel{
         }
         return $data;
     }
-
 }

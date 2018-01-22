@@ -1,8 +1,8 @@
 <?php
 /*
-* @Created by: DUYNX
+* @Created by: HaiAnhEm
 * @Author    : nguyenduypt86@gmail.com
-* @Date      : 01/2018
+* @Date      : 01/2017
 * @Version   : 1.0
 */
 
@@ -20,23 +20,22 @@ use App\Library\AdminFunction\Pagging;
 use Illuminate\Support\Facades\URL;
 
 class HrDefinedController extends BaseAdminController{
+
     private $permission_view = 'hrDefined_view';
     private $permission_full = 'hrDefined_full';
     private $permission_delete = 'hrDefined_delete';
     private $permission_create = 'hrDefined_create';
     private $permission_edit = 'hrDefined_edit';
+
     private $arrStatus = array();
     private $error = array();
-    private $arrMenuParent = array();
     private $viewPermission = array();
-
     private $arrDefinedType = array();
 
     public function __construct(){
         parent::__construct();
         CGlobal::$pageAdminTitle = 'Quản lý định nghĩa chung';
     }
-
     public function getDataDefault(){
         $this->arrStatus = array(
             CGlobal::status_block => FunctionLib::controLanguage('status_choose',$this->languageSite),
@@ -45,7 +44,6 @@ class HrDefinedController extends BaseAdminController{
         );
         $this->arrDefinedType = Define::$arrOptionDefine;
     }
-
     public function getPermissionPage(){
         return $this->viewPermission = [
             'is_root'=> $this->is_root ? 1:0,
@@ -55,7 +53,6 @@ class HrDefinedController extends BaseAdminController{
             'permission_full'=>in_array($this->permission_full, $this->permission) ? 1 : 0,
         ];
     }
-
     public function view(){
 
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
@@ -63,12 +60,12 @@ class HrDefinedController extends BaseAdminController{
         }
 
         $pageNo = (int) Request::get('page_no',1);
-        $limit = 200;
+        $limit = 0;
         $offset = ($pageNo - 1) * $limit;
         $search = $data = array();
         $total = 0;
 
-        $search['define_name'] = addslashes(Request::get('define_name',''));
+        $search['define_name'] = addslashes(Request::get('define_name_s'));
         $search['define_type'] = (int)Request::get('define_type', Define::chuc_vu);
         $search['field_get'] = '';
 
@@ -93,14 +90,12 @@ class HrDefinedController extends BaseAdminController{
             'arrDefinedType'=>$this->arrDefinedType,
         ],$this->viewPermission));
     }
-
     public function postItem($ids) {
         $id = FunctionLib::outputId($ids);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
         $arrSucces=['isOk'=>0];
-        $arrSucces=['errors'=>'Error'];
         $id_hiden = (int)Request::get('id', 0);
         $data = $_POST;
         unset($data['id']);
@@ -108,18 +103,22 @@ class HrDefinedController extends BaseAdminController{
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden: $id;
             if($id > 0) {
+                $data['update_time'] = time();
+                $data['user_id_update'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+                $data['user_name_update'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 HrDefine::updateItem($id, $data);
             }else{
+                $data['creater_time'] = time();
+                $data['user_id_creater'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
+                $data['user_name_creater'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 HrDefine::createItem($data);
             }
             $arrSucces['isOk'] = 1;
             $arrSucces['url'] = URL::route('hr.definedView',array('define_type' => $data['define_type']));
-            //FunctionLib::debug($arrSucces);
             return $arrSucces;
         }
         return $arrSucces;
     }
-
     public function deleteDefined(){
         $data = array('isIntOk' => 0);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
@@ -131,7 +130,6 @@ class HrDefinedController extends BaseAdminController{
         }
         return Response::json($data);
     }
-
     public function ajaxLoadForm(){
         $ids = $_POST['id'];
         $id = FunctionLib::outputId($ids);
@@ -151,7 +149,6 @@ class HrDefinedController extends BaseAdminController{
                 'optionDefinedType'=>$optionDefinedType,
             ],$this->viewPermission));
     }
-
     private function valid($data=array()) {
         if(!empty($data)) {
             if(isset($data['define_name']) && trim($data['define_name']) == '') {
