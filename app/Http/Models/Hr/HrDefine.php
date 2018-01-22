@@ -2,7 +2,7 @@
 /*
 * @Created by: HaiAnhEm
 * @Author    : nguyenduypt86@gmail.com
-* @Date      : 08/2016
+* @Date      : 01/2017
 * @Version   : 1.0
 */
 
@@ -36,7 +36,7 @@ class HrDefine extends BaseModel{
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->define_id,$item);
+            self::removeCache($item->define_id, $item);
             return $item->define_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -60,6 +60,20 @@ class HrDefine extends BaseModel{
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
+    }
+    public static function getItemById($id=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DEFINED_ID.$id) : array();
+        try {
+            if(empty($result)){
+                $result = HrDefine::where('define_id', $id)->first();
+                if($result && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_HR_DEFINED_ID.$id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
     }
     public function checkField($dataInput) {
         $fields = $this->fillable;
@@ -90,9 +104,10 @@ class HrDefine extends BaseModel{
             return false;
         }
     }
-    public static function removeCache($id = 0, $data){
+    public static function removeCache($id=0, $data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_HR_DEFINED_ID.$id);
+            Cache::forget(Define::CACHE_HR_DEFINED_ID . $id);
+            Cache::forget(Define::CACHE_DEFINED_TYPE . $data->define_type);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit=0, $offset=0, &$total){
@@ -124,5 +139,22 @@ class HrDefine extends BaseModel{
         }catch (PDOException $e){
             throw new PDOException();
         }
+    }
+    public static function getArrayByType($type=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEFINED_TYPE.$type) : array();
+        try {
+            if(empty($result) && $type > 0){
+                $listItem = HrDefine::where('define_type', $type)->get();
+                foreach($listItem as $item){
+                    $result[$item->define_id] = $item->define_name;
+                }
+                if($result && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_DEFINED_TYPE.$type, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
     }
 }

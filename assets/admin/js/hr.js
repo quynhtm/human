@@ -1,6 +1,7 @@
 HR = {
     editItem:function(id, $url){
         var _token = $('meta[name="csrf-token"]').attr('content');
+        $("#loading").fadeIn().fadeOut(10);
         $.ajax({
             type: "POST",
             url: $url,
@@ -15,6 +16,7 @@ HR = {
     deleteItem:function(id, url) {
         var a = confirm(lng['txt_mss_confirm_delete']);
         var _token = $('meta[name="csrf-token"]').attr('content');
+        $("#loading").fadeIn().fadeOut(10);
         if(a){
             $.ajax({
                 type: 'get',
@@ -41,6 +43,7 @@ HR = {
         return out;
     },
     addItem:function(elementForm, elementInput, btnSubmit, $url){
+        $("#loading").fadeIn().fadeOut(10);
         var isError = false;
         var msg = {};
         $(elementInput).each(function(){
@@ -77,9 +80,10 @@ HR = {
             });
         }
     },
-    resetItem:function($elementKey, $elementValue){
+    resetItem:function(elementKey, elementValue){
+        $("#loading").fadeIn().fadeOut(10);
         $('input[type="text"]').val('');
-        $($elementKey).val($elementValue);
+        $(elementKey).val(elementValue);
         $('.frmHead').text('Thêm mới');
         $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
     },

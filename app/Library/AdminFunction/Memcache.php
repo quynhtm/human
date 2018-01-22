@@ -20,7 +20,6 @@ class Memcache{
     const CACHE_ALL_PARENT_MENU = 'cache_all_parent_menu_';
     const CACHE_TREE_MENU = 'cache_tree_menu_';
     const CACHE_LIST_MENU_PERMISSION = 'cache_list_menu_permission';
-
     const CACHE_ALL_PARENT_CATEGORY = 'cache_all_parent_category_';
 
     const CACHE_USER_NAME    = 'haianhem';

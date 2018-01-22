@@ -2,7 +2,7 @@
 /*
 * @Created by: HaiAnhEm
 * @Author    : nguyenduypt86@gmail.com
-* @Date      : 08/2016
+* @Date      : 01/2017
 * @Version   : 1.0
 */
 namespace App\Http\Models\Hr;
@@ -19,7 +19,7 @@ class Department extends BaseModel{
     protected $primaryKey = 'department_id';
     public $timestamps = false;
 
-    protected $fillable = array('department_id', 'department_parent_id', 'department_name', 'department_project', 'department_level',
+    protected $fillable = array('department_id', 'department_type', 'department_parent_id', 'department_name', 'department_project', 'department_level',
         'department_link', 'department_status','department_order','department_creater_time','department_user_id_creater','department_user_name_creater',
         'department_update_time','department_user_id_update','department_user_name_update',
         'department_leader', 'department_phone', 'department_email', 'department_fax', 'department_postion','department_num_tax',
@@ -65,6 +65,20 @@ class Department extends BaseModel{
             throw new PDOException();
         }
     }
+    public static function getItemById($id=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEPARTMENT_ID.$id) : array();
+        try {
+            if(empty($result)){
+                $result = Department::where('department_id', $id)->first();
+                if($result && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_DEPARTMENT_ID.$id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();
@@ -105,7 +119,7 @@ class Department extends BaseModel{
             }
 
             $total = $query->count();
-            $query->orderBy('ordering', 'asc');
+            $query->orderBy('department_order', 'asc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
 
@@ -253,7 +267,7 @@ class Department extends BaseModel{
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
+            Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
            // Cache::forget(Define::CACHE_ALL_CHILD_DEPARTMENT_PARENT_ID.$id);
         }
         Cache::forget(Define::CACHE_LIST_DEPARTMENT_PERMISSION);

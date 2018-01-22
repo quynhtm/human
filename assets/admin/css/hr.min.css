@@ -3,12 +3,12 @@ a,a:hover {
     text-decoration: none;
     color: #337ab7;
 }
-td,
-th {
-    vertical-align: middle;
+table td,
+table th {
+    vertical-align: middle!important;
 }
-.panel {
-    border-radius: 2px;
+.page-content .panel {
+    border-radius: 5px;
 }
 .table > thead > tr > th {
     padding: 8px;
@@ -17,9 +17,6 @@ th {
 }
 .table.not-bg > thead > tr {
     background: none;
-}
-.list-group .list-group-item {
-    border-radius: 2px!important;
 }
 .treeview .list-group-item {
     cursor: pointer;
@@ -55,4 +52,34 @@ a i.fa{
 }
 a:hover i.fa{
     opacity: 1;
+}
+.page-content h4 {
+    font-size: 15px;
+    font-weight: 700;
+}
+.mgt3{
+    margin-top: 3px;
+}
+/*Load page*/
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 100;
+    height: 100%;
+    text-align: center;
+    background: #fff;
+    opacity: 0.5;
+    display: none;
+    z-index: 999999;
+}
+#loading .sts {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    background: url(../img/ajax-loader.gif) no-repeat center center;
+    top: 20%;
+    position: relative;
 }

@@ -343,5 +343,6 @@
 </script>
 {!!CGlobal::$extraFooterCSS!!}
 {!!CGlobal::$extraFooterJS!!}
+<div id="loading"><div class="sts"></div></div>
 </body>
 </html>

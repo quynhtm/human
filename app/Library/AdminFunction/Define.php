@@ -78,6 +78,8 @@ class Define{
     const CACHE_ALL_PARENT_DEPARTMENT= 'cache_all_parent_department_';
     const CACHE_LIST_DEPARTMENT_PERMISSION= 'cache_list_department_permission';
 
+    //Cache key defined
+    const CACHE_DEFINED_TYPE = 'cache_defined_type_';
     /***************************************************************************************************************
     //Define
      ***************************************************************************************************************/
@@ -171,7 +173,7 @@ class Define{
         Define::chuc_vu_doan_dang => 'Chức vụ Đoàn/Đảng',
         Define::quan_he_gia_dinh => 'Quan hệ gia đình',
         Define::loai_phu_cap => 'Loại phụ cấp',
-        Define::loai_donvi_phongban => 'Loại đơn vị/phòng ban',
+        Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
     );
 
 
