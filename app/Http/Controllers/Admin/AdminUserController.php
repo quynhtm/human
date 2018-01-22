@@ -12,6 +12,7 @@ use App\Http\Models\Admin\GroupUser;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
 use App\Http\Models\Admin\RoleMenu;
+use App\Http\Models\Admin\Role;
 
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -39,7 +40,7 @@ class AdminUserController extends BaseAdminController{
     }
 
     public function getDataDefault(){
-        $this->arrRoleType = Define::$arrUserRole;
+        $this->arrRoleType = Role::getOptionRole();
         $this->arrStatus = array(
             CGlobal::status_hide => FunctionLib::controLanguage('status_all',$this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('status_show',$this->languageSite),
