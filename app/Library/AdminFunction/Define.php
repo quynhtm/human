@@ -71,6 +71,8 @@ class Define{
 
     const CACHE_OPTION_ROLE = 'cache_option_role';
 
+    const CACHE_CONTRACTS_PERSON_ID = 'cache_contracts_person_id_';
+
     //Hr key cache
     const CACHE_ROLE_ID = 'cache_admin_role_id_';
     const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';

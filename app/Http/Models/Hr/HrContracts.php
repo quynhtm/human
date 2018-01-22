@@ -21,6 +21,22 @@ class HrContracts extends BaseModel
         'contracts_creater_time','contracts_creater_user_id','contracts_creater_user_name',
         'contracts_update_time','contracts_update_user_id','contracts_update_user_name');
 
+    public static function getListContractsByPersonId($person_id){
+        $contracts = [];
+        if($person_id > 0){
+            $contracts = Cache::get(Define::CACHE_CONTRACTS_PERSON_ID.$person_id);
+            if (sizeof($contracts) == 0) {
+                $query = HrContracts::where('contracts_id','>',0);
+                $query->where('contracts_person_id','=', $person_id);
+                $contracts = $query->orderBy('contracts_id','DESC')->get();
+                if(!empty($contracts)){
+                    Cache::put(Define::CACHE_CONTRACTS_PERSON_ID.$person_id, $contracts, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        }
+        return $contracts;
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
