@@ -40,6 +40,7 @@ class Define{
     const TABLE_HR_LOG = 'hr_log';
     const TABLE_HR_BONUS = 'hr_bonus';//khen thưởng
     const TABLE_HR_RELATIONSHIP = 'hr_relationship';//quan hệ gia đình
+    const TABLE_HR_CONTRACTS = 'hr_contracts';//hợp đồng lao động
 
     /***************************************************************************************************************
     //Memcache
