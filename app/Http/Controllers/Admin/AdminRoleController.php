@@ -57,22 +57,20 @@ class AdminRoleController extends BaseAdminController{
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
         $page_no = (int) Request::get('page_no',1);
-        $dataSearch['role_name'] = addslashes(Request::get('role_name_s',''));
+        $search['role_name'] = addslashes(Request::get('role_name_s',''));
         $limit = 0;
         $total = 0;
         $offset = ($page_no - 1) * $limit;
-        $data = Role::searchByCondition($dataSearch, $limit, $offset, $total);
+        $data = Role::searchByCondition($search, $limit, $offset, $total);
         $paging = '';
 
         $this->getDataDefault();
-
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($search['role_status']) ? $search['role_status'] : CGlobal::status_show);
 
         $this->viewPermission = $this->getPermissionPage();
-
         return view('admin.AdminRole.view',array_merge([
             'data'=>$data,
-            'search'=>$dataSearch,
+            'search'=>$search,
             'size'=>$total,
             'start'=>($page_no - 1) * $limit,
             'paging'=>$paging,

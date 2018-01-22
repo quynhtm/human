@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\GroupUser;
 use App\Http\Models\Admin\GroupUserPermission;
 use App\Http\Models\Admin\Permission;
+use App\Http\Models\Admin\Role;
 use App\Http\Models\Admin\RoleMenu;
 use App\Http\Models\Admin\MenuSystem;
 use App\Library\AdminFunction\FunctionLib;
@@ -294,7 +295,7 @@ class AdminGroupUserController extends BaseAdminController{
         $paging = '';
 
         //FunctionLib::debug($data);
-        $arrRoleType = Define::$arrUserRole;
+        $arrRoleType = Role::getOptionRole();
         $optionStatus = FunctionLib::getOption($arrRoleType, $search['role_id']);
 
         $this->viewPermission = $this->getPermissionPage();
@@ -325,8 +326,8 @@ class AdminGroupUserController extends BaseAdminController{
         $arrGroupUser = GroupUser::getListGroupUser($this->is_boss);
         $menuAdmin = MenuSystem::getListMenuPermission();
 
-        $arrRoleType = Define::$arrUserRole;
-        $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id'])? $data['role_id']: Define::ROLE_TYPE_CUSTOMER);
+        $arrRoleType = Role::getOptionRole();
+        $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id'])? $data['role_id']: 0);
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status']: CGlobal::status_show);
 
         $this->viewPermission = $this->getPermissionPage();
@@ -346,11 +347,11 @@ class AdminGroupUserController extends BaseAdminController{
         if(!$this->is_root && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-        $arrRoleType = Define::$arrUserRole;
+        $arrRoleType = Role::getOptionRole();
 
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data['role_status'] = (int)Request::get('role_status',CGlobal::status_show);
-        $data['role_id'] = (int)Request::get('role_id',Define::ROLE_TYPE_CUSTOMER);
+        $data['role_id'] = (int)Request::get('role_id',0);
         $data['role_name'] = isset($arrRoleType[$data['role_id']])? $arrRoleType[$data['role_id']]: 'no name';
 
         //lay nhóm quyền
@@ -386,8 +387,8 @@ class AdminGroupUserController extends BaseAdminController{
         }
         $arrGroupUser = GroupUser::getListGroupUser($this->is_boss);
         $menuAdmin = MenuSystem::getListMenuPermission();
-        $arrRoleType = Define::$arrUserRole;
-        $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id'])? $data['role_id']: Define::ROLE_TYPE_CUSTOMER);
+
+        $optionRole = FunctionLib::getOption($arrRoleType, isset($data['role_id'])? $data['role_id']: 0);
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['role_status'])? $data['role_status']: CGlobal::status_show);
 
         $this->viewPermission = $this->getPermissionPage();

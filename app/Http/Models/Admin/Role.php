@@ -112,23 +112,25 @@ class Role extends BaseModel{
         if($id > 0){
             //Cache::forget(Define::CACHE_ROLE_ID.$id);
         }
-        //Cache::forget(Define::CACHE_OPTION_CARRIER);
+        Cache::forget(Define::CACHE_OPTION_ROLE);
     }
+
     public static function getListAll() {
         $query = Role::where('role_id','>',0);
-        $query->where('status','=', 1);
-        $list = $query->get();
+        $query->where('role_status','=', Define::STATUS_SHOW);
+        $list = $query->orderBy('role_order','ASC')->get();
         return $list;
     }
-    public static function getOptionCarrier() {
-        $data = Cache::get(Define::CACHE_OPTION_CARRIER);
+
+    public static function getOptionRole() {
+        $data = Cache::get(Define::CACHE_OPTION_ROLE);
         if (sizeof($data) == 0) {
             $arr =  Role::getListAll();
             foreach ($arr as $value){
-                $data[$value->carrier_setting_id] = $value->carrier_name;
+                $data[$value->role_id] = $value->role_name;
             }
             if(!empty($data)){
-                Cache::put(Define::CACHE_OPTION_CARRIER, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                Cache::put(Define::CACHE_OPTION_ROLE, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;

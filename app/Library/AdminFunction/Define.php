@@ -69,6 +69,8 @@ class Define{
     const CACHE_OPTION_USER = 'cache_option_user';
     const CACHE_OPTION_CARRIER = 'cache_option_carrier';
 
+    const CACHE_OPTION_ROLE = 'cache_option_role';
+
     //Hr key cache
     const CACHE_ROLE_ID = 'cache_admin_role_id_';
     const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';
