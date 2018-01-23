@@ -60,6 +60,19 @@ a:hover i.fa{
 .mgt3{
     margin-top: 3px;
 }
+.treeview span.indent {
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.treeview .list-group-item > .badge {
+    float: none;
+    position: absolute;
+    right: 5px;
+    top:8px;
+}
+#orgname{
+    font-weight: bold;
+}
 /*Load page*/
 #loading {
     position: absolute;

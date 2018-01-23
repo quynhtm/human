@@ -28,21 +28,8 @@
                         <div class="col-md-4">
                             <p class="boxtitle">Chọn đơn vị/ phòng ban quản lý trực tiếp</p>
                             <div id="treeview" class="treeview">
-                                <ul class="list-group">
-                                    <li class="list-group-item node-treeview node-selected" data-nodeid="0"><a href="">Phòng tổ chức</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="1" ><a href="">Phòng Y Tế</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="2" ><a href="">Phòng Kinh doanh</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="3" ><a href="">Phòng Kế toán</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="4" ><a href="">p.tchc</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="5" ><a href="">Phòng vật tư xuất nhập khẩu</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="6" ><a href="">Khoa CDHA</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="7" ><a href="">Khoa duoc</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="8" ><a href="">Khoa dieu duong</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="9" ><a href="">Phòng kỹ thuật</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="10" ><a href="">Bệnh viện Tuệ Tĩnh (Đơn vị độc lập)</a><span class="badge">1</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="11" ><a href="">Khoa chấn thương chỉnh hình</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="12" ><a href="">Khoa thần kinh</a><span class="badge">0</span></li>
-                                    <li class="list-group-item node-treeview" data-nodeid="13" ><a href="">phong test a</a><span class="badge">0</span></li>
+                                <ul class="list-group ext">
+                                    {!! $dataCate !!}
                                 </ul>
                             </div>
                         </div>
