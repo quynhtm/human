@@ -202,7 +202,7 @@ class HrDepartmentController extends BaseAdminController
         }
         return true;
     }
-    public static function showCategories($categories, $parent_id = 0, $char='', &$str){
+    public static function showCategories($categories, $parent_id = 0, $char='-', &$str){
         foreach($categories as $key => $item){
             if($item['department_parent_id'] == $parent_id) {
                 $str .= '<li class="list-group-item node-treeview">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
