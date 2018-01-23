@@ -48,9 +48,9 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($data as $item)
+                                    @foreach($data as $k=>$item)
                                     <tr>
-                                        <td class="text-center">1</td>
+                                        <td class="text-center">{{$stt + $k +1}}</td>
                                         <td>
                                             <a href="{{URL::route('hr.departmentEdit',array('id' => FunctionLib::inputId($item['department_id'])))}}" title="{{$item->department_name}}">{{$item->department_name}}</a>
                                         </td>

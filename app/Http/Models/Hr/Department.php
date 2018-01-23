@@ -8,6 +8,7 @@
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
+use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
@@ -147,5 +148,31 @@ class Department extends BaseModel{
         if($id > 0){
             Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
         }
+        Cache::forget(Define::CACHE_ALL_DEPARTMENT);
+    }
+    public static function getLevelParentId($id){
+        $level = 0;
+        if($id > 0){
+            $category = Department::getItemById($id);
+            if(!empty($category)){
+                $level = isset($category->department_level) ? $category->department_level + 1 : 0;
+            }
+        }
+        return $level;
+    }
+    public static function getCategoriessAll(){
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_DEPARTMENT) : array();
+        if (sizeof($data) == 0) {
+            $categories = Department::where('department_id', '>', 0)->where('department_status', '=', CGlobal::status_show)->orderBy('department_order', 'asc')->orderBy('department_parent_id', 'desc')->get();
+            if($categories){
+                foreach($categories as $itm) {
+                    $data[$itm->department_id] = $itm->department_name;
+                }
+                if(!empty($data) && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_ALL_DEPARTMENT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        }
+        return $data;
     }
 }

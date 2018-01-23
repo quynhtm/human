@@ -28,6 +28,7 @@ class HrDepartmentController extends BaseAdminController
     private $permission_edit = 'department_edit';
     private $arrStatus = array();
     private $error = array();
+    private $arrDepartment = array();
     private $viewPermission = array();
 
     private $arrDepartmentType = array();
@@ -71,7 +72,6 @@ class HrDepartmentController extends BaseAdminController
         $data = Department::searchByCondition($search, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
-
 
         //Get data cate left
         $totalCat = 0;
@@ -117,6 +117,8 @@ class HrDepartmentController extends BaseAdminController
         $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
         $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
 
+        $this->arrDepartment =  Department::getCategoriessAll();
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
@@ -124,6 +126,8 @@ class HrDepartmentController extends BaseAdminController
             'id'=>$id,
             'optionStatus'=>$optionStatus,
             'optionDepartmentType'=>$optionDepartmentType,
+            'arrDepartmentType'=>$this->arrDepartmentType,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
@@ -137,12 +141,16 @@ class HrDepartmentController extends BaseAdminController
         $data = $_POST;
 
         $data['department_parent_id'] = (int)FunctionLib::outputId($data['department_parent_id']);
-        $data['department_type'] = (int)($data['department_type']);
+        if(isset($data['department_type'])) {
+            $data['department_type'] = (int)$data['department_type'];
+        }
         $data['department_order'] = (int)($data['department_order']);
         $data['department_status'] = (int)($data['department_status']);
 
         if($this->valid($data) && empty($this->error)) {
-            $id = ($id == 0)?$id_hiden: $id;
+            $id = ($id == 0) ? $id_hiden : $id;
+            $category_level = Department::getLevelParentId($data['department_parent_id']);
+            $dataSave['department_level'] = ($category_level <=5) ? $category_level : 5;
             if($id > 0) {
                 $data['department_update_time'] = time();
                 $data['department_user_id_update'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
@@ -160,7 +168,7 @@ class HrDepartmentController extends BaseAdminController
                 }
             }
         }
-
+        $this->arrDepartment =  Department::getCategoriessAll();
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
@@ -180,6 +188,8 @@ class HrDepartmentController extends BaseAdminController
             'error'=>$this->error,
             'optionStatus'=>$optionStatus,
             'optionDepartmentType'=>$optionDepartmentType,
+            'arrDepartmentType'=>$this->arrDepartmentType,
+            'arrDepartment'=>$this->arrDepartment,
 
         ],$this->viewPermission));
     }
@@ -205,7 +215,11 @@ class HrDepartmentController extends BaseAdminController
     public static function showCategories($categories, $parent_id = 0, $char='-', &$str){
         foreach($categories as $key => $item){
             if($item['department_parent_id'] == $parent_id) {
-                $str .= '<li class="list-group-item node-treeview">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
+                $bold = '';
+                if($parent_id == 0){
+                    $bold='txt-bold';
+                }
+                $str .= '<li class="list-group-item node-treeview '.$bold.'">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
                 unset($categories[$key]);
                 self::showCategories($categories, $item['department_id'], $char .= '<span class="indent"></span>', $str);
             }
@@ -214,7 +228,11 @@ class HrDepartmentController extends BaseAdminController
     public static function showCategoriesView($categories, $parent_id = 0, $char='', &$str1){
         foreach($categories as $key => $item){
             if($item['department_parent_id'] == $parent_id){
-                $str1 .= '<li class="list-group-item node-treeview" title="'.$item['department_name'].'" data="'.FunctionLib::inputId($item['department_id']).'">'.$char. '<span class="icon glyphicon glyphicon-minus"></span> '.$item['department_name'].'</li>';
+                $bold = '';
+                if($parent_id == 0){
+                    $bold='txt-bold';
+                }
+                $str1 .= '<li class="list-group-item node-treeview '.$bold.'" title="'.$item['department_name'].'" rel="'.$item['department_id'].'" data="'.FunctionLib::inputId($item['department_id']).'">'.$char. '<span class="icon glyphicon glyphicon-minus"></span> '.$item['department_name'].'</li>';
                 unset($categories[$key]);
                 self::showCategoriesView($categories, $item['department_id'], $char.='<span class="indent"></span>', $str1);
             }

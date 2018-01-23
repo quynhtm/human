@@ -39,13 +39,26 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
-                                            <span class="lbl">Đơn vị/ Phòng ban quản lý trực tiếp:</span> <span id="orgname" class="val">Phòng tổ chức</span>
-                                            <span class="lbl">Loại đơn vị/ phòng ban:</span> <span id="orgname" class="val">Phòng ban / bộ phận trực thuộc</span>
+                                            @if(isset($data['department_parent_id']) && array_key_exists($data['department_parent_id'], $arrDepartment))
+                                            <span id="sps">
+                                                <span class="lbl">Đơn vị/ Phòng ban quản lý trực tiếp:</span> <span id="orgname" class="val">
+                                                {{$arrDepartment[$data['department_parent_id']]}}
+                                            </span>
+                                                -
+                                            </span>
+                                            @endif
+                                            <span class="lbl">Loại đơn vị/ phòng ban:</span> <span id="orgnames" class="val">
+                                                @if(isset($data['department_type']) && isset($arrDepartmentType[$data['department_type']]))
+                                                {{$arrDepartmentType[$data['department_type']]}}
+                                                @endif
+                                            </span>
                                         </p>
+                                        @if(isset($data['department_id']) && $data['department_id'] > 0)
                                         <p>
-                                            <span class="lbl">Chuyển đến Đơn vị/ Phòng ban::</span> <span id="orgname" class="val">Chọn đơn vị cần chuyển đến bên trái</span>
+                                            <span class="lbl">Chuyển đến Đơn vị/ Phòng ban:</span> <span id="orgname" class="val">Chọn đơn vị cần chuyển đến bên trái</span>
                                         </p>
-                                        <input id="department_parent_id" name="department_parent_id" @isset($data['department_parent_id'])value="{{FunctionLib::inputId($data['department_parent_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+                                        @endif
+                                        <input id="department_parent_id" name="department_parent_id" datatmp="{{FunctionLib::inputId(0)}}" @isset($data['department_parent_id'])value="{{FunctionLib::inputId($data['department_parent_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
@@ -146,7 +159,7 @@
                                         <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-forward"></i>&nbsp;Lưu và tiếp tục nhập</button>
                                         <button class="btn btn-success btn-sm" type="submit"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
                                     </div>
-                                    <input id="id_hiden" name="id_hiden" @isset($data['department_id'])value="{{FunctionLib::inputId($data['department_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+                                    <input id="id_hiden" name="id_hiden" @isset($data['department_id'])rel="{{$data['department_id']}}" value="{{FunctionLib::inputId($data['department_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                 </div>
                             </form>
                         </div>

@@ -92,12 +92,28 @@ HR = {
     },
 
     clickAddParentDepartment:function(){
+
         $('.list-group.ext li').click(function(){
+            $('.list-group.ext li').removeClass('act');
             var parent_id = $(this).attr('data');
             var parent_title = $(this).attr('title');
-            $('#department_parent_id').val(parent_id);
-            $('#orgname').text(parent_title);
-            $('#department_type').attr('disabled', 'disabled');
+            var Prel = $(this).attr('rel');
+            var Crel = $('#id_hiden').attr('rel');
+            if(Prel != Crel){
+                $(this).addClass('act');
+                $('#sps').show();
+                $('#department_parent_id').val(parent_id);
+                $('#orgname').text(parent_title);
+                $('#department_type').attr('disabled', 'disabled');
+            }else{
+                alert('Bạn chọn danh mục cha khác.');
+                $('#sps').hide();
+                $('#orgname').text('');
+                var datatmp = $('#department_parent_id').attr('datatmp');
+                $('#department_parent_id').val(datatmp);
+                $('#department_type').removeAttr('disabled');
+            }
         });
+
     }
 }

@@ -21,9 +21,11 @@ table th {
 .treeview .list-group-item {
     cursor: pointer;
 }
-.list-group .list-group-item:hover{
+.list-group .list-group-item:hover,
+.list-group .list-group-item.act{
     background: #f3f3f3;
 }
+
 .boxtitle{
     color: #1b809e;
     display: block;
@@ -75,6 +77,9 @@ a:hover i.fa{
 }
 span.lbl {
     color: #1b809e;
+}
+.txt-bold{
+    font-weight: bold;
 }
 /*Load page*/
 #loading {

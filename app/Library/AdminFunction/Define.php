@@ -78,10 +78,6 @@ class Define{
     const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';
     const CACHE_DEPARTMENT_ID = 'cache_department_id_';
     const CACHE_ALL_DEPARTMENT = 'cache_all_department';
-    const CACHE_ALL_CHILD_DEPARTMENT_PARENT_ID = 'cache_all_child_department_parent_id_';
-    const CACHE_TREE_DEPARTMENT= 'cache_tree_department_';
-    const CACHE_ALL_PARENT_DEPARTMENT= 'cache_all_parent_department_';
-    const CACHE_LIST_DEPARTMENT_PERMISSION= 'cache_list_department_permission';
 
     //Cache key defined
     const CACHE_DEFINED_TYPE = 'cache_defined_type_';
