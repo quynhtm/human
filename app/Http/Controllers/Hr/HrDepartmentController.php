@@ -215,26 +215,29 @@ class HrDepartmentController extends BaseAdminController
     public static function showCategories($categories, $parent_id = 0, $char='-', &$str){
         foreach($categories as $key => $item){
             if($item['department_parent_id'] == $parent_id) {
-                $bold = '';
                 if($parent_id == 0){
                     $bold='txt-bold';
+                }else{
+                    $bold = '';
                 }
                 $str .= '<li class="list-group-item node-treeview '.$bold.'">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
                 unset($categories[$key]);
-                self::showCategories($categories, $item['department_id'], $char .= '<span class="indent"></span>', $str);
+                self::showCategories($categories, $item['department_id'], $char.'<span class="indent"></span>', $str);
             }
         }
     }
-    public static function showCategoriesView($categories, $parent_id = 0, $char='', &$str1){
+    public static function showCategoriesView($categories, $parent_id = 0, $char='-', &$str){
         foreach($categories as $key => $item){
             if($item['department_parent_id'] == $parent_id){
-                $bold = '';
                 if($parent_id == 0){
                     $bold='txt-bold';
+                }else{
+                    $bold = '';
                 }
-                $str1 .= '<li class="list-group-item node-treeview '.$bold.'" title="'.$item['department_name'].'" rel="'.$item['department_id'].'" data="'.FunctionLib::inputId($item['department_id']).'">'.$char. '<span class="icon glyphicon glyphicon-minus"></span> '.$item['department_name'].'</li>';
+                $str .= '<li class="list-group-item node-treeview '.$bold.'" title="'.$item['department_name'].'" rel="'.$item['department_id'].'" psrel="'.$item['department_parent_id'].'" data="'.FunctionLib::inputId($item['department_id']).'">'.$char. '<span class="icon glyphicon glyphicon-minus"></span> '.$item['department_name'].'</li>';
                 unset($categories[$key]);
-                self::showCategoriesView($categories, $item['department_id'], $char.='<span class="indent"></span>', $str1);
+
+                self::showCategoriesView($categories, $item['department_id'], $char.'<span class="indent"></span>', $str);
             }
         }
     }

@@ -92,19 +92,23 @@ HR = {
     },
 
     clickAddParentDepartment:function(){
-
         $('.list-group.ext li').click(function(){
             $('.list-group.ext li').removeClass('act');
             var parent_id = $(this).attr('data');
             var parent_title = $(this).attr('title');
             var Prel = $(this).attr('rel');
+            var Psrel = $(this).attr('psrel');
             var Crel = $('#id_hiden').attr('rel');
             if(Prel != Crel){
-                $(this).addClass('act');
-                $('#sps').show();
-                $('#department_parent_id').val(parent_id);
-                $('#orgname').text(parent_title);
-                $('#department_type').attr('disabled', 'disabled');
+                if(Psrel != Crel){
+                    $(this).addClass('act');
+                    $('#sps').show();
+                    $('#department_parent_id').val(parent_id);
+                    $('#orgname').text(parent_title);
+                    $('#department_type').attr('disabled', 'disabled');
+                }else{
+                    alert('Bạn không thể chọn danh mục con làm cha.');
+                }
             }else{
                 alert('Bạn chọn danh mục cha khác.');
                 $('#sps').hide();
@@ -114,6 +118,5 @@ HR = {
                 $('#department_type').removeAttr('disabled');
             }
         });
-
     }
 }
