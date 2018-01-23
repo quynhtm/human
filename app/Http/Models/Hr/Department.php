@@ -118,6 +118,10 @@ class Department extends BaseModel{
                 $query->where('department_status', $dataSearch['department_status']);
             }
 
+            if (isset($dataSearch['department_type']) && $dataSearch['department_type']!= -1) {
+                $query->where('department_type', $dataSearch['department_type']);
+            }
+
             $total = $query->count();
             $query->orderBy('department_order', 'asc');
 
@@ -139,139 +143,9 @@ class Department extends BaseModel{
             throw new PDOException();
         }
     }
-    public static function getAllParentMenu() {
-        $data = Cache::get(Define::CACHE_ALL_DEPARTMENT);
-        if (sizeof($data) == 0) {
-            $list = Department::where('department_id', '>', 0)
-                ->where('department_parent_id',0)
-                ->where('department_status',Define::STATUS_SHOW)
-                ->orderBy('department_order','asc')->get();
-            if($list){
-                foreach($list as $itm) {
-                    $data[$itm['department_id']] = $itm['department_name'];
-                }
-            }
-            if(!empty($data)){
-                Cache::put(Define::CACHE_ALL_DEPARTMENT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
-            }
-        }
-        return $data;
-    }
-    public static function buildMenuAdmin(){
-        $data = $menuTree = array();
-        $menuTree = Cache::get(Define::CACHE_TREE_DEPARTMENT);
-        if (sizeof($menuTree) == 0) {
-            $search['active'] = Define::STATUS_SHOW;
-            $dataSearch = Department::searchByCondition($search, 200, 0,$total);
-            if(!empty($dataSearch)){
-                $data = Department::getTreeMenu($dataSearch);
-                $data = !empty($data)? $data :$dataSearch;
-            }
-            if(!empty($data)){
-                foreach($data as $menu){
-                    if($menu['department_parent_id'] == 0){
-                        $menuTree[$menu['department_id']] = array(
-                            'name'=>$menu['department_name'],
-                            'link'=>'javascript:void(0)',
-                        );
-                    }else{
-                        if(isset($menuTree[$menu['department_parent_id']]['arr_link_sub'])){
-                            $tempLink = $menuTree[$menu['department_parent_id']]['arr_link_sub'];
-                            array_push($tempLink,$menu['department_link']);
-                            $menuTree[$menu['department_parent_id']]['arr_link_sub'] = $tempLink;
-
-                            //sub
-                            $tempSub = $menuTree[$menu['department_parent_id']]['sub'];
-                            $arrSub = array('department_id'=>$menu['department_id'], 'name'=>$menu['department_name'], 'RouteName'=>$menu['department_link'], 'permission'=>'');
-                            array_push($tempSub,$arrSub);
-                            $menuTree[$menu['department_parent_id']]['sub'] = $tempSub;
-                        }else{
-                            $menuTree[$menu['department_parent_id']]['arr_link_sub'] = array($menu['department_link']);
-                            $menuTree[$menu['department_parent_id']]['sub'] = array(
-                                array('department_id'=>$menu['department_id'],'name'=>$menu['department_name'],'RouteName'=>$menu['department_link'], 'permission'=>''),);
-                        }
-                    }
-                }
-            }
-            if(!empty($menuTree)){
-                Cache::put(Define::CACHE_TREE_DEPARTMENT, $menuTree, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
-            }
-        }
-        return $menuTree;
-    }
-    public static function getTreeMenu($data){
-        $max = 0;
-        $aryCategoryProduct = $arrCategory = array();
-        if(!empty($data)){
-            foreach ($data as $k=>$value){
-                $max = ($max < $value->department_parent_id)? $value->department_parent_id : $max;
-                $arrCategory[$value->department_id] = array(
-                    'department_id'=>$value->department_id,
-                    'department_parent_id'=>$value->department_parent_id,
-                    'department_order'=>$value->department_order,
-                    'department_link'=>$value->department_link,
-                    'department_status'=>$value->department_status,
-                    'department_name'=>$value->department_name);
-            }
-        }
-
-        if($max > 0){
-            $aryCategoryProduct = self::showMenu($max, $arrCategory);
-        }
-        return $aryCategoryProduct;
-    }
-    public static function showMenu($max, $aryDataInput) {
-        $aryData = array();
-        if(is_array($aryDataInput) && count($aryDataInput) > 0) {
-            foreach ($aryDataInput as $k => $val) {
-                if((int)$val['department_parent_id'] == 0) {
-                    $val['padding_left'] = '';
-                    $val['menu_name_parent'] = '';
-                    $aryData[] = $val;
-                    self::showSubMenu($val['department_id'],$val['department_name'], $max, $aryDataInput, $aryData);
-                }
-            }
-        }
-        return $aryData;
-    }
-    public static function showSubMenu($cat_id,$cat_name, $max, $aryDataInput, &$aryData) {
-        if($cat_id <= $max) {
-            foreach ($aryDataInput as $chk => $chval) {
-                if($chval['department_parent_id'] == $cat_id) {
-                    $chval['padding_left'] = '--- ';
-                    $chval['menu_name_parent'] = $cat_name;
-                    $aryData[] = $chval;
-                    self::showSubMenu($chval['department_id'],$chval['department_name'], $max, $aryDataInput, $aryData);
-                }
-            }
-        }
-    }
-
-    public static function getListMenuPermission(){
-        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_LIST_DEPARTMENT_PERMISSION) : array();
-        if (sizeof($data) == 0) {
-            $result = Department::where('department_id', '>', 0)
-                ->where('department_status',Define::STATUS_SHOW)
-                ->orderBy('department_parent_id','asc')->orderBy('department_order','asc')->get();
-            if($result){
-                foreach($result as $itm) {
-                    $data[$itm['menu_id']] = $itm;
-                }
-            }
-            if($data && Define::CACHE_ON){
-                Cache::put(Define::CACHE_LIST_DEPARTMENT_PERMISSION, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
-            }
-        }
-        return $data;
-    }
-
     public static function removeCache($id = 0,$data){
         if($id > 0){
             Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
-           // Cache::forget(Define::CACHE_ALL_CHILD_DEPARTMENT_PARENT_ID.$id);
         }
-        Cache::forget(Define::CACHE_LIST_DEPARTMENT_PERMISSION);
-        Cache::forget(Define::CACHE_ALL_PARENT_DEPARTMENT);
-        Cache::forget(Define::CACHE_TREE_DEPARTMENT);
     }
 }

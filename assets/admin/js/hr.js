@@ -1,3 +1,6 @@
+$(document).ready(function(){
+    HR.clickAddParentDepartment();
+});
 HR = {
     editItem:function(id, $url){
         var _token = $('meta[name="csrf-token"]').attr('content');
@@ -87,4 +90,14 @@ HR = {
         $('.frmHead').text('Thêm mới');
         $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
     },
+
+    clickAddParentDepartment:function(){
+        $('.list-group.ext li').click(function(){
+            var parent_id = $(this).attr('data');
+            var parent_title = $(this).attr('title');
+            $('#department_parent_id').val(parent_id);
+            $('#orgname').text(parent_title);
+            $('#department_type').attr('disabled', 'disabled');
+        });
+    }
 }

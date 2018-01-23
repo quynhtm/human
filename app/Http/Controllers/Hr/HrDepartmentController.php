@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
+use Illuminate\Support\Facades\URL;
 
 class HrDepartmentController extends BaseAdminController
 {
@@ -71,12 +72,21 @@ class HrDepartmentController extends BaseAdminController
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
+
+        //Get data cate left
+        $totalCat = 0;
+        $strCate = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategories($dataDepartmentCateSearch, 0, '', $strCate);
+
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['department_status']);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.view',array_merge([
             'data'=>$data,
+            'dataCate'=>$strCate,
             'search'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
@@ -100,9 +110,17 @@ class HrDepartmentController extends BaseAdminController
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
 
+        //Get data cate left
+        $totalCat = 0;
+        $strCate = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
+            'dataCate'=>$strCate,
             'id'=>$id,
             'optionStatus'=>$optionStatus,
             'optionDepartmentType'=>$optionDepartmentType,
@@ -147,9 +165,17 @@ class HrDepartmentController extends BaseAdminController
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
 
+        //Get data cate left
+        $totalCat = 0;
+        $strCate = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
+            'dataCate'=>$strCate,
             'id'=>$id,
             'error'=>$this->error,
             'optionStatus'=>$optionStatus,
@@ -175,5 +201,23 @@ class HrDepartmentController extends BaseAdminController
             }
         }
         return true;
+    }
+    public static function showCategories($categories, $parent_id = 0, $char='', &$str){
+        foreach($categories as $key => $item){
+            if($item['department_parent_id'] == $parent_id) {
+                $str .= '<li class="list-group-item node-treeview">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
+                unset($categories[$key]);
+                self::showCategoriesView($categories, $item['department_id'], $char .= '<span class="indent"></span>', $str);
+            }
+        }
+    }
+    public static function showCategoriesView($categories, $parent_id = 0, $char='', &$str1){
+        foreach($categories as $key => $item){
+            if($item['department_parent_id'] == $parent_id){
+                $str1 .= '<li class="list-group-item node-treeview" title="'.$item['department_name'].'" data="'.FunctionLib::inputId($item['department_id']).'">'.$char. '<span class="icon glyphicon glyphicon-minus"></span> '.$item['department_name'].'</li>';
+                unset($categories[$key]);
+                self::showCategoriesView($categories, $item['department_id'], $char.='<span class="indent"></span>', $str1);
+            }
+        }
     }
 }
