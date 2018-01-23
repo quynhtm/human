@@ -207,7 +207,7 @@ class HrDepartmentController extends BaseAdminController
             if($item['department_parent_id'] == $parent_id) {
                 $str .= '<li class="list-group-item node-treeview">' . $char . '<span class="icon glyphicon glyphicon-minus"></span> <a href="' . URL::route('hr.departmentEdit', array('id' => FunctionLib::inputId($item['department_id']))) . '" title="' . $item->department_name . '">' . $item['department_name'] . '</a></li>';
                 unset($categories[$key]);
-                self::showCategoriesView($categories, $item['department_id'], $char .= '<span class="indent"></span>', $str);
+                self::showCategories($categories, $item['department_id'], $char .= '<span class="indent"></span>', $str);
             }
         }
     }

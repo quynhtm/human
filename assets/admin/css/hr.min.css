@@ -73,6 +73,9 @@ a:hover i.fa{
 #orgname{
     font-weight: bold;
 }
+span.lbl {
+    color: #1b809e;
+}
 /*Load page*/
 #loading {
     position: absolute;

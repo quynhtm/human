@@ -38,7 +38,13 @@
                             <form id="adminForm" name="adminForm" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
                                     <div class="col-md-12">
-                                        <p><span class="lbl">Đơn vị/ Phòng ban quản lý trực tiếp</span>:&nbsp;<span id="orgname" class="val">Phòng tổ chức</span></p>
+                                        <p>
+                                            <span class="lbl">Đơn vị/ Phòng ban quản lý trực tiếp:</span> <span id="orgname" class="val">Phòng tổ chức</span>
+                                            <span class="lbl">Loại đơn vị/ phòng ban:</span> <span id="orgname" class="val">Phòng ban / bộ phận trực thuộc</span>
+                                        </p>
+                                        <p>
+                                            <span class="lbl">Chuyển đến Đơn vị/ Phòng ban::</span> <span id="orgname" class="val">Chọn đơn vị cần chuyển đến bên trái</span>
+                                        </p>
                                         <input id="department_parent_id" name="department_parent_id" @isset($data['department_parent_id'])value="{{FunctionLib::inputId($data['department_parent_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                     <div class="col-md-6">
