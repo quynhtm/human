@@ -206,8 +206,11 @@ class HrDepartmentController extends BaseAdminController
     }
     private function valid($data=array()) {
         if(!empty($data)) {
+            if(isset($data['department_type']) && trim($data['department_type']) == '') {
+                $this->error[] = 'Loại đơn vị/ phòng ban không được rỗng';
+            }
             if(isset($data['department_name']) && trim($data['department_name']) == '') {
-                $this->error[] = 'Null';
+                $this->error[] = 'Tên đơn vị/ Phòng ban không được rỗng';
             }
         }
         return true;

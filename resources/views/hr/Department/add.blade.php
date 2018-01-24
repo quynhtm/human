@@ -13,6 +13,11 @@
         </ul>
     </div>
     <div class="page-content">
+        @if(isset($error))
+            <div class="alert alert-warning">
+                <?= implode('<br>', $error) ?>
+            </div>
+        @endif
         <div class="line">
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix paddingTop1 paddingBottom1">
@@ -156,8 +161,8 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
-                                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-forward"></i>&nbsp;Lưu và tiếp tục nhập</button>
-                                        <button class="btn btn-success btn-sm" type="submit"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
+                                        <button class="btn btn-primary btn-sm submitNext" type="submit"><i class="fa fa-forward"></i>&nbsp;Lưu và tiếp tục nhập</button>
+                                        <button class="btn btn-success btn-sm submitFinish" type="submit"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
                                     </div>
                                     <input id="id_hiden" name="id_hiden" @isset($data['department_id'])rel="{{$data['department_id']}}" value="{{FunctionLib::inputId($data['department_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                 </div>
