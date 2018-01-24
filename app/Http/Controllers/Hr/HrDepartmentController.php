@@ -156,7 +156,11 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_user_id_update'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
                 $data['department_user_name_update'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 if(Department::updateItem($id, $data)) {
-                    return Redirect::route('hr.departmentView');
+                    if(isset($data['clickPostPageNext'])){
+                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                    }else{
+                        return Redirect::route('hr.departmentView');
+                    }
                 }
             }else{
                 $data['department_creater_time'] = time();
@@ -164,7 +168,11 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_user_name_creater'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
 
                 if(Department::createItem($data)) {
-                    return Redirect::route('hr.departmentView');
+                    if(isset($data['clickPostPageNext'])){
+                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                    }else{
+                        return Redirect::route('hr.departmentView');
+                    }
                 }
             }
         }

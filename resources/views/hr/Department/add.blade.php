@@ -40,7 +40,7 @@
                         </div>
                         <div class="col-md-8">
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
-                            <form id="adminForm" name="adminForm" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
+                            <form id="adminForm" name="adminForm adminFormDepartmentAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <p>
@@ -52,11 +52,13 @@
                                                 -
                                             </span>
                                             @endif
+                                            @if(isset($data['department_id']) && $data['department_id'] > 0)
                                             <span class="lbl">Loại đơn vị/ phòng ban:</span> <span id="orgnames" class="val">
                                                 @if(isset($data['department_type']) && isset($arrDepartmentType[$data['department_type']]))
                                                 {{$arrDepartmentType[$data['department_type']]}}
                                                 @endif
                                             </span>
+                                            @endif
                                         </p>
                                         @if(isset($data['department_id']) && $data['department_id'] > 0)
                                         <p>
@@ -161,10 +163,10 @@
                                 <div class="row">
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
-                                        <button class="btn btn-primary btn-sm submitNext" type="submit"><i class="fa fa-forward"></i>&nbsp;Lưu và tiếp tục nhập</button>
-                                        <button class="btn btn-success btn-sm submitFinish" type="submit"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
+                                        <button type="button" class="btn btn-primary btn-sm submitNext"><i class="fa fa-forward"></i>&nbsp;Lưu và tiếp tục nhập</button>
+                                        <button type="submit" class="btn btn-success btn-sm submitFinish"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
                                     </div>
-                                    <input id="id_hiden" name="id_hiden" @isset($data['department_id'])rel="{{$data['department_id']}}" value="{{FunctionLib::inputId($data['department_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+                                    <input id="id_hiden" name="id_hiden" @isset($data['department_id'])rel="{{$data['department_id']}}" value="{{FunctionLib::inputId($data['department_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                 </div>
                             </form>
                         </div>
