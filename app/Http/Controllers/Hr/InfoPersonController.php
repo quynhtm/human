@@ -83,6 +83,7 @@ class InfoPersonController extends BaseAdminController
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.InfoPerson.contractsView', array_merge([
             'contracts' => $contracts,
+            'total' => count($contracts),
         ], $this->viewPermission));
     }
 
