@@ -1,5 +1,6 @@
 $(document).ready(function(){
     HR.clickAddParentDepartment();
+    HR.clickPostPageNext();
 });
 HR = {
     editItem:function(id, $url){
@@ -90,7 +91,6 @@ HR = {
         $('.frmHead').text('Thêm mới');
         $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
     },
-
     clickAddParentDepartment:function(){
         $('.list-group.ext li').click(function(){
             $('.list-group.ext li').removeClass('act');
@@ -117,6 +117,11 @@ HR = {
                 $('#department_parent_id').val(datatmp);
                 $('#department_type').removeAttr('disabled');
             }
+        });
+    },
+    clickPostPageNext:function(){
+        $('.submitNext').click(function(){
+            return false;
         });
     }
 }
