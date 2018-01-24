@@ -121,7 +121,15 @@ HR = {
     },
     clickPostPageNext:function(){
         $('.submitNext').click(function(){
-            return false;
+            var department_name = $('#department_name').val();
+            if(department_name != ''){
+                $('#adminForm').append('<input id="clickPostPageNext" name="clickPostPageNext" value="clickPostPageNext" type="hidden">');
+            }else{
+                var _alert = "※" + $('#department_name').attr("title") + lng['is_required'];
+                alert(_alert);
+                return false;
+            }
+            $('#adminForm').submit();
         });
-    }
+    },
 }
