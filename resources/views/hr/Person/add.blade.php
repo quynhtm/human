@@ -79,8 +79,8 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Số hiệu cán bộ công chức</label>
-                                    <input type="text" placeholder="Số hiệu cán bộ công chức" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
+                                    <label for="name" class="control-label">Số hiệucông chức</label>
+                                    <input type="text" placeholder="Số hiệu công chức" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -129,7 +129,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Chức danh nghề nghiệp</label>
                                     <select name="person_career_define_id" id="person_career_define_id" class="form-control input-sm">
@@ -137,9 +137,18 @@
                                     </select>
                                 </div>
                             </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Nhóm máu</label>
+                                    <select name="person_blood_group_define_id" id="person_blood_group_define_id" class="form-control input-sm">
+                                        {!! $optionSex !!}
+                                    </select>
+                                </div>
+                            </div>
                         </div>
 
                     <!--Block 2--->
+                        <div class="clear"></div>
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <div class="form-group">
@@ -172,6 +181,24 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
+                                    <label for="name" class="control-label">Dân tộc</label>
+                                    <select name="person_nation_define_id" id="person_nation_define_id" class="form-control input-sm">
+                                        {!! $optionStatus !!}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Tôn giáo</label>
+                                    <select name="person_respect" id="person_respect" class="form-control input-sm">
+                                        {!! $optionStatus !!}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="clear marginTop20"></div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
                                     <label for="name" class="control-label">Địa chỉ hiện tại<span class="red"> (*) </span></label>
                                     <input type="text" placeholder="Email" id="person_address_current" name="person_address_current"  class="form-control input-sm" value="@if(isset($data['person_address_current'])){{$data['person_address_current']}}@endif">
                                 </div>
@@ -200,22 +227,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Dân tộc</label>
-                                    <select name="person_nation_define_id" id="person_nation_define_id" class="form-control input-sm">
-                                        {!! $optionStatus !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tôn giáo</label>
-                                    <select name="person_respect" id="person_respect" class="form-control input-sm">
-                                        {!! $optionStatus !!}
-                                    </select>
-                                </div>
-                            </div>
+
 
                             <div class="col-sm-2">
                                 <div class="form-group">
@@ -229,41 +241,14 @@
                                     <input type="text" placeholder="Cân nặng" id="person_weight" name="person_weight"  class="form-control input-sm" value="@if(isset($data['person_weight'])){{$data['person_weight']}}@endif">
                                 </div>
                             </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Nhóm máu</label>
-                                    <select name="person_blood_group_define_id" id="person_blood_group_define_id" class="form-control input-sm">
-                                        {!! $optionSex !!}
-                                    </select>
-                                </div>
-                            </div>
                         </div>
 
                     <!--Block 3--->
+                        <div class="clear marginTop20"></div>
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Tên đăng nhập<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Tên đăng nhập" id="user_name" name="user_name"  class="form-control input-sm" value="@if(isset($data['user_name'])){{$data['user_name']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Mật khẩu<span class="red"> (*) </span></label>
-                                    <input type="password"  id="user_password" name="user_password" class="form-control input-sm" value="Sms@!2017">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tên nhân viên<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Tên nhân viên" id="user_full_name" name="user_full_name"  class="form-control input-sm" value="@if(isset($data['user_full_name'])){{$data['user_full_name']}}@endif">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Kiểu User<span class="red"> (*) </span></label>
+                                    <label for="name" class="control-label">Thang bảng lương<span class="red"> (*) </span></label>
                                     <select name="role_type" id="role_type" class="form-control input-sm">
                                         {!! $optionRoleType !!}
                                     </select>
@@ -271,57 +256,49 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Email<span class="red"> (*) </span></label>
+                                    <label for="name" class="control-label">Nghạch công chức<span class="red"> (*) </span></label>
+                                    <select name="role_type" id="role_type" class="form-control input-sm">
+                                        {!! $optionRoleType !!}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Bậc lương<span class="red"> (*) </span></label>
+                                    <select name="role_type" id="role_type" class="form-control input-sm">
+                                        {!! $optionRoleType !!}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Hệ số<span class="red"> (*) </span></label>
+                                    <select name="role_type" id="role_type" class="form-control input-sm">
+                                        {!! $optionRoleType !!}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Lương thực hưởng<span class="red"> (*) </span></label>
                                     <input type="text" placeholder="Email" id="user_email" name="user_email"  class="form-control input-sm" value="@if(isset($data['user_email'])){{$data['user_email']}}@endif">
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+                            <div class="col-sm-1">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Phone</label>
-                                    <input type="text" placeholder="Phone" id="user_phone" name="user_phone"  class="form-control input-sm" value="@if(isset($data['user_phone'])){{$data['user_phone']}}@endif">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Telephone</label>
-                                    <input type="text" placeholder="Telephone" id="telephone" name="telephone"  class="form-control input-sm" value="@if(isset($data['telephone'])){{$data['telephone']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Số đăng ký kinh doanh</label>
-                                    <input type="text" placeholder="Số đăng ký kinh doanh" id="number_code" name="number_code"  class="form-control input-sm" value="@if(isset($data['number_code'])){{$data['number_code']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Địa chỉ kinh doanh</label>
-                                    <input type="text" placeholder="Địa chỉ kinh doanh" id="address_register" name="address_register"  class="form-control input-sm" value="@if(isset($data['address_register'])){{$data['address_register']}}@endif">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Giới tính</label>
-                                    <select name="user_sex" id="user_sex" class="form-control input-sm">
-                                        {!! $optionSex !!}
+                                    <label for="name" class="control-label">Từ tháng</label>
+                                    <select name="role_type" id="role_type" class="form-control input-sm">
+                                        {!! $optionRoleType !!}
                                     </select>
                                 </div>
                             </div>
-                            <div class="col-sm-2">
+
+                            <div class="col-sm-1">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Trạng thái</label>
-                                    <select name="user_status" id="user_status" class="form-control input-sm">
-                                        {!! $optionStatus !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Trạng thái</label>
-                                    <select name="user_status" id="user_status" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                    <label for="name" class="control-label">Năm</label>
+                                    <select name="role_type" id="role_type" class="form-control input-sm">
+                                        {!! $optionRoleType !!}
                                     </select>
                                 </div>
                             </div>
