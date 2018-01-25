@@ -1,24 +1,25 @@
 <?php
-/**
- * QuynhTM
- */
+/*
+* @Created by: HaiAnhEm
+* @Author    : nguyenduypt86@gmail.com
+* @Date      : 01/2017
+* @Version   : 1.0
+*/
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
+use App\Library\AdminFunction\Define;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
-use App\library\AdminFunction\Define;
-use App\Library\AdminFunction\FunctionLib;
 
-class Device extends BaseModel
-{
+class Device extends BaseModel{
     protected $table = Define::TABLE_HR_DEVICE;
     protected $primaryKey = 'device_id';
     public $timestamps = false;
 
     protected $fillable = array('device_project', 'device_person_id', 'device_code', 'device_name', 'device_type',
         'device_depart_id', 'device_describe','device_image','device_infor_technical'
-        , 'device_date_of_manufacture','device_date_warranty','device_date_use','device_date_resfun');
+        , 'device_date_of_manufacture','device_date_warranty','device_date_use','device_date_resfun', 'device_status');
 
     public static function createItem($data){
         try {
@@ -41,7 +42,6 @@ class Device extends BaseModel
             throw new PDOException();
         }
     }
-
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -56,12 +56,23 @@ class Device extends BaseModel
             self::removeCache($item->device_id,$item);
             return true;
         } catch (PDOException $e) {
-            //var_dump($e->getMessage());
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
         }
     }
-
+    public static function getItemById($id=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEVICE_ID . $id) : array();
+        try {
+            if (empty($result)) {
+                $result = Device::where('device_id', $id)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_DEVICE_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+    }
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();
@@ -74,7 +85,6 @@ class Device extends BaseModel
         }
         return $dataDB;
     }
-
     public static function deleteItem($id){
         if($id <= 0) return false;
         try {
@@ -92,13 +102,11 @@ class Device extends BaseModel
             return false;
         }
     }
-
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
+            Cache::forget(Define::CACHE_DEVICE_ID.$id);
         }
     }
-
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Device::where('device_id','>',0);

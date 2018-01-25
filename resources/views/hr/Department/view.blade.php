@@ -72,7 +72,7 @@
                                         </td>
                                         <td align="center">
                                             <div class="dropdown">
-                                                <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu_591baf3a473c2c1e80535bf9" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
                                                     - Chọn -
                                                     <span class="caret"></span>
                                                 </button>
