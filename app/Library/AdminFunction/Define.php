@@ -78,8 +78,6 @@ class Define{
     const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';
     const CACHE_DEPARTMENT_ID = 'cache_department_id_';
     const CACHE_ALL_DEPARTMENT = 'cache_all_department';
-
-    //Cache key defined
     const CACHE_DEFINED_TYPE = 'cache_defined_type_';
     /***************************************************************************************************************
     //Define
