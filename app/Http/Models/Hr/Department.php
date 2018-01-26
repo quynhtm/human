@@ -160,7 +160,7 @@ class Department extends BaseModel{
         }
         return $level;
     }
-    public static function getCategoriessAll(){
+    public static function getDepartmentAll(){
         $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_DEPARTMENT) : array();
         if (sizeof($data) == 0) {
             $categories = Department::where('department_id', '>', 0)->where('department_status', '=', CGlobal::status_show)->orderBy('department_order', 'asc')->orderBy('department_parent_id', 'desc')->get();

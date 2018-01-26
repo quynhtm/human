@@ -117,7 +117,7 @@ class HrDepartmentController extends BaseAdminController
         $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
         $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
 
-        $this->arrDepartment =  Department::getCategoriessAll();
+        $this->arrDepartment =  Department::getDepartmentAll();
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
@@ -176,7 +176,7 @@ class HrDepartmentController extends BaseAdminController
                 }
             }
         }
-        $this->arrDepartment =  Department::getCategoriessAll();
+        $this->arrDepartment =  Department::getDepartmentAll();
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
