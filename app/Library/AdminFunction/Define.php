@@ -138,6 +138,7 @@ class Define{
     const quan_he_gia_dinh = 32;
     const loai_phu_cap = 33;
     const loai_donvi_phongban=34;
+    const loai_thiet_bi=35;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',
@@ -174,6 +175,7 @@ class Define{
         Define::quan_he_gia_dinh => 'Quan hệ gia đình',
         Define::loai_phu_cap => 'Loại phụ cấp',
         Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
+        Define::loai_thiet_bi => 'Loại thiết bị',
     );
 
 

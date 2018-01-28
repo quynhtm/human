@@ -116,10 +116,16 @@ class Person extends BaseModel
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
             if(!empty($fields)){
-                $result = $query->take($limit)->skip($offset)->get($fields);
+                $result = $query->get($fields);
             }else{
-                $result = $query->take($limit)->skip($offset)->get();
+                $result = $query->get();
             }
             return $result;
 

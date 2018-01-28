@@ -9,6 +9,7 @@ namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class Device extends BaseModel{
 
     protected $fillable = array('device_project', 'device_person_id', 'device_code', 'device_name', 'device_type',
         'device_depart_id', 'device_describe','device_image','device_infor_technical'
-        , 'device_date_of_manufacture','device_date_warranty','device_date_use','device_date_resfun', 'device_status');
+        , 'device_date_of_manufacture','device_date_warranty', 'device_date_return','device_date_use','device_date_resfun', 'device_status');
 
     public static function createItem($data){
         try {
@@ -72,6 +73,7 @@ class Device extends BaseModel{
         } catch (PDOException $e) {
             throw new PDOException();
         }
+        return $result;
     }
     public function checkField($dataInput) {
         $fields = $this->fillable;
@@ -118,10 +120,16 @@ class Device extends BaseModel{
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
             if(!empty($fields)){
-                $result = $query->take($limit)->skip($offset)->get($fields);
+                $result = $query->get($fields);
             }else{
-                $result = $query->take($limit)->skip($offset)->get();
+                $result = $query->get();
             }
             return $result;
 

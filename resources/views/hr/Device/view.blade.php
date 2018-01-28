@@ -31,24 +31,44 @@
                             <table class="table table-bordered not-bg">
                                 <thead>
                                 <tr>
-                                    <th class="text-center w10">STT</th>
-                                    <th width="30%">Tên thiết bị</th>
-                                    <th width="10%" class="text-center">Thuộc loại</th>
-                                    <th width="20%" class="text-center">Mô tả</th>
-                                    <th class="text-center">Ngày nhập</th>
-                                    <th class="text-center">Cập nhật</th>
-                                    <th class="text-center">Chức năng</th>
+                                    <th width="2%" class="text-center">STT</th>
+                                    <th width="20%">Tên thiết bị</th>
+                                    <th width="10%">Mã</th>
+                                    <th width="12%">Thuộc loại</th>
+                                    <th width="10%">Ngày bàn giao</th>
+                                    <th width="10%">Người sử dụng</th>
+                                    <th width="8%">Trạng thái</th>
+                                    <th width="10%">Chức năng</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                     @foreach($data as $k=>$item)
                                         <tr>
-                                            <td>1</td>
+                                            <td class="text-center">1</td>
                                             <td>{{$item->device_name}}</td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
+                                            <td>{{$item->device_code}}</td>
+                                            <td>
+                                                @if(isset($arrDeviceType[$item['device_type']]))
+                                                    {{$arrDeviceType[$item['device_type']]}}
+                                                @else
+                                                    Chưa xác định
+                                                @endif
+                                            </td>
+                                            <td>{{date('d-m-Y', $item['device_date_return'])}}</td>
+                                            <td>
+                                                @if(isset($arrPersion[$item['device_person_id']]))
+                                                    {{$arrPersion[$item['device_person_id']]}}
+                                                @else
+                                                    Chưa xác định
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if(isset($arrStatus[$item['device_status']]))
+                                                    {{$arrStatus[$item['device_status']]}}
+                                                @else
+                                                    Chưa xác định
+                                                @endif
+                                            </td>
                                             <td align="center">
                                                 <div class="dropdown">
                                                     <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">

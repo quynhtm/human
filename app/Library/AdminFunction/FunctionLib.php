@@ -1139,4 +1139,12 @@ html;
 
         return;
     }
+    public  static function convertDate($date=''){
+        if($date!=''){
+            $date = str_replace('/', '-', $date);
+            $strtotime = strtotime($date);
+            return $strtotime;
+        }
+        return time();
+    }
 }

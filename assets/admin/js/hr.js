@@ -1,6 +1,7 @@
 $(document).ready(function(){
     HR.clickAddParentDepartment();
     HR.clickPostPageNext();
+    HR.showDate();
 });
 HR = {
     editItem:function(id, $url){
@@ -132,4 +133,12 @@ HR = {
             $('#adminForm').submit();
         });
     },
+    showDate:function(){
+        var dateToday = new Date();
+        jQuery('.date').datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',
+            lang:'vi',
+        });
+    }
 }
