@@ -274,7 +274,7 @@
 
 {{---Popup common--}}
 <div class="modal fade" id="sys_showPopupCommon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog"  style="width: 850px">
         <div class="modal-content" id="sys_show_infor">
 
         </div>
