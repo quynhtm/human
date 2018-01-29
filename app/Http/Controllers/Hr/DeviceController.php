@@ -15,6 +15,7 @@ use App\Http\Models\Hr\Person;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\Upload;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -171,6 +172,14 @@ class DeviceController extends BaseAdminController{
         }
 
         $data['device_status'] = (int)($data['device_status']);
+        $img_current = '';
+        if($id > 0){
+            $dataCurrent = Device::getItemById($id);
+            if(sizeof($dataCurrent) > 0){
+                $img_current = $dataCurrent->device_image;
+            }
+        }
+        $data['device_image'] = Upload::check_upload_file('device_image', $img_current, Define::FOLDER_DEVICE);
 
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
