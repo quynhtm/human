@@ -6,7 +6,7 @@
             {{--<div class="form_login_top">
                 CMS {{CGlobal::web_name}}
             </div>--}}
-            {{ Form::open(array('class'=>'form-signin')) }}
+            {{ Form::open(array('class'=>'form-signin', 'url'=>URL::route('admin.login'))) }}
             <div class="form_login_content">
                 {{--<span class="marginTop5 dangnhap">Đăng nhập</span>--}}
                 @if(isset($error))
