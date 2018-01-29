@@ -7,16 +7,12 @@
 */
 namespace App\Http\Controllers\Admin;
 
-use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\URL;
 use App\Http\Controllers\Controller;
-
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\GroupUserPermission;
-
 use App\Library\AdminFunction\CGlobal;
 
 class AdminLoginController extends Controller{
@@ -25,7 +21,7 @@ class AdminLoginController extends Controller{
 
     }
 
-    public function loginInfo($url = ''){
+    public function getLogin($url = ''){
         if (Session::has('user')) {
             if ($url === '' || $url === 'login') {
                 return Redirect::route('admin.dashboard');
@@ -37,7 +33,15 @@ class AdminLoginController extends Controller{
         }
     }
 
-    public function login(Request $request, $url = ''){
+    public function postLogin(Request $request, $url = ''){
+
+        if(Session::has('user')){
+            if ($url === '' || $url === 'login'){
+                return Redirect::route('admin.dashboard');
+            }else{
+                return Redirect::to(self::buildUrlDecode($url));
+            }
+        }
 
         $token = $request->input('_token', '');
         $username = $request->input('user_name', '');

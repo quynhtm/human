@@ -15,8 +15,9 @@ if(Session::has('is_debug_of_tech')){
 }
 
 //Quan tri CMS cho admin
-Route::get('quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@loginInfo'));
-Route::post('quan-tri.html', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@login'));
+Route::get('/', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
+Route::match(['GET','POST'], 'user/{url?}', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
+
 Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 	require __DIR__.'/admin.php';
 });
