@@ -23,7 +23,7 @@ class AdminLoginController extends Controller{
 
     public function getLogin($url = ''){
         if (Session::has('user')) {
-            if ($url === '' || $url === 'login') {
+            if ($url === '' || $url === 'user') {
                 return Redirect::route('admin.dashboard');
             } else {
                 return Redirect::to(self::buildUrlDecode($url));
@@ -36,7 +36,7 @@ class AdminLoginController extends Controller{
     public function postLogin(Request $request, $url = ''){
 
         if(Session::has('user')){
-            if ($url === '' || $url === 'login'){
+            if ($url === '' || $url === 'user'){
                 return Redirect::route('admin.dashboard');
             }else{
                 return Redirect::to(self::buildUrlDecode($url));
@@ -53,8 +53,6 @@ class AdminLoginController extends Controller{
                     $error = 'Không tồn tại tên đăng nhập!';
                 } else {
                     $user = User::getUserByName($username);
-                    //User::getInfor();
-                    //FunctionLib::debug($user);
                     if ($user !== NULL) {
                         if ($user->user_status == CGlobal::status_hide ||$user->user_status == CGlobal::status_block ) {
                             $error = 'Tài khoản bị khóa!';
@@ -85,8 +83,6 @@ class AdminLoginController extends Controller{
 								$request->session()->put('user', $data, 60 * 24);
                                 User::updateLogin($user);
                                 if ($url === '' || $url === 'login') {
-                                    //return redirect()->route('dashboard.html');
-                                    //return redirect()->intended('/admin/dashboard');
                                     return Redirect::route('admin.dashboard');
                                 } else {
                                     return Redirect::to(self::buildUrlDecode($url));
@@ -110,8 +106,6 @@ class AdminLoginController extends Controller{
 		if($request->session()->has('user')){
             $request->session()->forget('user');
         }
-        //return Redirect::route('admin.login', array('url' => self::buildUrlEncode(URL::previous())));
         return Redirect::route('admin.login');
     }
-
 }
