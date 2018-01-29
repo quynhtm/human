@@ -19,10 +19,11 @@
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
                     {{ csrf_field() }}
-
-                    <div class="span clearfix">Họ và tên:<b> Nguyễn văn A</b> </div>
-                    <div class="span clearfix">Số CMTND:<b> 123456789</b> </div>
-                    <div class="span clearfix">Số cán bộ:<b> 123456789</b> </div>
+                    @if(isset($infoPerson))
+                        <div class="span clearfix">Họ và tên:<b> {{$infoPerson->person_name}}</b> </div>
+                        <div class="span clearfix">Số CMTND:<b> {{$infoPerson->person_chung_minh_thu}}</b> </div>
+                        <div class="span clearfix">Số cán bộ:<b> {{$infoPerson->person_code}}</b> </div>
+                    @endif
                     <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
                     <br>
                     <table class="table table-bordered table-hover">

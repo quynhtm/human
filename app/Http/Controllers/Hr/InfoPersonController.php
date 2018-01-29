@@ -18,10 +18,10 @@ use App\Library\AdminFunction\Pagging;
 class InfoPersonController extends BaseAdminController
 {
     //contracts
-    private $permission_view = 'personContracts_view';
-    private $permission_full = 'personContracts_full';
-    private $permission_delete = 'personContracts_delete';
-    private $permission_create = 'personContracts_create';
+    private $personContractsView = 'personContractsView';
+    private $personContractsFull = 'personContractsFull';
+    private $personContractsDelete = 'personContractsDelete';
+    private $personContractsCreate = 'personContractsCreate';
 
     //tao user login
     private $permission_createrUser_view = 'personCreaterUser_view';
@@ -54,10 +54,10 @@ class InfoPersonController extends BaseAdminController
         return $this->viewPermission = [
             'is_root' => $this->is_root ? 1 : 0,
             //contracts
-            'personContracts_view' => in_array($this->permission_view, $this->permission) ? 1 : 0,
-            'personContracts_create' => in_array($this->permission_create, $this->permission) ? 1 : 0,
-            'personContracts_delete' => in_array($this->permission_delete, $this->permission) ? 1 : 0,
-            'personContracts_full' => in_array($this->permission_full, $this->permission) ? 1 : 0,
+            'personContractsFull' => in_array($this->personContractsFull, $this->permission) ? 1 : 0,
+            'personContractsView' => in_array($this->personContractsView, $this->permission) ? 1 : 0,
+            'personContractsCreate' => in_array($this->personContractsCreate, $this->permission) ? 1 : 0,
+            'personContractsDelete' => in_array($this->personContractsDelete, $this->permission) ? 1 : 0,
 
             //creater User
             'personCreaterUser_view' => in_array($this->permission_createrUser_view, $this->permission) ? 1 : 0,
@@ -96,9 +96,13 @@ class InfoPersonController extends BaseAdminController
         $person_id = FunctionLib::outputId($personId);
         CGlobal::$pageAdminTitle = 'Thông tin hợp đồng lao động';
         //Check phan quyen.
-        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
+        if (!$this->is_root && !in_array($this->personContractsFull, $this->permission) && !in_array($this->personContractsView, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
+
+        //thông tin hợp đồng
         $contracts = HrContracts::getListContractsByPersonId($person_id);
 
         $this->getDataDefault();
@@ -106,6 +110,7 @@ class InfoPersonController extends BaseAdminController
         return view('hr.InfoPerson.contractsView', array_merge([
             'contracts' => $contracts,
             'total' => count($contracts),
+            'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }
 

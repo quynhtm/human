@@ -26,6 +26,46 @@ class Person extends BaseModel
         'person_creater_time','person_creater_user_id','person_creater_user_name',
         'person_update_time','person_update_user_id','person_update_user_name');
 
+    public static function getPersonById($person_id){
+        $data = Cache::get(Define::CACHE_PERSON.$person_id);
+        if (sizeof($data) == 0) {
+            $data = Person::find($person_id);
+            if ($data && !empty($data)) {
+                Cache::put(Define::CACHE_PERSON.$person_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+            }
+        }
+        return $data;
+    }
+
+    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+        try{
+            $query = Person::where('person_id','>',0);
+            if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
+                $query->where('person_name','LIKE', '%' . $dataSearch['person_name'] . '%');
+            }
+            $total = $query->count();
+            $query->orderBy('person_id', 'desc');
+
+            //get field can lay du lieu
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
+            if(!empty($fields)){
+                $result = $query->get($fields);
+            }else{
+                $result = $query->get();
+            }
+            return $result;
+
+        }catch (PDOException $e){
+            throw new PDOException();
+        }
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -101,36 +141,7 @@ class Person extends BaseModel
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
-        }
-    }
-
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
-        try{
-            $query = Person::where('person_id','>',0);
-            if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
-                $query->where('person_name','LIKE', '%' . $dataSearch['person_name'] . '%');
-            }
-            $total = $query->count();
-            $query->orderBy('person_id', 'desc');
-
-            //get field can lay du lieu
-            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
-            if($limit > 0){
-                $query->take($limit);
-            }
-            if($offset > 0){
-                $query->skip($offset);
-            }
-            if(!empty($fields)){
-                $result = $query->get($fields);
-            }else{
-                $result = $query->get();
-            }
-            return $result;
-
-        }catch (PDOException $e){
-            throw new PDOException();
+            Cache::forget(Define::CACHE_PERSON.$id);
         }
     }
 }

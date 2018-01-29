@@ -20,27 +20,26 @@ class Define{
     const DB_PASSWORD = '';
     //server
 
-    const TABLE_USER = 'admin_user';
-    const TABLE_GROUP_USER = 'admin_group_user';
-    const TABLE_PERMISSION = 'admin_permission';
-    const TABLE_MENU_SYSTEM = 'admin_menu_system';
-    const TABLE_ROLE_MENU = 'admin_role_menu';
-    const TABLE_ROLE = 'admin_role';
-    const TABLE_PROVINCE = 'admin_province';
-    const TABLE_DISTRICTS = 'admin_districts';
-    const TABLE_WARDS = 'admin_wards';
-    const TABLE_MEMBER = 'admin_member';
-    const TABLE_GROUP_USER_PERMISSION = 'admin_group_user_permission';
-
+    const TABLE_USER = 'hr_user';
+    const TABLE_GROUP_USER = 'hr_group_user';
+    const TABLE_PERMISSION = 'hr_permission';
+    const TABLE_MENU_SYSTEM = 'hr_menu_system';
+    const TABLE_ROLE_MENU = 'hr_role_menu';
+    const TABLE_ROLE = 'hr_role';
+    const TABLE_PROVINCE = 'hr_province';
+    const TABLE_DISTRICTS = 'hr_districts';
+    const TABLE_WARDS = 'hr_wards';
+    const TABLE_MEMBER = 'hr_member';
+    const TABLE_GROUP_USER_PERMISSION = 'hr_group_user_permission';
     const TABLE_HR_CATEGORY = 'hr_category';
-    const TABLE_HR_PERSON = 'hr_personnel';//nhân sự
+    const TABLE_HR_PERSON = 'hr_personnel';
     const TABLE_HR_DEFINE = 'hr_define';
     const TABLE_HR_DEPARTMENT = 'hr_department';
-    const TABLE_HR_DEVICE = 'hr_device';//thiết bị
+    const TABLE_HR_DEVICE = 'hr_device';
     const TABLE_HR_LOG = 'hr_log';
     const TABLE_HR_BONUS = 'hr_bonus';//khen thưởng
-    const TABLE_HR_RELATIONSHIP = 'hr_relationship';//quan hệ gia đình
-    const TABLE_HR_CONTRACTS = 'hr_contracts';//hợp đồng lao động
+    const TABLE_HR_RELATIONSHIP = 'hr_relationship';
+    const TABLE_HR_CONTRACTS = 'hr_contracts';
 
     /***************************************************************************************************************
     //Memcache
@@ -70,6 +69,10 @@ class Define{
     const CACHE_OPTION_CARRIER = 'cache_option_carrier';
 
     const CACHE_OPTION_ROLE = 'cache_option_role';
+
+    //Hr nhân sự
+    const CACHE_PERSON = 'cache_info_person_id_';
+
 
     const CACHE_CONTRACTS_PERSON_ID = 'cache_contracts_person_id_';
 
