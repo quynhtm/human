@@ -7,6 +7,7 @@
  */
 namespace App\Library\AdminFunction;
 
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\library\AdminFunction\Define;
 use App\library\AdminFunction\CGlobal;
@@ -518,9 +519,9 @@ class FunctionLib {
      * @param string $folder
      * @param bool|true $is_delDir
      */
-    static function deleteFileUpload($file_name = '', $id = 0, $folder = CGlobal::FOLDER_PRODUCT, $is_delDir = true){
+    static function deleteFileUpload($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $is_delDir = true){
         if($file_name != '') {
-            $path = ($folder != '' && $id >0) ? Config::get('config.DIR_ROOT').'/uploads/' .$folder. '/'. $id: '';
+            $path = ($folder != '') ? Config::get('config.DIR_ROOT').'/uploads/' .$folder : '';
             if($file_name != ''){
                 if($path != ''){
                     if(is_file($path.'/'.$file_name)){
@@ -546,10 +547,10 @@ class FunctionLib {
      * @param string $folderSize
      * @param bool|true $is_delDir
      */
-    static function deleteFileThumb($file_name = '', $id = 0, $folder = CGlobal::FOLDER_PRODUCT, $folderSize = '100x100', $is_delDir = true){
+    static function deleteFileThumb($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $folderSize = '100x100', $is_delDir = true){
         if($file_name != '') {
-            $dirRootItem = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder.'/'.$id;
-            $dirImgThumb = $dirRootItem.'/'.$folderSize; //thu muc chua anh Thumb
+            $dirRootItem = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder;
+            $dirImgThumb = $dirRootItem.'/'.$folderSize;
             if($file_name != ''){
                 if($dirImgThumb != ''){
                     if(is_file($dirImgThumb.'/'.$file_name)){

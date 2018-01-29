@@ -1,4 +1,8 @@
-<?php use App\Library\AdminFunction\FunctionLib; ?>
+<?php
+use App\Library\AdminFunction\FunctionLib;
+use App\Library\AdminFunction\Define;
+use App\Library\PHPThumb\ThumbImg;
+?>
 @extends('admin.AdminLayouts.index')
 @section('content')
 <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -73,7 +77,7 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
-                                            <label>Ngày bàn giao thiết</label>
+                                            <label>Ngày bàn giao thiết bị</label>
                                             <input class="date form-control input-sm input-required" title="Ngày bàn giao thiết" id="device_date_return" name="device_date_return" @isset($data['device_date_return'])value="{{date('d-m-Y', $data['device_date_return'])}}"@endif type="text">
                                         </div>
                                     </div>
@@ -106,7 +110,10 @@
                                     <div class="col-md-4">
                                         <div class="form-group">
                                             <label>Hình ảnh</label>
-                                            <input class="form-control input-sm input-required" title="Hình ảnh" id="device_image" name="device_image" @isset($data['device_image'])value="{{$data['device_image']}}"@endif type="text">
+                                            <input type="file" name="device_image" id="device_image">
+                                            @if(isset($data['device_image']) && $data['device_image'] != '')
+                                                <div class="mgt10"><img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $data->device_image, Define::sizeImage_100, Define::sizeImage_100, $alt='', $isThumb=true, $returnPath=true)}}" alt=""></div>
+                                            @endif
                                         </div>
                                     </div>
                                 </div>

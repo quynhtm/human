@@ -81,6 +81,9 @@ span.lbl {
 .txt-bold{
     font-weight: bold;
 }
+.mgt10{
+    margin-top: 10px;
+}
 /*Load page*/
 #loading {
     position: absolute;

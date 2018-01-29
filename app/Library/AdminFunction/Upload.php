@@ -1,6 +1,8 @@
 <?php
 namespace App\Library\AdminFunction;
 
+use Illuminate\Support\Facades\Config;
+
 class Upload{
 	
 	public static function uploadFile($_name='', $_file_ext='', $_max_file_size='50*1024*1024', $_folder=''){
@@ -88,7 +90,7 @@ class Upload{
 		$path_img = self::uploadFile($_name=$name_input_file, $_file_ext='jpg,jpeg,png,gif,swf', $_max_file_size=20*1024*1024, $name_folder,  $type_json=0);
 		if($path_img!=''){
 			if($current_path_img!=''){
-				$dir = Config::get('config.WEB_ROOT').'/uploads/'.$name_folder.'/'.$current_path_img;
+				$dir = Config::get('config.DIR_ROOT').'uploads/'.$name_folder.'/'.$current_path_img;
 				if(is_file($dir)){
 					unlink($dir);
 				}
@@ -102,7 +104,7 @@ class Upload{
 		$path_img = self::uploadFile($_name=$name_input_file, $_file_ext='xls,xlsx,doc,docx,pdf,rar,zip,tar', $_max_file_size=20*1024*1024, $name_folder,  $type_json=0);
 		if($path_img!=''){
 			if($current_path_img!=''){
-				$dir = Config::get('config.WEB_ROOT').'/uploads/'.$name_folder.'/'.$current_path_img;
+				$dir = Config::get('config.DIR_ROOT').'uploads/'.$name_folder.'/'.$current_path_img;
 				if(is_file($dir)){
 					unlink($dir);
 				}

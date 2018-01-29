@@ -8,6 +8,7 @@
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
+use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
@@ -93,6 +94,19 @@ class Device extends BaseModel{
             DB::connection()->getPdo()->beginTransaction();
             $item = Device::find($id);
             if($item){
+
+                //Remove Img
+                $device_image = ($item->device_image != '') ? $item->device_image : '';
+                if($device_image != ''){
+                    FunctionLib::deleteFileUpload($item->device_image, Define::FOLDER_DEVICE);
+                    $arrSizeThumb = Define::$arrSizeImage;
+                    foreach($arrSizeThumb as $k=>$size){
+                        $sizeThumb = $size['w'].'x'.$size['h'];
+                        FunctionLib::deleteFileThumb($item->device_image, Define::FOLDER_DEVICE, $sizeThumb);
+                    }
+                }
+                //End Remove Img
+
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
