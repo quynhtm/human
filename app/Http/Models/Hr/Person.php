@@ -27,14 +27,17 @@ class Person extends BaseModel
         'person_update_time','person_update_user_id','person_update_user_name');
 
     public static function getPersonById($person_id){
-        $data = Cache::get(Define::CACHE_PERSON.$person_id);
-        if (sizeof($data) == 0) {
-            $data = Person::find($person_id);
-            if ($data && !empty($data)) {
-                Cache::put(Define::CACHE_PERSON.$person_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+        if((int)$person_id > 0){
+            $data = Cache::get(Define::CACHE_PERSON.$person_id);
+            if (sizeof($data) == 0) {
+                $data = Person::find($person_id);
+                if ($data && !empty($data)) {
+                    Cache::put(Define::CACHE_PERSON.$person_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
             }
+            return $data;
         }
-        return $data;
+        return false;
     }
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){

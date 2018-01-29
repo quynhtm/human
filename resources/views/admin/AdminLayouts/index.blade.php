@@ -251,11 +251,6 @@
                     <div class="alert alert-info mg-b30 center">
                         {{FunctionLib::viewLanguage('lg_txt_member_modal_csv_upload01')}}
                         {{FunctionLib::viewLanguage('lg_txt_member_modal_csv_upload02')}}
-                        {{--<div class="mg-t30">--}}
-                            {{--<a href="#" class="btn btn-lg btn-primary">--}}
-                                {{--<i class="fa fa-cloud-download"></i>{{FunctionLib::viewLanguage('csv_download')}}--}}
-                            {{--</a>--}}
-                        {{--</div>--}}
                     </div>
 
                     <div class="alert alert-warning center">
@@ -277,6 +272,14 @@
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
 
+{{---Popup common--}}
+<div class="modal fade" id="sys_showPopupCommon" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="sys_show_infor">
+
+        </div>
+    </div>
+</div>
 <script>
     function showModal(event) {
         var url = event.getAttribute('ajax_url');
@@ -320,25 +323,16 @@
                         $("#modal-csv-upload").hide()
                         $("#overlay").fadeOut(function () {
                             $("#csv_file").val("");
-//                            alert(data);
                         });
                     }
-//                    else {
-//                        location.reload();
-//                        alert("Import successful");
-//                    }
-
-
                 })
-                .fail(function (data) {	//失敗の時の処理
-
+                .fail(function (data) {
                     alert("Something error");
                 })
-                .always(function (data) {	//成功・失敗に関わらず通信が完了した時に呼ばれるコールバック関数
+                .always(function (data) {
                     $("#overlay").fadeOut();
                 });
         }
-
     }
 </script>
 {!!CGlobal::$extraFooterCSS!!}

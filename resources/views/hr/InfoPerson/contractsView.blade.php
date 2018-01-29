@@ -72,7 +72,7 @@
                             </tr>
                         @endif
                     </table>
-                    <a class="btn btn-success" href="{{URL::route('admin.user_view')}}"><i class="fa fa-reply"></i> Thêm mới hợp đồng</a>
+                    <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới hợp đồng</a>
                 </div>
             </div>
         </div><!-- /.page-content -->

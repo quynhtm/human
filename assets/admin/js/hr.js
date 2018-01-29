@@ -140,5 +140,25 @@ HR = {
             format:'d-m-Y',
             lang:'vi',
         });
-    }
+    },
+    getInfoContractsPerson: function (person_id,contracts_id) {
+        $('#sys_showPopupCommon').modal('show');
+        $('#img_loading').show();
+        $('#sys_show_infor').html('');
+        $.ajax({
+            type: "GET",
+            url: WEB_ROOT + '/manager/infoPerson/EditContracts',
+            data: {person_id: person_id, contracts_id:contracts_id},
+            dataType: 'json',
+            success: function (res) {
+                $('#img_loading').hide();
+                if(res.intReturn == 1){
+                    $('#sys_show_infor').html(res.html);
+                }else {
+                    alert(res.msg);
+                    $('#sys_showPopupCommon').modal('hide');
+                }
+            }
+        });
+    },
 }
