@@ -146,15 +146,14 @@ body {
     background-color: #f7f7f7
 }
 
-.block_login_center {
-    float: left;
+.block_login_center{
     width: 100%;
-    height: 660px;
-    position: relative;
+    height: 100%;
+    position: fixed;
     background: url("../img/login/login.jpg") no-repeat center;
-    /*background: url("../img/login/login.jpeg") left top no-repeat!important;*/
-    /*background-size: cover!important;*/
-    background-size: 100% 100%;
+    background-size: cover;
+    left: 0;
+    top:0;
 }
 
 .msg_support {
@@ -228,25 +227,25 @@ body {
     font-weight: bold;
     font-size: 18px
 }
-
 .form_login_content .form_login_input .login_input {
     width: 100%;
     border: 1px solid #ccc;
-    height: 52px;
-    border-radius: 5px;
-    padding-left: 25px
+    height: 45px;
+    border-radius: 5px!important;
+    padding: 0 10px;
 }
 
 .form_login_content .form_login_input .login_input_checkbox {
     float: left;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    margin-top: 5px;
 }
 
 .form_login_content .form_login_input .remeber_account {
     float: left;
-    font-weight: bold;
-    margin: 2px 0 0 2px
+    font-weight: normal;
+    margin: 2px 0 0 2px;
+    font-style: italic;
 }
 
 .block_note {
@@ -446,4 +445,7 @@ th {
 }
 .list-group .list-group-item:hover{
     background: #f3f3f3;
+}
+.marginTop5{
+    margin-top: 5px;
 }
