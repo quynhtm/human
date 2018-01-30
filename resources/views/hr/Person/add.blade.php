@@ -32,7 +32,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Họ và tên khai sinh<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Họ và tên khai sinh" id="person_name" name="person_name"  class="form-control input-sm" value="@if(isset($data['person_name'])){{$data['person_name']}}@endif">
+                                    <input type="text" id="person_name" name="person_name"  class="form-control input-sm" value="@if(isset($data['person_name'])){{$data['person_name']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -44,13 +44,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Số di động</label>
-                                    <input type="text" placeholder="Số di động" id="person_phone" name="person_phone"  class="form-control input-sm" value="@if(isset($data['person_phone'])){{$data['person_phone']}}@endif">
+                                    <input type="text"  id="person_phone" name="person_phone"  class="form-control input-sm" value="@if(isset($data['person_phone'])){{$data['person_phone']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">ĐT nhà riêng/cơ quan</label>
-                                    <input type="text" placeholder="ĐT nhà riêng/cơ quan" id="person_telephone" name="person_telephone"  class="form-control input-sm" value="@if(isset($data['person_telephone'])){{$data['person_telephone']}}@endif">
+                                    <input type="text" id="person_telephone" name="person_telephone"  class="form-control input-sm" value="@if(isset($data['person_telephone'])){{$data['person_telephone']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -80,13 +80,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Số hiệucông chức</label>
-                                    <input type="text" placeholder="Số hiệu công chức" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
+                                    <input type="text" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Email</label>
-                                    <input type="text" placeholder="Email" id="person_mail" name="person_mail"  class="form-control input-sm" value="@if(isset($data['person_mail'])){{$data['person_mail']}}@endif">
+                                    <input type="text" id="person_mail" name="person_mail"  class="form-control input-sm" value="@if(isset($data['person_mail'])){{$data['person_mail']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -106,7 +106,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Số CMT<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Số CMT" id="person_chung_minh_thu" name="person_chung_minh_thu"  class="form-control input-sm" value="@if(isset($data['person_chung_minh_thu'])){{$data['person_chung_minh_thu']}}@endif">
+                                    <input type="text"  id="person_chung_minh_thu" name="person_chung_minh_thu"  class="form-control input-sm" value="@if(isset($data['person_chung_minh_thu'])){{$data['person_chung_minh_thu']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -118,7 +118,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Nơi cấp</label>
-                                    <input type="text" placeholder="Nơi cấp" id="person_issued_cmt" name="person_issued_cmt"  class="form-control input-sm" value="@if(isset($data['person_issued_cmt'])){{$data['person_issued_cmt']}}@endif">
+                                    <input type="text"  id="person_issued_cmt" name="person_issued_cmt"  class="form-control input-sm" value="@if(isset($data['person_issued_cmt'])){{$data['person_issued_cmt']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -153,7 +153,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Địa chỉ nơi sinh<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Địa chỉ nơi sinh" id="person_address_place_of_birth" name="person_address_place_of_birth"  class="form-control input-sm" value="@if(isset($data['person_address_place_of_birth'])){{$data['person_address_place_of_birth']}}@endif">
+                                    <input type="text"  id="person_address_place_of_birth" name="person_address_place_of_birth"  class="form-control input-sm" value="@if(isset($data['person_address_place_of_birth'])){{$data['person_address_place_of_birth']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -167,7 +167,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Địa chỉ quê quán<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Địa chỉ quê quán" id="person_address_home_town" name="person_address_home_town"  class="form-control input-sm" value="@if(isset($data['person_address_home_town'])){{$data['person_address_home_town']}}@endif">
+                                    <input type="text"  id="person_address_home_town" name="person_address_home_town"  class="form-control input-sm" value="@if(isset($data['person_address_home_town'])){{$data['person_address_home_town']}}@endif">
                                 </div>
                             </div>
 
@@ -200,7 +200,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Địa chỉ hiện tại<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Email" id="person_address_current" name="person_address_current"  class="form-control input-sm" value="@if(isset($data['person_address_current'])){{$data['person_address_current']}}@endif">
+                                    <input type="text"  id="person_address_current" name="person_address_current"  class="form-control input-sm" value="@if(isset($data['person_address_current'])){{$data['person_address_current']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -232,13 +232,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Chiều cao</label>
-                                    <input type="text" placeholder="Chiều cao" id="person_height" name="person_height"  class="form-control input-sm" value="@if(isset($data['person_height'])){{$data['person_height']}}@endif">
+                                    <input type="text"  id="person_height" name="person_height"  class="form-control input-sm" value="@if(isset($data['person_height'])){{$data['person_height']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Cân nặng</label>
-                                    <input type="text" placeholder="Cân nặng" id="person_weight" name="person_weight"  class="form-control input-sm" value="@if(isset($data['person_weight'])){{$data['person_weight']}}@endif">
+                                    <input type="text" id="person_weight" name="person_weight"  class="form-control input-sm" value="@if(isset($data['person_weight'])){{$data['person_weight']}}@endif">
                                 </div>
                             </div>
                         </div>
@@ -282,7 +282,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Lương thực hưởng<span class="red"> (*) </span></label>
-                                    <input type="text" placeholder="Email" id="user_email" name="user_email"  class="form-control input-sm" value="@if(isset($data['user_email'])){{$data['user_email']}}@endif">
+                                    <input type="text" id="user_email" name="user_email"  class="form-control input-sm" value="@if(isset($data['user_email'])){{$data['user_email']}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-1">

@@ -29,7 +29,7 @@ class InfoPersonController extends BaseAdminController
     private $permission_createrUser_delete = 'personCreaterUser_delete';
     private $permission_createrUser_create = 'personCreaterUser_create';
 
-    private $arrStatus = array();
+    private $arrStatus = array(1=>'hiển thị',2=>'Ẩn');
     private $error = array();
     private $arrMenuParent = array();
     private $viewPermission = array();//check quyen
@@ -37,10 +37,8 @@ class InfoPersonController extends BaseAdminController
     public function __construct()
     {
         parent::__construct();
-        $this->arrMenuParent = array();
 
     }
-
     public function getDataDefault()
     {
         $this->arrStatus = array(
@@ -48,7 +46,6 @@ class InfoPersonController extends BaseAdminController
             CGlobal::status_show => FunctionLib::controLanguage('status_show', $this->languageSite),
             CGlobal::status_hide => FunctionLib::controLanguage('status_hidden', $this->languageSite));
     }
-
     public function getPermissionPage()
     {
         return $this->viewPermission = [
@@ -114,7 +111,6 @@ class InfoPersonController extends BaseAdminController
             'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }
-
     public function editContracts()
     {
         //Check phan quyen.
@@ -137,11 +133,52 @@ class InfoPersonController extends BaseAdminController
         //thông tin hợp đồng
         $contracts = HrContracts::getListContractsByPersonId($person_id);
 
+        $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.InfoPerson.contractsPopupAdd', [
             'contracts' => $contracts,
             'total' => count($contracts),
             'infoPerson' => $infoPerson,
+            'optionShow' => $optionShow,
+            'personId' => $personId,
+            'contractsId' => $contractsId,
+        ], $this->viewPermission)->render();
+        $arrData['intReturn'] = 1;
+        $arrData['html'] = $html;
+        return response()->json($arrData);
+    }
+    public function postContracts()
+    {
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->personContractsFull, $this->permission) && !in_array($this->personContractsCreate, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
+        $data = $_POST;
+        FunctionLib::debug($data);
+
+        $personId = Request::get('person_id', '');
+        $contractsId = Request::get('contracts_id', '');
+
+        $person_id = FunctionLib::outputId($personId);
+        $contracts_id = FunctionLib::outputId($contractsId);
+
+        $data = array();
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
+
+        //thông tin hợp đồng
+        $contracts = HrContracts::getListContractsByPersonId($person_id);
+
+        $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+        $html = view('hr.InfoPerson.contractsPopupAdd', [
+            'contracts' => $contracts,
+            'total' => count($contracts),
+            'infoPerson' => $infoPerson,
+            'optionShow' => $optionShow,
         ], $this->viewPermission)->render();
         $arrData['intReturn'] = 1;
         $arrData['html'] = $html;
