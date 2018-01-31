@@ -172,7 +172,7 @@ HR = {
         $(elementInput).each(function () {
             var input = $(this);
             if ($(this).hasClass("input-required") && input.val() == '') {
-                msg[$(this).attr("name")] = "※" + $(this).attr("title") + lng['is_required'];
+                msg[$(this).attr("name")] = "※" + $(this).attr("title") + ' không được bỏ trống';
                 isError = true;
             }
         });
@@ -184,7 +184,7 @@ HR = {
             alert(error_msg);
             return false;
         } else {
-            $('#'+btnSubmit).attr("disabled", 'true');
+            //$('#'+btnSubmit).attr("disabled", 'true');
             var data = HR.getFormData(elementForm);
             var _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
@@ -194,13 +194,32 @@ HR = {
                 headers: {'X-CSRF-TOKEN': _token},
                 success: function (data) {
                     $(btnSubmit).removeAttr("disabled");
-                    if ((data.isOk == 0)) {
-                        alert(data.errors)
+                    if ((data.intReturn == 0)) {
+                        alert(data.msg);
                     } else {
-                        //window.location.href = data.url;
+                        $('#sys_showPopupCommon').modal('hide');
+                        $('#show_list_contracts').html(data.html);
                     }
                 },
             });
         }
     },
+    deleteComtracts: function (person_id,contracts_id) {
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        if(confirm('Bạn có muốn xóa item này?')){
+            $.ajax({
+                type: 'post',
+                url: WEB_ROOT + '/manager/infoPerson/DeleteContracts',
+                data: {person_id: person_id,contracts_id: contracts_id},
+                headers: {'X-CSRF-TOKEN': _token},
+                success: function (data) {
+                    if ((data.intReturn == 0)) {
+                        alert(data.msg);
+                    } else {
+                        $('#show_list_contracts').html(data.html);
+                    }
+                },
+            });
+        }
+    }
 }

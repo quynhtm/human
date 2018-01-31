@@ -14,13 +14,13 @@
     @endif
     <hr>
     <form method="POST" action="" role="form" id="form_contracts">
-        <input type="hidden" name="personId" id="personId" value="{{$personId}}">
-        <input type="hidden" name="contractsId" id="contractsId" value="{{$contractsId}}">
+        <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
+        <input type="hidden" name="contracts_id" id="contracts_id" value="{{$contracts_id}}">
         <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="name" class="control-label">Loại hợp đồng<span class="red"> (*) </span></label>
-                <select name="contracts_type_define_id" id="contracts_type_define_id" class="form-control input-sm input-required">
+                <select name="contracts_type_define_id" id="contracts_type_define_id" title = 'Loại hợp đồng' class="form-control input-sm input-required">
                     {!! $optionShow !!}
                 </select>
             </div>
@@ -28,7 +28,7 @@
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="name" class="control-label">Chế độ thanh toán (Trả lương)<span class="red"> (*) </span></label>
-                <select name="contracts_payment_define_id" id="contracts_payment_define_id" class="form-control input-sm input-required">
+                <select name="contracts_payment_define_id" title = 'Chế độ thanh toán (Trả lương)' id="contracts_payment_define_id" class="form-control input-sm input-required">
                     {!! $optionShow !!}
                 </select>
             </div>
@@ -38,27 +38,27 @@
             <div class="form-group">
                 <label for="name" class="control-label">Mã hợp đồng/ số quyết định</label>
                 <input type="text" id="contracts_code" name="contracts_code" class="form-control input-sm"
-                       value="@if(isset($data['contracts_code'])){{$data['contracts_code']}}@endif">
+                       value="@if(isset($contracts->contracts_code)){{$contracts->contracts_code}}@endif">
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="name" class="control-label">Mức lương</label>
                 <input type="text" id="contracts_money" name="contracts_money"
-                       class="form-control input-sm" value="@if(isset($data['contracts_money'])){{$data['contracts_money']}}@endif">
+                       class="form-control input-sm" value="@if(isset($contracts->contracts_money)){{$contracts->contracts_money}}@endif">
             </div>
         </div>
 
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="name" class="control-label">Ngày ký<span class="red"> (*) </span></label>
-                <input type="text" class="form-control input-required" id="contracts_sign_day" name="contracts_sign_day"  data-date-format="dd-mm-yyyy" value="@if(isset($data['contracts_sign_day'])){{$data['contracts_sign_day']}}@endif">
+                <input type="text" class="form-control input-required" title = 'Ngày ký' id="contracts_sign_day" name="contracts_sign_day"  data-date-format="dd-mm-yyyy" value="@if(isset($contracts->contracts_sign_day)){{date('d-m-Y',$contracts->contracts_sign_day)}}@endif">
             </div>
         </div>
         <div class="col-sm-6">
             <div class="form-group">
                 <label for="name" class="control-label">Ngày có hiệu lực<span class="red"> (*) </span></label>
-                <input type="text" class="form-control input-required" id="contracts_effective_date" name="contracts_effective_date"  data-date-format="dd-mm-yyyy" value="@if(isset($data['contracts_effective_date'])){{$data['contracts_effective_date']}}@endif">
+                <input type="text" class="form-control input-required" title = 'Ngày có hiệu lực' id="contracts_effective_date" name="contracts_effective_date"  data-date-format="dd-mm-yyyy" value="@if(isset($contracts->contracts_effective_date)){{date('d-m-Y',$contracts->contracts_effective_date)}}@endif">
             </div>
         </div>
 
@@ -67,12 +67,12 @@
                 <label for="name" class="control-label">Thỏa thuận khác</label>
                 <input type="text" id="contracts_describe" name="contracts_describe"
                        class="form-control input-sm"
-                       value="@if(isset($data['contracts_describe'])){{$data['contracts_describe']}}@endif">
+                       value="@if(isset($contracts->contracts_describe)){{$contracts->contracts_describe}}@endif">
             </div>
         </div>
         {!! csrf_field() !!}
         <div class="col-sm-6">
-            <a class="btn btn-primary" href="javascript:void();" onclick="HR.contractsSubmit('form#form_contracts','form#form_contracts','submitContracts')" id="submitContracts"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+            <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.contractsSubmit('form#form_contracts','form#form_contracts','submitContracts')" id="submitContracts"><i class="fa fa-floppy-o"></i> Lưu lại</a>
             <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
         </div>
     </div>

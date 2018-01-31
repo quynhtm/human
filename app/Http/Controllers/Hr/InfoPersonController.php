@@ -131,17 +131,16 @@ class InfoPersonController extends BaseAdminController
         $infoPerson = Person::getPersonById($person_id);
 
         //thông tin hợp đồng
-        $contracts = HrContracts::getListContractsByPersonId($person_id);
-
+        $contracts = HrContracts::find($contracts_id);
+        //FunctionLib::debug($contracts);
         $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.InfoPerson.contractsPopupAdd', [
             'contracts' => $contracts,
-            'total' => count($contracts),
             'infoPerson' => $infoPerson,
             'optionShow' => $optionShow,
-            'personId' => $personId,
-            'contractsId' => $contractsId,
+            'person_id' => $person_id,
+            'contracts_id' => $contracts_id,
         ], $this->viewPermission)->render();
         $arrData['intReturn'] = 1;
         $arrData['html'] = $html;
@@ -155,34 +154,79 @@ class InfoPersonController extends BaseAdminController
             return response()->json($arrData);
         }
         $data = $_POST;
-        FunctionLib::debug($data);
-
+        $person_id = Request::get('person_id', '');
+        $contracts_id = Request::get('contracts_id', '');
+        //$person_id = FunctionLib::outputId($personId);
+        //$contracts_id = FunctionLib::outputId($contractsId);
+        //FunctionLib::debug($data);
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+        if($data['contracts_sign_day'] == '' || $data['contracts_effective_date'] == ''){
+            $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
+        }else{
+            if($person_id > 0){
+                $dataContracts = array('contracts_code'=>$data['contracts_code'],
+                    'contracts_type_define_id'=>$data['contracts_type_define_id'],
+                    'contracts_payment_define_id'=>$data['contracts_payment_define_id'],
+                    'contracts_money'=>$data['contracts_money'],
+                    'contracts_describe'=>$data['contracts_describe'],
+                    'contracts_sign_day'=>($data['contracts_sign_day'] != '')? strtotime($data['contracts_sign_day']):'',
+                    'contracts_effective_date'=>($data['contracts_effective_date'] != '')? strtotime($data['contracts_effective_date']):'',
+                    'contracts_person_id'=>$person_id,
+                );
+                if($contracts_id > 0){
+                    $dataContracts['contracts_update_user_id'] = $this->user_id;
+                    $dataContracts['contracts_update_user_name'] = $this->user_name;
+                    $dataContracts['contracts_update_time'] = time();
+                    HrContracts::updateItem($contracts_id,$dataContracts);
+                }else{
+                    $dataContracts['contracts_creater_user_id'] = $this->user_id;
+                    $dataContracts['contracts_creater_user_name'] = $this->user_name;
+                    $dataContracts['contracts_creater_time'] = time();
+                    HrContracts::createItem($dataContracts);
+                }
+                $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+                //thông tin hợp đồng
+                $contracts = HrContracts::getListContractsByPersonId($person_id);
+                $this->getDataDefault();
+                $this->viewPermission = $this->getPermissionPage();
+                $html = view('hr.InfoPerson.contractsList', array_merge([
+                    'person_id' => $person_id,
+                    'contracts' => $contracts,
+                    'total' => count($contracts)
+                ], $this->viewPermission))->render();
+                $arrData['html'] = $html;
+            }else{
+                $arrData = ['intReturn' => 0, 'msg' => 'Lỗi cập nhật'.$person_id];
+            }
+        }
+        return response()->json($arrData);
+    }
+    public function deleteContracts()
+    {
+        //Check phan quyen.
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+        if (!$this->is_root && !in_array($this->personContractsFull, $this->permission) && !in_array($this->personContractsDelete, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
         $personId = Request::get('person_id', '');
         $contractsId = Request::get('contracts_id', '');
-
         $person_id = FunctionLib::outputId($personId);
         $contracts_id = FunctionLib::outputId($contractsId);
-
-        $data = array();
-        $arrData = ['intReturn' => 0, 'msg' => ''];
-
-        //thong tin nhan sự
-        $infoPerson = Person::getPersonById($person_id);
-
-        //thông tin hợp đồng
-        $contracts = HrContracts::getListContractsByPersonId($person_id);
-
-        $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
-        $this->viewPermission = $this->getPermissionPage();
-        $html = view('hr.InfoPerson.contractsPopupAdd', [
-            'contracts' => $contracts,
-            'total' => count($contracts),
-            'infoPerson' => $infoPerson,
-            'optionShow' => $optionShow,
-        ], $this->viewPermission)->render();
-        $arrData['intReturn'] = 1;
-        $arrData['html'] = $html;
-        return response()->json($arrData);
+        if ($contracts_id > 0 && HrContracts::deleteItem($contracts_id)) {
+            $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+            //thông tin hợp đồng
+            $contracts = HrContracts::getListContractsByPersonId($person_id);
+            $this->getDataDefault();
+            $this->viewPermission = $this->getPermissionPage();
+            $html = view('hr.InfoPerson.contractsList', array_merge([
+                'person_id' => $person_id,
+                'contracts' => $contracts,
+                'total' => count($contracts)
+            ], $this->viewPermission))->render();
+            $arrData['html'] = $html;
+        }
+        return Response::json($arrData);
     }
 
     /************************************************************************************************************************************
