@@ -35,8 +35,17 @@
                             </button>
                             <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/defined/ajaxLoadForm')" title="Thêm mới">Thêm mới</a>
                         </div>
+
                     </div>
                     {{ Form::close() }}
+                    @if($is_boss == 1)
+                    <form id="formAdd" method="post" enctype="multipart/form-data" action="{{URL::route('hr.importDataToExcel')}}">
+                        <input type="file" name="file_excel_define" id="file_excel_define">
+                        <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
+                            <i class="fa fa-search"></i> Import Excel
+                        </button>
+                    </form>
+                    @endif
                     <div class="panel-body line" id="element">
                         @if(sizeof($data) > 0)
                             <table class="table table-bordered bg-head-table">
@@ -45,7 +54,7 @@
                                     <th class="text-center w10">STT</th>
                                     <th>Tên định nghĩa</th>
                                     <th>Kiểu định nghĩa</th>
-                                    <th>Thông tin</th>
+                                    <th class="text-center">Thứ tự</th>
                                     <th class="text-center">Trạng thái</th>
                                     <th class="text-center">Chức năng</th>
                                 </tr>
@@ -56,17 +65,8 @@
                                         <td>{{ $stt + $key+1 }}</td>
                                         <td>{{$item->define_name}}</td>
                                         <td>{{isset($arrDefinedType[$item->define_type]) ? $arrDefinedType[$item->define_type] : 'Chưa xác định'}}</td>
-                                        <td>
-                                            @if($item->user_name_creater != '')
-                                                Người tạo: {{$item->user_name_creater}}<br/>
-                                                Ngày tạo: {{date('d/m/Y', $item->creater_time)}}<br/>
-                                            @endif
-
-                                            @if($item->user_name_update != '')
-                                                Người cập nhật: {{$item->user_name_update}}<br/>
-                                                Ngày cập nhật: {{date('d/m/Y', $item->update_time)}}<br/>
-                                            @endif
-                                            Thứ tự: {{$item->define_order}}
+                                        <td class="text-center">
+                                            {{$item->define_order}}
                                         </td>
                                         <td class="text-center">{{isset($arrStatus[$item->define_status]) ? $arrStatus[$item->define_status] : 'Chưa xác định'}}</td>
                                         <td class="text-center middle" align="center">

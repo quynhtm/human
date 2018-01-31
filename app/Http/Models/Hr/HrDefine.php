@@ -13,6 +13,7 @@ use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
+use App\library\AdminFunction\FunctionLib;
 
 class HrDefine extends BaseModel
 {
@@ -23,6 +24,16 @@ class HrDefine extends BaseModel
 
     protected $fillable = array('define_project', 'define_name', 'define_type', 'define_order', 'define_status',
         'creater_time', 'user_id_creater', 'user_name_creater', 'update_time', 'user_id_update', 'user_name_update');
+
+    public static function insertMultiple($dataInput){
+        $str_sql = FunctionLib::buildSqlInsertMultiple(Define::TABLE_HR_DEFINE, $dataInput);
+        if(trim($str_sql) != ''){
+            DB::statement($str_sql);
+            return true;
+        }else{
+            return false;
+        }
+    }
 
     public static function createItem($data)
     {
@@ -135,7 +146,7 @@ class HrDefine extends BaseModel
                 $query->where('define_type', $dataSearch['define_type']);
             }
             $total = $query->count();
-            $query->orderBy('define_id', 'desc');
+            $query->orderBy('define_order','asc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
             if ($limit > 0) {
