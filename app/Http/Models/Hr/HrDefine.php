@@ -26,7 +26,8 @@ class HrDefine extends BaseModel
         'creater_time', 'user_id_creater', 'user_name_creater', 'update_time', 'user_id_update', 'user_name_update');
 
     public static function insertMultiple($dataInput){
-        $str_sql = FunctionLib::buildSqlInsertMultiple(Define::TABLE_HR_DEFINE, $dataInput);
+        $define = new HrDefine();
+        $str_sql = $define->buildSqlInsertMultiple(Define::TABLE_HR_DEFINE, $dataInput);
         if(trim($str_sql) != ''){
             DB::statement($str_sql);
             return true;
@@ -35,6 +36,29 @@ class HrDefine extends BaseModel
         }
     }
 
+    public function buildSqlInsertMultiple($table, $arrInput){
+        if(!empty($arrInput)){
+            $arrSql = array();
+            $arrField = array_keys($arrInput[0]);
+            foreach ($arrInput as $k => $row) {
+                $strVals = '';
+                foreach ($arrField as $key => $field) {
+                    $strVals .= "'" . trim($row[$field]) . '\',';
+                }
+                if ($strVals != '')
+                    $strVals = rtrim($strVals, ',');
+                if ($strVals != '')
+                    $arrSql[] = '(' . $strVals . ')';
+            }
+
+            $fields = implode(',', $arrField);
+            if (!empty($arrSql)) {
+                $query = 'INSERT INTO `' . $table . '` (' . $fields . ') VALUES ' . implode(',', $arrSql);
+                return $query;
+            }
+        }
+        return '';
+    }
     public static function createItem($data)
     {
         try {
