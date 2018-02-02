@@ -10,7 +10,7 @@
                     <a href="{{URL::route('admin.dashboard')}}">Home</a>
                 </li>
                 <li><a href="{{URL::route('hr.personnelView')}}"> Danh sách nhân sự</a></li>
-                <li class="active">Thông tin hợp đồng</li>
+                <li class="active">Thông tin khen thưởng</li>
             </ul>
         </div>
 
@@ -26,7 +26,7 @@
                     @endif
 
                     <div id="show_list_contracts">
-                        <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> hợp đồng @endif </div>
+                        <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
                         <br>
                         <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
@@ -73,7 +73,7 @@
                             @endif
                         </table>
                     </div>
-                    <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới hợp đồng</a>
+                    <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
                 </div>
             </div>
         </div><!-- /.page-content -->
