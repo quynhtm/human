@@ -57,7 +57,7 @@
                                             @if($is_root || $permission_edit)
                                                 <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/ajaxLoadForm')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
                                             @endif
-                                            @if($is_boss || $permission_remove)
+                                            @if($is_boss || $permission_delete)
                                                 <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['role_id'])}}', WEB_ROOT + '/manager/role/deleteRole')"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
