@@ -1,6 +1,6 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
 <?php use App\Library\AdminFunction\Define; ?>
-<div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> hợp đồng @endif </div>
+<div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
 <br>
 <table class="table table-bordered table-hover">
     <thead class="thin-border-bottom">

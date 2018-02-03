@@ -26,7 +26,7 @@
                     @endif
 
                     <div id="show_list_contracts">
-                        <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
+                        <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> hợp đồng @endif </div>
                         <br>
                         <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">

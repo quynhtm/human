@@ -65,7 +65,7 @@ class DeviceController extends BaseAdminController{
             'is_root'=> $this->is_root ? 1:0,
             'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
             'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
-            'permission_delete'=>in_array($this->permission_delete, $this->permission) ? 1 : 0,
+            'permission_remove'=>in_array($this->permission_delete, $this->permission) ? 1 : 0,
             'permission_full'=>in_array($this->permission_full, $this->permission) ? 1 : 0,
         ];
     }

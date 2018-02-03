@@ -93,6 +93,10 @@ class Define{
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
 
+    const BONUS_KHEN_THUONG = 1;
+    const BONUS_DANH_HIEU = 2;
+    const BONUS_KY_LUAT = 3;
+
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
     const ROLE_TYPE_ADMIN = 7;

@@ -2,7 +2,9 @@
 /**
  * QuynhTM
  */
+
 namespace App\Http\Models\Hr;
+
 use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\Cache;
@@ -17,9 +19,21 @@ class Bonus extends BaseModel
     public $timestamps = false;
 
     protected $fillable = array('bonus_project', 'bonus_person_id', 'bonus_type', 'bonus_define_id', 'bonus_define_name',
-        'bonus_year', 'bonus_note','bonus_decision','bonus_number');
+        'bonus_year', 'bonus_note', 'bonus_decision', 'bonus_number');
 
-    public static function createItem($data){
+    public static function getBonusByType($person_id, $type = 0)
+    {
+        if ($person_id > 0 && $type > 0) {
+            $result = Bonus::where('bonus_type', $type)
+                ->where('bonus_person_id', $person_id)
+                ->orderBy('bonus_id', 'ASC')->get();
+            return $result;
+        }
+        return array();
+    }
+
+    public static function createItem($data)
+    {
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new Bonus();
@@ -33,7 +47,7 @@ class Bonus extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id,$item);
+            self::removeCache($item->bonus_id, $item);
             return $item->bonus_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -41,7 +55,8 @@ class Bonus extends BaseModel
         }
     }
 
-    public static function updateItem($id,$data){
+    public static function updateItem($id, $data)
+    {
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new Bonus();
@@ -52,7 +67,7 @@ class Bonus extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id,$item);
+            self::removeCache($item->bonus_id, $item);
             return true;
         } catch (PDOException $e) {
             //var_dump($e->getMessage());
@@ -61,12 +76,13 @@ class Bonus extends BaseModel
         }
     }
 
-    public function checkField($dataInput) {
+    public function checkField($dataInput)
+    {
         $fields = $this->fillable;
         $dataDB = array();
-        if(!empty($fields)) {
-            foreach($fields as $field) {
-                if(isset($dataInput[$field])) {
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
+                if (isset($dataInput[$field])) {
                     $dataDB[$field] = $dataInput[$field];
                 }
             }
@@ -74,16 +90,17 @@ class Bonus extends BaseModel
         return $dataDB;
     }
 
-    public static function deleteItem($id){
-        if($id <= 0) return false;
+    public static function deleteItem($id)
+    {
+        if ($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
             $item = Bonus::find($id);
-            if($item){
+            if ($item) {
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id,$item);
+            self::removeCache($item->bonus_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -92,31 +109,33 @@ class Bonus extends BaseModel
         }
     }
 
-    public static function removeCache($id = 0,$data){
-        if($id > 0){
+    public static function removeCache($id = 0, $data)
+    {
+        if ($id > 0) {
             //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
         }
     }
 
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
-        try{
-            $query = Bonus::where('bonus_id','>',0);
+    public static function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
+    {
+        try {
+            $query = Bonus::where('bonus_id', '>', 0);
             if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+                $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
             }
             $total = $query->count();
             $query->orderBy('bonus_id', 'desc');
 
             //get field can lay du lieu
-            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
-            if(!empty($fields)){
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
+            if (!empty($fields)) {
                 $result = $query->take($limit)->skip($offset)->get($fields);
-            }else{
+            } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
             return $result;
 
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             throw new PDOException();
         }
     }

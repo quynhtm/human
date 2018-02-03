@@ -18,6 +18,13 @@ Route::get('infoPerson/EditContracts', array('as' => 'hr.EditContracts','uses' =
 Route::post('infoPerson/PostContracts', array('as' => 'hr.PostContracts','uses' => HResources.'\InfoPersonController@postContracts'));
 Route::post('infoPerson/DeleteContracts', array('as' => 'hr.DeleteContracts','uses' => HResources.'\InfoPersonController@deleteContracts'));
 
+/*Thông tin khen thuong*/
+Route::get('bonusPerson/viewBonus/{person_id?}', array('as' => 'hr.viewBonus','uses' => HResources.'\BonusPersonController@viewBonus'));
+Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HResources.'\BonusPersonController@editBonus'));
+Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postpostBonus'));
+Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
+
+
 Route::get('infoPerson/viewInfoPersonOther/{person_id?}', array('as' => 'hr.viewInfoPersonOther','uses' => HResources.'\InfoPersonController@viewInfoPersonOther'));
 Route::get('infoPerson/viewTransferWork/{person_id?}', array('as' => 'hr.viewTransferWork','uses' => HResources.'\InfoPersonController@viewTransferWork'));
 Route::get('infoPerson/viewTransferDepartment/{person_id?}', array('as' => 'hr.viewTransferDepartment','uses' => HResources.'\InfoPersonController@viewTransferDepartment'));

@@ -60,17 +60,17 @@ class CGlobal
     public static $arrLinkEditPerson = [
         1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông tin chung', 'link_url' => '/manager/personnel/edit/'],
 //        2 => ['icons' => 'fa fa-suitcase', 'name_url' => 'Thông tin đào tạo công tác', 'link_url' => '/manager/personnel/edit/'],
-//        3 => ['icons' => 'fa fa-gift', 'name_url' => 'Thông tin khen thưởng kỷ luật', 'link_url' => '/manager/personnel/edit/'],
+        3 => ['icons' => 'fa fa-gift', 'name_url' => 'Thông tin khen thưởng kỷ luật', 'link_url' => '/manager/bonusPerson/viewBonus/'],
 //        4 => ['icons' => 'fa fa-money', 'name_url' => 'Cập nhật lương phụ cấp', 'link_url' => '/manager/personnel/edit/'],
 //        5 => ['icons' => 'fa fa-child', 'name_url' => 'Thông báo-bổ nhiệm chức vụ', 'link_url' => '/manager/personnel/edit/'],
           6 => ['icons' => 'fa fa-file-o', 'name_url' => 'Hợp đồng lao động', 'link_url' => '/manager/infoPerson/viewContracts/'],
 //        7 => ['icons' => 'fa fa-plane', 'name_url' => 'Cập nhật thông tinh hộ chiếu,MST', 'link_url' => '/manager/personnel/edit/'],
-          8 => ['icons' => 'fa fa-retweet', 'name_url' => 'Chuyển bộ phận phòng ban', 'link_url' => '/manager/infoPerson/viewTransferDepartment/'],
+         // 8 => ['icons' => 'fa fa-retweet', 'name_url' => 'Chuyển bộ phận phòng ban', 'link_url' => '/manager/infoPerson/viewTransferDepartment/'],
 //        9 => ['icons' => 'fa fa-clock-o', 'name_url' => 'Thiết lập thời gian nghỉ hưu', 'link_url' => '/manager/personnel/edit/'],
 //        10 => ['icons' => 'fa fa-level-up', 'name_url' => 'Kéo dài thời gian nghỉ hưu', 'link_url' => '/manager/personnel/edit/'],
-          11 => ['icons' => 'fa fa-exchange', 'name_url' => 'Nghỉ việc chuyển công tác', 'link_url' => '/manager/infoPerson/viewTransferWork/'],
+         // 11 => ['icons' => 'fa fa-exchange', 'name_url' => 'Nghỉ việc chuyển công tác', 'link_url' => '/manager/infoPerson/viewTransferWork/'],
 //        12 => ['icons' => 'fa fa-thumbs-down', 'name_url' => 'Buộc thôi việc nhân sự', 'link_url' => '/manager/personnel/edit/'],
-          13 => ['icons' => 'fa fa-user', 'name_url' => 'Tạo tài khoản sử dụng hệ thống', 'link_url' => '/manager/infoPerson/getInfoPerson/'],
+         // 13 => ['icons' => 'fa fa-user', 'name_url' => 'Tạo tài khoản sử dụng hệ thống', 'link_url' => '/manager/infoPerson/getInfoPerson/'],
           //14 => ['icons' => 'fa fa-trash', 'name_url' => 'Xoá nhân sự này', 'link_url' => '/manager/personnel/edit/']
     ];
 }
