@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrContracts;
+use App\Http\Models\Hr\HrDefine;
 
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -102,6 +103,9 @@ class InfoPersonController extends BaseAdminController
         //thông tin hợp đồng
         $contracts = HrContracts::getListContractsByPersonId($person_id);
 
+        $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+        $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
+
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.InfoPerson.contractsView', array_merge([
@@ -109,6 +113,8 @@ class InfoPersonController extends BaseAdminController
             'contracts' => $contracts,
             'total' => count($contracts),
             'infoPerson' => $infoPerson,
+            'arrChedothanhtoan' => $arrChedothanhtoan,
+            'arrLoaihopdong' => $arrLoaihopdong,
         ], $this->viewPermission));
     }
     public function editContracts()

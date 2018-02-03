@@ -3,10 +3,12 @@
  * Created by JetBrains PhpStorm.
  * User: QuynhTM
  */
+
 namespace App\Library\AdminFunction;
-class Define{
+class Define
+{
     /***************************************************************************************************************
-    //Database
+     * //Database
      ***************************************************************************************************************/
     const DB_CONNECTION_MYSQL = 'mysql';
     const DB_CONNECTION_SQLSRV = 'sqlsrv';
@@ -42,9 +44,9 @@ class Define{
     const TABLE_HR_CONTRACTS = 'hr_contracts';
 
     /***************************************************************************************************************
-    //Memcache
-    ***************************************************************************************************************/
-    const CACHE_ON = 1 ;// 0: khong dung qua cache, 1: dung qua cache
+     * //Memcache
+     ***************************************************************************************************************/
+    const CACHE_ON = 1;// 0: khong dung qua cache, 1: dung qua cache
     const CACHE_TIME_TO_LIVE_5 = 300; //Time cache 5 phut
     const CACHE_TIME_TO_LIVE_15 = 900; //Time cache 15 phut
     const CACHE_TIME_TO_LIVE_30 = 1800; //Time cache 30 phut
@@ -52,7 +54,7 @@ class Define{
     const CACHE_TIME_TO_LIVE_ONE_DAY = 86400; //Time cache 1 ngay
     const CACHE_TIME_TO_LIVE_ONE_WEEK = 604800; //Time cache 1 tuan
     const CACHE_TIME_TO_LIVE_ONE_MONTH = 2419200; //Time cache 1 thang
-    const CACHE_TIME_TO_LIVE_ONE_YEAR =  29030400; //Time cache 1 nam
+    const CACHE_TIME_TO_LIVE_ONE_YEAR = 29030400; //Time cache 1 nam
     //user customer
     const CACHE_DEBUG = 'cache_debug';
     const CACHE_CUSTOMER_ID = 'cache_customer_id_';
@@ -60,9 +62,9 @@ class Define{
     const CACHE_TREE_MENU = 'cache_tree_menu_';
     const CACHE_LIST_MENU_PERMISSION = 'cache_list_menu_permission';
     const CACHE_ALL_PARENT_CATEGORY = 'cache_all_parent_category_';
-    const CACHE_USER_NAME    = 'haianhem';
-    const CACHE_USER_KEY    = 'admin!@133';
-    const CACHE_EMAIL_NAME    = 'manager@gmail.com';
+    const CACHE_USER_NAME = 'haianhem';
+    const CACHE_USER_KEY = 'admin!@133';
+    const CACHE_EMAIL_NAME = 'manager@gmail.com';
 
     const CACHE_INFO_USER = 'cache_info_user';
     const CACHE_OPTION_USER = 'cache_option_user';
@@ -82,13 +84,13 @@ class Define{
     const CACHE_DEFINED_ALL = 'cache_defined_all';
     const CACHE_DEVICE_ID = 'cache_device_id_';
     /***************************************************************************************************************
-    //Define
+     * //Define
      ***************************************************************************************************************/
     const ERROR_PERMISSION = 1;
 
     const VIETNAM_LANGUAGE = 1;
     const ENGLISH_LANGUAGE = 2;
-    static $arrLanguage = array(Define::VIETNAM_LANGUAGE => 'vi',Define::ENGLISH_LANGUAGE => 'en');
+    static $arrLanguage = array(Define::VIETNAM_LANGUAGE => 'vi', Define::ENGLISH_LANGUAGE => 'en');
 
     const STATUS_SHOW = 1;
     const STATUS_HIDE = 0;
@@ -142,8 +144,9 @@ class Define{
     const chuc_vu_doan_dang = 31;
     const quan_he_gia_dinh = 32;
     const loai_phu_cap = 33;
-    const loai_donvi_phongban=34;
-    const loai_thiet_bi=35;
+    const loai_donvi_phongban = 34;
+    const loai_thiet_bi = 35;
+    const che_do_thanh_toan = 36;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',
@@ -195,10 +198,10 @@ class Define{
     const sizeImage_450 = 450;
 
     public static $arrSizeImage = array(
-        self::sizeImage_100 =>array('w'=>self::sizeImage_100,'h'=>self::sizeImage_100),
-        self::sizeImage_200 =>array('w'=>self::sizeImage_200,'h'=>self::sizeImage_200),
-        self::sizeImage_300 =>array('w'=>self::sizeImage_300,'h'=>self::sizeImage_300),
-        self::sizeImage_450 =>array('w'=>self::sizeImage_450,'h'=>self::sizeImage_450),
+        self::sizeImage_100 => array('w' => self::sizeImage_100, 'h' => self::sizeImage_100),
+        self::sizeImage_200 => array('w' => self::sizeImage_200, 'h' => self::sizeImage_200),
+        self::sizeImage_300 => array('w' => self::sizeImage_300, 'h' => self::sizeImage_300),
+        self::sizeImage_450 => array('w' => self::sizeImage_450, 'h' => self::sizeImage_450),
     );
 
 }
