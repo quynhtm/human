@@ -74,7 +74,6 @@ class DeviceController extends BaseAdminController{
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-        $search = array();
 
         $pageNo = (int) Request::get('page_no',1);
         $limit = CGlobal::number_limit_show;
@@ -82,26 +81,106 @@ class DeviceController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
+        $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
         $dataSearch['device_status'] = (int)Request::get('device_status', -1);
         $dataSearch['field_get'] = '';
 
-        $data = Device::searchByCondition($search, $limit, $offset,$total);
+        $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
-
+        $optionDeviceType = FunctionLib::getOption($this->arrDeviceType, isset($data['device_type'])? $data['device_type']: CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Device.view',array_merge([
             'data'=>$data,
-            'search'=>$dataSearch,
+            'dataSearch'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
             'arrDeviceType'=>$this->arrDeviceType,
+            'optionDeviceType'=>$optionDeviceType,
+            'arrPersion'=>$this->arrPersion,
+        ],$this->viewPermission));
+    }
+    public function viewDeviceUse(){
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
+        $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
+        $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
+        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 1);
+
+        $dataSearch['field_get'] = '';
+
+        $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
+        $optionDeviceType = FunctionLib::getOption($this->arrDeviceType, isset($data['device_type'])? $data['device_type']: CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Device.view',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'optionStatus'=>$optionStatus,
+            'arrStatus'=>$this->arrStatus,
+            'arrDeviceType'=>$this->arrDeviceType,
+            'optionDeviceType'=>$optionDeviceType,
+            'arrPersion'=>$this->arrPersion,
+        ],$this->viewPermission));
+    }
+    public function viewDeviceNotUse(){
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
+        $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
+        $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
+        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 0);
+
+        $dataSearch['field_get'] = '';
+
+        $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
+        $optionDeviceType = FunctionLib::getOption($this->arrDeviceType, isset($data['device_type'])? $data['device_type']: CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Device.view',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'optionStatus'=>$optionStatus,
+            'arrStatus'=>$this->arrStatus,
+            'arrDeviceType'=>$this->arrDeviceType,
+            'optionDeviceType'=>$optionDeviceType,
             'arrPersion'=>$this->arrPersion,
         ],$this->viewPermission));
     }

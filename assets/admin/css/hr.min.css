@@ -84,6 +84,17 @@ span.lbl {
 .mgt10{
     margin-top: 10px;
 }
+.importExcelDefine {
+    margin: 0 14px;
+    display: inline-block;
+    min-width: 30%;
+    background: #ddd;
+    padding: 9px;
+    border-radius: 2px;
+}
+.importExcelDefine .btn{
+    margin-top: 5px;
+}
 /*Load page*/
 #loading {
     position: absolute;
