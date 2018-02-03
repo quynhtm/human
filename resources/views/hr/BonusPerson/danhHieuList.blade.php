@@ -1,41 +1,29 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
 <?php use App\Library\AdminFunction\Define; ?>
-<div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
-<br>
+<div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> {{$nameTem}} @endif </div>
 <table class="table table-bordered table-hover">
     <thead class="thin-border-bottom">
     <tr class="">
-        <th width="3%" class="text-center">STT</th>
-        <th width="12%">Loại hợp đồng</th>
-        <th width="20%">Chế độ thanh toán(trả lương)</th>
-        <th width="10%" class="text-center">Mã hợp đồng</th>
-        <th width="10%" class="text-center">Mức lương</th>
-        <th width="10%" class="text-center">Ngày ký</th>
-        <th width="10%" class="text-center">Ngày hiệu lực</th>
-        <th width="15%" class="text-center">Thỏa thuận khác</th>
-        <th width="10%" class="text-center">Thao tác</th>
+        <th width="5%" class="text-center">STT</th>
+        <th width="30%">Danh hiệu</th>
+        <th width="10%" class="text-center">Năm đạt</th>
+        <th width="20%" class="text-center">Quyết định đính kèm</th>
+        <th width="30%" class="text-center">Ghi chú</th>
+        <th width="5%" class="text-center">Xóa</th>
     </tr>
     </thead>
-    @if(sizeof($contracts) > 0)
+    @if(sizeof($dataList) > 0)
         <tbody>
-        @foreach ($contracts as $key => $item)
+        @foreach ($dataList as $key2 => $item2)
             <tr>
-                <td class="text-center middle">{{ $key+1 }}</td>
-                <td class="text-center middle">{{ $item['contracts_type_define_name'] }}</td>
-                <td class="text-center middle">{{ $item['contracts_payment_define_name'] }}</td>
-                <td class="text-center middle">{{$item['contracts_code']}}</td>
-                <td class="text-center middle">{{ number_format($item['contracts_money'])}}</td>
-                <td class="text-center middle">{{date('d-m-Y',$item['contracts_sign_day'])}}</td>
-                <td class="text-center middle">{{date('d-m-Y',$item['contracts_effective_date'])}}</td>
-                <td class="text-center middle">{{$item['contracts_describe']}}</td>
+                <td class="text-center middle">{{ $key2+1 }}</td>
+                <td>{{ $item2['bonus_define_id'] }}</td>
+                <td class="text-center middle"> @if($item2['bonus_year'] != ''){{date('d-m-Y',$item2['bonus_year'])}}@endif</td>
+                <td class="text-center middle">{{$item2['bonus_decision']}}</td>
+                <td class="text-center middle">{{$item2['bonus_note']}}</td>
                 <td class="text-center middle">
-                    @if($is_root== 1 || $personContracts_full== 1 || $personContracts_create == 1)
-
-                        <a href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($item['contracts_person_id'])}}','{{FunctionLib::inputId($item['contracts_id'])}}')"
-                           title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
-                    @endif
                     @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                            <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item['contracts_person_id'])}}','{{FunctionLib::inputId($item['contracts_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                        <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
                     @endif
                 </td>
             </tr>
@@ -43,7 +31,7 @@
         </tbody>
     @else
         <tr>
-            <td colspan="8"> Chưa có dữ liệu</td>
+            <td colspan="7"> Chưa có dữ liệu</td>
         </tr>
     @endif
 </table>

@@ -110,9 +110,9 @@ class BonusPersonController extends BaseAdminController
         //FunctionLib::debug($contracts);
         $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
 
-        if($typeAction == 1){
+        if($typeAction == Define::BONUS_KHEN_THUONG){
             $template = 'khenThuongPopupAdd';
-        }elseif($typeAction == 2){
+        }elseif($typeAction == Define::BONUS_DANH_HIEU){
             $template = 'danhHieuPopupAdd';
         }else{
             $template = 'kyLuatPopupAdd';
@@ -150,8 +150,9 @@ class BonusPersonController extends BaseAdminController
                     'bonus_define_id'=>$data['bonus_define_id'],
                     'bonus_year'=>$data['bonus_year'],
                     'bonus_decision'=>$data['bonus_decision'],
-                    'bonus_number'=>$data['bonus_number'],
+                    'bonus_number'=>isset($data['bonus_number'])?$data['bonus_number']:0,
                     'bonus_note'=>$data['bonus_note'],
+                    'bonus_type'=>$data['bonus_type'],
                     'bonus_person_id'=>$person_id,
                 );
                 if($bonus_id > 0){
@@ -169,19 +170,19 @@ class BonusPersonController extends BaseAdminController
 
                 //thông tin view list\
                 $dataList = array();
-                if($data['bonus_type'] == 1){
+                if($data['bonus_type'] == Define::BONUS_KHEN_THUONG){
                     $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
-                }elseif($data['bonus_type'] == 2){
+                }elseif($data['bonus_type'] == Define::BONUS_DANH_HIEU){
                     $dataList = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
                 }else{
                     $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
                 }
 
                 //thông tin template
-                if($data['bonus_type'] == 1){
+                if($data['bonus_type'] == Define::BONUS_KHEN_THUONG){
                     $template = 'khenThuongList';
                     $nameTem = 'khen thưởng';
-                }elseif($data['bonus_type'] == 2){
+                }elseif($data['bonus_type'] == Define::BONUS_DANH_HIEU){
                     $template = 'danhHieuList';
                     $nameTem = 'danh hiệu';
                 }else{
@@ -212,20 +213,41 @@ class BonusPersonController extends BaseAdminController
             $arrData['msg'] = 'Bạn không có quyền thao tác';
             return response()->json($arrData);
         }
-        $personId = Request::get('person_id', '');
-        $contractsId = Request::get('contracts_id', '');
+        $personId = Request::get('str_person_id', '');
+        $bonusId = Request::get('str_object_id', '');
+        $typeAction = Request::get('typeAction', '');
         $person_id = FunctionLib::outputId($personId);
-        $contracts_id = FunctionLib::outputId($contractsId);
-        if ($contracts_id > 0 && Bonus::deleteItem($contracts_id)) {
+        $bonus_id = FunctionLib::outputId($bonusId);
+        if ($bonus_id > 0 && Bonus::deleteItem($bonus_id)) {
             $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
-            //thông tin hợp đồng
-            $contracts = Bonus::getListContractsByPersonId($person_id);
+            //thông tin view list\
+            $dataList = array();
+            if($typeAction == Define::BONUS_KHEN_THUONG){
+                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
+            }elseif($typeAction == Define::BONUS_DANH_HIEU){
+                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
+            }else{
+                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
+            }
+
+            //thông tin template
+            if($typeAction == Define::BONUS_KHEN_THUONG){
+                $template = 'khenThuongList';
+                $nameTem = 'khen thưởng';
+            }elseif($typeAction == Define::BONUS_DANH_HIEU){
+                $template = 'danhHieuList';
+                $nameTem = 'danh hiệu';
+            }else{
+                $template = 'kyLuatList';
+                $nameTem = 'kỷ luật';
+            }
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
-            $html = view('hr.BonusPerson.contractsList', array_merge([
+            $html = view('hr.BonusPerson.'.$template, array_merge([
                 'person_id' => $person_id,
-                'contracts' => $contracts,
-                'total' => count($contracts)
+                'dataList' => $dataList,
+                'total' => count($dataList),
+                'nameTem' => $nameTem,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
         }

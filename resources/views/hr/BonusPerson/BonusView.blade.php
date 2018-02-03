@@ -53,7 +53,7 @@
                                             <td class="text-center middle">{{$item['bonus_note']}}</td>
                                             <td class="text-center middle">
                                                 @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                    <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item['bonus_person_id'])}}','{{FunctionLib::inputId($item['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                    <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item['bonus_person_id'])}}','{{FunctionLib::inputId($item['bonus_id'])}}','bonusPerson/deleteBonus','div_list_khenthuong',{{\App\Library\AdminFunction\Define::BONUS_KHEN_THUONG}})"><i class="fa fa-trash fa-2x"></i></a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -66,7 +66,7 @@
                                 @endif
                             </table>
                         </div>
-                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',1)"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
+                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_KHEN_THUONG}})"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
                     </div>
 
                     {{----danh hiệu--}}
@@ -96,7 +96,7 @@
                                         <td class="text-center middle">{{$item2['bonus_note']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -109,7 +109,7 @@
                             @endif
                         </table>
                         </div>
-                        <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới danh hiệu</a>
+                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-reply"></i> Thêm mới danh hiệu</a>
                     </div>
 
                     {{----Kỷ luật--}}
@@ -133,13 +133,13 @@
                                 @foreach ($kyluat as $key3 => $item3)
                                     <tr>
                                         <td class="text-center middle">{{ $key3+1 }}</td>
-                                        <td>{{ $item['bonus_define_id'] }}</td>
+                                        <td>{{ $item3['bonus_define_id'] }}</td>
                                         <td class="text-center middle"> @if($item3['bonus_year'] != ''){{date('d-m-Y',$item3['bonus_year'])}}@endif</td>
                                         <td class="text-center middle">{{$item3['bonus_decision']}}</td>
                                         <td class="text-center middle">{{$item3['bonus_note']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item3['bonus_person_id'])}}','{{FunctionLib::inputId($item3['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item3['bonus_person_id'])}}','{{FunctionLib::inputId($item3['bonus_id'])}}','bonusPerson/deleteBonus','div_list_kyluat',{{\App\Library\AdminFunction\Define::BONUS_KY_LUAT}})"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -152,7 +152,7 @@
                             @endif
                         </table>
                         </div>
-                        <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới kỷ luật</a>
+                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_KY_LUAT}})"><i class="fa fa-reply"></i> Thêm mới kỷ luật</a>
                     </div>
                 </div>
             </div>

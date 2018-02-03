@@ -288,4 +288,22 @@ HR = {
             });
         }
     },
+    deleteAjaxCommon: function (str_person_id, str_object_id, urlAjax, divShow, typeAction) {
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        if(confirm('Bạn có muốn xóa item này?')){
+            $.ajax({
+                type: 'post',
+                url: WEB_ROOT + '/manager/'+urlAjax,
+                data: {str_person_id: str_person_id, str_object_id: str_object_id, typeAction: typeAction},
+                headers: {'X-CSRF-TOKEN': _token},
+                success: function (data) {
+                    if ((data.intReturn == 0)) {
+                        alert(data.msg);
+                    } else {
+                        $('#'+divShow).html(data.html);
+                    }
+                },
+            });
+        }
+    },
 }
