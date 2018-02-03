@@ -155,8 +155,8 @@ class HrDefine extends BaseModel
     {
         if ($id > 0) {
             Cache::forget(Define::CACHE_HR_DEFINED_ID . $id);
-            Cache::forget(Define::CACHE_DEFINED_TYPE . $data->define_type);
         }
+        Cache::forget(Define::CACHE_DEFINED_ALL);
     }
 
     public static function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
@@ -191,19 +191,26 @@ class HrDefine extends BaseModel
         }
     }
 
-    public static function getArrayByType($type = 0)
+    //QuynhTM edit
+    public static function getArrayByType($define_type = 0)
     {
-        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEFINED_TYPE . $type) : array();
+        $listDefine = self::getDataDefine();
+        $result = ($define_type > 0 && isset($listDefine[$define_type]))?$listDefine[$define_type]: array();
+        return $result;
+    }
+
+    //QuynhTM add
+    public static function getDataDefine(){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEFINED_ALL) : array();
         try {
-            if (empty($result) && $type > 0) {
-                $listItem = HrDefine::where('define_type', $type)
-                    ->where('define_status', Define::STATUS_SHOW)
+            if (empty($result)) {
+                $listItem = HrDefine::where('define_status', Define::STATUS_SHOW)
                     ->orderBy('define_order', 'ASC')->get();
                 foreach ($listItem as $item) {
-                    $result[$item->define_id] = $item->define_name;
+                    $result[$item->define_type][$item->define_id] = $item->define_name;
                 }
                 if ($result && Define::CACHE_ON) {
-                    Cache::put(Define::CACHE_DEFINED_TYPE . $type, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    Cache::put(Define::CACHE_DEFINED_ALL, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         } catch (PDOException $e) {

@@ -46,8 +46,8 @@
                                     @foreach ($khenthuong as $key => $item)
                                         <tr>
                                             <td class="text-center middle">{{ $key+1 }}</td>
-                                            <td>{{ $item['bonus_define_id'] }}</td>
-                                            <td class="text-center middle"> @if($item['bonus_year'] != ''){{date('d-m-Y',$item['bonus_year'])}}@endif</td>
+                                            <td>@if(isset($arrTypeKhenthuong[$item['bonus_define_id']])){{ $arrTypeKhenthuong[$item['bonus_define_id']] }}@endif</td>
+                                            <td class="text-center middle"> {{ $item['bonus_year'] }}</td>
                                             <td class="text-center middle">{{$item['bonus_decision']}}</td>
                                             <td class="text-center middle">{{ number_format($item['bonus_number'])}}</td>
                                             <td class="text-center middle">{{$item['bonus_note']}}</td>
@@ -90,8 +90,8 @@
                                 @foreach ($danhhieu as $key2 => $item2)
                                     <tr>
                                         <td class="text-center middle">{{ $key2+1 }}</td>
-                                        <td>{{ $item2['bonus_define_id'] }}</td>
-                                        <td class="text-center middle"> @if($item2['bonus_year'] != ''){{date('d-m-Y',$item2['bonus_year'])}}@endif</td>
+                                        <td>@if(isset($arrTypeDanhhieu[$item2['bonus_define_id']])){{ $arrTypeDanhhieu[$item2['bonus_define_id']] }}@endif</td>
+                                        <td class="text-center middle"> {{ $item2['bonus_year'] }}</td>
                                         <td class="text-center middle">{{$item2['bonus_decision']}}</td>
                                         <td class="text-center middle">{{$item2['bonus_note']}}</td>
                                         <td class="text-center middle">
@@ -133,8 +133,8 @@
                                 @foreach ($kyluat as $key3 => $item3)
                                     <tr>
                                         <td class="text-center middle">{{ $key3+1 }}</td>
-                                        <td>{{ $item3['bonus_define_id'] }}</td>
-                                        <td class="text-center middle"> @if($item3['bonus_year'] != ''){{date('d-m-Y',$item3['bonus_year'])}}@endif</td>
+                                        <td>@if(isset($arrTypeKyluat[$item3['bonus_define_id']])){{ $arrTypeKyluat[$item3['bonus_define_id']] }}@endif</td>
+                                        <td class="text-center middle">{{ $item3['bonus_year'] }}</td>
                                         <td class="text-center middle">{{$item3['bonus_decision']}}</td>
                                         <td class="text-center middle">{{$item3['bonus_note']}}</td>
                                         <td class="text-center middle">

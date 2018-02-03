@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
 
@@ -23,7 +24,7 @@ class BonusPersonController extends BaseAdminController
     private $personBonusDelete = 'personBonusDelete';
     private $personBonusCreate = 'personBonusCreate';
 
-    private $arrStatus = array(1=>'hiển thị',2=>'Ẩn');
+    private $arrStatus = array(1 => 'hiển thị', 2 => 'Ẩn');
     private $viewPermission = array();//check quyen
 
     public function __construct()
@@ -31,6 +32,7 @@ class BonusPersonController extends BaseAdminController
         parent::__construct();
 
     }
+
     public function getDataDefault()
     {
         $this->arrStatus = array(
@@ -38,6 +40,7 @@ class BonusPersonController extends BaseAdminController
             CGlobal::status_show => FunctionLib::controLanguage('status_show', $this->languageSite),
             CGlobal::status_hide => FunctionLib::controLanguage('status_hidden', $this->languageSite));
     }
+
     public function getPermissionPage()
     {
         return $this->viewPermission = [
@@ -66,13 +69,15 @@ class BonusPersonController extends BaseAdminController
         $infoPerson = Person::getPersonById($person_id);
 
         //thông tin khen thưởng
-        $khenthuong = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
-
+        $khenthuong = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
+        $arrTypeKhenthuong = HrDefine::getArrayByType(Define::khen_thuong);
         //thông tin danh hieu
-        $danhhieu = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
+        $danhhieu = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
+        $arrTypeDanhhieu = HrDefine::getArrayByType(Define::danh_hieu);
 
         //thông tin kỷ luật
-        $kyluat = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
+        $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
+        $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
 
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
@@ -81,9 +86,13 @@ class BonusPersonController extends BaseAdminController
             'khenthuong' => $khenthuong,
             'danhhieu' => $danhhieu,
             'kyluat' => $kyluat,
+            'arrTypeKhenthuong' => $arrTypeKhenthuong,
+            'arrTypeDanhhieu' => $arrTypeDanhhieu,
+            'arrTypeKyluat' => $arrTypeKyluat,
             'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }
+
     public function editBonus()
     {
         //Check phan quyen.
@@ -106,22 +115,31 @@ class BonusPersonController extends BaseAdminController
 
         //thông tin chung
         $bonus = Bonus::find($bonus_id);
-
+        $defien = HrDefine::getArrayByType();
         //FunctionLib::debug($contracts);
-        $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
 
-        if($typeAction == Define::BONUS_KHEN_THUONG){
+        $arrType = array();
+        if ($typeAction == Define::BONUS_KHEN_THUONG) {
             $template = 'khenThuongPopupAdd';
-        }elseif($typeAction == Define::BONUS_DANH_HIEU){
+            $arrType = HrDefine::getArrayByType(Define::khen_thuong);
+        } elseif ($typeAction == Define::BONUS_DANH_HIEU) {
             $template = 'danhHieuPopupAdd';
-        }else{
+            $arrType = HrDefine::getArrayByType(Define::danh_hieu);
+        } else {
             $template = 'kyLuatPopupAdd';
+            $arrType = HrDefine::getArrayByType(Define::ky_luat);
         }
+
+        $arrYears = FunctionLib::getListYears();
+        $optionYears = FunctionLib::getOption($arrYears, isset($bonus['bonus_year']) ? $data['bonus_year'] : (int)date('Y', time()));
+        $optionType = FunctionLib::getOption($arrType, isset($bonus['bonus_type']) ? $data['bonus_type'] : '');
+
         $this->viewPermission = $this->getPermissionPage();
-        $html = view('hr.BonusPerson.'.$template, [
+        $html = view('hr.BonusPerson.' . $template, [
             'bonus' => $bonus,
             'infoPerson' => $infoPerson,
-            'optionShow' => $optionShow,
+            'optionType' => $optionType,
+            'optionYears' => $optionYears,
             'person_id' => $person_id,
             'bonus_id' => $bonus_id,
             'typeAction' => $typeAction,
@@ -130,6 +148,7 @@ class BonusPersonController extends BaseAdminController
         $arrData['html'] = $html;
         return response()->json($arrData);
     }
+
     public function postBonus()
     {
         //Check phan quyen.
@@ -142,25 +161,25 @@ class BonusPersonController extends BaseAdminController
         $bonus_id = Request::get('bonus_id', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if($data['bonus_decision'] == '' || $data['bonus_note'] == ''){
+        if ($data['bonus_decision'] == '' || $data['bonus_note'] == '') {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
-        }else{
-            if($person_id > 0){
+        } else {
+            if ($person_id > 0) {
                 $dataBonus = array(
-                    'bonus_define_id'=>$data['bonus_define_id'],
-                    'bonus_year'=>$data['bonus_year'],
-                    'bonus_decision'=>$data['bonus_decision'],
-                    'bonus_number'=>isset($data['bonus_number'])?$data['bonus_number']:0,
-                    'bonus_note'=>$data['bonus_note'],
-                    'bonus_type'=>$data['bonus_type'],
-                    'bonus_person_id'=>$person_id,
+                    'bonus_define_id' => $data['bonus_define_id'],
+                    'bonus_year' => $data['bonus_year'],
+                    'bonus_decision' => $data['bonus_decision'],
+                    'bonus_number' => isset($data['bonus_number']) ?(int)$data['bonus_number'] : 0,
+                    'bonus_note' => $data['bonus_note'],
+                    'bonus_type' => $data['bonus_type'],
+                    'bonus_person_id' => $person_id,
                 );
-                if($bonus_id > 0){
+                if ($bonus_id > 0) {
                     $dataBonus['bonus_update_user_id'] = $this->user_id;
                     $dataBonus['bonus_update_user_name'] = $this->user_name;
                     $dataBonus['bonus_update_time'] = time();
-                    Bonus::updateItem($bonus_id,$dataBonus);
-                }else{
+                    Bonus::updateItem($bonus_id, $dataBonus);
+                } else {
                     $dataBonus['bonus_creater_user_id'] = $this->user_id;
                     $dataBonus['bonus_creater_user_name'] = $this->user_name;
                     $dataBonus['bonus_creater_time'] = time();
@@ -170,41 +189,47 @@ class BonusPersonController extends BaseAdminController
 
                 //thông tin view list\
                 $dataList = array();
-                if($data['bonus_type'] == Define::BONUS_KHEN_THUONG){
-                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
-                }elseif($data['bonus_type'] == Define::BONUS_DANH_HIEU){
-                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
-                }else{
-                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
+                if ($data['bonus_type'] == Define::BONUS_KHEN_THUONG) {
+                    $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
+                } elseif ($data['bonus_type'] == Define::BONUS_DANH_HIEU) {
+                    $dataList = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
+                } else {
+                    $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
                 }
 
                 //thông tin template
-                if($data['bonus_type'] == Define::BONUS_KHEN_THUONG){
+                $arrType = array();
+                if ($data['bonus_type'] == Define::BONUS_KHEN_THUONG) {
                     $template = 'khenThuongList';
                     $nameTem = 'khen thưởng';
-                }elseif($data['bonus_type'] == Define::BONUS_DANH_HIEU){
+                    $arrType = HrDefine::getArrayByType(Define::khen_thuong);
+                } elseif ($data['bonus_type'] == Define::BONUS_DANH_HIEU) {
                     $template = 'danhHieuList';
                     $nameTem = 'danh hiệu';
-                }else{
+                    $arrType = HrDefine::getArrayByType(Define::danh_hieu);
+                } else {
                     $template = 'kyLuatList';
                     $nameTem = 'kỷ luật';
+                    $arrType = HrDefine::getArrayByType(Define::ky_luat);
                 }
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
-                $html = view('hr.BonusPerson.'.$template, array_merge([
+                $html = view('hr.BonusPerson.' . $template, array_merge([
                     'person_id' => $person_id,
                     'dataList' => $dataList,
                     'total' => count($dataList),
                     'nameTem' => $nameTem,
+                    'arrType' => $arrType,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
-            }else{
-                $arrData = ['intReturn' => 0, 'msg' => 'Lỗi cập nhật'.$person_id];
+            } else {
+                $arrData = ['intReturn' => 0, 'msg' => 'Lỗi cập nhật' . $person_id];
             }
         }
         return response()->json($arrData);
     }
+
     public function deleteBonus()
     {
         //Check phan quyen.
@@ -222,32 +247,37 @@ class BonusPersonController extends BaseAdminController
             $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
             //thông tin view list\
             $dataList = array();
-            if($typeAction == Define::BONUS_KHEN_THUONG){
-                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
-            }elseif($typeAction == Define::BONUS_DANH_HIEU){
-                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
-            }else{
-                $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
+            if ($typeAction == Define::BONUS_KHEN_THUONG) {
+                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
+            } elseif ($typeAction == Define::BONUS_DANH_HIEU) {
+                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
+            } else {
+                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
             }
 
             //thông tin template
-            if($typeAction == Define::BONUS_KHEN_THUONG){
+            $arrType = array();
+            if ($typeAction == Define::BONUS_KHEN_THUONG) {
                 $template = 'khenThuongList';
                 $nameTem = 'khen thưởng';
-            }elseif($typeAction == Define::BONUS_DANH_HIEU){
+                $arrType = HrDefine::getArrayByType(Define::khen_thuong);
+            } elseif ($typeAction == Define::BONUS_DANH_HIEU) {
                 $template = 'danhHieuList';
                 $nameTem = 'danh hiệu';
-            }else{
+                $arrType = HrDefine::getArrayByType(Define::danh_hieu);
+            } else {
                 $template = 'kyLuatList';
                 $nameTem = 'kỷ luật';
+                $arrType = HrDefine::getArrayByType(Define::ky_luat);
             }
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
-            $html = view('hr.BonusPerson.'.$template, array_merge([
+            $html = view('hr.BonusPerson.' . $template, array_merge([
                 'person_id' => $person_id,
                 'dataList' => $dataList,
                 'total' => count($dataList),
                 'nameTem' => $nameTem,
+                'arrType' => $arrType,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
         }

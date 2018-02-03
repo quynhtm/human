@@ -17,8 +17,8 @@
         @foreach ($dataList as $key3 => $item3)
             <tr>
                 <td class="text-center middle">{{ $key3+1 }}</td>
-                <td>{{ $item3['bonus_define_id'] }}</td>
-                <td class="text-center middle"> @if($item3['bonus_year'] != ''){{date('d-m-Y',$item3['bonus_year'])}}@endif</td>
+                <td>@if(isset($arrType[$item3['bonus_define_id']])){{ $arrType[$item3['bonus_define_id']] }}@endif</td>
+                <td class="text-center middle"> {{ $item3['bonus_year'] }}</td>
                 <td class="text-center middle">{{$item3['bonus_decision']}}</td>
                 <td class="text-center middle">{{$item3['bonus_note']}}</td>
                 <td class="text-center middle">

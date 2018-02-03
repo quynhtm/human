@@ -22,7 +22,7 @@
             <div class="form-group">
                 <label for="name" class="control-label">Khen thưởng<span class="red"> (*) </span></label>
                 <select name="bonus_define_id" id="bonus_define_id"  class="form-control input-sm input-required">
-                    {!! $optionShow !!}
+                    {!! $optionType !!}
                 </select>
             </div>
         </div>
@@ -30,7 +30,7 @@
             <div class="form-group">
                 <label for="name" class="control-label">Năm đạt<span class="red"> (*) </span></label>
                 <select name="bonus_year"id="bonus_year" class="form-control input-sm input-required">
-                    {!! $optionShow !!}
+                    {!! $optionYears !!}
                 </select>
             </div>
         </div>

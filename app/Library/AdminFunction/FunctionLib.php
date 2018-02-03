@@ -1148,4 +1148,16 @@ html;
         }
         return time();
     }
+
+    public static function getListYears()
+    {
+        $yearNow = (int)date('Y', time());
+        $yearMin = $yearNow - 80;
+        $arrYear = [];
+        for ($year = $yearMin; $year <= $yearNow; $year++) {
+            $arrYear[$year] = $year;
+        }
+        krsort($arrYear);
+        return $arrYear;
+    }
 }
