@@ -39,7 +39,7 @@
                     </div>
                     {{ Form::close() }}
                     @if($is_boss == 1)
-                    <form id="formAdd" method="post" enctype="multipart/form-data" action="{{URL::route('hr.importDataToExcel')}}">
+                    <form id="formAdd" class="importExcelDefine" method="post" enctype="multipart/form-data" action="{{URL::route('hr.importDataToExcel')}}">
                         <input type="file" name="file_excel_define" id="file_excel_define">
                         <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
                             <i class="fa fa-search"></i> Import Excel

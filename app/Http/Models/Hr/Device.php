@@ -126,9 +126,22 @@ class Device extends BaseModel{
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Device::where('device_id','>',0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+            if (isset($dataSearch['device_name']) && $dataSearch['device_name'] != '') {
+                $query->where('device_name','LIKE', '%' . $dataSearch['device_name'] . '%');
             }
+            if (isset($dataSearch['device_status']) && $dataSearch['device_status'] != -1) {
+                $query->where('device_status',$dataSearch['device_status']);
+            }
+            if (isset($dataSearch['device_type']) && $dataSearch['device_type'] != -1) {
+                $query->where('device_type',$dataSearch['device_type']);
+            }
+            if (isset($dataSearch['device_person_id']) && $dataSearch['device_person_id'] > 0) {
+                $query->where('device_person_id', '>', 0);
+            }
+            if (isset($dataSearch['device_person_id']) && $dataSearch['device_person_id'] == 0) {
+                $query->where('device_person_id', 0);
+            }
+
             $total = $query->count();
             $query->orderBy('device_id', 'desc');
 
