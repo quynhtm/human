@@ -65,15 +65,22 @@ class BonusPersonController extends BaseAdminController
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
-        //thông tin hợp đồng
-        $contracts = Bonus::getListContractsByPersonId($person_id);
+        //thông tin khen thưởng
+        $khenthuong = Bonus::getBonusByType(Define::BONUS_KHEN_THUONG);
+
+        //thông tin danh hieu
+        $danhhieu = Bonus::getBonusByType(Define::BONUS_DANH_HIEU);
+
+        //thông tin kỷ luật
+        $kyluat = Bonus::getBonusByType(Define::BONUS_KY_LUAT);
 
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.InfoPerson.contractsView', array_merge([
+        return view('hr.BonusPerson.BonusView', array_merge([
             'person_id' => $person_id,
-            'contracts' => $contracts,
-            'total' => count($contracts),
+            'khenthuong' => $khenthuong,
+            'danhhieu' => $danhhieu,
+            'kyluat' => $kyluat,
             'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }

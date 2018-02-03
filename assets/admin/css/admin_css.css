@@ -293,7 +293,7 @@ body {
     height: 42px;
     width: 104px;
     position: absolute;
-    background: url("../img/login/lg2.png")left top no-repeat!important;
+   /* background: url("../img/login/lg2.png")left top no-repeat!important;*/
     bottom: 25px;
     left: 150px;
 }
@@ -449,3 +449,4 @@ th {
 .marginTop5{
     margin-top: 5px;
 }
+.block_title{ font-weight: bold; font-size: 20px; color: #0ba1b5}
