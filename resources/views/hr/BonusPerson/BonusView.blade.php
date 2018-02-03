@@ -27,56 +27,59 @@
 
                     <div class="marginTop20">
                         <div class="block_title">KHEN THƯỞNG</div>
-                        <div class="span clearfix"> @if(count($khenthuong) >0) Có tổng số <b>{{count($khenthuong)}}</b> khen thưởng @endif </div>
-                        <table class="table table-bordered table-hover">
-                            <thead class="thin-border-bottom">
-                            <tr class="">
-                                <th width="5%" class="text-center">STT</th>
-                                <th width="20%">Thành tích</th>
-                                <th width="10%">Năm đạt</th>
-                                <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                <th width="10%" class="text-center">Thưởng</th>
-                                <th width="30%" class="text-center">Ghi chú</th>
-                                <th width="5%" class="text-center">Xóa</th>
-                            </tr>
-                            </thead>
-                            @if(sizeof($khenthuong) > 0)
-                                <tbody>
-                                @foreach ($khenthuong as $key => $item)
-                                    <tr>
-                                        <td class="text-center middle">{{ $key+1 }}</td>
-                                        <td class="text-center middle">{{ $item['contracts_type_define_name'] }}</td>
-                                        <td class="text-center middle">{{ $item['contracts_payment_define_name'] }}</td>
-                                        <td class="text-center middle">{{$item['contracts_code']}}</td>
-                                        <td class="text-center middle">{{ number_format($item['contracts_money'])}}</td>
-                                        <td class="text-center middle">{{date('d-m-Y',$item['contracts_sign_day'])}}</td>
-                                        <td class="text-center middle">
-                                            @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item['contracts_person_id'])}}','{{FunctionLib::inputId($item['contracts_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
-                                            @endif
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            @else
-                                <tr>
-                                    <td colspan="7"> Chưa có dữ liệu</td>
+                        <div id="div_list_khenthuong">
+                            <div class="span clearfix"> @if(count($khenthuong) >0) Có tổng số <b>{{count($khenthuong)}}</b> khen thưởng @endif </div>
+                            <table class="table table-bordered table-hover">
+                                <thead class="thin-border-bottom">
+                                <tr class="">
+                                    <th width="5%" class="text-center">STT</th>
+                                    <th width="20%">Thành tích</th>
+                                    <th width="10%" class="text-center">Năm đạt</th>
+                                    <th width="20%" class="text-center">Quyết định đính kèm</th>
+                                    <th width="10%" class="text-center">Thưởng</th>
+                                    <th width="30%" class="text-center">Ghi chú</th>
+                                    <th width="5%" class="text-center">Xóa</th>
                                 </tr>
-                            @endif
-                        </table>
-                        <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
+                                </thead>
+                                @if(sizeof($khenthuong) > 0)
+                                    <tbody>
+                                    @foreach ($khenthuong as $key => $item)
+                                        <tr>
+                                            <td class="text-center middle">{{ $key+1 }}</td>
+                                            <td>{{ $item['bonus_define_id'] }}</td>
+                                            <td class="text-center middle"> @if($item['bonus_year'] != ''){{date('d-m-Y',$item['bonus_year'])}}@endif</td>
+                                            <td class="text-center middle">{{$item['bonus_decision']}}</td>
+                                            <td class="text-center middle">{{ number_format($item['bonus_number'])}}</td>
+                                            <td class="text-center middle">{{$item['bonus_note']}}</td>
+                                            <td class="text-center middle">
+                                                @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
+                                                    <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item['bonus_person_id'])}}','{{FunctionLib::inputId($item['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                @else
+                                    <tr>
+                                        <td colspan="7"> Chưa có dữ liệu</td>
+                                    </tr>
+                                @endif
+                            </table>
+                        </div>
+                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',1)"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
                     </div>
 
                     {{----danh hiệu--}}
                     <div class="marginTop20">
                         <div class="block_title">DANH HIỆU</div>
-                        <div class="span clearfix"> @if(count($danhhieu) >0) Có tổng số <b>{{count($danhhieu)}}</b> danh hiệu @endif </div>
-                        <table class="table table-bordered table-hover">
+                        <div id="div_list_danhhieu">
+                            <div class="span clearfix"> @if(count($danhhieu) >0) Có tổng số <b>{{count($danhhieu)}}</b> danh hiệu @endif </div>
+                            <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">STT</th>
                                 <th width="30%">Danh hiệu</th>
-                                <th width="10%">Năm đạt</th>
+                                <th width="10%" class="text-center">Năm đạt</th>
                                 <th width="20%" class="text-center">Quyết định đính kèm</th>
                                 <th width="30%" class="text-center">Ghi chú</th>
                                 <th width="5%" class="text-center">Xóa</th>
@@ -87,14 +90,13 @@
                                 @foreach ($danhhieu as $key2 => $item2)
                                     <tr>
                                         <td class="text-center middle">{{ $key2+1 }}</td>
-                                        <td class="text-center middle">{{ $item2['contracts_type_define_name'] }}</td>
-                                        <td class="text-center middle">{{ $item2['contracts_payment_define_name'] }}</td>
-                                        <td class="text-center middle">{{$item2['contracts_code']}}</td>
-                                        <td class="text-center middle">{{ number_format($item2['contracts_money'])}}</td>
-                                        <td class="text-center middle">{{date('d-m-Y',$item2['contracts_sign_day'])}}</td>
+                                        <td>{{ $item2['bonus_define_id'] }}</td>
+                                        <td class="text-center middle"> @if($item2['bonus_year'] != ''){{date('d-m-Y',$item2['bonus_year'])}}@endif</td>
+                                        <td class="text-center middle">{{$item2['bonus_decision']}}</td>
+                                        <td class="text-center middle">{{$item2['bonus_note']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item2['contracts_person_id'])}}','{{FunctionLib::inputId($item2['contracts_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -106,19 +108,21 @@
                                 </tr>
                             @endif
                         </table>
+                        </div>
                         <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới danh hiệu</a>
                     </div>
 
                     {{----Kỷ luật--}}
                     <div class="marginTop20">
                         <div class="block_title">KỶ LUẬT</div>
-                        <div class="span clearfix"> @if(count($kyluat) >0) Có tổng số <b>{{count($kyluat)}}</b> kỷ luật @endif </div>
-                        <table class="table table-bordered table-hover">
+                        <div id="div_list_kyluat">
+                            <div class="span clearfix"> @if(count($kyluat) >0) Có tổng số <b>{{count($kyluat)}}</b> kỷ luật @endif </div>
+                            <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">STT</th>
                                 <th width="30%">Hình thức</th>
-                                <th width="10%">Năm bị kỷ luật</th>
+                                <th width="10%" class="text-center">Năm bị kỷ luật</th>
                                 <th width="20%" class="text-center">Quyết định đính kèm</th>
                                 <th width="30%" class="text-center">Ghi chú</th>
                                 <th width="5%" class="text-center">Xóa</th>
@@ -129,13 +133,13 @@
                                 @foreach ($kyluat as $key3 => $item3)
                                     <tr>
                                         <td class="text-center middle">{{ $key3+1 }}</td>
-                                        <td class="text-center middle">{{ $item3['contracts_type_define_name'] }}</td>
-                                        <td class="text-center middle">{{ $item3['contracts_payment_define_name'] }}</td>
-                                        <td class="text-center middle">{{ number_format($item3['contracts_money'])}}</td>
-                                        <td class="text-center middle">{{date('d-m-Y',$item3['contracts_sign_day'])}}</td>
+                                        <td>{{ $item['bonus_define_id'] }}</td>
+                                        <td class="text-center middle"> @if($item3['bonus_year'] != ''){{date('d-m-Y',$item3['bonus_year'])}}@endif</td>
+                                        <td class="text-center middle">{{$item3['bonus_decision']}}</td>
+                                        <td class="text-center middle">{{$item3['bonus_note']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item3['contracts_person_id'])}}','{{FunctionLib::inputId($item3['contracts_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteComtracts('{{FunctionLib::inputId($item3['bonus_person_id'])}}','{{FunctionLib::inputId($item3['bonus_id'])}}')"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -147,6 +151,7 @@
                                 </tr>
                             @endif
                         </table>
+                        </div>
                         <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới kỷ luật</a>
                     </div>
                 </div>

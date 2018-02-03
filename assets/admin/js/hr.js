@@ -165,11 +165,11 @@ HR = {
     /**
      * QuynhTM add
      */
-    contractsSubmit: function (elementForm, elementInput, btnSubmit) {
+    contractsSubmit: function (elementForm, btnSubmit) {
         $("#loading").fadeIn().fadeOut(10);
         var isError = false;
         var msg = {};
-        $(elementInput).each(function () {
+        $(elementForm+' :input').each(function () {
             var input = $(this);
             if ($(this).hasClass("input-required") && input.val() == '') {
                 msg[$(this).attr("name")] = "※" + $(this).attr("title") + ' không được bỏ trống';
@@ -184,7 +184,7 @@ HR = {
             alert(error_msg);
             return false;
         } else {
-            //$('#'+btnSubmit).attr("disabled", 'true');
+            $('#'+btnSubmit).attr("disabled", 'true');
             var data = HR.getFormData(elementForm);
             var _token = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
@@ -221,5 +221,71 @@ HR = {
                 },
             });
         }
-    }
+    },
+    /**
+     * QuynhTM add use common
+     * @param person_id
+     * @param contracts_id
+     */
+    getAjaxCommonInfoPopup: function (str_person_id, str_object_id, urlAjax,typeAction) {
+        $('#sys_showPopupCommon').modal('show');
+        $('#img_loading').show();
+        $('#sys_show_infor').html('');
+        $.ajax({
+            type: "GET",
+            //url: WEB_ROOT + '/manager/infoPerson/EditContracts',
+            url: WEB_ROOT + '/manager/'+urlAjax,
+            data: {str_person_id: str_person_id, str_object_id: str_object_id, typeAction: typeAction},
+            dataType: 'json',
+            success: function (res) {
+                $('#img_loading').hide();
+                if (res.intReturn == 1) {
+                    $('#sys_show_infor').html(res.html);
+                } else {
+                    alert(res.msg);
+                    $('#sys_showPopupCommon').modal('hide');
+                }
+            }
+        });
+    },
+    submitPopupCommon: function (elementForm, urlAjax, divShow, btnSubmit) {
+        $("#loading").fadeIn().fadeOut(10);
+        var isError = false;
+        var msg = {};
+        $(elementForm+' :input').each(function () {
+            var input = $(this);
+            if ($(this).hasClass("input-required") && input.val() == '') {
+                msg[$(this).attr("name")] = "※" + $(this).attr("title") + ' không được bỏ trống';
+                isError = true;
+            }
+        });
+        if (isError == true) {
+            var error_msg = '';
+            $.each(msg, function (key, value) {
+                error_msg = error_msg + value + "\n";
+            });
+            alert(error_msg);
+            return false;
+        } else {
+            $('#'+btnSubmit).attr("disabled", 'true');
+            var data = HR.getFormData(elementForm);
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            $.ajax({
+                type: 'post',
+                //url: WEB_ROOT + '/manager/infoPerson/PostContracts',
+                url: WEB_ROOT + '/manager/'+urlAjax,
+                data: data,
+                headers: {'X-CSRF-TOKEN': _token},
+                success: function (data) {
+                    $(btnSubmit).removeAttr("disabled");
+                    if ((data.intReturn == 0)) {
+                        alert(data.msg);
+                    } else {
+                        $('#sys_showPopupCommon').modal('hide');
+                        $('#'+divShow).html(data.html);
+                    }
+                },
+            });
+        }
+    },
 }

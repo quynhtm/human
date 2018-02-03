@@ -21,7 +21,7 @@ Route::post('infoPerson/DeleteContracts', array('as' => 'hr.DeleteContracts','us
 /*Thông tin khen thuong*/
 Route::get('bonusPerson/viewBonus/{person_id?}', array('as' => 'hr.viewBonus','uses' => HResources.'\BonusPersonController@viewBonus'));
 Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HResources.'\BonusPersonController@editBonus'));
-Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postpostBonus'));
+Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postBonus'));
 Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
 
 

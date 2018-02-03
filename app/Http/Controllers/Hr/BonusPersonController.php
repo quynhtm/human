@@ -66,13 +66,13 @@ class BonusPersonController extends BaseAdminController
         $infoPerson = Person::getPersonById($person_id);
 
         //thông tin khen thưởng
-        $khenthuong = Bonus::getBonusByType(Define::BONUS_KHEN_THUONG);
+        $khenthuong = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
 
         //thông tin danh hieu
-        $danhhieu = Bonus::getBonusByType(Define::BONUS_DANH_HIEU);
+        $danhhieu = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
 
         //thông tin kỷ luật
-        $kyluat = Bonus::getBonusByType(Define::BONUS_KY_LUAT);
+        $kyluat = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
 
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
@@ -91,11 +91,12 @@ class BonusPersonController extends BaseAdminController
             $arrData['msg'] = 'Bạn không có quyền thao tác';
             return response()->json($arrData);
         }
-        $personId = Request::get('person_id', '');
-        $contractsId = Request::get('contracts_id', '');
+        $personId = Request::get('str_person_id', '');
+        $bonusId = Request::get('str_object_id', '');
+        $typeAction = Request::get('typeAction', '');
 
         $person_id = FunctionLib::outputId($personId);
-        $contracts_id = FunctionLib::outputId($contractsId);
+        $bonus_id = FunctionLib::outputId($bonusId);
 
         $data = array();
         $arrData = ['intReturn' => 0, 'msg' => ''];
@@ -103,17 +104,27 @@ class BonusPersonController extends BaseAdminController
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
-        //thông tin hợp đồng
-        $contracts = Bonus::find($contracts_id);
+        //thông tin chung
+        $bonus = Bonus::find($bonus_id);
+
         //FunctionLib::debug($contracts);
         $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
+
+        if($typeAction == 1){
+            $template = 'khenThuongPopupAdd';
+        }elseif($typeAction == 2){
+            $template = 'danhHieuPopupAdd';
+        }else{
+            $template = 'kyLuatPopupAdd';
+        }
         $this->viewPermission = $this->getPermissionPage();
-        $html = view('hr.BonusPerson.contractsPopupAdd', [
-            'contracts' => $contracts,
+        $html = view('hr.BonusPerson.'.$template, [
+            'bonus' => $bonus,
             'infoPerson' => $infoPerson,
             'optionShow' => $optionShow,
             'person_id' => $person_id,
-            'contracts_id' => $contracts_id,
+            'bonus_id' => $bonus_id,
+            'typeAction' => $typeAction,
         ], $this->viewPermission)->render();
         $arrData['intReturn'] = 1;
         $arrData['html'] = $html;
@@ -128,44 +139,63 @@ class BonusPersonController extends BaseAdminController
         }
         $data = $_POST;
         $person_id = Request::get('person_id', '');
-        $contracts_id = Request::get('contracts_id', '');
-        //$person_id = FunctionLib::outputId($personId);
-        //$contracts_id = FunctionLib::outputId($contractsId);
+        $bonus_id = Request::get('bonus_id', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if($data['contracts_sign_day'] == '' || $data['contracts_effective_date'] == ''){
+        if($data['bonus_decision'] == '' || $data['bonus_note'] == ''){
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         }else{
             if($person_id > 0){
-                $dataBonus = array('contracts_code'=>$data['contracts_code'],
-                    'contracts_type_define_id'=>$data['contracts_type_define_id'],
-                    'contracts_payment_define_id'=>$data['contracts_payment_define_id'],
-                    'contracts_money'=>$data['contracts_money'],
-                    'contracts_describe'=>$data['contracts_describe'],
-                    'contracts_sign_day'=>($data['contracts_sign_day'] != '')? strtotime($data['contracts_sign_day']):'',
-                    'contracts_effective_date'=>($data['contracts_effective_date'] != '')? strtotime($data['contracts_effective_date']):'',
-                    'contracts_person_id'=>$person_id,
+                $dataBonus = array(
+                    'bonus_define_id'=>$data['bonus_define_id'],
+                    'bonus_year'=>$data['bonus_year'],
+                    'bonus_decision'=>$data['bonus_decision'],
+                    'bonus_number'=>$data['bonus_number'],
+                    'bonus_note'=>$data['bonus_note'],
+                    'bonus_person_id'=>$person_id,
                 );
-                if($contracts_id > 0){
-                    $dataBonus['contracts_update_user_id'] = $this->user_id;
-                    $dataBonus['contracts_update_user_name'] = $this->user_name;
-                    $dataBonus['contracts_update_time'] = time();
-                    Bonus::updateItem($contracts_id,$dataBonus);
+                if($bonus_id > 0){
+                    $dataBonus['bonus_update_user_id'] = $this->user_id;
+                    $dataBonus['bonus_update_user_name'] = $this->user_name;
+                    $dataBonus['bonus_update_time'] = time();
+                    Bonus::updateItem($bonus_id,$dataBonus);
                 }else{
-                    $dataBonus['contracts_creater_user_id'] = $this->user_id;
-                    $dataBonus['contracts_creater_user_name'] = $this->user_name;
-                    $dataBonus['contracts_creater_time'] = time();
+                    $dataBonus['bonus_creater_user_id'] = $this->user_id;
+                    $dataBonus['bonus_creater_user_name'] = $this->user_name;
+                    $dataBonus['bonus_creater_time'] = time();
                     Bonus::createItem($dataBonus);
                 }
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
-                //thông tin hợp đồng
-                $contracts = Bonus::getListContractsByPersonId($person_id);
+
+                //thông tin view list\
+                $dataList = array();
+                if($data['bonus_type'] == 1){
+                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KHEN_THUONG);
+                }elseif($data['bonus_type'] == 2){
+                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_DANH_HIEU);
+                }else{
+                    $dataList = Bonus::getBonusByType($person_id,Define::BONUS_KY_LUAT);
+                }
+
+                //thông tin template
+                if($data['bonus_type'] == 1){
+                    $template = 'khenThuongList';
+                    $nameTem = 'khen thưởng';
+                }elseif($data['bonus_type'] == 2){
+                    $template = 'danhHieuList';
+                    $nameTem = 'danh hiệu';
+                }else{
+                    $template = 'kyLuatList';
+                    $nameTem = 'kỷ luật';
+                }
+
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
-                $html = view('hr.BonusPerson.contractsList', array_merge([
+                $html = view('hr.BonusPerson.'.$template, array_merge([
                     'person_id' => $person_id,
-                    'contracts' => $contracts,
-                    'total' => count($contracts)
+                    'dataList' => $dataList,
+                    'total' => count($dataList),
+                    'nameTem' => $nameTem,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
             }else{

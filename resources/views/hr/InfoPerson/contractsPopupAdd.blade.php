@@ -72,7 +72,7 @@
         </div>
         {!! csrf_field() !!}
         <div class="col-sm-6">
-            <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.contractsSubmit('form#form_contracts','form#form_contracts','submitContracts')" id="submitContracts"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+            <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.contractsSubmit('form#form_contracts','submitContracts')" id="submitContracts"><i class="fa fa-floppy-o"></i> Lưu lại</a>
             <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
         </div>
     </div>
