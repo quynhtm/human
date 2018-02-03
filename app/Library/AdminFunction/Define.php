@@ -94,9 +94,9 @@ class Define{
     const STATUS_BLOCK = -2;
 
     //SuperAdmin, Admin, Customer
-    const ROLE_TYPE_SUPER_ADMIN = 1;
-    const ROLE_TYPE_ADMIN = 2;
-    const ROLE_TYPE_CUSTOMER = 3;
+    const ROLE_TYPE_SUPER_ADMIN = 6;
+    const ROLE_TYPE_ADMIN = 7;
+    const ROLE_TYPE_CUSTOMER = 10;
     static $arrUserRole = array(
         Define::ROLE_TYPE_SUPER_ADMIN => 'SuperAdmin',
         Define::ROLE_TYPE_ADMIN => 'Admin',
