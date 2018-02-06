@@ -42,6 +42,7 @@ class Define
     const TABLE_HR_BONUS = 'hr_bonus';//khen thưởng
     const TABLE_HR_RELATIONSHIP = 'hr_relationship';
     const TABLE_HR_CONTRACTS = 'hr_contracts';
+    const TABLE_HR_CURRICULUM_VITAE = 'hr_curriculum_vitae';//lý lịch 2C: thông tin đào tạo, công tác
 
     /***************************************************************************************************************
      * //Memcache

@@ -24,6 +24,12 @@ Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HReso
 Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postBonus'));
 Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
 
+/*Thông tin đào tạo, công tác: lý lịch 2C*/
+Route::get('curriculumVitaePerson/viewCurriculumVitae/{person_id?}', array('as' => 'hr.viewCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@viewCurriculumVitae'));
+Route::get('curriculumVitaePerson/editCurriculumVitae', array('as' => 'hr.editCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@editCurriculumVitae'));
+Route::post('curriculumVitaePerson/postCurriculumVitae', array('as' => 'hr.postCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@postCurriculumVitae'));
+Route::post('curriculumVitaePerson/deleteCurriculumVitae', array('as' => 'hr.deleteCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@deleteCurriculumVitae'));
+
 
 Route::get('infoPerson/viewInfoPersonOther/{person_id?}', array('as' => 'hr.viewInfoPersonOther','uses' => HResources.'\InfoPersonController@viewInfoPersonOther'));
 Route::get('infoPerson/viewTransferWork/{person_id?}', array('as' => 'hr.viewTransferWork','uses' => HResources.'\InfoPersonController@viewTransferWork'));
