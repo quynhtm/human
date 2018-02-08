@@ -31,3 +31,5 @@ Route::group(array('prefix' => 'manager', 'before' => ''), function(){
 Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
+
+Route::get('sentmail/mail',array('as' => 'admin.mail','uses' => 'MailSendController@sentEmail'));

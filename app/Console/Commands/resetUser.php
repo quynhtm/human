@@ -9,6 +9,8 @@ use Illuminate\Console\Command;
 use App\Library\AdminFunction\Define;
 use Illuminate\Support\Facades\DB;
 use App\Http\Models\Hr\Person;
+use App\Mail\MailSystem;
+use Illuminate\Support\Facades\Mail;
 
 class resetUser extends Command{
     protected $signature = 'resetUser';
@@ -19,7 +21,9 @@ class resetUser extends Command{
     }
     public function handle()
     {
-        $dataUpdate['user_last_login'] = time();
+        Mail::to('manhquynh1984@gmail.com')->send(new MailSystem());
+
+        /*$dataUpdate['user_last_login'] = time();
         $dataUpdate['user_edit_name'] = 'cronjob';
         $data = DB::table(Define::TABLE_USER)
             ->where('user_status', '=', Define::STATUS_SHOW)
@@ -29,6 +33,6 @@ class resetUser extends Command{
                 Person::updateItem($user->user_id,$dataUpdate);
             }
             echo 'Co tong: '.count($data).' da cap nhat xong';
-        }
+        }*/
     }
 }

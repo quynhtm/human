@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+        'address' => env('MAIL_FROM_ADDRESS', 'manhquynh1984@gmail.com'),
+        'name' => env('MAIL_FROM_NAME', 'Mạnh Quỳnh đẹp zai gửi cho bạn'),
     ],
 
     /*
@@ -84,9 +84,11 @@ return [
     |
     */
 
-    'username' => env('MAIL_USERNAME'),
+    //'username' => env('MAIL_USERNAME'),
+    'username' =>'manhquynh1984@gmail.com',
 
-    'password' => env('MAIL_PASSWORD'),
+    //'password' => env('MAIL_PASSWORD'),
+    'password' => 'phamhonghao',
 
     /*
     |--------------------------------------------------------------------------
@@ -117,6 +119,17 @@ return [
 
         'paths' => [
             resource_path('views/vendor/mail'),
+        ],
+    ],
+    'mailgun' => [
+        'domain' => 'sandboxd116c1e96ed5421e9c91e6097e1a9a08.mailgun.org',
+        'secret' => 'key-19e80caeaab436fc91e7c75b1b126da6',
+    ],
+    'stream' => [
+        'ssl' => [
+            'allow_self_signed' => true,
+            'verify_peer' => false,
+            'verify_peer_name' => false,
         ],
     ],
 
