@@ -14,20 +14,22 @@ use App\Library\AdminFunction\FunctionLib;
 
 class CurriculumVitae extends BaseModel
 {
-    //protected $table = Define::TABLE_HR_CURRICULUM_VITAE;
-    protected $table = Define::TABLE_HR_BONUS;
-    protected $primaryKey = 'bonus_id';
+    protected $table = Define::TABLE_HR_CURRICULUM_VITAE;
+    protected $primaryKey = 'curriculum_id';
     public $timestamps = false;
-
-    protected $fillable = array('bonus_project', 'bonus_person_id', 'bonus_type', 'bonus_define_id', 'bonus_define_name',
-        'bonus_year', 'bonus_note', 'bonus_decision', 'bonus_number');
+    protected $fillable = array('curriculum_project', 'curriculum_person_id', 'curriculum_type',
+        'curriculum_month_in', 'curriculum_month_out','curriculum_year_in', 'curriculum_year_out',
+        'curriculum_address_train', 'curriculum_classic', 'curriculum_formalities_id', 'curriculum_certificate_id', 'curriculum_training_id',
+        'curriculum_formalities_name','curriculum_certificate_name','curriculum_training_name',
+        'curriculum_name','curriculum_chibo','curriculum_chucvu_id','curriculum_cap_uykiem',
+        'curriculum_desc_history1','curriculum_desc_history2','curriculum_foreign_relations1','curriculum_foreign_relations2');
 
     public static function getCurriculumVitaeByType($person_id, $type = 0)
     {
         if ($person_id > 0 && $type > 0) {
-            $result = CurriculumVitae::where('bonus_type', $type)
-                ->where('bonus_person_id', $person_id)
-                ->orderBy('bonus_id', 'ASC')->get();
+            $result = CurriculumVitae::where('curriculum_type', $type)
+                ->where('curriculum_person_id', $person_id)
+                ->orderBy('curriculum_id', 'ASC')->get();
             return $result;
         }
         return array();
@@ -48,8 +50,8 @@ class CurriculumVitae extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id, $item);
-            return $item->bonus_id;
+            self::removeCache($item->curriculum_id, $item);
+            return $item->curriculum_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -68,7 +70,7 @@ class CurriculumVitae extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id, $item);
+            self::removeCache($item->curriculum_id, $item);
             return true;
         } catch (PDOException $e) {
             //var_dump($e->getMessage());
@@ -101,7 +103,7 @@ class CurriculumVitae extends BaseModel
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->bonus_id, $item);
+            self::removeCache($item->curriculum_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -120,12 +122,12 @@ class CurriculumVitae extends BaseModel
     public static function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
     {
         try {
-            $query = CurriculumVitae::where('bonus_id', '>', 0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
+            $query = CurriculumVitae::where('curriculum_id', '>', 0);
+            if (isset($dataSearch['curriculum_name']) && $dataSearch['curriculum_name'] != '') {
+                $query->where('curriculum_name', 'LIKE', '%' . $dataSearch['curriculum_name'] . '%');
             }
             $total = $query->count();
-            $query->orderBy('bonus_id', 'desc');
+            $query->orderBy('curriculum_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();

@@ -28,17 +28,58 @@
                     <div class="marginTop20">
                         <div class="block_title">ĐÀO TẠO BỒI DƯỠNG VỀ CHUYÊN MÔN NGHIỆP VỤ, LÝ LUÂN CHÍNH TRỊ, NGOẠI NGỮ</div>
                         <div id="div_list_khenthuong">
-                            <div class="span clearfix"> @if(count($khenthuong) >0) Có tổng số <b>{{count($khenthuong)}}</b> khen thưởng @endif </div>
+                            <div class="span clearfix"> <b>Các khóa đào tạo có chuyên nghành trong hệ thống</b></div>
                             <table class="table table-bordered table-hover">
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="5%" class="text-center">STT</th>
-                                    <th width="20%">Thành tích</th>
-                                    <th width="10%" class="text-center">Năm đạt</th>
-                                    <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                    <th width="10%" class="text-center">Thưởng</th>
-                                    <th width="30%" class="text-center">Ghi chú</th>
-                                    <th width="5%" class="text-center">Xóa</th>
+                                    <th width="20%">Tên trường địa điểm</th>
+                                    <th width="10%" class="text-center">Nghành học, lớp học</th>
+                                    <th width="20%" class="text-center">Thời gian học</th>
+                                    <th width="10%" class="text-center">Hình thức học</th>
+                                    <th width="30%" class="text-center">Văn bằng, chứng chỉ, trình độ</th>
+                                    <th width="5%" class="text-center">Thao tác</th>
+                                </tr>
+                                </thead>
+                                @if(sizeof($khenthuong) > 0)
+                                    <tbody>
+                                    @foreach ($khenthuong as $key => $item)
+                                        <tr>
+                                            <td class="text-center middle">{{ $key+1 }}</td>
+                                            <td>@if(isset($arrTypeKhenthuong[$item['bonus_define_id']])){{ $arrTypeKhenthuong[$item['bonus_define_id']] }}@endif</td>
+                                            <td class="text-center middle"> {{ $item['bonus_year'] }}</td>
+                                            <td class="text-center middle">{{$item['bonus_decision']}}</td>
+                                            <td class="text-center middle">{{ number_format($item['bonus_number'])}}</td>
+                                            <td class="text-center middle">{{$item['bonus_note']}}</td>
+                                            <td class="text-center middle">
+                                                @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
+                                                    <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item['bonus_person_id'])}}','{{FunctionLib::inputId($item['bonus_id'])}}','bonusPerson/deleteBonus','div_list_khenthuong',{{\App\Library\AdminFunction\Define::BONUS_KHEN_THUONG}})"><i class="fa fa-trash fa-2x"></i></a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    </tbody>
+                                @else
+                                    <tr>
+                                        <td colspan="7"> Chưa có dữ liệu</td>
+                                    </tr>
+                                @endif
+                            </table>
+                        </div>
+                        <a class="btn btn-success" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_KHEN_THUONG}})"><i class="fa fa-reply"></i> Thêm mới khen thưởng</a>
+
+                        <div id="div_list_khenthuong">
+                            <div class="span clearfix"> <b>Các khóa đào tạo có chuyên nghành khác</b></div>
+                            <table class="table table-bordered table-hover">
+                                <thead class="thin-border-bottom">
+                                <tr class="">
+                                    <th width="5%" class="text-center">STT</th>
+                                    <th width="20%">Tên trường địa điểm</th>
+                                    <th width="10%" class="text-center">Nghành học, lớp học</th>
+                                    <th width="20%" class="text-center">Thời gian học</th>
+                                    <th width="10%" class="text-center">Tổ chức cấp</th>
+                                    <th width="30%" class="text-center">Văn bằng, chứng chỉ, trình độ</th>
+                                    <th width="5%" class="text-center">Thao tác</th>
                                 </tr>
                                 </thead>
                                 @if(sizeof($khenthuong) > 0)
@@ -78,11 +119,9 @@
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">STT</th>
-                                <th width="30%">Danh hiệu</th>
-                                <th width="10%" class="text-center">Năm đạt</th>
-                                <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                <th width="30%" class="text-center">Ghi chú</th>
-                                <th width="5%" class="text-center">Xóa</th>
+                                <th width="20%">Thời gian</th>
+                                <th width="70%" class="text-center">Chức danh, chức vụ, công tác</th>
+                                <th width="5%" class="text-center">Thao tác</th>
                             </tr>
                             </thead>
                             @if(sizeof($danhhieu) > 0)
@@ -90,10 +129,8 @@
                                 @foreach ($danhhieu as $key2 => $item2)
                                     <tr>
                                         <td class="text-center middle">{{ $key2+1 }}</td>
-                                        <td>@if(isset($arrTypeDanhhieu[$item2['bonus_define_id']])){{ $arrTypeDanhhieu[$item2['bonus_define_id']] }}@endif</td>
                                         <td class="text-center middle"> {{ $item2['bonus_year'] }}</td>
                                         <td class="text-center middle">{{$item2['bonus_decision']}}</td>
-                                        <td class="text-center middle">{{$item2['bonus_note']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
                                                 <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
@@ -121,11 +158,11 @@
                             <thead class="thin-border-bottom">
                             <tr class="">
                                 <th width="5%" class="text-center">STT</th>
-                                <th width="30%">Hình thức</th>
-                                <th width="10%" class="text-center">Năm bị kỷ luật</th>
-                                <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                <th width="30%" class="text-center">Ghi chú</th>
-                                <th width="5%" class="text-center">Xóa</th>
+                                <th width="30%">Chi bộ</th>
+                                <th width="10%" class="text-center">Thời gian</th>
+                                <th width="20%" class="text-center">Chức vụ</th>
+                                <th width="30%" class="text-center">Cấp ủy kiêm</th>
+                                <th width="5%" class="text-center">Thao tác</th>
                             </tr>
                             </thead>
                             @if(sizeof($kyluat) > 0)
