@@ -21,8 +21,8 @@
         @foreach ($contracts as $key => $item)
             <tr>
                 <td class="text-center middle">{{ $key+1 }}</td>
-                <td class="text-center middle">{{ $item['contracts_type_define_name'] }}</td>
-                <td class="text-center middle">{{ $item['contracts_payment_define_name'] }}</td>
+                <td class="text-center middle">@if(isset($arrLoaihopdong[$item['contracts_type_define_id']])){{ $arrLoaihopdong[$item['contracts_type_define_id']] }} @endif</td>
+                <td class="text-center middle">@if(isset($arrChedothanhtoan[$item['contracts_payment_define_id']])){{ $arrChedothanhtoan[$item['contracts_payment_define_id']] }} @endif</td>
                 <td class="text-center middle">{{$item['contracts_code']}}</td>
                 <td class="text-center middle">{{ number_format($item['contracts_money'])}}</td>
                 <td class="text-center middle">{{date('d-m-Y',$item['contracts_sign_day'])}}</td>

@@ -21,7 +21,7 @@
             <div class="form-group">
                 <label for="name" class="control-label">Loại hợp đồng<span class="red"> (*) </span></label>
                 <select name="contracts_type_define_id" id="contracts_type_define_id" title = 'Loại hợp đồng' class="form-control input-sm input-required">
-                    {!! $optionShow !!}
+                    {!! $optionTypeContract !!}
                 </select>
             </div>
         </div>
@@ -29,7 +29,7 @@
             <div class="form-group">
                 <label for="name" class="control-label">Chế độ thanh toán (Trả lương)<span class="red"> (*) </span></label>
                 <select name="contracts_payment_define_id" title = 'Chế độ thanh toán (Trả lương)' id="contracts_payment_define_id" class="form-control input-sm input-required">
-                    {!! $optionShow !!}
+                    {!! $optionPayment !!}
                 </select>
             </div>
         </div>

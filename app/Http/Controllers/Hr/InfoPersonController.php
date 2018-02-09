@@ -130,7 +130,6 @@ class InfoPersonController extends BaseAdminController
         $person_id = FunctionLib::outputId($personId);
         $contracts_id = FunctionLib::outputId($contractsId);
 
-        $data = array();
         $arrData = ['intReturn' => 0, 'msg' => ''];
 
         //thong tin nhan sự
@@ -138,13 +137,17 @@ class InfoPersonController extends BaseAdminController
 
         //thông tin hợp đồng
         $contracts = HrContracts::find($contracts_id);
-        //FunctionLib::debug($contracts);
-        $optionShow = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
+
+        $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+        $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
+        $optionPayment = FunctionLib::getOption($arrChedothanhtoan, isset($contracts['contracts_payment_define_id']) ? $contracts['contracts_payment_define_id'] :'');
+        $optionTypeContract = FunctionLib::getOption($arrLoaihopdong, isset($contracts['contracts_type_define_id']) ? $contracts['contracts_type_define_id'] : '');
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.InfoPerson.contractsPopupAdd', [
             'contracts' => $contracts,
             'infoPerson' => $infoPerson,
-            'optionShow' => $optionShow,
+            'optionPayment' => $optionPayment,
+            'optionTypeContract' => $optionTypeContract,
             'person_id' => $person_id,
             'contracts_id' => $contracts_id,
         ], $this->viewPermission)->render();
@@ -195,7 +198,12 @@ class InfoPersonController extends BaseAdminController
                 $contracts = HrContracts::getListContractsByPersonId($person_id);
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
+
+                $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+                $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
                 $html = view('hr.InfoPerson.contractsList', array_merge([
+                    'arrChedothanhtoan' => $arrChedothanhtoan,
+                    'arrLoaihopdong' => $arrLoaihopdong,
                     'person_id' => $person_id,
                     'contracts' => $contracts,
                     'total' => count($contracts)
@@ -225,7 +233,12 @@ class InfoPersonController extends BaseAdminController
             $contracts = HrContracts::getListContractsByPersonId($person_id);
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
+
+            $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+            $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
             $html = view('hr.InfoPerson.contractsList', array_merge([
+                'arrChedothanhtoan' => $arrChedothanhtoan,
+                'arrLoaihopdong' => $arrLoaihopdong,
                 'person_id' => $person_id,
                 'contracts' => $contracts,
                 'total' => count($contracts)
