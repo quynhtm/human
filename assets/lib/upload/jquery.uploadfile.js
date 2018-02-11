@@ -7,7 +7,7 @@
  */
 (function ($) {
     if($.fn.ajaxForm == undefined) {
-        $.getScript(("https:" == document.location.protocol ? "https://" : "http://") + "shopcuatui.com.vn/assets/lib/upload/jquery.form.uploadfile.js");
+        $.getScript(WEB_ROOT + "/assets/lib/upload/jquery.form.uploadfile.js");
     }
     var feature = {};
     feature.fileapi = $("<input type='file'/>").get(0).files !== undefined;

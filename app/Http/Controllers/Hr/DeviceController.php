@@ -15,6 +15,7 @@ use App\Http\Models\Hr\Person;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\Loader;
 use App\Library\AdminFunction\Upload;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
@@ -185,6 +186,14 @@ class DeviceController extends BaseAdminController{
         ],$this->viewPermission));
     }
     public function getItem($ids) {
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadJS('lib/dragsort/jquery.dragsort.js', CGlobal::$POS_HEAD);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+
         $id = FunctionLib::outputId($ids);
 
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){

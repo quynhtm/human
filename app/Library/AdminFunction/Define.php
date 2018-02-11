@@ -188,6 +188,7 @@ class Define
     );
 
     //Folder
+    const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
 
     const sizeImage_80 = 80;

@@ -32,4 +32,9 @@ Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
 
+//Router Ajax
+Route::group(array('prefix' => 'ajax', 'before' => ''), function () {
+    Route::post('upload', array('as' => 'ajax.upload','uses' => 'AjaxUploadController@upload'));
+});
+
 Route::get('sentmail/mail',array('as' => 'admin.mail','uses' => 'MailSendController@sentEmail'));

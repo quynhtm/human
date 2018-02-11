@@ -2,6 +2,7 @@
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Define;
 use App\Library\PHPThumb\ThumbImg;
+use App\Library\AdminFunction\CGlobal;
 ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
@@ -108,12 +109,18 @@ use App\Library\PHPThumb\ThumbImg;
                                         </div>
                                     </div>
                                     <div class="col-md-4">
-                                        <div class="form-group">
-                                            <label>Hình ảnh</label>
-                                            <input type="file" name="device_image" id="device_image">
-                                            @if(isset($data['device_image']) && $data['device_image'] != '')
-                                                <div class="mgt10"><img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $data->device_image, Define::sizeImage_100, Define::sizeImage_100, $alt='', $isThumb=true, $returnPath=true)}}" alt=""></div>
-                                            @endif
+                                        <div class="control-group">
+                                            <label class="control-label">Hình ảnh</label>
+                                            <div class="controls">
+                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadOneImageAdvanced(1);">Upload ảnh</a>
+                                                <div id="sys_show_image_one">
+                                                    @if(isset($data['device_image']) && $data['device_image'] !='')
+                                                        <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $data['device_image'], 300, 0, '', true, true)}}"/>
+                                                    @endif
+                                                </div>
+                                                <input name="img" type="hidden" id="img" @if(isset($data['device_image']))value="{{$data['device_image']}}"@endif>
+                                                <input name="img_old" type="hidden" id="img_old" @if(isset($data['device_image']))value="{{$data['device_image']}}"@endif>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -147,4 +154,31 @@ use App\Library\PHPThumb\ThumbImg;
         </div>
     </div>
 </div>
+<!--Popup Upload Img-->
+<div class="modal fade" id="sys_PopupUploadImgOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Upload ảnh</h4>
+            </div>
+            <div class="modal-body">
+                <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
+                    <div class="form_group">
+                        <div id="sys_show_button_upload">
+                            <div id="sys_mulitplefileuploader" class="btn btn-primary">Upload ảnh</div>
+                        </div>
+                        <div id="status"></div>
+
+                        <div class="clearfix"></div>
+                        <div class="clearfix" style='margin: 5px 10px; width:100%;'>
+                            <div id="div_image"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Popup Upload Img-->
 @stop

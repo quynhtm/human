@@ -118,3 +118,9 @@ span.lbl {
     top: 20%;
     position: relative;
 }
+#sys_show_image_one{
+    margin: 5px 0;
+}
+#sys_show_image_one img{
+    border: 1px solid #ddd;
+}
