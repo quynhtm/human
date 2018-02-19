@@ -24,11 +24,14 @@ Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HReso
 Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postBonus'));
 Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
 
-/*Thông tin đào tạo, công tác: lý lịch 2C*/
+/*
+ * Thông tin đào tạo, công tác: lý lịch 2C
+ */
 Route::get('curriculumVitaePerson/viewCurriculumVitae/{person_id?}', array('as' => 'hr.viewCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@viewCurriculumVitae'));
-Route::get('curriculumVitaePerson/editCurriculumVitae', array('as' => 'hr.editCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@editCurriculumVitae'));
-Route::post('curriculumVitaePerson/postCurriculumVitae', array('as' => 'hr.postCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@postCurriculumVitae'));
-Route::post('curriculumVitaePerson/deleteCurriculumVitae', array('as' => 'hr.deleteCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@deleteCurriculumVitae'));
+/*Quan hệ gia đình*/
+Route::get('curriculumVitaePerson/editFamily', array('as' => 'hr.editFamily','uses' => HResources.'\CurriculumVitaePersonController@editFamily'));
+Route::post('curriculumVitaePerson/postFamily', array('as' => 'hr.postFamily','uses' => HResources.'\CurriculumVitaePersonController@postFamily'));
+Route::post('curriculumVitaePerson/deleteFamily', array('as' => 'hr.deleteFamily','uses' => HResources.'\CurriculumVitaePersonController@deleteFamily'));
 
 
 Route::get('infoPerson/viewInfoPersonOther/{person_id?}', array('as' => 'hr.viewInfoPersonOther','uses' => HResources.'\InfoPersonController@viewInfoPersonOther'));

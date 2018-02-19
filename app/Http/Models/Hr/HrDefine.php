@@ -25,19 +25,21 @@ class HrDefine extends BaseModel
     protected $fillable = array('define_project', 'define_name', 'define_type', 'define_order', 'define_status',
         'creater_time', 'user_id_creater', 'user_name_creater', 'update_time', 'user_id_update', 'user_name_update');
 
-    public static function insertMultiple($dataInput){
+    public static function insertMultiple($dataInput)
+    {
         $define = new HrDefine();
         $str_sql = $define->buildSqlInsertMultiple(Define::TABLE_HR_DEFINE, $dataInput);
-        if(trim($str_sql) != ''){
+        if (trim($str_sql) != '') {
             DB::statement($str_sql);
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 
-    public function buildSqlInsertMultiple($table, $arrInput){
-        if(!empty($arrInput)){
+    public function buildSqlInsertMultiple($table, $arrInput)
+    {
+        if (!empty($arrInput)) {
             $arrSql = array();
             $arrField = array_keys($arrInput[0]);
             foreach ($arrInput as $k => $row) {
@@ -59,6 +61,7 @@ class HrDefine extends BaseModel
         }
         return '';
     }
+
     public static function createItem($data)
     {
         try {
@@ -170,7 +173,7 @@ class HrDefine extends BaseModel
                 $query->where('define_type', $dataSearch['define_type']);
             }
             $total = $query->count();
-            $query->orderBy('define_order','asc');
+            $query->orderBy('define_order', 'asc');
 
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
             if ($limit > 0) {
@@ -195,12 +198,13 @@ class HrDefine extends BaseModel
     public static function getArrayByType($define_type = 0)
     {
         $listDefine = self::getDataDefine();
-        $result = ($define_type > 0 && isset($listDefine[$define_type]))?$listDefine[$define_type]: array();
+        $result = ($define_type > 0 && isset($listDefine[$define_type])) ? $listDefine[$define_type] : array();
         return $result;
     }
 
     //QuynhTM add
-    public static function getDataDefine(){
+    public static function getDataDefine()
+    {
         $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_DEFINED_ALL) : array();
         try {
             if (empty($result)) {

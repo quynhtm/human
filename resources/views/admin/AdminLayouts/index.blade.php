@@ -99,17 +99,29 @@
         </div>
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
-                <li class="light-blue" style="display: none">
+                <li class="light-blue">
+                    <a class="dropdown-toggle" href="#">
+                        <i class="fa fa-envelope-o fa-2x marginTop5" aria-hidden="true">
+                            <span class="msg_notify">3</span>
+                        </i>
+                    </a>
+                </li>
+                <li class="light-blue">
+                    <a class="dropdown-toggle" href="#">
+                        <i class="fa fa-bell-o fa-2x marginTop5" aria-hidden="true">
+                            <span class="msg_notify">13</span>
+                        </i>
+                    </a>
+                </li>
+                <li class="light-blue">
                     <a data-toggle="dropdown" href="#" class="dropdown-toggle">
                         @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/vi.png"/>
-                            Viet Nam
                         @else
                             <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/en.png"/>
-                            English
                         @endif
                     </a>
-                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
+                    <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" style="display: none">
                         @if(isset($languageSite) && $languageSite == Define::ENGLISH_LANGUAGE)
                             <li>
                                 <a href="{{URL::route('admin.dashboard',array('lang'=>Define::VIETNAM_LANGUAGE))}}">

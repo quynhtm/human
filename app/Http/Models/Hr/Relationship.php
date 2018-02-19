@@ -19,6 +19,16 @@ class Relationship extends BaseModel
     protected $fillable = array('relationship_project', 'relationship_person_id', 'relationship_define_id', 'relationship_define_name', 'relationship_year_birth',
         'relationship_describe', 'relationship_human_name');
 
+    public static function getRelationshipByPersonId($person_id)
+    {
+        if ($person_id > 0) {
+            $result = Relationship::where('relationship_person_id', $person_id)
+                ->orderBy('relationship_id', 'ASC')->get();
+            return $result;
+        }
+        return array();
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -120,4 +130,6 @@ class Relationship extends BaseModel
             throw new PDOException();
         }
     }
+
+
 }
