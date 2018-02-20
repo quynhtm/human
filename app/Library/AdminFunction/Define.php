@@ -193,6 +193,9 @@ class Define
         Define::loai_phu_cap => 'Loại phụ cấp',
         Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
         Define::loai_thiet_bi => 'Loại thiết bị',
+        Define::che_do_thanh_toan => 'Chế độ thanh toán',
+        Define::hinh_thuc_hoc => 'Hình thức học',
+        Define::chuyen_nghanh_dao_tao => 'Chuyên nghành đào tạo',
     );
 
     //Folder
