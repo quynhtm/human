@@ -39,13 +39,15 @@ use App\Library\AdminFunction\CGlobal;
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm adminFormDevidetAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Người nhận(<span class="clred">*</span>)</label>
                                             <input class="form-control input-sm input-required" title="Người nhận" id="hr_document_person_recive" name="hr_document_person_recive" @isset($data['hr_document_person_recive'])value="{{$data['hr_document_person_recive']}}"@endif type="text">
                                         </div>
                                     </div>
-                                    <div class="col-md-4">
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Chủ đề thư, tin nhắn(<span class="clred">*</span>)</label>
                                             <input class="form-control input-sm input-required" title="Tên thư, tin nhắn" id="hr_document_name" name="hr_document_name" @isset($data['hr_document_name'])value="{{$data['hr_document_name']}}"@endif type="text">

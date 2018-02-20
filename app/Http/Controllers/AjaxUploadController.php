@@ -381,4 +381,85 @@ class AjaxUploadController extends BaseAdminController{
 		$aryData['msg'] = "Data exists!";
 		return $aryData;
 	}
+
+	//Upload document
+	function upload_ext() {
+		$id_hiden =  Request::get('id', 0);
+		$type = Request::get('type', 1);
+		$dataFile = $_FILES["multipleFile"];
+		$aryData = array();
+		$aryData['intIsOK'] = -1;
+		$aryData['msg'] = "Data not exists!";
+
+		switch( $type ){
+			case 10 ://File Document
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_DOCUMENT, $type);
+				break;
+			default:
+				break;
+		}
+		echo json_encode($aryData);
+		exit();
+	}
+	function uploadDocumentToFolder($dataImg, $id_hiden, $folder, $type){
+		$aryData = array();
+		$aryData['intIsOK'] = -1;
+		$aryData['msg'] = "Upload file!";
+		$item_id = 0;
+		$name_key = 0;
+		if (!empty($dataImg)) {
+			if($id_hiden == 0){
+
+				switch($type){
+					case 10://File document
+						$new_row['news_create'] = time();
+						$new_row['news_status'] = CGlobal::IMAGE_ERROR;
+						$item_id = News::addData($new_row);
+						break;
+					default:
+						break;
+				}
+			}elseif($id_hiden > 0){
+				$item_id = $id_hiden;
+			}
+			if($item_id > 0){
+				$aryError = $tmpImg = array();
+				$file_name = Upload::uploadFile('multipleFile',
+					$_file_ext = 'xls,xlsx,doc,docx,pdf,rar,zip,tar,mp4,flv,avi,3gp,mov',
+					$_max_file_size = 50*1024*1024,
+					$_folder = $folder.'/'.$item_id,
+					$type_json=0);
+				if($file_name != '' && empty($aryError)) {
+					$tmpImg['name_file'] = $file_name;
+					$tmpImg['id_key'] = rand(10000, 99999);
+
+					switch($type){
+						case 10://File Document
+							$result = News::getNewByID($item_id);
+							if($result != null){
+								$arr_file = ($result->news_files != '') ? unserialize($result->news_files) : array();
+								$arr_file[] = $file_name;
+								$new_row['news_files'] = serialize($arr_file);
+								News::updateData($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
+						default:
+							break;
+					}
+
+					$aryData['intIsOK'] = 1;
+					$aryData['id_item'] = $item_id;
+					$aryData['info'] = $tmpImg;
+				}
+			}
+		}
+		return $aryData;
+	}
 }
