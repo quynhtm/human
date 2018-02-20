@@ -43,6 +43,7 @@ class Define
     const TABLE_HR_RELATIONSHIP = 'hr_relationship';
     const TABLE_HR_CONTRACTS = 'hr_contracts';
     const TABLE_HR_CURRICULUM_VITAE = 'hr_curriculum_vitae';//lý lịch 2C: thông tin đào tạo, công tác
+    const TABLE_HR_DOCUMENT = 'hr_document';// mail, van ban
 
     /***************************************************************************************************************
      * //Memcache
@@ -84,6 +85,7 @@ class Define
     const CACHE_DEFINED_TYPE = 'cache_defined_type_';
     const CACHE_DEFINED_ALL = 'cache_defined_all';
     const CACHE_DEVICE_ID = 'cache_device_id_';
+    const CACHE_HR_DOCUMENT_ID = 'cache_hr_document_id_';
     /***************************************************************************************************************
      * //Define
      ***************************************************************************************************************/
@@ -196,6 +198,7 @@ class Define
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
+    const FOLDER_DOCUMENT = 'document';
 
     const sizeImage_80 = 80;
     const sizeImage_100 = 100;

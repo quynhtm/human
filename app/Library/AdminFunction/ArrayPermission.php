@@ -63,10 +63,10 @@ class ArrayPermission{
         //quyền dự án SMS
         /***********************************************************************************************************************/
         /*private $permission_view = 'waittingSms_view';
-    private $permission_full = 'waittingSms_full';
-    private $permission_delete = 'waittingSms_delete';
-    private $permission_create = 'waittingSms_create';
-    private $permission_edit = 'waittingSms_edit';*/
+        private $permission_full = 'waittingSms_full';
+        private $permission_delete = 'waittingSms_delete';
+        private $permission_create = 'waittingSms_create';
+        private $permission_edit = 'waittingSms_edit';*/
         /***********************************************************************************************************************/
 
         'waittingSms_full' => array('name_permit'=>'Full waittingSms','group_permit'=>'Quyền waittingSms'),
@@ -133,6 +133,12 @@ class ArrayPermission{
         'carrierSetting_delete' => array('name_permit'=>'Xóa nhà mạng','group_permit'=>'Quyền nhà mạng'),
         'carrierSetting_create' => array('name_permit'=>'Tạo nhà mạng','group_permit'=>'Quyền nhà mạng'),
         'carrierSetting_edit' => array('name_permit'=>'Sửa nhà mạng','group_permit'=>'Quyền nhà mạng'),
+
+        'hr_document_full' => array('name_permit'=>'Full văn bản','group_permit'=>'Quyền văn bản'),
+        'hr_document_view' => array('name_permit'=>'Xem văn bản','group_permit'=>'Quyền văn bản'),
+        'hr_document_delete' => array('name_permit'=>'Xóa văn bản','group_permit'=>'Quyền văn bản'),
+        'hr_document_create' => array('name_permit'=>'Tạo văn bản','group_permit'=>'Quyền văn bản'),
+        'hr_document_edit' => array('name_permit'=>'Sửa văn bản','group_permit'=>'Quyền văn bản'),
     );
 
 }
