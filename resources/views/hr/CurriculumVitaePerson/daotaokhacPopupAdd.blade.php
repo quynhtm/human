@@ -3,7 +3,7 @@
 
 <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-    <h4 class="modal-title" id="myModalLabel">Thông tin khen thưởng</h4>
+    <h4 class="modal-title" id="myModalLabel">Thêm mới chứng chỉ, văn bằng khác</h4>
 </div>
 <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/ajax-loader.gif" width="20" style="display: none" id="img_loading_district">
 <div class="modal-body">
@@ -14,55 +14,79 @@
     @endif
     <hr>
     <form method="POST" action="" role="form" id="form_poup_ajax">
-        <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
-        <input type="hidden" name="bonus_id" id="bonus_id" value="{{$bonus_id}}">
-        <input type="hidden" name="bonus_type" id="bonus_type" value="{{$typeAction}}">
+        <input type="hidden" name="curriculum_person_id" id="curriculum_person_id" value="{{$person_id}}">
+        <input type="hidden" name="curriculum_id" id="curriculum_id" value="{{$curriculum_id}}">
+        <input type="hidden" name="curriculum_type" id="curriculum_type" value="{{$typeAction}}">
         <div class="row">
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label for="name" class="control-label">Khen thưởng<span class="red"> (*) </span></label>
-                <select name="bonus_define_id" id="bonus_define_id"  class="form-control input-sm input-required">
-                    {!! $optionType !!}
-                </select>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Nơi đào tạo<span class="red"> (*) </span></label>
+                    <input type="text" id="curriculum_address_train" name="curriculum_address_train" class="form-control input-sm input-required"
+                           value="@if(isset($curriculum->curriculum_address_train)){{$curriculum->curriculum_address_train}}@endif">
+                </div>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label for="name" class="control-label">Năm đạt<span class="red"> (*) </span></label>
-                <select name="bonus_year"id="bonus_year" class="form-control input-sm input-required">
-                    {!! $optionYears !!}
-                </select>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Tổ chức cấp bằng <span class="red"> (*) </span></label>
+                    <input type="text" id="curriculum_formalities_name" name="curriculum_formalities_name" class="form-control input-sm input-required"
+                           value="@if(isset($curriculum->curriculum_formalities_name)){{$curriculum->curriculum_formalities_name}}@endif">
+                </div>
             </div>
-        </div>
 
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label for="name" class="control-label">Quyết định kèm theo</label>
-                <input type="text" id="bonus_decision" name="bonus_decision" class="form-control input-sm"
-                       value="@if(isset($bonus->bonus_decision)){{$bonus->bonus_decision}}@endif">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Văn bằng, Chứng chỉ<span class="red"> (*) </span></label>
+                    <input type="text" id="curriculum_certificate_name" name="curriculum_certificate_name" class="form-control input-sm input-required"
+                           value="@if(isset($curriculum->curriculum_certificate_name)){{$curriculum->curriculum_certificate_name}}@endif">
+                </div>
             </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="form-group">
-                <label for="name" class="control-label">Thưởng</label>
-                <input type="text" id="bonus_number" name="bonus_number"
-                       class="form-control input-sm" value="@if(isset($bonus->bonus_number)){{$bonus->bonus_number}}@endif">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Chuyên nghành</label>
+                    <input type="text" id="curriculum_training_name" name="curriculum_training_name" class="form-control input-sm input-required"
+                           value="@if(isset($curriculum->curriculum_training_name)){{$curriculum->curriculum_training_name}}@endif">
+                </div>
             </div>
-        </div>
 
-        <div class="col-sm-12">
-            <div class="form-group">
-                <label for="name" class="control-label">Ghi chú</label>
-                <input type="text" id="bonus_note" name="bonus_note"
-                       class="form-control input-sm"
-                       value="@if(isset($bonus->bonus_note)){{$bonus->bonus_note}}@endif">
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Thời gian đào tạo<span class="red"> (*) </span></label>
+                    <select name="curriculum_month_in" id="curriculum_month_in"  class="form-control input-sm input-required">
+                        {!! $optionMonthIn !!}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Năm<span class="red"> (*) </span></label>
+                    <select name="curriculum_year_in"id="curriculum_year_in" class="form-control input-sm input-required">
+                        {!! $optionYearsIn !!}
+                    </select>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Đến tháng</label>
+                    <select name="curriculum_month_out" id="curriculum_month_out"  class="form-control input-sm">
+                        {!! $optionMonthOut !!}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label for="name" class="control-label">Năm</label>
+                    <select name="curriculum_year_out"id="curriculum_year_out" class="form-control input-sm">
+                        {!! $optionYearsOut !!}
+                    </select>
+                </div>
+            </div>
+
+            {!! csrf_field() !!}
+            <div class="col-sm-6">
+                <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.submitPopupCommon('form#form_poup_ajax','curriculumVitaePerson/postStudy','div_dao_tao_khac','submitPopup')" id="submitPopup"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+                <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
             </div>
         </div>
-        {!! csrf_field() !!}
-        <div class="col-sm-6">
-            <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.submitPopupCommon('form#form_poup_ajax','bonusPerson/postBonus','div_list_khenthuong','submitPopup')" id="submitPopup"><i class="fa fa-floppy-o"></i> Lưu lại</a>
-            <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
-        </div>
-    </div>
     </form>
 </div>

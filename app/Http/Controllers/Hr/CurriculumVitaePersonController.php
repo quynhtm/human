@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Hr\Person;
-use App\Http\Models\Hr\Bonus;
+use App\Http\Models\Hr\CurriculumVitae;
 use App\Http\Models\Hr\Relationship;
 
 use App\Library\AdminFunction\FunctionLib;
@@ -69,37 +68,217 @@ class CurriculumVitaePersonController extends BaseAdminController
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
-        //thông tin khen thưởng
-        $khenthuong = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
-        $arrTypeKhenthuong = HrDefine::getArrayByType(Define::khen_thuong);
-        //thông tin danh hieu
-        $danhhieu = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
-        $arrTypeDanhhieu = HrDefine::getArrayByType(Define::danh_hieu);
+        //Quá trình đào tạo
+        $quatrinhdaotao = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_DAO_TAO);
 
-        //thông tin kỷ luật
-        $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
-        $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
+        //van bang chung chi khac
+        $vanbangchungchikhac = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
 
         //quan he gia dinh
         $quanhegiadinh = Relationship::getRelationshipByPersonId($person_id);
         $arrQuanHeGiaDinh = HrDefine::getArrayByType(Define::quan_he_gia_dinh);
 
+        //common
+        $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+        $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+        $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.CurriculumVitaePerson.CurriculumVitaeView', array_merge([
             'person_id' => $person_id,
-
-            'khenthuong' => $khenthuong,
-            'danhhieu' => $danhhieu,
-            'kyluat' => $kyluat,
-            'arrTypeKhenthuong' => $arrTypeKhenthuong,
-            'arrTypeDanhhieu' => $arrTypeDanhhieu,
-            'arrTypeKyluat' => $arrTypeKyluat,
-
             'infoPerson' => $infoPerson,
+            'arrVanBangChungChi' => $arrVanBangChungChi,
+            'arrHinhThucHoc' => $arrHinhThucHoc,
+            'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+
+            'quatrinhdaotao' => $quatrinhdaotao,
+            'vanbangchungchikhac' => $vanbangchungchikhac,
+
             'quanhegiadinh' => $quanhegiadinh,
             'arrQuanHeGiaDinh' => $arrQuanHeGiaDinh,
         ], $this->viewPermission));
+    }
+
+    /************************************************************************************************************************************
+     * Quá trình công tác,học tập
+     ************************************************************************************************************************************/
+    public function editStudy()
+    {
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->personCurriculumVitaeFull, $this->permission) && !in_array($this->personCurriculumVitaeCreate, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
+        $personId = Request::get('str_person_id', '');
+        $curriculumId = Request::get('str_object_id', '');
+        $typeAction = Request::get('typeAction', '');
+
+        $person_id = FunctionLib::outputId($personId);
+        $curriculum_id = FunctionLib::outputId($curriculumId);
+        //thông tin chung
+        $curriculum = CurriculumVitae::find($curriculum_id);
+
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
+
+        $template = '';
+        if ($typeAction == Define::CURRICULUMVITAE_DAO_TAO) {
+            $template = 'daotaodaihanPopupAdd';
+        } elseif ($typeAction == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
+            $template = 'daotaokhacPopupAdd';
+        } else {
+            $template = 'kyLuatPopupAdd';
+        }
+
+        $arrMonth = FunctionLib::getListMonth();
+        $arrYears = FunctionLib::getListYears();
+
+        $optionMonthIn = FunctionLib::getOption($arrMonth, isset($curriculum['curriculum_month_in']) ? $curriculum['curriculum_month_in'] : 1);
+        $optionMonthOut = FunctionLib::getOption($arrMonth, isset($curriculum['curriculum_month_out']) ? $curriculum['curriculum_month_out'] : 1);
+
+        $optionYearsIn = FunctionLib::getOption($arrYears, isset($curriculum['curriculum_year_in']) ? $curriculum['curriculum_year_in'] : (int)date('Y', time()));
+        $optionYearsOut = FunctionLib::getOption($arrYears, isset($curriculum['curriculum_year_out']) ? $curriculum['curriculum_year_out'] : (int)date('Y', time()));
+
+        //van bang chung chỉ
+        $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+        $optionVanBangChungChi = FunctionLib::getOption($arrVanBangChungChi, isset($curriculum['curriculum_certificate_id']) ? $curriculum['curriculum_certificate_id'] : '');
+
+        //Hình thức học
+        $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+        $optionHinhThucHoc = FunctionLib::getOption($arrHinhThucHoc, isset($curriculum['curriculum_training_id']) ? $curriculum['curriculum_training_id'] : '');
+
+        //Chuyen nghanh dao tao
+        $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+        $optionChuyenNghanhDaoTao = FunctionLib::getOption($arrChuyenNghanhDaoTao, isset($curriculum['curriculum_training_id']) ? $curriculum['curriculum_training_id'] : '');
+
+
+
+        $this->viewPermission = $this->getPermissionPage();
+        $html = view('hr.CurriculumVitaePerson.' . $template, [
+            'curriculum' => $curriculum,
+            'infoPerson' => $infoPerson,
+            'optionHinhThucHoc' => $optionHinhThucHoc,
+            'optionVanBangChungChi' => $optionVanBangChungChi,
+            'optionChuyenNghanhDaoTao' => $optionChuyenNghanhDaoTao,
+
+            'optionYearsIn' => $optionYearsIn,
+            'optionYearsOut' => $optionYearsOut,
+            'optionMonthIn' => $optionMonthIn,
+            'optionMonthOut' => $optionMonthOut,
+            'person_id' => $person_id,
+            'curriculum_id' => $curriculum_id,
+            'typeAction' => $typeAction,
+        ], $this->viewPermission)->render();
+        $arrData['intReturn'] = 1;
+        $arrData['html'] = $html;
+        return response()->json($arrData);
+    }
+    public function postStudy()
+    {
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->personCurriculumVitaeFull, $this->permission) && !in_array($this->personCurriculumVitaeCreate, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
+        $data = $_POST;
+        $person_id = (int)Request::get('curriculum_person_id', '');
+        $curriculum_id = (int)Request::get('curriculum_id', '');
+        //FunctionLib::debug($data);
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+        if ($data['curriculum_address_train'] == '') {
+            $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
+        } else {
+            if ($person_id > 0) {
+                if ($curriculum_id > 0) {
+                    CurriculumVitae::updateItem($curriculum_id, $data);
+                } else {
+                    CurriculumVitae::createItem($data);
+                }
+                $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+
+                //thông tin view list\
+                $dataList = array();
+                if ($data['curriculum_type'] == Define::CURRICULUMVITAE_DAO_TAO) {
+                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_DAO_TAO);
+                    $template = 'daotaodaihanList';
+                } elseif ($data['curriculum_type'] == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
+                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
+                    $template = 'daotaokhacList';
+                } else {
+                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::BONUS_KY_LUAT);
+                    $template = 'daotaodaihanList';
+                }
+
+                //common
+                $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+                $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+                $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+
+                $this->getDataDefault();
+                $this->viewPermission = $this->getPermissionPage();
+                $html = view('hr.CurriculumVitaePerson.' . $template, array_merge([
+                    'person_id' => $person_id,
+                    'dataList' => $dataList,
+                    'arrVanBangChungChi' => $arrVanBangChungChi,
+                    'arrHinhThucHoc' => $arrHinhThucHoc,
+                    'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+                ], $this->viewPermission))->render();
+                $arrData['html'] = $html;
+            } else {
+                $arrData = ['intReturn' => 0, 'msg' => 'Lỗi cập nhật' . $person_id];
+            }
+        }
+        return response()->json($arrData);
+    }
+    public function deleteStudy()
+    {
+        //Check phan quyen.
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+        if (!$this->is_root && !in_array($this->personCurriculumVitaeFull, $this->permission) && !in_array($this->personCurriculumVitaeDelete, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
+        $personId = Request::get('str_person_id', '');
+        $curriculumId = Request::get('str_object_id', '');
+        $typeAction = Request::get('typeAction', '');
+        $person_id = FunctionLib::outputId($personId);
+        $curriculum_id = FunctionLib::outputId($curriculumId);
+        if ($curriculum_id > 0 && CurriculumVitae::deleteItem($curriculum_id)) {
+            $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+            //thông tin view list\
+            //thông tin view list\
+            $dataList = array();
+            if ($typeAction == Define::CURRICULUMVITAE_DAO_TAO) {
+                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_DAO_TAO);
+                $template = 'daotaodaihanList';
+            } elseif ($typeAction == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
+                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
+                $template = 'daotaokhacList';
+            } else {
+                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::BONUS_KY_LUAT);
+                $template = 'daotaodaihanList';
+            }
+
+            //common
+            $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+            $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+            $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+
+            $this->getDataDefault();
+            $this->viewPermission = $this->getPermissionPage();
+            $html = view('hr.CurriculumVitaePerson.' . $template, array_merge([
+                'person_id' => $person_id,
+                'dataList' => $dataList,
+                'arrVanBangChungChi' => $arrVanBangChungChi,
+                'arrHinhThucHoc' => $arrHinhThucHoc,
+                'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+            ], $this->viewPermission))->render();
+            $arrData['html'] = $html;
+        }
+        return Response::json($arrData);
     }
 
     /************************************************************************************************************************************
@@ -225,4 +404,6 @@ class CurriculumVitaePersonController extends BaseAdminController
         }
         return Response::json($arrData);
     }
+
+
 }

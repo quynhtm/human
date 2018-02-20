@@ -32,6 +32,10 @@ Route::get('curriculumVitaePerson/viewCurriculumVitae/{person_id?}', array('as' 
 Route::get('curriculumVitaePerson/editFamily', array('as' => 'hr.editFamily','uses' => HResources.'\CurriculumVitaePersonController@editFamily'));
 Route::post('curriculumVitaePerson/postFamily', array('as' => 'hr.postFamily','uses' => HResources.'\CurriculumVitaePersonController@postFamily'));
 Route::post('curriculumVitaePerson/deleteFamily', array('as' => 'hr.deleteFamily','uses' => HResources.'\CurriculumVitaePersonController@deleteFamily'));
+/*Quan ly dao tạo, học tập*/
+Route::get('curriculumVitaePerson/editStudy', array('as' => 'hr.editStudy','uses' => HResources.'\CurriculumVitaePersonController@editStudy'));
+Route::post('curriculumVitaePerson/postStudy', array('as' => 'hr.postStudy','uses' => HResources.'\CurriculumVitaePersonController@postStudy'));
+Route::post('curriculumVitaePerson/deleteStudy', array('as' => 'hr.deleteStudy','uses' => HResources.'\CurriculumVitaePersonController@deleteStudy'));
 
 
 Route::get('infoPerson/viewInfoPersonOther/{person_id?}', array('as' => 'hr.viewInfoPersonOther','uses' => HResources.'\InfoPersonController@viewInfoPersonOther'));

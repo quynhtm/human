@@ -1149,6 +1149,14 @@ html;
         return time();
     }
 
+    public static function getListMonth()
+    {
+        $arrMonth = [];
+        for ($m = 1; $m <= 12; $m++) {
+            $arrMonth[$m] = $m;
+        }
+        return $arrMonth;
+    }
     public static function getListYears()
     {
         $yearNow = (int)date('Y', time());

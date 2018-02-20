@@ -101,6 +101,9 @@ class Define
     const BONUS_DANH_HIEU = 2;
     const BONUS_KY_LUAT = 3;
 
+    const CURRICULUMVITAE_DAO_TAO = 1;
+    const CURRICULUMVITAE_CHUNG_CHI_KHAC = 2;
+
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
     const ROLE_TYPE_ADMIN = 7;
@@ -148,6 +151,8 @@ class Define
     const loai_donvi_phongban = 34;
     const loai_thiet_bi = 35;
     const che_do_thanh_toan = 36;
+    const hinh_thuc_hoc = 37;
+    const chuyen_nghanh_dao_tao = 38;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',

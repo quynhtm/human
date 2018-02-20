@@ -115,7 +115,6 @@ class BonusPersonController extends BaseAdminController
 
         //thông tin chung
         $bonus = Bonus::find($bonus_id);
-        $defien = HrDefine::getArrayByType();
         //FunctionLib::debug($contracts);
 
         $arrType = array();
@@ -131,8 +130,8 @@ class BonusPersonController extends BaseAdminController
         }
 
         $arrYears = FunctionLib::getListYears();
-        $optionYears = FunctionLib::getOption($arrYears, isset($bonus['bonus_year']) ? $data['bonus_year'] : (int)date('Y', time()));
-        $optionType = FunctionLib::getOption($arrType, isset($bonus['bonus_type']) ? $data['bonus_type'] : '');
+        $optionYears = FunctionLib::getOption($arrYears, isset($bonus['bonus_year']) ? $bonus['bonus_year'] : (int)date('Y', time()));
+        $optionType = FunctionLib::getOption($arrType, isset($bonus['bonus_type']) ? $bonus['bonus_type'] : '');
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.BonusPerson.' . $template, [

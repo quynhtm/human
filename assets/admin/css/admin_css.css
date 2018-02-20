@@ -452,3 +452,6 @@ th {
 .block_title{ font-weight: bold; font-size: 20px; color: #0ba1b5}
 
 .msg_notify{background: red; color:#ffffff; position: absolute;top: 2px; left: -1px; border-radius: 15px; font-size: 10px; padding: 5px 5px; }
+.updowTop10{margin-top: -10px!important;}
+.updowTop20{margin-top: -20px!important;}
+.updowTop30{margin-top: -30px!important;}
