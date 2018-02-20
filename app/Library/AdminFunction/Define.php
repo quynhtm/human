@@ -156,6 +156,10 @@ class Define
     const che_do_thanh_toan = 36;
     const hinh_thuc_hoc = 37;
     const chuyen_nghanh_dao_tao = 38;
+    //Phan loai van ban
+    const co_quan_ban_hanh = 39;
+    const loai_van_ban = 40;
+    const linh_vuc = 41;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',
@@ -193,6 +197,10 @@ class Define
         Define::loai_phu_cap => 'Loại phụ cấp',
         Define::loai_donvi_phongban => 'Loại đơn vị / phòng ban',
         Define::loai_thiet_bi => 'Loại thiết bị',
+        //Phan loai van ban
+        Define::co_quan_ban_hanh => 'Cơ quan ban hành',
+        Define::loai_van_ban => 'Loại văn bản',
+        Define::linh_vuc => 'Lĩnh vực',
     );
 
     //Folder

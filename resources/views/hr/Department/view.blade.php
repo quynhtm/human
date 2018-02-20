@@ -71,20 +71,12 @@
                                             @endif
                                         </td>
                                         <td align="center">
-                                            <div class="dropdown">
-                                                <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                                    - Chọn -
-                                                    <span class="caret"></span>
-                                                </button>
-                                                <ul class="dropdown-menu">
-                                                    @if($is_root || $permission_edit)
-                                                    <li><a href="{{URL::route('hr.departmentEdit',array('id' => FunctionLib::inputId($item['department_id'])))}}" title="Sửa">Sửa</a></li>
-                                                    @endif
-                                                    @if($is_boss || $permission_remove)
-                                                    <li><a class="deleteItem" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['department_id'])}}', WEB_ROOT + '/manager/department/deleteDepartment')">Xóa</a></li>
-                                                    @endif
-                                                </ul>
-                                            </div>
+                                            @if($is_root || $permission_edit)
+                                            <a href="{{URL::route('hr.departmentEdit',array('id' => FunctionLib::inputId($item['department_id'])))}}" title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                            @endif
+                                            @if($is_boss || $permission_remove)
+                                            <a class="deleteItem" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['department_id'])}}', WEB_ROOT + '/manager/department/deleteDepartment')"><i class="fa fa-trash fa-2x"></i></a>
+                                            @endif
                                         </td>
                                     </tr>
                                     @endforeach
