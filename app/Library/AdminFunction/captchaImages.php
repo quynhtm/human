@@ -78,47 +78,6 @@ class captchaImages{
 	}
 }
 /*
-HÌnh thuc hoc
-<select class="form-control input-sm rnetautoselect select2-hidden-accessible" data-val="true" data-val-required="The DiplomaIID field is required." id="DiplomaModel_DiplomaIID" name="DiplomaModel.DiplomaIID" tabindex="-1" aria-hidden="true"><option value="">- Văn bằng, Chứng chỉ -</option>
-<option value="1">Bác sĩ</option>
-<option value="2">Kỹ sư</option>
-<option value="3">Kiến trúc sư</option>
-<option value="4">Cử nhân</option>
-<option value="5">Dược sỹ</option>
-<option value="6">Cao đẳng</option>
-<option value="7">Trung cấp</option>
-<option value="8">Thạc sỹ</option>
-<option value="9">Bác sĩ CKI</option>
-<option value="10">Tiến sỹ</option>
-<option value="11">Tiến sỹ khoa học</option>
-<option value="12">Bác sĩ CKII</option>
-<option value="13">Chứng chỉ</option>
-<option value="14">Bằng nghề</option>
-<option value="15">Sơ cấp</option>
-<option value="16">Y sỹ</option>
-<option value="17">Y tá</option>
-</select>
-
-van bang chung chi
-<select class="form-control input-sm rnetautoselect select2-hidden-accessible" data-val="true" data-val-required="The DiplomaIID field is required." id="DiplomaModel_DiplomaIID" name="DiplomaModel.DiplomaIID" tabindex="-1" aria-hidden="true"><option value="">- Văn bằng, Chứng chỉ -</option>
-<option value="1">Bác sĩ</option>
-<option value="2">Kỹ sư</option>
-<option value="3">Kiến trúc sư</option>
-<option value="4">Cử nhân</option>
-<option value="5">Dược sỹ</option>
-<option value="6">Cao đẳng</option>
-<option value="7">Trung cấp</option>
-<option value="8">Thạc sỹ</option>
-<option value="9">Bác sĩ CKI</option>
-<option value="10">Tiến sỹ</option>
-<option value="11">Tiến sỹ khoa học</option>
-<option value="12">Bác sĩ CKII</option>
-<option value="13">Chứng chỉ</option>
-<option value="14">Bằng nghề</option>
-<option value="15">Sơ cấp</option>
-<option value="16">Y sỹ</option>
-<option value="17">Y tá</option>
-</select>
 
 chuyen nganh dao tạo
 <select class="required form-control input-sm rnetautoselect select2-hidden-accessible" data-val="true" data-val-required="The MajorID field is required." id="DiplomaModel_MajorID" name="DiplomaModel.MajorID" tabindex="-1" aria-hidden="true"><option value="">- Chuyên ngành đào tạo -</option>
@@ -1773,16 +1732,6 @@ chuyen nganh dao tạo
 <option value="62860221">TIẾN SĨ--&gt;An ninh - Quốc phòng--&gt;Quân sự--&gt;Trinh sát quân sự</option>
 <option value="62860226">TIẾN SĨ--&gt;An ninh - Quốc phòng--&gt;Quân sự--&gt;Hậu cần quân sự</option>
 <option value="62900000">TIẾN SĨ--&gt;Khác</option>
-</select>
-
-chức vụ đoàn thể
-<select class="form-control input-sm rnetautoselect select2-hidden-accessible" data-val="true" data-val-required="The PositionIID field is required." id="PartisanActivityModel_PositionIID" name="PartisanActivityModel.PositionIID" tabindex="-1" aria-hidden="true"><option value="">- Chức vụ -</option>
-<option value="1">Bí thư Đảng ủy</option>
-<option value="2">Phó bí thư đảng ủy</option>
-<option value="3">Đảng ủy viên</option>
-<option value="4">Bí thư Chi bộ</option>
-<option value="5">Phó bí thư chi bộ</option>
-<option value="6">Chi ủy viên</option>
 </select>
 
 

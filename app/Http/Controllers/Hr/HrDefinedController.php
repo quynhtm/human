@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Support\Facades\DB;
 
 use PHPExcel_IOFactory;
 use Illuminate\Support\Facades\Input;
@@ -215,6 +216,7 @@ class HrDefinedController extends BaseAdminController
             }
         }
         if (!empty($arrDataInput)) {
+            DB::table(Define::TABLE_HR_DEFINE)->truncate();
             HrDefine::insertMultiple($arrDataInput);
             return Redirect::route('hr.definedView');
         }
