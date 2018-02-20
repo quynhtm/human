@@ -119,26 +119,27 @@
                     {{----TÓM TẮT QUÁ TRÌNH CÔNG TÁC--}}
                     <div class="marginTop20">
                         <div class="block_title">TÓM TẮT QUÁ TRÌNH CÔNG TÁC</div>
-                        <div id="div_list_danhhieu">
+                        <div id="div_qua_trinh_cong_tac">
                             <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
                             <tr class="">
-                                <th width="5%" class="text-center">STT</th>
-                                <th width="10%">Thời gian</th>
+                                <th width="15%">Thời gian</th>
                                 <th width="75%">Chức danh, chức vụ, công tác</th>
                                 <th width="10%" class="text-center">Thao tác</th>
                             </tr>
                             </thead>
-                            @if(sizeof($quatrinhdaotao) > 0)
+                            @if(sizeof($quatrinhcongtac) > 0)
                                 <tbody>
-                                @foreach ($quatrinhdaotao as $key2 => $item2)
+                                @foreach ($quatrinhcongtac as $key_ct=> $item_ct)
                                     <tr>
-                                        <td class="text-center middle">{{ $key2+1 }}</td>
-                                        <td> {{ $item2['bonus_year'] }}</td>
-                                        <td>{{$item2['bonus_decision']}}</td>
+                                        <td>{{$item_ct['curriculum_month_in'].'/'.$item_ct['curriculum_year_in'].' - '.$item_ct['curriculum_month_out'].'/'.$item_ct['curriculum_year_out']}}</td>
+                                        <td>{{$item_ct['curriculum_name']}}</td>
                                         <td class="text-center middle">
+                                            @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personCurriculumVitaeCreate == 1)
+                                                <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item_ct['curriculum_person_id'])}}','{{FunctionLib::inputId($item_ct['curriculum_id'])}}','curriculumVitaePerson/editStudy',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_CONG_TAC}})"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                            @endif
                                             @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item_ct['curriculum_person_id'])}}','{{FunctionLib::inputId($item_ct['curriculum_id'])}}','curriculumVitaePerson/deleteStudy','div_qua_trinh_cong_tac',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_CONG_TAC}})"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -149,38 +150,41 @@
                                     <td colspan="7"> Chưa có dữ liệu</td>
                                 </tr>
                             @endif
-                        </table>
+                            </table>
                         </div>
-                        <a class="btn btn-success updowTop10" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-reply"></i> Thêm mới danh hiệu</a>
+                        <a class="btn btn-success updowTop10" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','curriculumVitaePerson/editStudy',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_CONG_TAC}})"><i class="fa fa-reply"></i> Thêm quá trình công tác</a>
                     </div>
 
                     {{----TÓM TẮT QUÁ TRÌNH HOẠT ĐỘNG ĐẢNG, CHÍNH QUYỀN, ĐOÀN THỂ--}}
                     <div class="marginTop20">
                         <div class="block_title">TÓM TẮT QUÁ TRÌNH HOẠT ĐỘNG ĐẢNG, CHÍNH QUYỀN, ĐOÀN THỂ</div>
-                        <div id="div_list_kyluat">
+                        <div id="div_hoat_dong_dang">
                             <table class="table table-bordered table-hover">
                             <thead class="thin-border-bottom">
                             <tr class="">
-                                <th width="5%" class="text-center">STT</th>
                                 <th width="30%">Chi bộ</th>
                                 <th width="10%" class="text-center">Thời gian</th>
-                                <th width="20%" class="text-center">Chức vụ</th>
-                                <th width="30%" class="text-center">Cấp ủy kiêm</th>
-                                <th width="5%" class="text-center">Thao tác</th>
+                                <th width="20%">Chức vụ</th>
+                                <th width="30%">Cấp ủy kiêm</th>
+                                <th width="10%" class="text-center">Thao tác</th>
                             </tr>
                             </thead>
-                            @if(sizeof($quatrinhdaotao) > 0)
+                            @if(sizeof($hoatdongdang) > 0)
                                 <tbody>
-                                @foreach ($quatrinhdaotao as $key3 => $item3)
+                                @foreach ($hoatdongdang as $key_hdd => $item_hdd)
                                     <tr>
-                                        <td class="text-center middle">{{ $key3+1 }}</td>
-                                        <td>@if(isset($arrTypeKyluat[$item3['bonus_define_id']])){{ $arrTypeKyluat[$item3['bonus_define_id']] }}@endif</td>
-                                        <td class="text-center middle">{{ $item3['bonus_year'] }}</td>
-                                        <td class="text-center middle">{{$item3['bonus_decision']}}</td>
-                                        <td class="text-center middle">{{$item3['bonus_note']}}</td>
+                                        <td>{{ $item_hdd['curriculum_chibo'] }}</td>
                                         <td class="text-center middle">
+                                            {{$item_hdd['curriculum_month_in'].'/'.$item_hdd['curriculum_year_in'].' - '.$item_hdd['curriculum_month_out'].'/'.$item_hdd['curriculum_year_out']}}
+                                        </td>
+                                        <td>@if(isset($arrTypeKyluat[$item_hdd['curriculum_chucvu_id']])){{ $arrTypeKyluat[$item_hdd['curriculum_chucvu_id']] }}@endif</td>
+                                        <td>{{$item_hdd['curriculum_cap_uykiem']}}</td>
+                                        <td class="text-center middle">
+                                            @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personCurriculumVitaeCreate == 1)
+                                                <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item_hdd['curriculum_person_id'])}}','{{FunctionLib::inputId($item_hdd['curriculum_id'])}}','curriculumVitaePerson/editStudy',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_HOAT_DONG_DANG}})"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                            @endif
                                             @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personContracts_delete == 1)
-                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item3['bonus_person_id'])}}','{{FunctionLib::inputId($item3['bonus_id'])}}','bonusPerson/deleteBonus','div_list_kyluat',{{\App\Library\AdminFunction\Define::BONUS_KY_LUAT}})"><i class="fa fa-trash fa-2x"></i></a>
+                                                <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item_hdd['curriculum_person_id'])}}','{{FunctionLib::inputId($item_hdd['curriculum_id'])}}','curriculumVitaePerson/deleteStudy','div_hoat_dong_dang',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_HOAT_DONG_DANG}})"><i class="fa fa-trash fa-2x"></i></a>
                                             @endif
                                         </td>
                                     </tr>
@@ -191,9 +195,9 @@
                                     <td colspan="7"> Chưa có dữ liệu</td>
                                 </tr>
                             @endif
-                        </table>
+                            </table>
                         </div>
-                        <a class="btn btn-success updowTop10" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_KY_LUAT}})"><i class="fa fa-reply"></i> Thêm mới kỷ luật</a>
+                        <a class="btn btn-success updowTop10" href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}','curriculumVitaePerson/editStudy',{{\App\Library\AdminFunction\Define::CURRICULUMVITAE_HOAT_DONG_DANG}})"><i class="fa fa-reply"></i> Thêm quá trình hoạt động Đảng, Đoàn thể</a>
                     </div>
 
                     {{----ĐẶC ĐIỂM LỊCH SỬ BẢN THÂN--}}

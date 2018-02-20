@@ -103,6 +103,8 @@ class Define
 
     const CURRICULUMVITAE_DAO_TAO = 1;
     const CURRICULUMVITAE_CHUNG_CHI_KHAC = 2;
+    const CURRICULUMVITAE_CONG_TAC = 3;
+    const CURRICULUMVITAE_HOAT_DONG_DANG = 4;
 
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
@@ -112,7 +114,6 @@ class Define
         Define::ROLE_TYPE_SUPER_ADMIN => 'SuperAdmin',
         Define::ROLE_TYPE_ADMIN => 'Admin',
         Define::ROLE_TYPE_CUSTOMER => 'Customer');
-
 
     //Type define trong bảng define
     const chuc_vu = 1;

@@ -74,6 +74,12 @@ class CurriculumVitaePersonController extends BaseAdminController
         //van bang chung chi khac
         $vanbangchungchikhac = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
 
+        //Quá trình công tác
+        $quatrinhcongtac = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CONG_TAC);
+
+        //Hoạt động đảng
+        $hoatdongdang = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+
         //quan he gia dinh
         $quanhegiadinh = Relationship::getRelationshipByPersonId($person_id);
         $arrQuanHeGiaDinh = HrDefine::getArrayByType(Define::quan_he_gia_dinh);
@@ -82,6 +88,7 @@ class CurriculumVitaePersonController extends BaseAdminController
         $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
         $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
         $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+        $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
@@ -91,9 +98,12 @@ class CurriculumVitaePersonController extends BaseAdminController
             'arrVanBangChungChi' => $arrVanBangChungChi,
             'arrHinhThucHoc' => $arrHinhThucHoc,
             'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+            'arrChucVuDang' => $arrChucVuDang,
 
             'quatrinhdaotao' => $quatrinhdaotao,
             'vanbangchungchikhac' => $vanbangchungchikhac,
+            'quatrinhcongtac' => $quatrinhcongtac,
+            'hoatdongdang' => $hoatdongdang,
 
             'quanhegiadinh' => $quanhegiadinh,
             'arrQuanHeGiaDinh' => $arrQuanHeGiaDinh,
@@ -129,8 +139,10 @@ class CurriculumVitaePersonController extends BaseAdminController
             $template = 'daotaodaihanPopupAdd';
         } elseif ($typeAction == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
             $template = 'daotaokhacPopupAdd';
+        }elseif ($typeAction == Define::CURRICULUMVITAE_CONG_TAC) {
+            $template = 'quatrinhcongtacPopupAdd';
         } else {
-            $template = 'kyLuatPopupAdd';
+            $template = 'hoatdongdangPopupAdd';
         }
 
         $arrMonth = FunctionLib::getListMonth();
@@ -148,13 +160,15 @@ class CurriculumVitaePersonController extends BaseAdminController
 
         //Hình thức học
         $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
-        $optionHinhThucHoc = FunctionLib::getOption($arrHinhThucHoc, isset($curriculum['curriculum_training_id']) ? $curriculum['curriculum_training_id'] : '');
+        $optionHinhThucHoc = FunctionLib::getOption($arrHinhThucHoc, isset($curriculum['curriculum_formalities_id']) ? $curriculum['curriculum_formalities_id'] : '');
 
         //Chuyen nghanh dao tao
         $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
         $optionChuyenNghanhDaoTao = FunctionLib::getOption($arrChuyenNghanhDaoTao, isset($curriculum['curriculum_training_id']) ? $curriculum['curriculum_training_id'] : '');
 
-
+        //Chức vụ đoàn thể
+        $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
+        $optionChucVuDang = FunctionLib::getOption($arrChucVuDang, isset($curriculum['curriculum_chucvu_id']) ? $curriculum['curriculum_chucvu_id'] : '');
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.CurriculumVitaePerson.' . $template, [
@@ -163,6 +177,7 @@ class CurriculumVitaePersonController extends BaseAdminController
             'optionHinhThucHoc' => $optionHinhThucHoc,
             'optionVanBangChungChi' => $optionVanBangChungChi,
             'optionChuyenNghanhDaoTao' => $optionChuyenNghanhDaoTao,
+            'optionChucVuDang' => $optionChucVuDang,
 
             'optionYearsIn' => $optionYearsIn,
             'optionYearsOut' => $optionYearsOut,
@@ -188,7 +203,7 @@ class CurriculumVitaePersonController extends BaseAdminController
         $curriculum_id = (int)Request::get('curriculum_id', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if ($data['curriculum_address_train'] == '') {
+        if ((isset($data['curriculum_address_train']) && $data['curriculum_address_train'] == '') || (isset($data['curriculum_name']) && $data['curriculum_name'] == '')) {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         } else {
             if ($person_id > 0) {
@@ -207,15 +222,19 @@ class CurriculumVitaePersonController extends BaseAdminController
                 } elseif ($data['curriculum_type'] == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
                     $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
                     $template = 'daotaokhacList';
+                } elseif ($data['curriculum_type'] == Define::CURRICULUMVITAE_CONG_TAC) {
+                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CONG_TAC);
+                    $template = 'quatrinhcongtacList';
                 } else {
-                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::BONUS_KY_LUAT);
-                    $template = 'daotaodaihanList';
+                    $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+                    $template = 'hoatdongdangList';
                 }
 
                 //common
                 $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
                 $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
                 $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+                $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
@@ -225,6 +244,7 @@ class CurriculumVitaePersonController extends BaseAdminController
                     'arrVanBangChungChi' => $arrVanBangChungChi,
                     'arrHinhThucHoc' => $arrHinhThucHoc,
                     'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+                    'arrChucVuDang' => $arrChucVuDang,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
             } else {
@@ -257,15 +277,19 @@ class CurriculumVitaePersonController extends BaseAdminController
             } elseif ($typeAction == Define::CURRICULUMVITAE_CHUNG_CHI_KHAC) {
                 $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
                 $template = 'daotaokhacList';
+            }elseif ($typeAction == Define::CURRICULUMVITAE_CONG_TAC) {
+                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CONG_TAC);
+                $template = 'quatrinhcongtacList';
             } else {
-                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::BONUS_KY_LUAT);
-                $template = 'daotaodaihanList';
+                $dataList = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+                $template = 'hoatdongdangList';
             }
 
             //common
             $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
             $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
             $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+            $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
@@ -275,6 +299,7 @@ class CurriculumVitaePersonController extends BaseAdminController
                 'arrVanBangChungChi' => $arrVanBangChungChi,
                 'arrHinhThucHoc' => $arrHinhThucHoc,
                 'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+                'arrChucVuDang' => $arrChucVuDang,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
         }
