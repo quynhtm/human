@@ -18,7 +18,7 @@
                 <td class="text-center middle">
                     {{$item_hdd['curriculum_month_in'].'/'.$item_hdd['curriculum_year_in'].' - '.$item_hdd['curriculum_month_out'].'/'.$item_hdd['curriculum_year_out']}}
                 </td>
-                <td>@if(isset($arrTypeKyluat[$item_hdd['curriculum_chucvu_id']])){{ $arrTypeKyluat[$item_hdd['curriculum_chucvu_id']] }}@endif</td>
+                <td>@if(isset($arrChucVuDang[$item_hdd['curriculum_chucvu_id']])){{ $arrChucVuDang[$item_hdd['curriculum_chucvu_id']] }}@endif</td>
                 <td>{{$item_hdd['curriculum_cap_uykiem']}}</td>
                 <td class="text-center middle">
                     @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personCurriculumVitaeCreate == 1)

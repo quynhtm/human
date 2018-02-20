@@ -5,10 +5,10 @@
     <thead class="thin-border-bottom">
     <tr class="">
         <th width="20%">Tên trường địa điểm</th>
-        <th width="15%">Nghành, lớp học</th>
+        <th width="30%">Nghành, lớp học</th>
         <th width="10%" class="text-center">Thời gian học</th>
         <th width="15%">Hình thức học</th>
-        <th width="30%">Văn bằng, chứng chỉ, trình độ</th>
+        <th width="15%">Văn bằng, chứng chỉ, trình độ</th>
         <th width="10%" class="text-center">Thao tác</th>
     </tr>
     </thead>

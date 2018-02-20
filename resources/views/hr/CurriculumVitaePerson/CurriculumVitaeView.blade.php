@@ -33,10 +33,10 @@
                                 <thead class="thin-border-bottom">
                                 <tr class="">
                                     <th width="20%">Tên trường địa điểm</th>
-                                    <th width="15%">Nghành, lớp học</th>
+                                    <th width="30%">Nghành, lớp học</th>
                                     <th width="10%" class="text-center">Thời gian học</th>
                                     <th width="15%">Hình thức học</th>
-                                    <th width="30%">Văn bằng, chứng chỉ, trình độ</th>
+                                    <th width="15%">Văn bằng, chứng chỉ, trình độ</th>
                                     <th width="10%" class="text-center">Thao tác</th>
                                 </tr>
                                 </thead>
@@ -177,7 +177,7 @@
                                         <td class="text-center middle">
                                             {{$item_hdd['curriculum_month_in'].'/'.$item_hdd['curriculum_year_in'].' - '.$item_hdd['curriculum_month_out'].'/'.$item_hdd['curriculum_year_out']}}
                                         </td>
-                                        <td>@if(isset($arrTypeKyluat[$item_hdd['curriculum_chucvu_id']])){{ $arrTypeKyluat[$item_hdd['curriculum_chucvu_id']] }}@endif</td>
+                                        <td>@if(isset($arrChucVuDang[$item_hdd['curriculum_chucvu_id']])){{ $arrChucVuDang[$item_hdd['curriculum_chucvu_id']] }}@endif</td>
                                         <td>{{$item_hdd['curriculum_cap_uykiem']}}</td>
                                         <td class="text-center middle">
                                             @if($is_root== 1 || $personCurriculumVitaeFull== 1 || $personCurriculumVitaeCreate == 1)
