@@ -60,7 +60,7 @@
                             <th width="2%" class="text-center">STT</th>
                             <th width="20%">Tên thiết bị</th>
                             <th width="10%">Mã</th>
-                            <th width="12%">Thuộc loại</th>
+                            <th width="12%">Loại thiết bị</th>
                             <th width="10%">Ngày bàn giao</th>
                             <th width="10%">Người sử dụng</th>
                             <th width="8%">Trạng thái</th>

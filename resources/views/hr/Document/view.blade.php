@@ -51,7 +51,7 @@
                         <thead class="thin-border-bottom">
                         <tr>
                             <th width="2%" class="text-center">STT</th>
-                            <th width="20%">Tên thư, tin nhắn</th>
+                            <th width="20%">Chủ đề</th>
                             <th width="8%">Trạng thái</th>
                             <th width="10%" class="text-center">Chức năng</th>
                         </tr>

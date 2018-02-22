@@ -44,7 +44,7 @@ class Upload{
 			        @mkdir($folder_upload,0777,true);
 			        chmod($folder_upload,0777);
 			    }
-				if (move_uploaded_file($file_tmp, $folder_upload.'/'.$link)) {
+				if(move_uploaded_file($file_tmp, $folder_upload.'/'.$link)) {
 					return $link;
 				} else {
 					return '';

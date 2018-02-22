@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Hr\Device;
+use App\Http\Models\Hr\HrDocument;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Upload;
@@ -24,21 +25,20 @@ class AjaxUploadController extends BaseAdminController{
 			case 'upload_image' :
 				$this->upload_image();
 				break;
-			case 'upload_ext' :
-				$this->upload_ext();
-				break;
 			case 'remove_image' :
 				$this->remove_image();
 				break;
 			case 'get_image_insert_content' :
 				$this->get_image_insert_content();
 				break;
+			case 'upload_ext' :
+				$this->upload_ext();
+				break;
 			default:
 				$this->nothing();
 				break;
 		}
 	}
-
 	//Default
 	function nothing(){
 		die("Nothing to do...");
@@ -64,7 +64,6 @@ class AjaxUploadController extends BaseAdminController{
 		echo json_encode($aryData);
 		exit();
 	}
-
 	function uploadImageToFolderOnce($dataImg, $id_hiden, $folder, $type){
 		$aryData = array();
 		$aryData['intIsOK'] = -1;
@@ -106,6 +105,8 @@ class AjaxUploadController extends BaseAdminController{
 								if($path_image != ''){
 									$folder_image = 'uploads/'.$folder;
 									$this->unlinkFileAndFolder($path_image, $folder_image, 0, 0);
+									$folder_thumb = 'uploads/thumbs/'.$folder;
+									$this->unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
 								}
 
 								$path_image = $file_name;
@@ -138,7 +139,6 @@ class AjaxUploadController extends BaseAdminController{
 		}
 		return $aryData;
 	}
-
 	function uploadImageToFolder($dataImg, $id_hiden, $folder, $type){
 
 		$aryData = array();
@@ -215,11 +215,9 @@ class AjaxUploadController extends BaseAdminController{
 		}
 		return $aryData;
 	}
-
 	//Delte Img
 	function remove_image(){
-
-		$id = (int)Request::get('id', 0);
+		$id =  (int)FunctionLib::outputId(Request::get('id', 0));
 		$nameImage = Request::get('nameImage', '');
 		$type = (int)Request::get('type', 1);
 
@@ -229,12 +227,18 @@ class AjaxUploadController extends BaseAdminController{
 		$aryData['nameImage'] = $nameImage;
 
 		switch( $type ){
-			case 2://Img News
-				$folder_image = 'uploads/'.CGlobal::FOLDER_NEWS;
-
-				if($id > 0 && $nameImage != '' && $folder_image != ''){
-					$delete_action = $this->delete_image_item($id, $nameImage, $folder_image, $type);
-
+			case 1://Img device
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
+			case 10://File document
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
 					if($delete_action == 1){
 						$aryData['intIsOK'] = 1;
 						$aryData['msg'] = "Remove Img!";
@@ -248,27 +252,45 @@ class AjaxUploadController extends BaseAdminController{
 		echo json_encode($aryData);
 		exit();
 	}
-
-	function delete_image_item($id, $nameImage, $folder_image, $type){
+	function delete_image_item($id, $nameImage, $type){
 		$delete_action = 0;
 		$aryImages  = array();
+		$folder_image =  $folder_thumb = '';
 		//get img in DB and remove it
 		switch( $type ){
-			case 2://Img News
-				$result = News::getById($id);
+			case 1://Img device
+				$result = Device::getItemById($id);
 				if($result != null){
-					$aryImages = unserialize($result->news_image_other);
+					$aryImages = array($result->device_image);
 				}
+				$folder_image = 'uploads/'.Define::FOLDER_DEVICE;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DEVICE;
+				break;
+			case 10://File document
+				$result = HrDocument::getItemById($id);
+				if($result != null){
+					$aryImages = unserialize($result->hr_document_files);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_DOCUMENT;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DOCUMENT;
 				break;
 			default:
 				$folder_image = '';
+				$folder_thumb = '';
 				break;
 		}
 
 		if(is_array($aryImages) && count($aryImages) > 0) {
 			foreach ($aryImages as $k => $v) {
 				if($v === $nameImage){
-					$this->unlinkFileAndFolder($nameImage, $id, $folder_image, true);
+					if($type == 1){//Img device
+						$this->unlinkFileAndFolder($nameImage, $folder_image, true, 0);
+						$this->unlinkFileAndFolder($nameImage, $folder_thumb, true, 0);
+					}else{
+						$this->unlinkFileAndFolder($nameImage, $folder_image, true, $id);
+						$this->unlinkFileAndFolder($nameImage, $folder_thumb, true, $id);
+					}
+
 					unset($aryImages[$k]);
 					if(!empty($aryImages)){
 						$aryImages = array_values($aryImages);
@@ -278,9 +300,13 @@ class AjaxUploadController extends BaseAdminController{
 					}
 
 					switch( $type ){
-						case 2://Img News
-							$new_row['news_image_other'] = $aryImages;
-							News::updateData($id, $new_row);
+						case 1://Img device
+							$new_row['device_image'] = $aryImages;
+							Device::updateItem($id, $new_row);
+							break;
+						case 10://File document
+							$new_row['hr_document_files'] = $aryImages;
+							HrDocument::updateItem($id, $new_row);
 							break;
 						default:
 							$folder_image = '';
@@ -295,12 +321,11 @@ class AjaxUploadController extends BaseAdminController{
 
 		//xoa khi chua update vao db, anh moi up load
 		if($delete_action == 0){
-			$this->unlinkFileAndFolder($nameImage, $id, $folder_image, true);
+			$this->unlinkFileAndFolder($nameImage, $folder_image, true, $id);
 			$delete_action = 1;
 		}
 		return $delete_action;
 	}
-
 	function unlinkFileAndFolder($file_name = '', $folder = '', $is_delDir = 0, $id = 0){
 
 		if($file_name != '') {
@@ -329,6 +354,39 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 			}
+			//Remove Img thumb
+			$arrSize = Define::$arrSizeImage;
+			foreach($arrSize as $k=>$size){
+				if(!empty($size)){
+					$x = (int)$size['w'];
+					$y = (int)$size['h'];
+				}else{
+					$x = $y = Define::sizeImage_300;
+				}
+
+				$paths = '';
+				if($folder != ''){
+					if($id >0){
+						$path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y.'/'.$id;
+					}else{
+						$path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y;
+					}
+				}
+				if($file_name != ''){
+					if($path != ''){
+						if(is_file($path.'/'.$file_name)){
+							@unlink($path.'/'.$file_name);
+						}
+					}
+				}
+				if($is_delDir) {
+					if($path != ''){
+						if(is_dir($path)) {
+							@rmdir($path);
+						}
+					}
+				}
+			}
 		}
 	}
 
@@ -353,7 +411,6 @@ class AjaxUploadController extends BaseAdminController{
 		echo json_encode($aryData);
 		exit();
 	}
-
 	function getImgContent($id_hiden, $folder, $type){
 
 		$aryImages = array();
@@ -385,6 +442,7 @@ class AjaxUploadController extends BaseAdminController{
 	//Upload document
 	function upload_ext() {
 		$id_hiden =  Request::get('id', 0);
+		$id_hiden = FunctionLib::outputId($id_hiden);
 		$type = Request::get('type', 1);
 		$dataFile = $_FILES["multipleFile"];
 		$aryData = array();
@@ -406,15 +464,14 @@ class AjaxUploadController extends BaseAdminController{
 		$aryData['intIsOK'] = -1;
 		$aryData['msg'] = "Upload file!";
 		$item_id = 0;
-		$name_key = 0;
 		if (!empty($dataImg)) {
 			if($id_hiden == 0){
 
 				switch($type){
 					case 10://File document
-						$new_row['news_create'] = time();
-						$new_row['news_status'] = CGlobal::IMAGE_ERROR;
-						$item_id = News::addData($new_row);
+						$new_row['hr_document_created'] = time();
+						$new_row['hr_document_status'] = Define::IMAGE_ERROR;
+						$item_id = HrDocument::createItem($new_row);
 						break;
 					default:
 						break;
@@ -425,7 +482,7 @@ class AjaxUploadController extends BaseAdminController{
 			if($item_id > 0){
 				$aryError = $tmpImg = array();
 				$file_name = Upload::uploadFile('multipleFile',
-					$_file_ext = 'xls,xlsx,doc,docx,pdf,rar,zip,tar,mp4,flv,avi,3gp,mov',
+					$_file_ext = 'jpg,jpeg,png,gif,txt,ppt,pptx,xls,xlsx,doc,docx,pdf,rar,zip,tar,mp4,flv,avi,3gp,mov',
 					$_max_file_size = 50*1024*1024,
 					$_folder = $folder.'/'.$item_id,
 					$type_json=0);
@@ -435,12 +492,12 @@ class AjaxUploadController extends BaseAdminController{
 
 					switch($type){
 						case 10://File Document
-							$result = News::getNewByID($item_id);
+							$result = HrDocument::getItemById($item_id);
 							if($result != null){
-								$arr_file = ($result->news_files != '') ? unserialize($result->news_files) : array();
+								$arr_file = ($result->hr_document_files != '') ? unserialize($result->hr_document_files) : array();
 								$arr_file[] = $file_name;
-								$new_row['news_files'] = serialize($arr_file);
-								News::updateData($item_id, $new_row);
+								$new_row['hr_document_files'] = serialize($arr_file);
+								HrDocument::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
 								foreach($arr_file as $_k=>$_v){
@@ -455,7 +512,7 @@ class AjaxUploadController extends BaseAdminController{
 					}
 
 					$aryData['intIsOK'] = 1;
-					$aryData['id_item'] = $item_id;
+					$aryData['id_item'] = FunctionLib::inputId($item_id);
 					$aryData['info'] = $tmpImg;
 				}
 			}

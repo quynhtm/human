@@ -1,8 +1,6 @@
 <?php
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Define;
-use App\Library\PHPThumb\ThumbImg;
-use App\Library\AdminFunction\CGlobal;
 ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
@@ -49,13 +47,13 @@ use App\Library\AdminFunction\CGlobal;
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Chủ đề thư, tin nhắn(<span class="clred">*</span>)</label>
+                                            <label>Chủ đề</label>
                                             <input class="form-control input-sm input-required" title="Tên thư, tin nhắn" id="hr_document_name" name="hr_document_name" @isset($data['hr_document_name'])value="{{$data['hr_document_name']}}"@endif type="text">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-md-4">
+                                    <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Nội dung</label>
                                             <textarea class="form-control input-sm input-required" name="hr_document_content" id="hr_document_content" cols="30" rows="5">@isset($data['hr_document_content']){{$data['hr_document_content']}}@endif</textarea>
@@ -63,11 +61,29 @@ use App\Library\AdminFunction\CGlobal;
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="form-group">
+                                            <label class="control-label">Files upload</label>
+                                            <div class="controls">
+                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced(10);">Upload Files</a>
+                                                <div id="sys_show_file">
+                                                    @if(isset($data['hr_document_files']) && $data['hr_document_files'] !='')
+                                                        <?php $arrfiles = ($data['hr_document_files'] != '') ? unserialize($data['hr_document_files']) : array(); ?>
+                                                        @foreach($arrfiles as $_key=>$file)
+                                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_DOCUMENT.'/'.$id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($id)}}', {{$_key}}, '{{$file}}',10)">X</span></div>
+                                                        @endforeach
+                                                    @endif
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
                                         <button type="submit" class="btn btn-success btn-sm submitFinish"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
+                                        <input id="id_hiden" name="id_hiden" @isset($data['hr_document_id'])rel="{{$data['hr_document_id']}}" value="{{FunctionLib::inputId($data['hr_document_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
-                                    <input id="id_hiden" name="id_hiden" @isset($data['hr_document_id'])rel="{{$data['hr_document_id']}}" value="{{FunctionLib::inputId($data['hr_document_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                 </div>
                             </form>
                         </div>
@@ -77,25 +93,25 @@ use App\Library\AdminFunction\CGlobal;
         </div>
     </div>
 </div>
-<!--Popup Upload Img-->
-<div class="modal fade" id="sys_PopupUploadImgOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!--Popup Upload File-->
+<div class="modal fade" id="sys_PopupUploadDocumentOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Upload ảnh</h4>
+                <h4 class="modal-title" id="myModalLabel">Files upload</h4>
             </div>
             <div class="modal-body">
                 <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
                     <div class="form_group">
-                        <div id="sys_show_button_upload">
-                            <div id="sys_mulitplefileuploader" class="btn btn-primary">Upload ảnh</div>
+                        <div id="sys_show_button_upload_file">
+                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Upload file</div>
                         </div>
-                        <div id="status"></div>
+                        <div id="status_file"></div>
 
                         <div class="clearfix"></div>
                         <div class="clearfix" style='margin: 5px 10px; width:100%;'>
-                            <div id="div_image"></div>
+                            <div id="div_image_file"></div>
                         </div>
                     </div>
                 </form>
@@ -103,5 +119,9 @@ use App\Library\AdminFunction\CGlobal;
         </div>
     </div>
 </div>
-<!--Popup Upload Img-->
+<!--Popup Upload File-->
+
+<script>
+    CKEDITOR.replace('hr_document_content');
+</script>
 @stop

@@ -88,7 +88,6 @@ class HrDocumentController extends BaseAdminController{
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
-        Loader::loadJS('lib/dragsort/jquery.dragsort.js', CGlobal::$POS_HEAD);
         Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
 
@@ -101,10 +100,7 @@ class HrDocumentController extends BaseAdminController{
         if($id > 0) {
             $data = HrDocument::getItemById($id);
         }
-
         $this->getDataDefault();
-
-
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
@@ -122,8 +118,8 @@ class HrDocumentController extends BaseAdminController{
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
 
-        $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
+        $id_hiden = (int)FunctionLib::outputId($data['id_hiden']);
 
         if(isset($data['hr_document_type'])) {
             $data['hr_document_type'] = (int)$data['hr_document_type'];
@@ -137,10 +133,9 @@ class HrDocumentController extends BaseAdminController{
         if(isset($data['hr_document_update'])) {
             $data['hr_document_update'] = FunctionLib::convertDate($data['hr_document_update']);
         }
-        if(isset($data['hr_document_id'])) {
-            $data['hr_document_id'] = FunctionLib::outputId($data['hr_document_id']);
+        if(isset($data['hr_document_status'])) {
+            $data['hr_document_status'] = (int)($data['hr_document_status']);
         }
-        $data['hr_document_status'] = (int)($data['hr_document_status']);
 
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;

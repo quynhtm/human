@@ -519,9 +519,13 @@ class FunctionLib {
      * @param string $folder
      * @param bool|true $is_delDir
      */
-    static function deleteFileUpload($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $is_delDir = true){
+    static function deleteFileUpload($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $is_delDir = true, $id=0){
         if($file_name != '') {
-            $path = ($folder != '') ? Config::get('config.DIR_ROOT').'/uploads/' .$folder : '';
+            if($id > 0){
+                $path = ($folder != '') ? Config::get('config.DIR_ROOT') . '/uploads/' . $folder . '/'. $id : '';
+            }else{
+                $path = ($folder != '') ? Config::get('config.DIR_ROOT') . '/uploads/' .$folder : '';
+            }
             if($file_name != ''){
                 if($path != ''){
                     if(is_file($path.'/'.$file_name)){
@@ -547,9 +551,13 @@ class FunctionLib {
      * @param string $folderSize
      * @param bool|true $is_delDir
      */
-    static function deleteFileThumb($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $folderSize = '100x100', $is_delDir = true){
+    static function deleteFileThumb($file_name = '', $folder = CGlobal::FOLDER_PRODUCT, $folderSize = '100x100', $is_delDir = true, $id=0){
         if($file_name != '') {
-            $dirRootItem = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder;
+            if($id > 0){
+                $dirRootItem = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder . '/'. $id;
+            }else{
+                $dirRootItem = Config::get('config.DIR_ROOT').'/uploads/thumbs/'.$folder;
+            }
             $dirImgThumb = $dirRootItem.'/'.$folderSize;
             if($file_name != ''){
                 if($dirImgThumb != ''){

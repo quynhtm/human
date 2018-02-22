@@ -9,6 +9,7 @@ namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
 
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class HrDocument extends BaseModel{
 
     protected $fillable = array('hr_document_project', 'hr_document_name', 'hr_document_desc', 'hr_document_content', '	hr_document_person_recive',
         'hr_document_person_send', 'hr_document_send_cc','hr_document_created','hr_document_update',
-        'hr_document_type', 'hr_document_date_send', 'hr_document_status');
+        'hr_document_type', 'hr_document_files','hr_document_date_send', 'hr_document_status');
 
     public static function createItem($data){
         try {
@@ -92,11 +93,15 @@ class HrDocument extends BaseModel{
             DB::connection()->getPdo()->beginTransaction();
             $item = HrDocument::find($id);
             if($item){
-
                 //Remove file
-
+                $arrFile = ($item->hr_document_files != '') ? unserialize($item->hr_document_files) : array();
+                if(sizeof($arrFile) > 0){
+                    foreach($arrFile as $k=>$v){
+                        unset($arrFile[$k]);
+                        FunctionLib::deleteFileUpload($v, Define::FOLDER_DOCUMENT, true, $id);
+                    }
+                }
                 //End Remove file
-
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
