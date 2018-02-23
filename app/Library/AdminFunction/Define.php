@@ -44,6 +44,9 @@ class Define
     const TABLE_HR_CONTRACTS = 'hr_contracts';
     const TABLE_HR_CURRICULUM_VITAE = 'hr_curriculum_vitae';//lý lịch 2C: thông tin đào tạo, công tác
     const TABLE_HR_DOCUMENT = 'hr_document';// mail, van ban
+    const TABLE_HR_JOB_ASSIGNMENT = 'hr_job_assignment';// bổ nhiệm chức vụ
+    const TABLE_HR_RETIREMENT = 'hr_retirement';// Nghi hưu
+    const TABLE_HR_QUIT_JOB = 'hr_quit_job';// Nghi việc
 
     /***************************************************************************************************************
      * //Memcache
