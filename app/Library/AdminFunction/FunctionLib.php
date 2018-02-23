@@ -7,10 +7,12 @@
  */
 namespace App\Library\AdminFunction;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Session;
 use App\library\AdminFunction\Define;
 use App\library\AdminFunction\CGlobal;
+
 
 class FunctionLib {
 
@@ -861,6 +863,13 @@ class FunctionLib {
         }
         return $m_int;
    }
+
+    public static function khoangcachngay2($p_strngay1,$p_strngay2){
+        $end = Carbon::parse($p_strngay1);
+        $now = $p_strngay2;
+        $length = $end->diffInDays($now);
+        return $length;
+    }
     /**
      * QuynhTM
      * @param int $start_Time
