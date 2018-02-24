@@ -62,6 +62,11 @@ Route::post('device/edit/{id?}', array('as' => 'hr.deviceEdit','uses' => HResour
 Route::get('device/deleteDevice', array('as' => 'hr.deleteDevice','uses' => HResources.'\DeviceController@deleteDevice'));
 
 /*thông tin Document: mail, document */
+Route::match(['GET','POST'],'mail/view', array('as' => 'hr.HrMailView','uses' => HResources.'\HrMailController@view'));
+Route::get('mail/edit/{id?}',array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@getItem'));
+Route::post('mail/edit/{id?}', array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@postItem'));
+Route::get('mail/deleteHrDocument', array('as' => 'hr.deleteHrMail','uses' => HResources.'\HrMailController@deleteHrDocument'));
+
 Route::match(['GET','POST'],'document/view', array('as' => 'hr.HrDocumentView','uses' => HResources.'\HrDocumentController@view'));
 Route::get('document/edit/{id?}',array('as' => 'hr.HrDocumentEdit','uses' => HResources.'\HrDocumentController@getItem'));
 Route::post('document/edit/{id?}', array('as' => 'hr.HrDocumentEdit','uses' => HResources.'\HrDocumentController@postItem'));
