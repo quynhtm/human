@@ -63,9 +63,9 @@ use App\Library\AdminFunction\Define;
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <label class="control-label">Files upload</label>
+                                            <label class="control-label">&nbsp;</label>
                                             <div class="controls">
-                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadmailAdvanced(9);">Upload Files</a>
+                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadmailAdvanced(9);">Tải tệp đính kèm</a>
                                                 <div id="sys_show_file">
                                                     @if(isset($data['hr_mail_files']) && $data['hr_mail_files'] !='')
                                                         <?php $arrfiles = ($data['hr_mail_files'] != '') ? unserialize($data['hr_mail_files']) : array(); ?>
@@ -99,13 +99,13 @@ use App\Library\AdminFunction\Define;
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Files upload</h4>
+                <h4 class="modal-title" id="myModalLabel">Tải tệp đính kèm</h4>
             </div>
             <div class="modal-body">
                 <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
                     <div class="form_group">
                         <div id="sys_show_button_upload_file">
-                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Upload file</div>
+                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Tải tệp đính kèm</div>
                         </div>
                         <div id="status_file"></div>
 
