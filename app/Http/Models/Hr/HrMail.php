@@ -13,21 +13,21 @@ use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 
-class HrDocument extends BaseModel{
-    protected $table = Define::TABLE_HR_DOCUMENT;
-    protected $primaryKey = 'hr_document_id';
+class HrMail extends BaseModel{
+    protected $table = Define::TABLE_HR_MAIL;
+    protected $primaryKey = 'hr_mail_id';
     public $timestamps = false;
 
-    protected $fillable = array('hr_document_project', 'hr_document_name', 'hr_document_desc', 'hr_document_content', '	hr_document_person_recive',
-        'hr_document_person_send', 'hr_document_send_cc','hr_document_created','hr_document_update',
-        'hr_document_type', 'hr_document_files','hr_document_date_send', 'hr_document_status');
+    protected $fillable = array('hr_mail_project', 'hr_mail_name', 'hr_mail_desc', 'hr_mail_content', '	hr_mail_person_recive',
+        'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_update',
+        'hr_mail_type', 'hr_mail_files','hr_mail_date_send', 'hr_mail_status');
 
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new HrDocument();
+            $checkData = new HrMail();
             $fieldInput = $checkData->checkField($data);
-            $item = new HrDocument();
+            $item = new HrMail();
             if (is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
@@ -36,8 +36,8 @@ class HrDocument extends BaseModel{
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->hr_document_id,$item);
-            return $item->hr_document_id;
+            self::removeCache($item->hr_mail_id,$item);
+            return $item->hr_mail_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -46,15 +46,15 @@ class HrDocument extends BaseModel{
     public static function updateItem($id,$data){
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $checkData = new HrDocument();
+            $checkData = new HrMail();
             $fieldInput = $checkData->checkField($data);
-            $item = HrDocument::find($id);
+            $item = HrMail::find($id);
             foreach ($fieldInput as $k => $v) {
                 $item->$k = $v;
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->hr_document_id,$item);
+            self::removeCache($item->hr_mail_id,$item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -62,12 +62,12 @@ class HrDocument extends BaseModel{
         }
     }
     public static function getItemById($id=0){
-        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DOCUMENT_ID . $id) : array();
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_ID . $id) : array();
         try {
             if (empty($result)) {
-                $result = HrDocument::where('hr_document_id', $id)->first();
+                $result = HrMail::where('hr_mail_id', $id)->first();
                 if ($result && Define::CACHE_ON) {
-                    Cache::put(Define::CACHE_HR_DOCUMENT_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    Cache::put(Define::CACHE_HR_MAIL_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         } catch (PDOException $e) {
@@ -91,21 +91,21 @@ class HrDocument extends BaseModel{
         if($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
-            $item = HrDocument::find($id);
+            $item = HrMail::find($id);
             if($item){
                 //Remove file
-                $arrFile = ($item->hr_document_files != '') ? unserialize($item->hr_document_files) : array();
+                $arrFile = ($item->hr_mail_files != '') ? unserialize($item->hr_mail_files) : array();
                 if(sizeof($arrFile) > 0){
                     foreach($arrFile as $k=>$v){
                         unset($arrFile[$k]);
-                        FunctionLib::deleteFileUpload($v, Define::FOLDER_DOCUMENT, true, $id);
+                        FunctionLib::deleteFileUpload($v, Define::FOLDER_MAIL, true, $id);
                     }
                 }
                 //End Remove file
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->hr_document_id,$item);
+            self::removeCache($item->hr_mail_id,$item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -115,26 +115,26 @@ class HrDocument extends BaseModel{
     }
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Define::CACHE_HR_DOCUMENT_ID.$id);
+            Cache::forget(Define::CACHE_HR_MAIL_ID.$id);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
-            $query = HrDocument::where('hr_document_id','>',0);
-            if (isset($dataSearch['hr_document_name']) && $dataSearch['hr_document_name'] != '') {
-                $query->where('hr_document_name','LIKE', '%' . $dataSearch['hr_document_name'] . '%');
+            $query = HrMail::where('hr_mail_id','>',0);
+            if (isset($dataSearch['hr_mail_name']) && $dataSearch['hr_mail_name'] != '') {
+                $query->where('hr_mail_name','LIKE', '%' . $dataSearch['hr_mail_name'] . '%');
             }
-            if (isset($dataSearch['hr_document_status']) && $dataSearch['hr_document_status'] != -1) {
-                $query->where('hr_document_status',$dataSearch['hr_document_status']);
+            if (isset($dataSearch['hr_mail_status']) && $dataSearch['hr_mail_status'] != -1) {
+                $query->where('hr_mail_status',$dataSearch['hr_mail_status']);
             }
-            if (isset($dataSearch['hr_document_type']) && $dataSearch['hr_document_type'] != -1) {
-                $query->where('hr_document_type',$dataSearch['hr_document_type']);
+            if (isset($dataSearch['hr_mail_type']) && $dataSearch['hr_mail_type'] != -1) {
+                $query->where('hr_mail_type',$dataSearch['hr_mail_type']);
             }
 
 
 
             $total = $query->count();
-            $query->orderBy('hr_document_id', 'desc');
+            $query->orderBy('hr_mail_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();

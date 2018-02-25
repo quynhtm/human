@@ -8,7 +8,7 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
-use App\Http\Models\Hr\HrDocument;
+use App\Http\Models\Hr\HrMail;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -18,12 +18,12 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
 
-class HrDocumentController extends BaseAdminController{
-    private $permission_view = 'hr_document_view';
-    private $permission_full = 'hr_document_full';
-    private $permission_delete = 'hr_document_delete';
-    private $permission_create = 'hr_document_create';
-    private $permission_edit = 'hr_document_edit';
+class HrMailController extends BaseAdminController{
+    private $permission_view = 'hr_mail_view';
+    private $permission_full = 'hr_mail_full';
+    private $permission_delete = 'hr_mail_delete';
+    private $permission_create = 'hr_mail_create';
+    private $permission_edit = 'hr_mail_edit';
     private $arrStatus = array();
     private $error = array();
     private $arrPersion = array();
@@ -60,19 +60,19 @@ class HrDocumentController extends BaseAdminController{
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
-        $dataSearch['hr_document_name'] = addslashes(Request::get('hr_document_name',''));
-        $dataSearch['hr_document_type'] = addslashes(Request::get('hr_document_type', -1));
-        $dataSearch['hr_document_status'] = (int)Request::get('hr_document_status', -1);
+        $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
+        $dataSearch['hr_mail_type'] = addslashes(Request::get('hr_mail_type', -1));
+        $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
         $dataSearch['field_get'] = '';
 
-        $data = HrDocument::searchByCondition($dataSearch, $limit, $offset,$total);
+        $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_document_status']);
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_mail_status']);
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Document.view',array_merge([
+        return view('hr.Mail.view',array_merge([
             'data'=>$data,
             'dataSearch'=>$dataSearch,
             'total'=>$total,
@@ -98,14 +98,14 @@ class HrDocumentController extends BaseAdminController{
         }
         $data = array();
         if($id > 0) {
-            $data = HrDocument::getItemById($id);
+            $data = HrMail::getItemById($id);
         }
         $this->getDataDefault();
 
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
 
-        return view('hr.Document.add',array_merge([
+        return view('hr.Mail.add',array_merge([
             'data'=>$data,
             'id'=>$id,
             'optionStatus'=>$optionStatus,
@@ -121,38 +121,38 @@ class HrDocumentController extends BaseAdminController{
         $data = $_POST;
         $id_hiden = (int)FunctionLib::outputId($data['id_hiden']);
 
-        if(isset($data['hr_document_type'])) {
-            $data['hr_document_type'] = (int)$data['hr_document_type'];
+        if(isset($data['hr_mail_type'])) {
+            $data['hr_mail_type'] = (int)$data['hr_mail_type'];
         }
-        if(isset($data['hr_document_created'])) {
-            $data['hr_document_created'] = FunctionLib::convertDate($data['hr_document_created']);
+        if(isset($data['hr_mail_created'])) {
+            $data['hr_mail_created'] = FunctionLib::convertDate($data['hr_mail_created']);
         }
-        if(isset($data['hr_document_date_send'])) {
-            $data['hr_document_date_send'] = FunctionLib::convertDate($data['hr_document_date_send']);
+        if(isset($data['hr_mail_date_send'])) {
+            $data['hr_mail_date_send'] = FunctionLib::convertDate($data['hr_mail_date_send']);
         }
-        if(isset($data['hr_document_update'])) {
-            $data['hr_document_update'] = FunctionLib::convertDate($data['hr_document_update']);
+        if(isset($data['hr_mail_update'])) {
+            $data['hr_mail_update'] = FunctionLib::convertDate($data['hr_mail_update']);
         }
-        if(isset($data['hr_document_status'])) {
-            $data['hr_document_status'] = (int)($data['hr_document_status']);
+        if(isset($data['hr_mail_status'])) {
+            $data['hr_mail_status'] = (int)($data['hr_mail_status']);
         }
 
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             if($id > 0) {
-                if(HrDocument::updateItem($id, $data)) {
+                if(HrMail::updateItem($id, $data)) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrDocumentEdit', array('id'=>FunctionLib::inputId(0)));
+                        return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
                     }else{
-                        return Redirect::route('hr.HrDocumentView');
+                        return Redirect::route('hr.HrMailView');
                     }
                 }
             }else{
-                if(HrDocument::createItem($data)) {
+                if(HrMail::createItem($data)) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrDocumentEdit', array('id'=>FunctionLib::inputId(0)));
+                        return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
                     }else{
-                        return Redirect::route('hr.HrDocumentView');
+                        return Redirect::route('hr.HrMailView');
                     }
                 }
             }
@@ -161,10 +161,10 @@ class HrDocumentController extends BaseAdminController{
         $this->getDataDefault();
 
 
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Document.add',array_merge([
+        return view('hr.Mail.add',array_merge([
             'data'=>$data,
             'id'=>$id,
             'error'=>$this->error,
@@ -172,23 +172,23 @@ class HrDocumentController extends BaseAdminController{
 
         ],$this->viewPermission));
     }
-    public function deleteHrDocument(){
+    public function deleteHrMail(){
         $data = array('isIntOk' => 0);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
             return Response::json($data);
         }
         $id = isset($_GET['id'])?FunctionLib::outputId($_GET['id']):0;
-        if ($id > 0 && HrDocument::deleteItem($id)) {
+        if ($id > 0 && HrMail::deleteItem($id)) {
             $data['isIntOk'] = 1;
         }
         return Response::json($data);
     }
     private function valid($data=array()) {
         if(!empty($data)) {
-            if(isset($data['hr_document_type']) && trim($data['hr_document_type']) == '') {
+            if(isset($data['hr_mail_type']) && trim($data['hr_mail_type']) == '') {
                 $this->error[] = 'Loại văn bản không được rỗng';
             }
-            if(isset($data['hr_document_name']) && trim($data['hr_document_name']) == '') {
+            if(isset($data['hr_mail_name']) && trim($data['hr_mail_name']) == '') {
                 $this->error[] = 'Tên văn bản không được rỗng';
             }
         }

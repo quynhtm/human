@@ -7,6 +7,7 @@
 */
 namespace App\Http\Controllers\Admin;
 
+use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;

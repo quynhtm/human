@@ -28,7 +28,7 @@ use App\Library\AdminFunction\Define;
                         <h4><i class="fa fa-list" aria-hidden="true"></i> Thêm thư, tin nhắn</h4>
                     </div>
                     <div class="btn-group btn-group-sm pull-right mgt3">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrDocumentView')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
+                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrMailView')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
                     </div>
                 </div>
                 <div class="panel-body">
@@ -40,7 +40,7 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Người nhận(<span class="clred">*</span>)</label>
-                                            <input class="form-control input-sm input-required" title="Người nhận" id="hr_document_person_recive" name="hr_document_person_recive" @isset($data['hr_document_person_recive'])value="{{$data['hr_document_person_recive']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Người nhận" id="hr_mail_person_recive" name="hr_mail_person_recive" @isset($data['hr_mail_person_recive'])value="{{$data['hr_mail_person_recive']}}"@endif type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -48,7 +48,7 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Chủ đề</label>
-                                            <input class="form-control input-sm input-required" title="Tên thư, tin nhắn" id="hr_document_name" name="hr_document_name" @isset($data['hr_document_name'])value="{{$data['hr_document_name']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Tên thư, tin nhắn" id="hr_mail_name" name="hr_mail_name" @isset($data['hr_mail_name'])value="{{$data['hr_mail_name']}}"@endif type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Nội dung</label>
-                                            <textarea class="form-control input-sm input-required" name="hr_document_content" id="hr_document_content" cols="30" rows="5">@isset($data['hr_document_content']){{$data['hr_document_content']}}@endif</textarea>
+                                            <textarea class="form-control input-sm input-required" name="hr_mail_content" id="hr_mail_content" cols="30" rows="5">@isset($data['hr_mail_content']){{$data['hr_mail_content']}}@endif</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -65,12 +65,12 @@ use App\Library\AdminFunction\Define;
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;</label>
                                             <div class="controls">
-                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced(10);">Tải tệp đính kèm</a>
+                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadmailAdvanced(9);">Tải tệp đính kèm</a>
                                                 <div id="sys_show_file">
-                                                    @if(isset($data['hr_document_files']) && $data['hr_document_files'] !='')
-                                                        <?php $arrfiles = ($data['hr_document_files'] != '') ? unserialize($data['hr_document_files']) : array(); ?>
+                                                    @if(isset($data['hr_mail_files']) && $data['hr_mail_files'] !='')
+                                                        <?php $arrfiles = ($data['hr_mail_files'] != '') ? unserialize($data['hr_mail_files']) : array(); ?>
                                                         @foreach($arrfiles as $_key=>$file)
-                                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_DOCUMENT.'/'.$id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($id)}}', {{$_key}}, '{{$file}}',10)">X</span></div>
+                                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_MAIL.'/'.$id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deletemailUpload('{{FunctionLib::inputId($id)}}', {{$_key}}, '{{$file}}',9)">X</span></div>
                                                         @endforeach
                                                     @endif
                                                 </div>
@@ -82,7 +82,7 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
                                         <button type="submit" class="btn btn-success btn-sm submitFinish"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
-                                        <input id="id_hiden" name="id_hiden" @isset($data['hr_document_id'])rel="{{$data['hr_document_id']}}" value="{{FunctionLib::inputId($data['hr_document_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+                                        <input id="id_hiden" name="id_hiden" @isset($data['hr_mail_id'])rel="{{$data['hr_mail_id']}}" value="{{FunctionLib::inputId($data['hr_mail_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                 </div>
                             </form>
@@ -94,7 +94,7 @@ use App\Library\AdminFunction\Define;
     </div>
 </div>
 <!--Popup Upload File-->
-<div class="modal fade" id="sys_PopupUploadDocumentOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="sys_PopupUploadmailOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -122,6 +122,6 @@ use App\Library\AdminFunction\Define;
 <!--Popup Upload File-->
 
 <script>
-    CKEDITOR.replace('hr_document_content');
+    CKEDITOR.replace('hr_mail_content');
 </script>
 @stop

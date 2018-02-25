@@ -1,5 +1,5 @@
 ﻿var baseUpload = {
-    // Upload Multiple
+    //Upload Multiple image
     uploadMultipleImages: function(type) {
         jQuery('#sys_PopupUploadImgOtherPro').modal('show');
         jQuery('.ajax-upload-dragdrop').remove();
@@ -54,8 +54,7 @@
         }
         jQuery("#sys_mulitplefileuploader").uploadFile(settings);
     },
-
-    // Upload One
+    //Upload One image
     uploadOneImageAdvanced: function(type) {
         jQuery('#sys_PopupUploadImgOtherPro').modal('show');
         jQuery('.ajax-upload-dragdrop').remove();
@@ -81,9 +80,8 @@
                     jQuery( "#sys_show_button_upload").show();
 
                     //show ảnh
-                    var html = "<img width='300' src='" + dataResult.info.src + "'/>";
-                    jQuery('#banner_image').val(dataResult.info.name_img);
-                    jQuery('#sys_show_image_banner').html(html);
+                    var html = "<img width='300' src='" + dataResult.info.src + "'/><span class='remove_file one' onclick='baseUpload.deleteOneImageAdvanced(0, \""+dataResult.id_item+"\",\""+dataResult.info.name_img+"\", "+type+")'>X</span>";
+                    jQuery('#sys_show_image_one').html(html);
 
                     var img_new = dataResult.info.name_img;
                     if(img_new != ''){
@@ -102,7 +100,6 @@
         }
         jQuery("#sys_mulitplefileuploader").uploadFile(settings);
     },
-
     checkedImage: function(nameImage,key){
         if (confirm('Bạn có muốn chọn ảnh này làm ảnh đại diện?')) {
             jQuery('#image_primary').val(nameImage);
@@ -115,11 +112,9 @@
 
         }
     },
-
     checkedImageHover: function(nameImage,key){
         jQuery('#image_primary_hover').val(nameImage);
     },
-
     removeImage: function(key,id,nameImage,type){
 
         if(jQuery("#image_primary_hover").length ){
@@ -152,7 +147,6 @@
         jQuery('#sys_PopupImgOtherInsertContent #div_image').html('');
         baseUpload.getInsertImageContent(type, 'off');
     },
-
     getInsertImageContent: function(type, popup) {
         if(popup == 'open'){
             jQuery('#sys_PopupImgOtherInsertContent').modal('show');
@@ -180,5 +174,92 @@
                 }
             }
         });
+    },
+    deleteOneImageAdvanced: function(key,id,nameImage,type){
+
+        if (confirm('Bạn có chắc xóa ảnh này?')) {
+            var urlAjaxUpload = WEB_ROOT+'/ajax/upload?act=remove_image';
+            var _token = $('meta[name="csrf-token"]').val();
+            jQuery.ajax({
+                type: "POST",
+                url: urlAjaxUpload,
+                data: {id : id, nameImage : nameImage, type: type, _token: _token},
+                responseType: 'json',
+                success: function(data) {
+                    dataResult = JSON.parse(data);
+                    if(dataResult.intIsOK === 1){
+                        jQuery('#sys_show_image_one').html('');
+                    }
+                }
+            });
+        }
+    },
+    //Upload document
+    uploadDocumentAdvanced: function(type) {
+        jQuery('#sys_PopupUploadDocumentOtherPro').modal('show');
+        jQuery('.ajax-upload-dragdrop').remove();
+        var urlAjaxUpload = WEB_ROOT+'/ajax/upload?act=upload_ext';
+        var id_hiden = document.getElementById('id_hiden').value;
+        var _token = $('meta[name="csrf-token"]').val();
+        var settings = {
+            url: urlAjaxUpload,
+            method: "POST",
+            allowedTypes:"jpg,jpeg,png,gif,txt,ppt,pptx,xls,xlsx,doc,docx,pdf,rar,zip,tar,mp4,flv,avi,3gp,mov",
+            fileName: "multipleFile",
+            formData: {id:id_hiden,type:type, _token:_token},
+            multiple: false,
+            onSubmit:function(){
+                jQuery( "#sys_show_button_upload_file").hide();
+                jQuery("#status_file").html("<span color='green'>Đang upload...</span>");
+            },
+            onSuccess:function(files,xhr,data){
+                dataResult = JSON.parse(xhr);
+                if(dataResult.intIsOK === 1){
+                    //gan lai id item cho id hiden: dung cho them moi, sua item
+                    jQuery('#id_hiden').val(dataResult.id_item);
+                    jQuery( "#sys_show_button_upload_file").show();
+
+                    //show file
+                    var html = '<div class="item-file item_'+dataResult.info.name_key+'"><a target="_blank" href="' + dataResult.info.src + '">'+dataResult.info.name_file+'</a><span class="remove_file" onclick=\"baseUpload.deleteDocumentUpload(\''+dataResult.id_item+'\',\''+dataResult.info.name_key+'\',\''+dataResult.info.name_file+'\',\''+type+'\')\">X</span></div>';
+                    jQuery('#sys_show_file').append(html);
+                    var file_new = dataResult.info.name_file;
+                    if(file_new != ''){
+                        jQuery("#file").attr('value', file_new);
+                    }
+                    //thanh cong
+                    jQuery("#status_file").html("<span color='green'>Upload is success</span>");
+                    setTimeout( "jQuery('.ajax-file-upload-statusbar').hide();",2000 );
+                    setTimeout( "jQuery('#status_file').hide();",2000 );
+                    setTimeout( "jQuery('#sys_PopupUploadDocumentOtherPro').modal('hide');",2500 );
+                }
+            },
+            onError: function(files,status,errMsg){
+                jQuery("#status_file").html("<span color='red'>Upload is Failed</span>");
+            }
+        }
+        jQuery("#sys_mulitplefileuploaderFile").uploadFile(settings);
+    },
+    deleteDocumentUpload:function(id, key, nameImage,type){
+        if(confirm('Bạn muốn xóa [OK]:Đồng ý [Cancel]:Bỏ qua?)')){
+            //Unlink
+            $('.item-file.item_'+key).remove();
+            var urlAjaxUpload = WEB_ROOT+'/ajax/upload?act=remove_image';
+            var _token = $('meta[name="csrf-token"]').val();
+            jQuery.ajax({
+                type: "POST",
+                url: urlAjaxUpload,
+                data: {id:id, key:key, nameImage:nameImage, type:type, _token:_token},
+                responseType: 'json',
+                success: function(data) {
+                    dataResult = JSON.parse(data);
+                    if(dataResult.intIsOK === 1){
+                    }else{
+                        jQuery('#status_file').html(data.msg);
+                    }
+                }
+            });
+
+            return true;
+        }
     },
 };

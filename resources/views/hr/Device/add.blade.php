@@ -115,7 +115,8 @@ use App\Library\AdminFunction\CGlobal;
                                                 <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadOneImageAdvanced(1);">Upload ảnh</a>
                                                 <div id="sys_show_image_one">
                                                     @if(isset($data['device_image']) && $data['device_image'] !='')
-                                                        <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $data['device_image'], 300, 0, '', true, true)}}"/>
+                                                        <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $data['device_image'], Define::sizeImage_300, Define::sizeImage_300, '', true, true)}}"/>
+                                                        <span class="remove_file one" onclick="baseUpload.deleteOneImageAdvanced(0, '{{FunctionLib::inputId($data['device_id'])}}', '{{$data['device_image']}}', 1)">X</span>
                                                     @endif
                                                 </div>
                                                 <input name="img" type="hidden" id="img" @if(isset($data['device_image']))value="{{$data['device_image']}}"@endif>
