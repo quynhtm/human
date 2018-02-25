@@ -36,6 +36,12 @@ Route::post('quitJob/editMove/{person_id?}', array('as' => 'hr.quitJobEditMove',
 Route::get('quitJob/editMoveDepart/{person_id?}', array('as' => 'hr.quitJobEditMoveDepart','uses' => HResources.'\QuitJobController@getJobMoveDepart'));
 Route::post('quitJob/editMoveDepart/{person_id?}', array('as' => 'hr.quitJobEditMoveDepart','uses' => HResources.'\QuitJobController@postJobMoveDepart'));
 
+/*Thiết lập thời gian nghỉ hưu*/
+Route::get('retirement/edit/{person_id?}', array('as' => 'hr.retirementEdit','uses' => HResources.'\RetirementController@getItem'));
+Route::post('retirement/edit/{person_id?}', array('as' => 'hr.retirementEdit','uses' => HResources.'\RetirementController@postItem'));
+Route::get('retirement/editTime/{person_id?}', array('as' => 'hr.retirementEditTime','uses' => HResources.'\RetirementController@getItemTime'));
+Route::post('retirement/editTime/{person_id?}', array('as' => 'hr.retirementEditTime','uses' => HResources.'\RetirementController@postItemTime'));
+
 /*
  * Thông tin đào tạo, công tác: lý lịch 2C
  */

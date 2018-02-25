@@ -18,7 +18,11 @@ class Retirement extends BaseModel
 
     protected $fillable = array('retirement_project', 'retirement_person_id', 'retirement_date_creater', 'retirement_date_notification', 'retirement_date',
         'retirement_note', 'retirement_position_define_id');
-
+    public static function getRetirementByPersonId($retirement_person_id)
+    {
+        $data = Retirement::where('retirement_person_id', $retirement_person_id)->first();
+        return $data;
+    }
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
