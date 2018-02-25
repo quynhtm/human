@@ -18,7 +18,7 @@ class HrMail extends BaseModel{
     protected $primaryKey = 'hr_mail_id';
     public $timestamps = false;
 
-    protected $fillable = array('hr_mail_project', 'hr_mail_name', 'hr_mail_desc', 'hr_mail_content', '	hr_mail_person_recive',
+    protected $fillable = array('hr_mail_project', 'hr_mail_name', 'hr_mail_desc', 'hr_mail_content', 'hr_mail_person_recive',
         'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_update',
         'hr_mail_type', 'hr_mail_files','hr_mail_date_send', 'hr_mail_status');
 

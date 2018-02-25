@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Models\Hr\Device;
 use App\Http\Models\Hr\HrDocument;
+use App\Http\Models\Hr\HrMail;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Upload;
@@ -236,6 +237,15 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
+			case 9://File mail
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
 			case 10://File document
 				if($id > 0 && $nameImage != ''){
 					$delete_action = $this->delete_image_item($id, $nameImage, $type);
@@ -265,6 +275,14 @@ class AjaxUploadController extends BaseAdminController{
 				}
 				$folder_image = 'uploads/'.Define::FOLDER_DEVICE;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DEVICE;
+				break;
+			case 9://File mail
+				$result = HrMail::getItemById($id);
+				if($result != null){
+					$aryImages = unserialize($result->hr_mail_files);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_MAIL;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_MAIL;
 				break;
 			case 10://File document
 				$result = HrDocument::getItemById($id);
@@ -303,6 +321,10 @@ class AjaxUploadController extends BaseAdminController{
 						case 1://Img device
 							$new_row['device_image'] = $aryImages;
 							Device::updateItem($id, $new_row);
+							break;
+						case 9://File mail
+							$new_row['hr_mail_files'] = $aryImages;
+							HrMail::updateItem($id, $new_row);
 							break;
 						case 10://File document
 							$new_row['hr_document_files'] = $aryImages;
@@ -450,6 +472,9 @@ class AjaxUploadController extends BaseAdminController{
 		$aryData['msg'] = "Data not exists!";
 
 		switch( $type ){
+			case 9 ://File Mail
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_MAIL, $type);
+				break;
 			case 10 ://File Document
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_DOCUMENT, $type);
 				break;
@@ -468,6 +493,11 @@ class AjaxUploadController extends BaseAdminController{
 			if($id_hiden == 0){
 
 				switch($type){
+					case 9://File document
+						$new_row['hr_mail_created'] = time();
+						$new_row['hr_mail_status'] = Define::IMAGE_ERROR;
+						$item_id = HrMail::createItem($new_row);
+						break;
 					case 10://File document
 						$new_row['hr_document_created'] = time();
 						$new_row['hr_document_status'] = Define::IMAGE_ERROR;
@@ -491,6 +521,22 @@ class AjaxUploadController extends BaseAdminController{
 					$tmpImg['id_key'] = rand(10000, 99999);
 
 					switch($type){
+						case 9://File Mail
+							$result = HrMail::getItemById($item_id);
+							if($result != null){
+								$arr_file = ($result->hr_mail_files != '') ? unserialize($result->hr_mail_files) : array();
+								$arr_file[] = $file_name;
+								$new_row['hr_mail_files'] = serialize($arr_file);
+								HrMail::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
 						case 10://File Document
 							$result = HrDocument::getItemById($item_id);
 							if($result != null){

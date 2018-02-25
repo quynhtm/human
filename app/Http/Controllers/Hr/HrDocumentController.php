@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Hr\HrDocument;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -39,6 +40,9 @@ class HrDocumentController extends BaseAdminController{
             CGlobal::status_show => FunctionLib::controLanguage('status_show',$this->languageSite),
             CGlobal::status_hide => FunctionLib::controLanguage('status_hidden',$this->languageSite)
         );
+        $this->arrPromulgate = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::co_quan_ban_hanh);
+        $this->arrType = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::loai_van_ban);
+        $this->arrField = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::linh_vuc);
     }
     public function getPermissionPage(){
         return $this->viewPermission = [
@@ -61,7 +65,9 @@ class HrDocumentController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
 
         $dataSearch['hr_document_name'] = addslashes(Request::get('hr_document_name',''));
-        $dataSearch['hr_document_type'] = addslashes(Request::get('hr_document_type', -1));
+        $dataSearch['hr_document_promulgate'] = addslashes(Request::get('hr_document_promulgate', -1));
+        $dataSearch['hr_document_field'] = addslashes(Request::get('hr_document_field', -1));
+        $dataSearch['hr_document_type'] = (int)Request::get('hr_document_type', -1);
         $dataSearch['hr_document_status'] = (int)Request::get('hr_document_status', -1);
         $dataSearch['field_get'] = '';
 
@@ -71,6 +77,10 @@ class HrDocumentController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_document_status']);
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, $dataSearch['hr_document_promulgate']);
+        $optionType = FunctionLib::getOption($this->arrType, $dataSearch['hr_document_type']);
+        $optionField = FunctionLib::getOption($this->arrField, $dataSearch['hr_document_field']);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Document.view',array_merge([
             'data'=>$data,
@@ -80,7 +90,12 @@ class HrDocumentController extends BaseAdminController{
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
-            'arrPersion'=>$this->arrPersion,
+            'optionPromulgate'=>$optionPromulgate,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'optionType'=>$optionType,
+            'arrType'=>$this->arrType,
+            'optionField'=>$optionField,
+            'arrField'=>$this->arrField,
         ],$this->viewPermission));
     }
     public function getItem($ids) {
@@ -103,12 +118,18 @@ class HrDocumentController extends BaseAdminController{
         $this->getDataDefault();
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, isset($data['hr_document_promulgate'])? $data['hr_document_promulgate']: -1);
+        $optionType = FunctionLib::getOption($this->arrType, isset($data['hr_document_type'])? $data['hr_document_type']: -1);
+        $optionField = FunctionLib::getOption($this->arrField, isset($data['hr_document_field'])? $data['hr_document_field']: -1);
         $this->viewPermission = $this->getPermissionPage();
 
         return view('hr.Document.add',array_merge([
             'data'=>$data,
             'id'=>$id,
             'optionStatus'=>$optionStatus,
+            'optionPromulgate'=>$optionPromulgate,
+            'optionType'=>$optionType,
+            'optionField'=>$optionField,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
@@ -127,8 +148,17 @@ class HrDocumentController extends BaseAdminController{
         if(isset($data['hr_document_created'])) {
             $data['hr_document_created'] = FunctionLib::convertDate($data['hr_document_created']);
         }
-        if(isset($data['hr_document_date_send'])) {
-            $data['hr_document_date_send'] = FunctionLib::convertDate($data['hr_document_date_send']);
+        if(isset($data['hr_document_date_issued'])) {
+            $data['hr_document_date_issued'] = FunctionLib::convertDate($data['hr_document_date_issued']);
+        }
+        if(isset($data['hr_document_effective_date'])) {
+            $data['hr_document_effective_date'] = FunctionLib::convertDate($data['hr_document_effective_date']);
+        }
+        if(isset($data['hr_document_date_expired'])) {
+            $data['hr_document_date_expired'] = FunctionLib::convertDate($data['hr_document_date_expired']);
+        }
+        if(isset($data['hr_document_delease_date'])) {
+            $data['hr_document_delease_date'] = FunctionLib::convertDate($data['hr_document_delease_date']);
         }
         if(isset($data['hr_document_update'])) {
             $data['hr_document_update'] = FunctionLib::convertDate($data['hr_document_update']);
@@ -160,8 +190,11 @@ class HrDocumentController extends BaseAdminController{
 
         $this->getDataDefault();
 
-
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, isset($data['hr_document_promulgate'])? $data['hr_document_promulgate']: -1);
+        $optionType = FunctionLib::getOption($this->arrType, isset($data['hr_document_type'])? $data['hr_document_type']: -1);
+        $optionField = FunctionLib::getOption($this->arrField, isset($data['hr_document_field'])? $data['hr_document_field']: -1);
+        $this->viewPermission = $this->getPermissionPage();
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Document.add',array_merge([
@@ -169,6 +202,9 @@ class HrDocumentController extends BaseAdminController{
             'id'=>$id,
             'error'=>$this->error,
             'optionStatus'=>$optionStatus,
+            'optionPromulgate'=>$optionPromulgate,
+            'optionType'=>$optionType,
+            'optionField'=>$optionField,
 
         ],$this->viewPermission));
     }
