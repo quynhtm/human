@@ -12,13 +12,19 @@ use App\Library\AdminFunction\FunctionLib;
 
 class Passport extends BaseModel
 {
-    protected $table = Define::TABLE_HR_LOG;
+    protected $table = Define::TABLE_HR_PASSPORT;
     protected $primaryKey = 'passport_id';
     public $timestamps = false;
 
     protected $fillable = array('passport_project', 'passport_person_id', 'passport_common', 'passport_common_date_range', 'passport_common_date_expiration',
         'passport_common_address_range', 'passport_equitment','passport_equitment_date_range','passport_equitment_date_expiration'
     ,'passport_equitment_date_expiration','passport_equitment_address_range','passport_personal_code','passport_bank_account_number','passport_bank_account');
+
+    public static function getPassportByPersonId($passport_person_id)
+    {
+        $data = Passport::where('passport_person_id', $passport_person_id)->first();
+        return $data;
+    }
 
     public static function createItem($data){
         try {

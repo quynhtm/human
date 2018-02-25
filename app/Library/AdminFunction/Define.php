@@ -47,6 +47,7 @@ class Define
     const TABLE_HR_JOB_ASSIGNMENT = 'hr_job_assignment';// bổ nhiệm chức vụ
     const TABLE_HR_RETIREMENT = 'hr_retirement';// Nghi hưu
     const TABLE_HR_QUIT_JOB = 'hr_quit_job';// Nghi việc
+    const TABLE_HR_PASSPORT = 'hr_passport';// Hộ chiếu mã số thuế
 
     /***************************************************************************************************************
      * //Memcache

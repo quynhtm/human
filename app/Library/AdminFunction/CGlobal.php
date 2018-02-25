@@ -58,13 +58,13 @@ class CGlobal
     const not_active = 0;
 
     public static $arrLinkEditPerson = [
-        1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông tin chung', 'link_url' => '/manager/personnel/edit/'],
-        2 => ['icons' => 'fa fa-suitcase', 'name_url' => 'Thông tin đào tạo công tác', 'link_url' => '/manager/curriculumVitaePerson/viewCurriculumVitae/'],
-        3 => ['icons' => 'fa fa-gift', 'name_url' => 'Thông tin khen thưởng kỷ luật', 'link_url' => '/manager/bonusPerson/viewBonus/'],
+          1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông tin chung', 'link_url' => '/manager/personnel/edit/'],
+          2 => ['icons' => 'fa fa-suitcase', 'name_url' => 'Thông tin đào tạo công tác', 'link_url' => '/manager/curriculumVitaePerson/viewCurriculumVitae/'],
+          3 => ['icons' => 'fa fa-gift', 'name_url' => 'Thông tin khen thưởng kỷ luật', 'link_url' => '/manager/bonusPerson/viewBonus/'],
 //        4 => ['icons' => 'fa fa-money', 'name_url' => 'Cập nhật lương phụ cấp', 'link_url' => '/manager/personnel/edit/'],
 //        5 => ['icons' => 'fa fa-child', 'name_url' => 'Thông báo-bổ nhiệm chức vụ', 'link_url' => '/manager/personnel/edit/'],
           6 => ['icons' => 'fa fa-file-o', 'name_url' => 'Hợp đồng lao động', 'link_url' => '/manager/infoPerson/viewContracts/'],
-//        7 => ['icons' => 'fa fa-plane', 'name_url' => 'Cập nhật thông tinh hộ chiếu,MST', 'link_url' => '/manager/personnel/edit/'],
+          7 => ['icons' => 'fa fa-plane', 'name_url' => 'Cập nhật thông tinh hộ chiếu,MST', 'link_url' => '/manager/passport/edit/'],
          // 8 => ['icons' => 'fa fa-retweet', 'name_url' => 'Chuyển bộ phận phòng ban', 'link_url' => '/manager/infoPerson/viewTransferDepartment/'],
 //        9 => ['icons' => 'fa fa-clock-o', 'name_url' => 'Thiết lập thời gian nghỉ hưu', 'link_url' => '/manager/personnel/edit/'],
 //        10 => ['icons' => 'fa fa-level-up', 'name_url' => 'Kéo dài thời gian nghỉ hưu', 'link_url' => '/manager/personnel/edit/'],

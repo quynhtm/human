@@ -24,6 +24,10 @@ Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HReso
 Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postBonus'));
 Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
 
+/*Hộ chiếu chưng minh thư*/
+Route::get('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@getItem'));
+Route::post('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@postItem'));
+
 /*
  * Thông tin đào tạo, công tác: lý lịch 2C
  */
