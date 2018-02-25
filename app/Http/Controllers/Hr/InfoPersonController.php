@@ -248,48 +248,6 @@ class InfoPersonController extends BaseAdminController
         return Response::json($arrData);
     }
 
-    /************************************************************************************************************************************
-     * Chuyển đổi công tác
-     ************************************************************************************************************************************/
-    public function viewTransferWork($personId)
-    {
-        $person_id = FunctionLib::outputId($personId);
-        CGlobal::$pageAdminTitle = 'Chuyển đổi công tác';
-        //Check phan quyen.
-        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
-            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
-        }
-        $contracts = HrContracts::getListContractsByPersonId($person_id);
-
-        $optionDepart = Department::getDepartmentAll();
-        $this->viewPermission = $this->getPermissionPage();
-        return view('hr.InfoPerson.transferWorkView', array_merge([
-            'optionDepart' => $optionDepart,
-            'total' => count($contracts),
-        ], $this->viewPermission));
-    }
-
-
-    /************************************************************************************************************************************
-     * Chuyển đổi khoa ngành
-     ************************************************************************************************************************************/
-    public function viewTransferDepartment($personId)
-    {
-        $person_id = FunctionLib::outputId($personId);
-        CGlobal::$pageAdminTitle = 'Chuyển đổi công tác';
-        //Check phan quyen.
-        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
-            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
-        }
-        $contracts = HrContracts::getListContractsByPersonId($person_id);
-
-        $optionDepart = Department::getDepartmentAll();
-        $this->viewPermission = $this->getPermissionPage();
-        return view('hr.InfoPerson.transferDepartmentView', array_merge([
-            'optionDepart' => $optionDepart,
-            'total' => count($contracts),
-        ], $this->viewPermission));
-    }
 
     /************************************************************************************************************************************
      * Tạo tài khoản sử dụng hệ thống

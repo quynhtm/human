@@ -28,6 +28,14 @@ Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => 
 Route::get('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@getItem'));
 Route::post('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@postItem'));
 
+/*Nghỉ việc, chuyển công tác, chuyển phòng ban*/
+Route::get('quitJob/editJob/{person_id?}', array('as' => 'hr.quitJobEdit','uses' => HResources.'\QuitJobController@getQuitJob'));
+Route::post('quitJob/editJob/{person_id?}', array('as' => 'hr.quitJobEdit','uses' => HResources.'\QuitJobController@postQuitJob'));
+Route::get('quitJob/editMove/{person_id?}', array('as' => 'hr.quitJobEditMove','uses' => HResources.'\QuitJobController@getJobMove'));
+Route::post('quitJob/editMove/{person_id?}', array('as' => 'hr.quitJobEditMove','uses' => HResources.'\QuitJobController@postJobMove'));
+Route::get('quitJob/editMoveDepart/{person_id?}', array('as' => 'hr.quitJobEditMoveDepart','uses' => HResources.'\QuitJobController@getJobMoveDepart'));
+Route::post('quitJob/editMoveDepart/{person_id?}', array('as' => 'hr.quitJobEditMoveDepart','uses' => HResources.'\QuitJobController@postJobMoveDepart'));
+
 /*
  * Thông tin đào tạo, công tác: lý lịch 2C
  */

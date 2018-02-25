@@ -114,6 +114,10 @@ class Define
     const CURRICULUMVITAE_CONG_TAC = 3;
     const CURRICULUMVITAE_HOAT_DONG_DANG = 4;
 
+    const QUITJOB_THOI_VIEC = 1;
+    const QUITJOB_CHUYEN_CONGTAC = 2;
+    const QUITJOB_CHUYEN_PHONG_BAN = 3;
+
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
     const ROLE_TYPE_ADMIN = 7;
