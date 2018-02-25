@@ -43,7 +43,8 @@ class Define
     const TABLE_HR_RELATIONSHIP = 'hr_relationship';
     const TABLE_HR_CONTRACTS = 'hr_contracts';
     const TABLE_HR_CURRICULUM_VITAE = 'hr_curriculum_vitae';//lý lịch 2C: thông tin đào tạo, công tác
-    const TABLE_HR_DOCUMENT = 'hr_document';// mail, van ban
+    const TABLE_HR_DOCUMENT = 'hr_document';//van ban
+    const TABLE_HR_MAIL = 'hr_mail';// mail
     const TABLE_HR_JOB_ASSIGNMENT = 'hr_job_assignment';// bổ nhiệm chức vụ
     const TABLE_HR_RETIREMENT = 'hr_retirement';// Nghi hưu
     const TABLE_HR_QUIT_JOB = 'hr_quit_job';// Nghi việc
@@ -89,6 +90,7 @@ class Define
     const CACHE_DEFINED_ALL = 'cache_defined_all';
     const CACHE_DEVICE_ID = 'cache_device_id_';
     const CACHE_HR_DOCUMENT_ID = 'cache_hr_document_id_';
+    const CACHE_HR_MAIL_ID = 'cache_hr_mail_id_';
     /***************************************************************************************************************
      * //Define
      ***************************************************************************************************************/
@@ -159,6 +161,10 @@ class Define
     const che_do_thanh_toan = 36;
     const hinh_thuc_hoc = 37;
     const chuyen_nghanh_dao_tao = 38;
+    //Phan loai van ban
+    const co_quan_ban_hanh = 39;
+    const loai_van_ban = 40;
+    const linh_vuc = 41;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',
@@ -199,12 +205,16 @@ class Define
         Define::che_do_thanh_toan => 'Chế độ thanh toán',
         Define::hinh_thuc_hoc => 'Hình thức học',
         Define::chuyen_nghanh_dao_tao => 'Chuyên nghành đào tạo',
+        Define::co_quan_ban_hanh => 'Cơ quan ban hành',
+        Define::loai_van_ban => 'Loại văn bản',
+        Define::linh_vuc => 'Lĩnh vực',
     );
 
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
     const FOLDER_DOCUMENT = 'document';
+    const FOLDER_MAIL = 'mail';
 
     const sizeImage_80 = 80;
     const sizeImage_100 = 100;

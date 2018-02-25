@@ -65,12 +65,12 @@ use App\Library\AdminFunction\Define;
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;</label>
                                             <div class="controls">
-                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadmailAdvanced(9);">Tải tệp đính kèm</a>
+                                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced(9);">Tải tệp đính kèm</a>
                                                 <div id="sys_show_file">
                                                     @if(isset($data['hr_mail_files']) && $data['hr_mail_files'] !='')
                                                         <?php $arrfiles = ($data['hr_mail_files'] != '') ? unserialize($data['hr_mail_files']) : array(); ?>
                                                         @foreach($arrfiles as $_key=>$file)
-                                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_MAIL.'/'.$id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deletemailUpload('{{FunctionLib::inputId($id)}}', {{$_key}}, '{{$file}}',9)">X</span></div>
+                                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_MAIL.'/'.$id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($id)}}', {{$_key}}, '{{$file}}',9)">X</span></div>
                                                         @endforeach
                                                     @endif
                                                 </div>
@@ -94,7 +94,7 @@ use App\Library\AdminFunction\Define;
     </div>
 </div>
 <!--Popup Upload File-->
-<div class="modal fade" id="sys_PopupUploadmailOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="sys_PopupUploadDocumentOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">

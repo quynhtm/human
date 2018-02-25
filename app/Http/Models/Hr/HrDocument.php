@@ -18,9 +18,10 @@ class HrDocument extends BaseModel{
     protected $primaryKey = 'hr_document_id';
     public $timestamps = false;
 
-    protected $fillable = array('hr_document_project', 'hr_document_name', 'hr_document_desc', 'hr_document_content', '	hr_document_person_recive',
-        'hr_document_person_send', 'hr_document_send_cc','hr_document_created','hr_document_update',
-        'hr_document_type', 'hr_document_files','hr_document_date_send', 'hr_document_status');
+    protected $fillable = array('hr_document_project', 'hr_document_name', 'hr_document_desc', 'hr_document_content',
+        'hr_document_code', 'hr_document_promulgate', 'hr_document_type', 'hr_document_field', 'hr_document_signer',
+        'hr_document_date_issued', 'hr_document_effective_date', 'hr_document_date_expired', 'hr_document_delease_date',
+        'hr_document_created', 'hr_document_update', 'hr_document_files', 'hr_document_status');
 
     public static function createItem($data){
         try {
@@ -127,11 +128,15 @@ class HrDocument extends BaseModel{
             if (isset($dataSearch['hr_document_status']) && $dataSearch['hr_document_status'] != -1) {
                 $query->where('hr_document_status',$dataSearch['hr_document_status']);
             }
+            if (isset($dataSearch['hr_document_promulgate']) && $dataSearch['hr_document_promulgate'] != -1) {
+                $query->where('hr_document_promulgate',$dataSearch['hr_document_promulgate']);
+            }
             if (isset($dataSearch['hr_document_type']) && $dataSearch['hr_document_type'] != -1) {
                 $query->where('hr_document_type',$dataSearch['hr_document_type']);
             }
-
-
+            if (isset($dataSearch['hr_document_field']) && $dataSearch['hr_document_field'] != -1) {
+                $query->where('hr_document_field',$dataSearch['hr_document_field']);
+            }
 
             $total = $query->count();
             $query->orderBy('hr_document_id', 'desc');

@@ -21,7 +21,7 @@ class resetUser extends Command{
     }
     public function handle()
     {
-        Mail::to('manhquynh1984@gmail.com')->send(new MailSystem());
+        Mail::to('nguyenduypt86@gmail.com')->send(new MailSystem());
 
         /*$dataUpdate['user_last_login'] = time();
         $dataUpdate['user_edit_name'] = 'cronjob';

@@ -12,7 +12,7 @@ use App\Library\AdminFunction\Define;
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
             </li>
-            <li class="active">Quản lý thư, tin nhắn</li>
+            <li class="active">Quản văn bản</li>
         </ul>
     </div>
     <div class="page-content">
@@ -25,7 +25,7 @@ use App\Library\AdminFunction\Define;
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix paddingTop1 paddingBottom1">
                     <div class="panel-title pull-left">
-                        <h4><i class="fa fa-list" aria-hidden="true"></i> Thêm thư, tin nhắn</h4>
+                        <h4><i class="fa fa-list" aria-hidden="true"></i> Thêm văn bản</h4>
                     </div>
                     <div class="btn-group btn-group-sm pull-right mgt3">
                         <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrDocumentView')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
@@ -37,18 +37,86 @@ use App\Library\AdminFunction\Define;
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm adminFormDevidetAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Người nhận(<span class="clred">*</span>)</label>
-                                            <input class="form-control input-sm input-required" title="Người nhận" id="hr_document_person_recive" name="hr_document_person_recive" @isset($data['hr_document_person_recive'])value="{{$data['hr_document_person_recive']}}"@endif type="text">
+                                            <label>Tên văn bản</label>
+                                            <input class="form-control input-sm input-required" title="Tên văn bản" id="hr_document_name" name="hr_document_name" @isset($data['hr_document_name'])value="{{$data['hr_document_name']}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Số/ký hiệu</label>
+                                            <input class="form-control input-sm input-required" title="Số/ký hiệu" id="hr_document_code" name="hr_document_code" @isset($data['hr_document_code'])value="{{$data['hr_document_code']}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Cơ quan ban hành</label>
+                                            <select class="form-control input-sm"  id="hr_document_promulgate" name="hr_document_promulgate">
+                                                {!! $optionPromulgate !!}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Loại văn bản</label>
+                                            <select class="form-control input-sm"  id="hr_document_type" name="hr_document_type">
+                                                {!! $optionType !!}
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Lĩnh vực</label>
+                                            <select class="form-control input-sm"  id="hr_document_field" name="hr_document_field">
+                                                {!! $optionField !!}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Người ký</label>
+                                            <input class="form-control input-sm input-required" title="Người ký" id="hr_document_signer" name="hr_document_signer" @isset($data['hr_document_signer'])value="{{$data['hr_document_signer']}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày Ban hành</label>
+                                            <input class="form-control input-sm input-required date" title="Ngày Ban hành" id="hr_document_date_issued" name="hr_document_date_issued" @isset($data['hr_document_date_issued'])value="{{date('d-m-Y', $data['hr_document_date_issued'])}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày Hiệu lực</label>
+                                            <input class="form-control input-sm input-required date" title="Ngày Hiệu lực" id="hr_document_effective_date" name="hr_document_effective_date" @isset($data['hr_document_effective_date'])value="{{date('d-m-Y', $data['hr_document_effective_date'])}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày hết Hiệu lực</label>
+                                            <input class="form-control input-sm input-required date" title="Ngày hết Hiệu lực" id="hr_document_date_expired" name="hr_document_date_expired" @isset($data['hr_document_date_expired'])value="{{date('d-m-Y', $data['hr_document_date_expired'])}}"@endif type="text">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Ngày đưa tin</label>
+                                            <input class="form-control input-sm input-required date" title="Ngày đưa tin" id="hr_document_delease_date" name="hr_document_delease_date" @isset($data['hr_document_delease_date'])value="{{date('d-m-Y', $data['hr_document_delease_date'])}}"@endif type="text">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
-                                            <label>Chủ đề</label>
-                                            <input class="form-control input-sm input-required" title="Tên thư, tin nhắn" id="hr_document_name" name="hr_document_name" @isset($data['hr_document_name'])value="{{$data['hr_document_name']}}"@endif type="text">
+                                            <label>Mô tả</label>
+                                            <textarea class="form-control input-sm input-required" name="hr_document_desc" id="hr_document_desc" cols="30" rows="5">@isset($data['hr_document_desc']){{$data['hr_document_desc']}}@endif</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -57,6 +125,18 @@ use App\Library\AdminFunction\Define;
                                         <div class="form-group">
                                             <label>Nội dung</label>
                                             <textarea class="form-control input-sm input-required" name="hr_document_content" id="hr_document_content" cols="30" rows="5">@isset($data['hr_document_content']){{$data['hr_document_content']}}@endif</textarea>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-2">
+                                        <div class="form-group">
+                                            <label class="control-label">Trạng thái</label>
+                                            <div class="controls">
+                                                <select class="form-control input-sm"  id="hr_document_status" name="hr_document_status">
+                                                    {!! $optionStatus !!}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -123,5 +203,12 @@ use App\Library\AdminFunction\Define;
 
 <script>
     CKEDITOR.replace('hr_document_content');
+
+    var dateToday = new Date();
+    jQuery('.date').datetimepicker({
+        timepicker:false,
+        format:'d-m-Y',
+        lang:'vi',
+    });
 </script>
 @stop
