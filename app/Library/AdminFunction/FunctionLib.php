@@ -1185,4 +1185,18 @@ html;
         krsort($arrYear);
         return $arrYear;
     }
+
+    //Cut word
+    public static function cutWord($str, $num, $replacer = '...') {
+        $arr_str = explode(' ', $str);
+        $count = count($arr_str);
+        $arr_str = array_slice($arr_str, 0, $num);
+        $res = implode(' ', $arr_str);
+        if ($count > $num) {
+            if($replacer != ''){
+                $res .= $replacer;
+            }
+        }
+        return $res;
+    }
 }

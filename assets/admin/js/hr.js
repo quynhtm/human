@@ -1,6 +1,7 @@
 $(document).ready(function () {
     HR.clickAddParentDepartment();
     HR.clickPostPageNext();
+    HR.clickSubmitMailDraft();
     HR.showDate();
 });
 HR = {
@@ -130,6 +131,12 @@ HR = {
                 alert(_alert);
                 return false;
             }
+            $('#adminForm').submit();
+        });
+    },
+    clickSubmitMailDraft:function(){
+        $('.submitMailDraft').click(function(){
+            $('#adminForm').append('<input id="submitMailDraft" name="submitMailDraft" value="submitMailDraft" type="hidden">');
             $('#adminForm').submit();
         });
     },

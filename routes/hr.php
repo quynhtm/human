@@ -80,7 +80,13 @@ Route::post('device/edit/{id?}', array('as' => 'hr.deviceEdit','uses' => HResour
 Route::get('device/deleteDevice', array('as' => 'hr.deleteDevice','uses' => HResources.'\DeviceController@deleteDevice'));
 
 /*thông tin Document: mail, document */
-Route::match(['GET','POST'],'mail/view', array('as' => 'hr.HrMailView','uses' => HResources.'\HrMailController@view'));
+Route::match(['GET','POST'],'mail/viewsend', array('as' => 'hr.HrMailViewSend','uses' => HResources.'\HrMailController@viewSend'));
+Route::match(['GET','POST'],'mail/viewget', array('as' => 'hr.HrMailViewGet','uses' => HResources.'\HrMailController@viewGet'));
+Route::match(['GET','POST'],'mail/viewdraft', array('as' => 'hr.HrMailViewDraft','uses' => HResources.'\HrMailController@viewDraft'));
+Route::get('mail/viewItemGet/{id?}',array('as' => 'hr.HrMailViewItemGet','uses' => HResources.'\HrMailController@viewItemGet'));
+Route::get('mail/viewItemSend/{id?}',array('as' => 'hr.HrMailViewItemSend','uses' => HResources.'\HrMailController@viewItemSend'));
+Route::get('mail/viewItemDraft/{id?}',array('as' => 'hr.HrMailViewItemDraft','uses' => HResources.'\HrMailController@viewItemDraft'));
+
 Route::get('mail/edit/{id?}',array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@getItem'));
 Route::post('mail/edit/{id?}', array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@postItem'));
 Route::get('mail/deleteHrMail', array('as' => 'hr.deleteHrMail','uses' => HResources.'\HrMailController@deleteHrMail'));
