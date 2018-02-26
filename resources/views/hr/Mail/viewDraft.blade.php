@@ -24,18 +24,12 @@
                                 <label for="hr_mail_name" class="control-label"><i>Tên thư, tin nhắn</i></label>
                                 <input type="text" class="form-control input-sm" id="hr_mail_name" name="hr_mail_name" autocomplete="off" placeholder="Tên thư, tin nhắn" @if(isset($dataSearch['hr_mail_name']))value="{{$dataSearch['hr_mail_name']}}"@endif>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label for="user_group"><i>Trạng thái</i></label>
-                                <select name="hr_mail_status" id="hr_mail_status" class="form-control input-sm" tabindex="12" data-placeholder="Trạng thái">
-                                    {!! $optionStatus !!}
-                                </select>
-                            </div>
                         </div>
                         <div class="panel-footer text-right">
                     <span class="">
                         <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrMailEdit',array('id' => FunctionLib::inputId(0)))}}">
                             <i class="ace-icon fa fa-plus-circle"></i>
-                            Thêm mới
+                            Soạn thư
                         </a>
                     </span>
                             <span class="">
@@ -51,26 +45,22 @@
                         <thead class="thin-border-bottom">
                         <tr>
                             <th width="2%" class="text-center">STT</th>
-                            <th width="20%">Chủ đề</th>
-                            <th width="8%">Trạng thái</th>
-                            <th width="10%" class="text-center">Chức năng</th>
+                            <th width="10%">Chủ đề</th>
+                            <th width="30%">Nội dung</th>
+                            <th width="5%" class="text-center">Chức năng</th>
                         </tr>
                         </thead>
                         <tbody>
                         @foreach($data as $k=>$item)
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">{{$k+1}}</td>
                                 <td>{{$item->hr_mail_name}}</td>
                                 <td>
-                                    @if(isset($arrStatus[$item['hr_mail_status']]) && $arrStatus[$item['hr_mail_status']] != -1)
-                                        {{$arrStatus[$item['hr_mail_status']]}}
-                                    @else
-                                        Chưa xác định
-                                    @endif
+                                    {{FunctionLib::cutWord(strip_tags(stripcslashes($item->hr_mail_content)), 20, '...')}}
                                 </td>
                                 <td align="center">
                                     @if($is_root || $permission_edit)
-                                        <a href="{{URL::route('hr.HrMailEdit',array('id' => FunctionLib::inputId($item['hr_mail_id'])))}}" title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                        <a href="{{URL::route('hr.HrMailViewItemDraft',array('id' => FunctionLib::inputId($item['hr_mail_id'])))}}" title="Sửa"><i class="fa fa-eye fa-2x"></i></a>
                                     @endif
                                     @if($is_boss || $permission_remove)
                                         <a class="deleteItem" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['hr_mail_id'])}}', WEB_ROOT + '/manager/mail/deleteHrMail')"><i class="fa fa-trash fa-2x"></i></a>

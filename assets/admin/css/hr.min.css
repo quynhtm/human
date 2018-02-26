@@ -152,3 +152,9 @@ span.lbl {
     font-style: italic;
     cursor: pointer;
 }
+.textBold{
+    font-weight:bold;
+}
+.textItalic{
+    font-style:italic;
+}

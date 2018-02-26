@@ -12,7 +12,7 @@ use App\Library\AdminFunction\Define;
                 <i class="ace-icon fa fa-home home-icon"></i>
                 <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
             </li>
-            <li class="active">Soạn thư mới</li>
+            <li class="active">Quản lý thư, tin</li>
         </ul>
     </div>
     <div class="page-content">
@@ -25,17 +25,17 @@ use App\Library\AdminFunction\Define;
             <div class="panel panel-primary">
                 <div class="panel-heading clearfix paddingTop1 paddingBottom1">
                     <div class="panel-title pull-left">
-                        <h4><i class="fa fa-list" aria-hidden="true"></i> Thêm thư, tin nhắn</h4>
+                        <h4><i class="fa fa-list" aria-hidden="true"></i> Soạn thư, tin nhắn nhắn nháp</h4>
                     </div>
                     <div class="btn-group btn-group-sm pull-right mgt3">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrMailViewGet')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
+                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrMailViewDraft')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
                     </div>
                 </div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-md-12">
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
-                            <form id="adminForm" name="adminForm adminFormDevidetAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
+                            <form id="adminForm" name="adminForm adminFormDevidetAdd" method="post" enctype="multipart/form-data" action="{{URL::route('hr.HrMailEdit')}}/{{FunctionLib::inputId($data['hr_mail_id'])}}" novalidate="novalidate">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="form-group">
@@ -90,7 +90,7 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
                                         <button type="submit" class="btn btn-success btn-sm submitMailSend"><i class="fa fa-save"></i>&nbsp;Gửi</button>
-                                        <button type="submit" class="btn btn-success btn-sm submitMailDraft"><i class="fa fa-save"></i>&nbsp;Lưu nháp</button>
+                                        <button type="button" class="btn btn-success btn-sm submitMailDraft"><i class="fa fa-save"></i>&nbsp;Lưu nháp</button>
                                         <input id="id_hiden" name="id_hiden" @isset($data['hr_mail_id'])rel="{{$data['hr_mail_id']}}" value="{{FunctionLib::inputId($data['hr_mail_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                 </div>

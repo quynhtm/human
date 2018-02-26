@@ -19,8 +19,7 @@ class HrMail extends BaseModel{
     public $timestamps = false;
 
     protected $fillable = array('hr_mail_project', 'hr_mail_name', 'hr_mail_desc', 'hr_mail_content', 'hr_mail_person_recive',
-        'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_update',
-        'hr_mail_type', 'hr_mail_files','hr_mail_date_send', 'hr_mail_status');
+        'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_files','hr_mail_date_send', 'hr_mail_status');
 
     public static function createItem($data){
         try {
@@ -115,7 +114,8 @@ class HrMail extends BaseModel{
     }
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Define::CACHE_HR_MAIL_ID.$id);
+            Cache::forget(Define::CACHE_HR_MAIL_ID . $id);
+            Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_recive);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
@@ -127,11 +127,13 @@ class HrMail extends BaseModel{
             if (isset($dataSearch['hr_mail_status']) && $dataSearch['hr_mail_status'] != -1) {
                 $query->where('hr_mail_status',$dataSearch['hr_mail_status']);
             }
-            if (isset($dataSearch['hr_mail_type']) && $dataSearch['hr_mail_type'] != -1) {
-                $query->where('hr_mail_type',$dataSearch['hr_mail_type']);
+
+            if (isset($dataSearch['hr_mail_person_recive']) && $dataSearch['hr_mail_person_recive'] != -1) {
+                $query->where('hr_mail_person_recive',$dataSearch['hr_mail_person_recive']);
             }
-
-
+            if (isset($dataSearch['hr_mail_person_send']) && $dataSearch['hr_mail_person_send'] != -1) {
+                $query->where('hr_mail_person_send',$dataSearch['hr_mail_person_send']);
+            }
 
             $total = $query->count();
             $query->orderBy('hr_mail_id', 'desc');
@@ -154,5 +156,34 @@ class HrMail extends BaseModel{
         }catch (PDOException $e){
             throw new PDOException();
         }
+    }
+
+    public static function getItemByIdAndPersonReciveId($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrMail::where('hr_mail_id', $id)->where('hr_mail_person_recive', $user_id)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+    public static function getItemByIdAndPersonSendId($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrMail::where('hr_mail_id', $id)->where('hr_mail_person_send', $user_id)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
     }
 }

@@ -8,6 +8,7 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Admin\User;
 use App\Http\Models\Hr\HrMail;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -49,7 +50,8 @@ class HrMailController extends BaseAdminController{
             'permission_full'=>in_array($this->permission_full, $this->permission) ? 1 : 0,
         ];
     }
-    public function view(){
+
+    public function viewSend(){
 
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
@@ -61,8 +63,8 @@ class HrMailController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
 
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
-        $dataSearch['hr_mail_type'] = addslashes(Request::get('hr_mail_type', -1));
-        $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
+        $dataSearch['hr_mail_status'] = Define::mail_da_gui;
+        $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
         $dataSearch['field_get'] = '';
 
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
@@ -70,19 +72,176 @@ class HrMailController extends BaseAdminController{
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_mail_status']);
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Mail.view',array_merge([
+        return view('hr.Mail.viewSend',array_merge([
             'data'=>$data,
             'dataSearch'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
-            'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
             'arrPersion'=>$this->arrPersion,
         ],$this->viewPermission));
     }
+    public function viewGet(){
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
+        $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
+        $dataSearch['hr_mail_person_recive'] = $this->user['user_id'];
+        $dataSearch['field_get'] = '';
+        $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Mail.viewGet',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'arrStatus'=>$this->arrStatus,
+            'arrPersion'=>$this->arrPersion,
+        ],$this->viewPermission));
+    }
+    public function viewDraft(){
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
+        $dataSearch['hr_mail_status'] = Define::mail_nhap;
+        $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
+        $dataSearch['field_get'] = '';
+
+        $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Mail.viewDraft',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'arrStatus'=>$this->arrStatus,
+            'arrPersion'=>$this->arrPersion,
+        ],$this->viewPermission));
+    }
+
+    public function viewItemSend($ids){
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $data = array();
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        if($id > 0) {
+            $user_id = $this->user['user_id'];
+            $data = HrMail::getItemByIdAndPersonSendId($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrMailViewSend');
+            }
+        }else{
+            return Redirect::route('hr.HrMailViewSend');
+        }
+        $this->getDataDefault();
+
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Mail.viewItemSend',array_merge([
+            'data'=>$data,
+            'arrUser'=>$arrUser,
+            'id'=>$id,
+            'optionStatus'=>$optionStatus,
+        ],$this->viewPermission));
+    }
+    public function viewItemGet($ids) {
+
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $data = array();
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        if($id > 0) {
+            $user_id = $this->user['user_id'];
+            $data = HrMail::getItemByIdAndPersonReciveId($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrMailViewGet');
+            }else{
+                $dataUpdate['hr_mail_status'] = Define::mail_da_doc;
+                HrMail::updateItem($id, $dataUpdate);
+            }
+        }else{
+            return Redirect::route('hr.HrMailViewGet');
+        }
+        $this->getDataDefault();
+
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Mail.viewItemGet',array_merge([
+            'data'=>$data,
+            'arrUser'=>$arrUser,
+            'id'=>$id,
+            'optionStatus'=>$optionStatus,
+        ],$this->viewPermission));
+    }
+    public function viewItemDraft($ids) {
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $data = array();
+        if($id > 0) {
+            $data = HrMail::getItemById($id);
+        }
+        $this->getDataDefault();
+
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Mail.viewItemDraft',array_merge([
+            'data'=>$data,
+            'id'=>$id,
+            'optionStatus'=>$optionStatus,
+        ],$this->viewPermission));
+    }
+
     public function getItem($ids) {
 
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
@@ -121,39 +280,32 @@ class HrMailController extends BaseAdminController{
         $data = $_POST;
         $id_hiden = (int)FunctionLib::outputId($data['id_hiden']);
 
-        if(isset($data['hr_mail_type'])) {
-            $data['hr_mail_type'] = (int)$data['hr_mail_type'];
-        }
-        if(isset($data['hr_mail_created'])) {
-            $data['hr_mail_created'] = FunctionLib::convertDate($data['hr_mail_created']);
-        }
-        if(isset($data['hr_mail_date_send'])) {
-            $data['hr_mail_date_send'] = FunctionLib::convertDate($data['hr_mail_date_send']);
-        }
-        if(isset($data['hr_mail_update'])) {
-            $data['hr_mail_update'] = FunctionLib::convertDate($data['hr_mail_update']);
-        }
-        if(isset($data['hr_mail_status'])) {
-            $data['hr_mail_status'] = (int)($data['hr_mail_status']);
-        }
+        $data['hr_mail_status'] = Define::mail_nhap;
 
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             if($id > 0) {
+                $data['hr_mail_status'] = -1;
+                unset($data['hr_mail_person_send']);
+                if(isset($data['submitMailDraft'])){
+                    $data['hr_mail_status'] = Define::mail_nhap;
+                }
                 if(HrMail::updateItem($id, $data)) {
-                    if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
-                    }else{
-                        return Redirect::route('hr.HrMailView');
-                    }
+                    return Redirect::route('hr.HrMailViewGet');
                 }
             }else{
+                $data['hr_mail_created'] = time();
+                $data['hr_mail_person_send'] = $this->user['user_id'];
+                if(isset($data['hr_mail_person_recive'])) {
+                    $data['hr_mail_person_recive'] = (int)($data['hr_mail_person_recive']);
+                    $data['hr_mail_date_send'] = time();
+                    $data['hr_mail_status'] = Define::mail_chua_doc;
+                }
+                if(isset($data['submitMailDraft'])){
+                    $data['hr_mail_status'] = Define::mail_nhap;
+                }
                 if(HrMail::createItem($data)) {
-                    if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
-                    }else{
-                        return Redirect::route('hr.HrMailView');
-                    }
+                    return Redirect::route('hr.HrMailViewGet');
                 }
             }
         }
@@ -185,13 +337,25 @@ class HrMailController extends BaseAdminController{
     }
     private function valid($data=array()) {
         if(!empty($data)) {
-            if(isset($data['hr_mail_type']) && trim($data['hr_mail_type']) == '') {
-                $this->error[] = 'Loại văn bản không được rỗng';
-            }
             if(isset($data['hr_mail_name']) && trim($data['hr_mail_name']) == '') {
                 $this->error[] = 'Tên văn bản không được rỗng';
             }
         }
         return true;
+    }
+
+    public function getArrayUserFromData($data=array()){
+        $result = array();
+        if(sizeof($data) > 0){
+            foreach($data as $item){
+                if($item->user_full_name != ''){
+                    $result[$item->user_id] = $item->user_full_name;
+                }else{
+                    $result[$item->user_id] = $item->user_name;
+                }
+
+            }
+        }
+        return $result;
     }
 }

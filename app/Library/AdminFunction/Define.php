@@ -210,6 +210,11 @@ class Define
         Define::linh_vuc => 'Lĩnh vực',
     );
 
+    const mail_chua_doc = 1;//Mail chưa đọc
+    const mail_da_doc = 2;//Mail đã đọc
+    const mail_nhap = 3;//Mail nháp
+    const mail_da_gui = 4;//Mail nháp
+
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
