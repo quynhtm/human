@@ -19,7 +19,9 @@ class HrMail extends BaseModel{
     public $timestamps = false;
 
     protected $fillable = array('hr_mail_project', 'hr_mail_name', 'hr_mail_desc', 'hr_mail_content', 'hr_mail_person_recive',
-        'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_files','hr_mail_date_send', 'hr_mail_status');
+        'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_files','hr_mail_date_send', 'hr_mail_type', 'hr_mail_status');
+
+        //note: hr_mail_type:0 = mail khong duoc xem tuong ung voi mail goc cua nguoi gui, 1= mail dc xem tuong ung voi nguoi nhan dc mail
 
     public static function createItem($data){
         try {
@@ -133,6 +135,9 @@ class HrMail extends BaseModel{
             }
             if (isset($dataSearch['hr_mail_person_send']) && $dataSearch['hr_mail_person_send'] != -1) {
                 $query->where('hr_mail_person_send',$dataSearch['hr_mail_person_send']);
+            }
+            if (isset($dataSearch['hr_mail_type']) && $dataSearch['hr_mail_type'] != -1) {
+                $query->where('hr_mail_type',$dataSearch['hr_mail_type']);
             }
 
             $total = $query->count();

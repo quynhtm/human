@@ -65,6 +65,7 @@ class HrMailController extends BaseAdminController{
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_da_gui;
         $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
+        $dataSearch['hr_mail_type'] = Define::mail_type_0;
         $dataSearch['field_get'] = '';
 
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
@@ -97,6 +98,7 @@ class HrMailController extends BaseAdminController{
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
         $dataSearch['hr_mail_person_recive'] = $this->user['user_id'];
+        $dataSearch['hr_mail_type'] = Define::mail_type_1;
         $dataSearch['field_get'] = '';
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
@@ -127,6 +129,7 @@ class HrMailController extends BaseAdminController{
 
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_nhap;
+        $dataSearch['hr_mail_type'] = -1;
         $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
         $dataSearch['field_get'] = '';
 
@@ -242,7 +245,8 @@ class HrMailController extends BaseAdminController{
         ],$this->viewPermission));
     }
 
-    public function getItem($ids) {
+    public function
+    ($ids) {
 
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
@@ -289,6 +293,9 @@ class HrMailController extends BaseAdminController{
                 unset($data['hr_mail_person_send']);
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
+                    $data['hr_mail_type'] = -1;
+                }else{
+                    $data['hr_mail_type'] = Define::mail_type_0;
                 }
                 if(HrMail::updateItem($id, $data)) {
                     return Redirect::route('hr.HrMailViewGet');
@@ -303,6 +310,9 @@ class HrMailController extends BaseAdminController{
                 }
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
+                    $data['hr_mail_type'] = -1;
+                }else{
+                    $data['hr_mail_type'] = Define::mail_type_0;
                 }
                 if(HrMail::createItem($data)) {
                     return Redirect::route('hr.HrMailViewGet');
