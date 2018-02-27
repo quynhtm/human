@@ -245,8 +245,7 @@ class HrMailController extends BaseAdminController{
         ],$this->viewPermission));
     }
 
-    public function
-    ($ids) {
+    public function getItem($ids) {
 
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
