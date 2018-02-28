@@ -375,7 +375,7 @@ class HrMailController extends BaseAdminController{
             $user_id = $this->user['user_id'];
             $data['isIntOk'] = 0;
             if(sizeof($getItem) > 0){
-                if($getItem->hr_mail_type == Define::mail_type_0 && $getItem->hr_mail_person_send == $user_id){
+                if(($getItem->hr_mail_type == Define::mail_type_0 || $getItem->hr_mail_type == -1) && $getItem->hr_mail_person_send == $user_id){
                     HrMail::deleteItem($id);
                     $data['isIntOk'] = 1;
                 }
