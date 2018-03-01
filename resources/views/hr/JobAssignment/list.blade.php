@@ -22,9 +22,9 @@
             <tr>
                 <td class="text-center middle">{{ $key+1 }}</td>
                 <td>@if(isset($arrChucVu[$item['job_assignment_define_id_new']])){{ $arrChucVu[$item['job_assignment_define_id_new']] }}@endif</td>
-                <td class="text-center middle"> {{ date('d-m-Y',$item['job_assignment_date_creater']) }}</td>
+                <td class="text-center middle"> @if($item['job_assignment_date_creater'] > 0){{ date('d-m-Y',$item['job_assignment_date_creater']) }}@endif</td>
                 <td class="text-center middle">{{$item['job_assignment_code']}}</td>
-                <td class="text-center middle">{{ date('d-m-Y',$item['job_assignment_date_start']) }} - {{date('d-m-Y',$item['job_assignment_date_end'])}}</td>
+                <td class="text-center middle">{{ date('d-m-Y',$item['job_assignment_date_start']) }} <br/>{{date('d-m-Y',$item['job_assignment_date_end'])}}</td>
                 <td class="text-center middle">@if(isset($arrChucVu[$item['job_assignment_define_id_old']])){{ $arrChucVu[$item['job_assignment_define_id_old']] }}@endif</td>
                 <td class="text-center middle">
                     @if($item['job_assignment_status'] == 1)

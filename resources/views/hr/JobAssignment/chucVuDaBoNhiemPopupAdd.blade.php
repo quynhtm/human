@@ -44,7 +44,7 @@
             </div>
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="name" class="control-label">Ghi chú</label>
+                    <label for="name" class="control-label">Số quyết định kèm theo</label>
                     <input type="text" class="form-control" id="job_assignment_code" name="job_assignment_code"  value="@if(isset($data['job_assignment_code'])){{$data['job_assignment_code']}}@endif">
                 </div>
             </div>

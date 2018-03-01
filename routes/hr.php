@@ -47,6 +47,7 @@ Route::get('jobAssignment/viewJobAssignment/{person_id?}', array('as' => 'hr.vie
 Route::get('jobAssignment/editJobAssignment', array('as' => 'hr.editJobAssignment','uses' => HResources.'\JobAssignmentController@editJobAssignment'));
 Route::post('jobAssignment/postJobAssignment', array('as' => 'hr.postJobAssignment','uses' => HResources.'\JobAssignmentController@postJobAssignment'));
 Route::post('jobAssignment/deleteJobAssignment', array('as' => 'hr.deleteJobAssignment','uses' => HResources.'\JobAssignmentController@deleteJobAssignment'));
+Route::post('jobAssignment/updateStatus', array('as' => 'hr.updateStatus','uses' => HResources.'\JobAssignmentController@updateStatus'));
 
 /*
  * Thông tin đào tạo, công tác: lý lịch 2C

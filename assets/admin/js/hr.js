@@ -313,4 +313,22 @@ HR = {
             });
         }
     },
+    updateStatusAjaxCommon: function (str_object_id, status, urlAjax) {
+        var _token = $('meta[name="csrf-token"]').attr('content');
+        if(confirm('Bạn có muốn cập nhật?')){
+            $.ajax({
+                type: 'post',
+                url: WEB_ROOT + '/manager/'+urlAjax,
+                data: {status: status, str_object_id: str_object_id},
+                headers: {'X-CSRF-TOKEN': _token},
+                success: function (data) {
+                    if ((data.intReturn == 0)) {
+                        alert(data.msg);
+                    } else {
+                        window.location.reload();
+                    }
+                },
+            });
+        }
+    },
 }

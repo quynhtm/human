@@ -139,7 +139,7 @@ class JobAssignmentController extends BaseAdminController
         $job_assignment_id = Request::get('job_assignment_id', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if ($data['bonus_decision'] == '' || $data['bonus_note'] == '') {
+        if ($data['job_assignment_define_id_new'] == '' || $data['job_assignment_define_id_old'] == '') {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         } else {
             if ($person_id > 0) {
@@ -147,17 +147,19 @@ class JobAssignmentController extends BaseAdminController
                     'job_assignment_person_id' => $person_id,
                     'job_assignment_define_id_new' => $data['job_assignment_define_id_new'],
                     'job_assignment_define_id_old' => $data['job_assignment_define_id_old'],
-                    'job_assignment_date_start' => (isset($data['job_assignment_date_start']) && $data['job_assignment_date_start'] != '')? strtotime($data['job_assignment_date_start']):'',
-                    'job_assignment_date_end' => (isset($data['job_assignment_date_end']) && $data['job_assignment_date_end'] != '')? strtotime($data['job_assignment_date_end']):'',
+                    'job_assignment_date_start' => (isset($data['job_assignment_date_start']) && $data['job_assignment_date_start'] != '') ? strtotime($data['job_assignment_date_start']) : '',
+                    'job_assignment_date_end' => (isset($data['job_assignment_date_end']) && $data['job_assignment_date_end'] != '') ? strtotime($data['job_assignment_date_end']) : '',
                     'job_assignment_note' => $data['job_assignment_note'],
-                    'job_assignment_status' => ($data['typeAction'] == Define::JOBASSIGNMENT_THONG_BAO) ? 0: 1,
+                    'job_assignment_status' => ($data['typeAction'] == Define::JOBASSIGNMENT_THONG_BAO) ? 0 : 1,
                 );
 
-                if(isset($data['job_assignment_code']) && $data['job_assignment_code'] != ''){
+                if (isset($data['job_assignment_code']) && $data['job_assignment_code'] != '') {
                     $dataInput['job_assignment_code'] = $data['job_assignment_code'];
                 }
-                if(isset($data['job_assignment_date_creater']) && $data['job_assignment_date_creater'] != ''){
+                if (isset($data['job_assignment_date_creater']) && $data['job_assignment_date_creater'] != '') {
                     $dataInput['job_assignment_date_creater'] = strtotime($data['job_assignment_date_creater']);
+                } else {
+                    $dataInput['job_assignment_date_creater'] = (isset($data['job_assignment_date_start']) && $data['job_assignment_date_start'] != '') ? strtotime($data['job_assignment_date_start']) : '';
                 }
 
                 if ($job_assignment_id > 0) {
@@ -168,7 +170,7 @@ class JobAssignmentController extends BaseAdminController
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
                 //thông tin list
                 $dataList = JobAssignment::getJobAssignmentByPersonId($person_id);
-                $template = ($data['typeAction'] == Define::JOBASSIGNMENT_THONG_BAO) ? 'thongBaoBoNhiemPopupAdd' : 'chucVuDaBoNhiemPopupAdd';
+                $template = 'list';
                 //chức vụ đảm nhiêm
                 $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
 
@@ -199,44 +201,44 @@ class JobAssignmentController extends BaseAdminController
         $bonusId = Request::get('str_object_id', '');
         $typeAction = Request::get('typeAction', '');
         $person_id = FunctionLib::outputId($personId);
-        $bonus_id = FunctionLib::outputId($bonusId);
-        if ($bonus_id > 0 && Bonus::deleteItem($bonus_id)) {
+        $job_assignment_id = FunctionLib::outputId($bonusId);
+        if ($job_assignment_id > 0 && JobAssignment::deleteItem($job_assignment_id)) {
             $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
-            //thông tin view list\
-            $dataList = array();
-            if ($typeAction == Define::BONUS_KHEN_THUONG) {
-                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
-            } elseif ($typeAction == Define::BONUS_DANH_HIEU) {
-                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
-            } else {
-                $dataList = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
-            }
-
-            //thông tin template
-            $arrType = array();
-            if ($typeAction == Define::BONUS_KHEN_THUONG) {
-                $template = 'khenThuongList';
-                $nameTem = 'khen thưởng';
-                $arrType = HrDefine::getArrayByType(Define::khen_thuong);
-            } elseif ($typeAction == Define::BONUS_DANH_HIEU) {
-                $template = 'danhHieuList';
-                $nameTem = 'danh hiệu';
-                $arrType = HrDefine::getArrayByType(Define::danh_hieu);
-            } else {
-                $template = 'kyLuatList';
-                $nameTem = 'kỷ luật';
-                $arrType = HrDefine::getArrayByType(Define::ky_luat);
-            }
+            //thông tin list
+            $dataList = JobAssignment::getJobAssignmentByPersonId($person_id);
+            $template = 'list';
+            //chức vụ đảm nhiêm
+            $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
             $html = view('hr.JobAssignment.' . $template, array_merge([
                 'person_id' => $person_id,
-                'dataList' => $dataList,
-                'total' => count($dataList),
-                'nameTem' => $nameTem,
-                'arrType' => $arrType,
+                'jobAssignment' => $dataList,
+                'arrChucVu' => $arrChucVu,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
+        }
+        return Response::json($arrData);
+    }
+
+    public function updateStatus()
+    {
+        //Check phan quyen.
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+        if (!$this->is_root && !in_array($this->jobAssignmentFull, $this->permission) && !in_array($this->jobAssignmentCreate, $this->permission)) {
+            $arrData['msg'] = 'Bạn không có quyền thao tác';
+            return response()->json($arrData);
+        }
+        $status = Request::get('status', Define::STATUS_HIDE);
+        $str_object_id = Request::get('str_object_id', '');
+        $job_assignment_id = FunctionLib::outputId($str_object_id);
+        if ($job_assignment_id > 0) {
+            $dataUpdate['job_assignment_status'] = ($status == Define::STATUS_HIDE) ? Define::STATUS_SHOW : Define::STATUS_HIDE;
+            if (JobAssignment::updateItem($job_assignment_id, $dataUpdate)) {
+                $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+            } else {
+                $arrData = ['intReturn' => 0, 'msg' => 'Cập nhật thất bại'];
+            }
         }
         return Response::json($arrData);
     }
