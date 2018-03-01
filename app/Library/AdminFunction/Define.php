@@ -32,6 +32,7 @@ class Define
     const TABLE_DISTRICTS = 'hr_districts';
     const TABLE_WARDS = 'hr_wards';
     const TABLE_MEMBER = 'hr_member';
+    const TABLE_CRONJOB = 'hr_cronjob';
     const TABLE_GROUP_USER_PERMISSION = 'hr_group_user_permission';
     const TABLE_HR_CATEGORY = 'hr_category';
     const TABLE_HR_PERSON = 'hr_personnel';

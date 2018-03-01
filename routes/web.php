@@ -32,6 +32,11 @@ Route::group(array('prefix' => 'api', 'before' => ''), function () {
     require __DIR__.'/api.php';
 });
 
+//Router Api
+Route::group(array('prefix' => 'cronjob', 'before' => ''), function () {
+    require __DIR__.'/cronjob.php';
+});
+
 //Router Ajax
 Route::group(array('prefix' => 'ajax', 'before' => ''), function () {
     Route::post('upload', array('as' => 'ajax.upload','uses' => 'AjaxUploadController@upload'));
