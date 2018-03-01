@@ -19,6 +19,16 @@ class JobAssignment extends BaseModel
     protected $fillable = array('job_assignment_project', 'job_assignment_person_id', 'job_assignment_define_id_new', 'job_assignment_define_id_old', 'job_assignment_date_creater',
         'job_assignment_date_start', 'job_assignment_date_end','job_assignment_code','job_assignment_note','job_assignment_status');
 
+    public static function getJobAssignmentByPersonId($person_id)
+    {
+        if ($person_id > 0) {
+            $result = JobAssignment::where('job_assignment_person_id', $person_id)
+                ->orderBy('job_assignment_date_start', 'ASC')->get();
+            return $result;
+        }
+        return array();
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();

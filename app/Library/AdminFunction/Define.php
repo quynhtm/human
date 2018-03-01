@@ -118,6 +118,9 @@ class Define
     const QUITJOB_CHUYEN_CONGTAC = 2;
     const QUITJOB_CHUYEN_PHONG_BAN = 3;
 
+    const JOBASSIGNMENT_THONG_BAO = 1;
+    const JOBASSIGNMENT_DA_BO_NHIEM = 2;
+
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;
     const ROLE_TYPE_ADMIN = 7;

@@ -42,6 +42,12 @@ Route::post('retirement/edit/{person_id?}', array('as' => 'hr.retirementEdit','u
 Route::get('retirement/editTime/{person_id?}', array('as' => 'hr.retirementEditTime','uses' => HResources.'\RetirementController@getItemTime'));
 Route::post('retirement/editTime/{person_id?}', array('as' => 'hr.retirementEditTime','uses' => HResources.'\RetirementController@postItemTime'));
 
+/*Bổ nhiêm nhiêm chức vụ*/
+Route::get('jobAssignment/viewJobAssignment/{person_id?}', array('as' => 'hr.viewJobAssignment','uses' => HResources.'\JobAssignmentController@viewJobAssignment'));
+Route::get('jobAssignment/editJobAssignment', array('as' => 'hr.editJobAssignment','uses' => HResources.'\JobAssignmentController@editJobAssignment'));
+Route::post('jobAssignment/postJobAssignment', array('as' => 'hr.postJobAssignment','uses' => HResources.'\JobAssignmentController@postJobAssignment'));
+Route::post('jobAssignment/deleteJobAssignment', array('as' => 'hr.deleteJobAssignment','uses' => HResources.'\JobAssignmentController@deleteJobAssignment'));
+
 /*
  * Thông tin đào tạo, công tác: lý lịch 2C
  */
