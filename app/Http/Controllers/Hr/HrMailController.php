@@ -14,6 +14,7 @@ use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\Loader;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -65,6 +66,7 @@ class HrMailController extends BaseAdminController{
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_da_gui;
         $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
+        $dataSearch['hr_mail_type'] = Define::mail_type_0;
         $dataSearch['field_get'] = '';
 
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
@@ -97,6 +99,7 @@ class HrMailController extends BaseAdminController{
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
         $dataSearch['hr_mail_person_recive'] = $this->user['user_id'];
+        $dataSearch['hr_mail_type'] = Define::mail_type_1;
         $dataSearch['field_get'] = '';
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
@@ -127,6 +130,7 @@ class HrMailController extends BaseAdminController{
 
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_nhap;
+        $dataSearch['hr_mail_type'] = -1;
         $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
         $dataSearch['field_get'] = '';
 
@@ -188,7 +192,6 @@ class HrMailController extends BaseAdminController{
         $data = array();
         $dataUser = User::getList();
         $arrUser = $this->getArrayUserFromData($dataUser);
-
         if($id > 0) {
             $user_id = $this->user['user_id'];
             $data = HrMail::getItemByIdAndPersonReciveId($id, $user_id);
@@ -228,7 +231,11 @@ class HrMailController extends BaseAdminController{
         }
         $data = array();
         if($id > 0) {
-            $data = HrMail::getItemById($id);
+            $user_id = $this->user['user_id'];
+            $data = HrMail::getItemDraftById($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrMailViewDraft');
+            }
         }
         $this->getDataDefault();
 
@@ -258,6 +265,12 @@ class HrMailController extends BaseAdminController{
         $data = array();
         if($id > 0) {
             $data = HrMail::getItemById($id);
+            if(sizeof($data) > 0){
+                $user_id = $this->user['user_id'];
+               if($data->hr_mail_person_send != $user_id){
+                   return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
+               }
+            }
         }
         $this->getDataDefault();
 
@@ -289,29 +302,56 @@ class HrMailController extends BaseAdminController{
                 unset($data['hr_mail_person_send']);
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
+                    $data['hr_mail_type'] = -1;
+                    HrMail::updateItem($id, $data);
+                }else{
+                    $data['hr_mail_date_send'] = time();
+                    $data['hr_mail_type'] = Define::mail_type_0;
+                    $data['hr_mail_status'] = Define::mail_da_gui;
+                    $mailId = HrMail::updateItem($id, $data);
+                    if($mailId > 0){
+                        $getItem = HrMail::getItemById($mailId);
+                        //To
+                        $hr_mail_person_recive = (isset($data['hr_mail_person_recive']) && $data['hr_mail_person_recive'] != '') ? explode(',', $data['hr_mail_person_recive']) : array();
+                        $this->sendDataToUsers($hr_mail_person_recive, $getItem);
+                        //CC
+                        $hr_mail_send_cc = (isset($data['hr_mail_send_cc']) && $data['hr_mail_send_cc'] != '') ? explode(',', $data['hr_mail_send_cc']) : array();
+                        $this->sendDataToUsers($hr_mail_send_cc, $getItem);
+                    }
                 }
-                if(HrMail::updateItem($id, $data)) {
-                    return Redirect::route('hr.HrMailViewGet');
-                }
+                return Redirect::route('hr.HrMailViewGet');
             }else{
                 $data['hr_mail_created'] = time();
                 $data['hr_mail_person_send'] = $this->user['user_id'];
-                if(isset($data['hr_mail_person_recive'])) {
-                    $data['hr_mail_person_recive'] = (int)($data['hr_mail_person_recive']);
-                    $data['hr_mail_date_send'] = time();
-                    $data['hr_mail_status'] = Define::mail_chua_doc;
-                }
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
+                    $data['hr_mail_type'] = -1;
+                }else{
+                    $data['hr_mail_type'] = Define::mail_type_0;
+                    $data['hr_mail_status'] = Define::mail_da_gui;
+                    $data['hr_mail_date_send'] = time();
                 }
-                if(HrMail::createItem($data)) {
-                    return Redirect::route('hr.HrMailViewGet');
+                $data['hr_mail_person_recive'] = (isset($data['hr_mail_person_recive']) && $data['hr_mail_person_recive'] != '') ? $data['hr_mail_person_recive'] : '';
+                $data['hr_mail_send_cc'] = (isset($data['hr_mail_send_cc']) && $data['hr_mail_send_cc'] != '') ? $data['hr_mail_send_cc'] : '';
+                $data['hr_mail_person_recive_list'] = $data['hr_mail_person_recive'];
+
+                $mailId = HrMail::createItem($data);
+
+                if(!isset($data['submitMailDraft'])){
+                    $getItem = HrMail::getItemById($mailId);
+                    //To
+                    $hr_mail_person_recive = (isset($getItem['hr_mail_person_recive_list']) && $getItem['hr_mail_person_recive_list'] != '') ? explode(',', $getItem['hr_mail_person_recive_list']) : array();
+                    $this->sendDataToUsers($hr_mail_person_recive, $getItem);
+                    //CC
+                    $hr_mail_send_cc = (isset($getItem['hr_mail_send_cc']) && $getItem['hr_mail_send_cc'] != '') ? explode(',', $getItem['hr_mail_send_cc']) : array();
+                    $this->sendDataToUsers($hr_mail_send_cc, $getItem);
                 }
+
+                return Redirect::route('hr.HrMailViewGet');
             }
         }
 
         $this->getDataDefault();
-
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_mail_status'])? $data['hr_mail_status']: CGlobal::status_show);
 
@@ -330,8 +370,20 @@ class HrMailController extends BaseAdminController{
             return Response::json($data);
         }
         $id = isset($_GET['id'])?FunctionLib::outputId($_GET['id']):0;
-        if ($id > 0 && HrMail::deleteItem($id)) {
-            $data['isIntOk'] = 1;
+        if ($id > 0) {
+            $getItem = HrMail::getItemById($id);
+            $user_id = $this->user['user_id'];
+            $data['isIntOk'] = 0;
+            if(sizeof($getItem) > 0){
+                if(($getItem->hr_mail_type == Define::mail_type_0 || $getItem->hr_mail_type == -1) && $getItem->hr_mail_person_send == $user_id){
+                    HrMail::deleteItem($id);
+                    $data['isIntOk'] = 1;
+                }
+                if($getItem->hr_mail_type == Define::mail_type_1 && $getItem->hr_mail_person_recive == $user_id){
+                    HrMail::deleteItem($id);
+                    $data['isIntOk'] = 1;
+                }
+            }
         }
         return Response::json($data);
     }
@@ -357,5 +409,42 @@ class HrMailController extends BaseAdminController{
             }
         }
         return $result;
+    }
+
+    public function sendDataToUsers($dataUser, $getItem){
+        if(sizeof($dataUser) > 0 && sizeof($getItem) >0){
+            foreach($dataUser as $key=>$recive) {
+                $dataRecive['hr_mail_name'] = $getItem->hr_mail_name;
+                $dataRecive['hr_mail_content'] = $getItem->hr_mail_content;
+                $dataRecive['hr_mail_person_recive'] = (int)$recive;
+                $dataRecive['hr_mail_person_recive_list'] = $getItem->hr_mail_person_recive_list;
+                $dataRecive['hr_mail_person_send'] = $this->user['user_id'];
+                $dataRecive['hr_mail_send_cc'] = $getItem->hr_mail_send_cc;
+                $dataRecive['hr_mail_created'] = time();
+                $dataRecive['hr_mail_date_send'] = time();
+                $dataRecive['hr_mail_files'] = $getItem->hr_mail_files;
+                $dataRecive['hr_mail_type'] = Define::mail_type_1;
+                $dataRecive['hr_mail_status'] = Define::mail_chua_doc;
+                $idMailOther = HrMail::createItem($dataRecive);
+                if($getItem->hr_mail_files != '') {
+                    $hr_mail_files = ($getItem->hr_mail_files != '') ? unserialize($getItem->hr_mail_files) : array();
+                    if(sizeof($hr_mail_files) > 0) {
+                        foreach ($hr_mail_files as $key => $file) {
+                            $folder_mail = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_MAIL;
+                            $path_current = $folder_mail . '/' . $getItem->hr_mail_id . '/' . $file;
+                            if(file_exists($path_current)){
+                                $folder_copy = $folder_mail . '/' .$idMailOther;
+                                $path_copy = $folder_copy . '/' .$file;
+                                if(!is_dir($folder_copy)){
+                                    @mkdir($folder_copy,0777,true);
+                                    @chmod($folder_copy,0777);
+                                }
+                                @copy($path_current, $path_copy);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

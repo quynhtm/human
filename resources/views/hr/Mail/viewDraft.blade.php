@@ -60,9 +60,9 @@
                                 </td>
                                 <td align="center">
                                     @if($is_root || $permission_edit)
-                                        <a href="{{URL::route('hr.HrMailViewItemDraft',array('id' => FunctionLib::inputId($item['hr_mail_id'])))}}" title="Sửa"><i class="fa fa-eye fa-2x"></i></a>
+                                        <a href="{{URL::route('hr.HrMailViewItemDraft',array('id' => FunctionLib::inputId($item['hr_mail_id'])))}}" title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
                                     @endif
-                                    @if($is_boss || $permission_remove)
+                                    @if($is_root || $permission_remove)
                                         <a class="deleteItem" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['hr_mail_id'])}}', WEB_ROOT + '/manager/mail/deleteHrMail')"><i class="fa fa-trash fa-2x"></i></a>
                                     @endif
                                 </td>

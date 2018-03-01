@@ -221,7 +221,9 @@ class Define
     const mail_chua_doc = 1;//Mail chưa đọc
     const mail_da_doc = 2;//Mail đã đọc
     const mail_nhap = 3;//Mail nháp
-    const mail_da_gui = 4;//Mail nháp
+    const mail_da_gui = 4;//Mail đã gửi
+    const mail_type_0 = 0;//Mail khong duoc xem tuong ung voi mail goc cua nguoi gui
+    const mail_type_1 = 1;//Mail dc xem tuong ung voi nguoi nhan dc mail
 
     //Folder
     const IMAGE_ERROR = -1000;
