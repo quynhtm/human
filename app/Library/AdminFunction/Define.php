@@ -50,6 +50,8 @@ class Define
     const TABLE_HR_RETIREMENT = 'hr_retirement';// Nghi hưu
     const TABLE_HR_QUIT_JOB = 'hr_quit_job';// Nghi việc
     const TABLE_HR_PASSPORT = 'hr_passport';// Hộ chiếu mã số thuế
+    const TABLE_HR_SALARY = 'hr_salary';// Lương
+    const TABLE_HR_ALLOWANCE = 'hr_allowance';// phụ cấp
 
     /***************************************************************************************************************
      * //Memcache

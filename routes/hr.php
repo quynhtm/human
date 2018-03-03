@@ -24,6 +24,15 @@ Route::get('bonusPerson/editBonus', array('as' => 'hr.editBonus','uses' => HReso
 Route::post('bonusPerson/postBonus', array('as' => 'hr.postBonus','uses' => HResources.'\BonusPersonController@postBonus'));
 Route::post('bonusPerson/deleteBonus', array('as' => 'hr.deleteBonus','uses' => HResources.'\BonusPersonController@deleteBonus'));
 
+/*Thông tin lương và phụ cấp*/
+Route::get('salaryAllowance/viewSalaryAllowance/{person_id?}', array('as' => 'hr.viewSalaryAllowance','uses' => HResources.'\SalaryAllowanceController@viewSalaryAllowance'));
+Route::get('salaryAllowance/editSalary', array('as' => 'hr.editSalary','uses' => HResources.'\SalaryAllowanceController@editSalary'));
+Route::post('salaryAllowance/postSalary', array('as' => 'hr.postSalary','uses' => HResources.'\SalaryAllowanceController@postSalary'));
+Route::post('salaryAllowance/deleteSalary', array('as' => 'hr.deleteSalary','uses' => HResources.'\SalaryAllowanceController@deleteSalary'));
+Route::get('salaryAllowance/editAllowance', array('as' => 'hr.editAllowance','uses' => HResources.'\SalaryAllowanceController@editAllowance'));
+Route::post('salaryAllowance/postAllowance', array('as' => 'hr.postAllowance','uses' => HResources.'\SalaryAllowanceController@postAllowance'));
+Route::post('salaryAllowance/deleteAllowance', array('as' => 'hr.deleteAllowance','uses' => HResources.'\SalaryAllowanceController@deleteAllowance'));
+
 /*Hộ chiếu chưng minh thư*/
 Route::get('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@getItem'));
 Route::post('passport/edit/{person_id?}', array('as' => 'hr.passportEdit','uses' => HResources.'\PassportController@postItem'));
