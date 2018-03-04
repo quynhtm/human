@@ -142,11 +142,13 @@ HR = {
     },
     showDate: function () {
         var dateToday = new Date();
+        /*
         jQuery('.date').datetimepicker({
             timepicker: false,
             format: 'd-m-Y',
             lang: 'vi',
         });
+        */
     },
     getInfoContractsPerson: function (person_id, contracts_id) {
         $('#sys_showPopupCommon').modal('show');

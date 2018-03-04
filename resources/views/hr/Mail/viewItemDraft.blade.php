@@ -40,7 +40,23 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>Người nhận</label>
-                                            <input class="form-control input-sm input-required" title="Người nhận" id="hr_mail_person_recive" name="hr_mail_person_recive" @isset($data['hr_mail_person_recive'])value="{{$data['hr_mail_person_recive']}}"@endif type="text">
+                                            <div class="multipleSelectRecive" multiple style="display: none">
+                                                <?php
+                                                $hr_mail_person_recive_list = isset($data['hr_mail_person_recive_list']) ? explode(',', $data['hr_mail_person_recive_list']) : array();
+                                                ?>
+                                                @foreach($arrUser as $k=>$val)
+                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_person_recive_list)) selected="selected" @endif>{{$val}}</option>
+                                                @endforeach
+                                            </div>
+                                            <script>
+                                                $('.multipleSelectRecive').fastselect({
+                                                    placeholder: 'Chọn người nhận',
+                                                    searchPlaceholder: 'Tìm kiếm',
+                                                    noResultsText: 'Không có kết quả',
+                                                    userOptionPrefix: 'Thêm ',
+                                                    nameElement:'hr_mail_person_recive_list'
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>
@@ -48,7 +64,23 @@ use App\Library\AdminFunction\Define;
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label>CC</label>
-                                            <input class="form-control input-sm input-required" title="CC" id="hr_mail_send_cc" name="hr_mail_send_cc" @isset($data['hr_mail_send_cc'])value="{{$data['hr_mail_send_cc']}}"@endif type="text">
+                                            <div class="multipleSelectCC" multiple style="display: none">
+                                                <?php
+                                                $hr_mail_send_cc = isset($data['hr_mail_send_cc']) ? explode(',', $data['hr_mail_send_cc']) : array();
+                                                ?>
+                                                @foreach($arrUser as $k=>$val)
+                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_send_cc)) selected="selected" @endif>{{$val}}</option>
+                                                @endforeach
+                                            </div>
+                                            <script>
+                                                $('.multipleSelectCC').fastselect({
+                                                    placeholder: 'Chọn người nhận',
+                                                    searchPlaceholder: 'Tìm kiếm',
+                                                    noResultsText: 'Không có kết quả',
+                                                    userOptionPrefix: 'Thêm ',
+                                                    nameElement:'hr_mail_send_cc'
+                                                });
+                                            </script>
                                         </div>
                                     </div>
                                 </div>

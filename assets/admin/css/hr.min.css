@@ -158,3 +158,24 @@ span.lbl {
 .textItalic{
     font-style:italic;
 }
+.fstElement{
+    width: 100%;
+}
+.fstChoiceItem{
+    font-size: 13px!important;
+}
+.fstResultItem{
+    font-size: 13px!important;
+}
+.fstMultipleMode .fstControls{
+    padding: 2px 2px!important;
+}
+.fstMultipleMode .fstQueryInput {
+    font-size: 13px!important;
+    padding: 4px !important;
+    margin: 0!important;
+    color: #999!important;
+}
+.fstMultipleMode .fstControls{
+    width: 100% !important;
+}

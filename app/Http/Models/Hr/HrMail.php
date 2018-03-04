@@ -117,7 +117,7 @@ class HrMail extends BaseModel{
     public static function removeCache($id = 0,$data){
         if($id > 0){
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id);
-            Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_recive);
+            Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_send);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){

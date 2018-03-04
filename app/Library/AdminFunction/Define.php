@@ -227,7 +227,7 @@ class Define
     const mail_da_gui = 4;//Mail đã gửi
     const mail_type_0 = 0;//Mail khong duoc xem tuong ung voi mail goc cua nguoi gui
     const mail_type_1 = 1;//Mail dc xem tuong ung voi nguoi nhan dc mail
-
+    const mail_user_unset = array(2);
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
