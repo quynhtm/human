@@ -5,6 +5,7 @@ $(document).ready(function () {
     HR.showDate();
     HR.submitMailSend();
     HR.clickMailForward();
+    HR.clickMailReply();
 });
 HR = {
     editItem: function (id, $url) {
@@ -149,17 +150,46 @@ HR = {
         });
     },
     clickMailForward:function(){
-        $('.forward').click(function(){
+        $('.replyline .forward').click(function(){
             $('.replyline').hide();
-            var current_id = $('#id_hiden').val();
+            var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
                 url: WEB_ROOT + '/manager/mail/ajaxItemForward',
-                data: {current_id: current_id},
+                data: {parent_id: parent_id},
                 success: function (res) {
                    $('#getItemCurrent').append(res);
+                   HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
+                   HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
+                   CKEDITOR.replace('hr_mail_content');
                 }
             });
+        });
+    },
+    clickMailReply:function(){
+        $('.replyline .reply').click(function(){
+            $('.replyline').hide();
+            var parent_id = $('#parent_id').val();
+            $.ajax({
+                type: "GET",
+                url: WEB_ROOT + '/manager/mail/ajaxItemReply',
+                data: {parent_id: parent_id},
+                success: function (res) {
+                    $('#getItemCurrent').append(res);
+                    HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
+                    HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
+                    CKEDITOR.replace('hr_mail_content');
+                }
+            });
+        });
+    },
+    multipleSelect:function(nameElement, nameIput, placeholder){
+        $(nameElement).fastselect({
+            placeholder: placeholder,
+            searchPlaceholder: 'Tìm kiếm',
+            noResultsText: 'Không có kết quả',
+            userOptionPrefix: 'Thêm ',
+            nameElement:nameIput
         });
     },
     showDate: function () {

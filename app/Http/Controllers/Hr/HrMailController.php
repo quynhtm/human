@@ -157,6 +157,13 @@ class HrMailController extends BaseAdminController{
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
         $data = array();
         $dataUser = User::getList();
         $arrUser = $this->getArrayUserFromData($dataUser);
@@ -187,6 +194,13 @@ class HrMailController extends BaseAdminController{
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
         $data = array();
         $dataUser = User::getList();
         $arrUser = $this->getArrayUserFromData($dataUser);
@@ -217,9 +231,6 @@ class HrMailController extends BaseAdminController{
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
-        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
-
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -250,15 +261,11 @@ class HrMailController extends BaseAdminController{
             'arrUser'=>$arrUser,
         ],$this->viewPermission));
     }
-
     public function getItem($ids) {
 
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
-        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
-
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -296,9 +303,6 @@ class HrMailController extends BaseAdminController{
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
-        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
-
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -391,6 +395,7 @@ class HrMailController extends BaseAdminController{
 
         ],$this->viewPermission));
     }
+
     public function deleteHrMail(){
         $data = array('isIntOk' => 0);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
@@ -414,24 +419,49 @@ class HrMailController extends BaseAdminController{
         }
         return Response::json($data);
     }
+
     public function ajaxItemForward() {
 
-        $id = FunctionLib::outputId(Request::get('current_id', 0));if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
-        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
-
-        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
-
-        $data = array();
+        $id = FunctionLib::outputId(Request::get('parent_id', 0));
+        $data = $dataNew = array();
         if($id > 0) {
             $data = HrMail::getItemById($id);
+        }
+        if(sizeof($data) > 0){
+            $dataAdd['hr_mail_project'] = $data->hr_mail_project;
+            $dataAdd['hr_mail_parent'] = $id;
+            $dataAdd['hr_mail_name'] = $data->hr_mail_name;
+            $dataAdd['hr_mail_content'] = $data->hr_mail_content;
+            $dataAdd['hr_mail_files'] = $data->hr_mail_files;
+            $dataAdd['hr_mail_person_send'] = $data->hr_mail_person_send;
+            $dataAdd['hr_mail_status'] = Define::mail_nhap;
+            $dataAdd['hr_mail_type'] = -1;
+            $dataAdd['hr_mail_created'] = time();
+
+            $idNew = HrMail::createItem($dataAdd);
+
+            if($data->hr_mail_files != '') {
+                $hr_mail_files = ($data->hr_mail_files != '') ? unserialize($data->hr_mail_files) : array();
+                if(sizeof($hr_mail_files) > 0) {
+                    foreach ($hr_mail_files as $key => $file) {
+                        $folder_mail = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_MAIL;
+                        $path_current = $folder_mail . '/' . $data->hr_mail_id . '/' . $file;
+                        if(file_exists($path_current)){
+                            $folder_copy = $folder_mail . '/' .$idNew;
+                            $path_copy = $folder_copy . '/' .$file;
+                            if(!is_dir($folder_copy)){
+                                @mkdir($folder_copy,0777,true);
+                                @chmod($folder_copy,0777);
+                            }
+                            @copy($path_current, $path_copy);
+                        }
+                    }
+                }
+            }
+            $dataNew = HrMail::getItemById($idNew);
         }
 
         $dataUser = User::getList();
@@ -442,11 +472,70 @@ class HrMailController extends BaseAdminController{
         $this->viewPermission = $this->getPermissionPage();
 
         return view('hr.Mail.ajaxForward',array_merge([
-            'data'=>$data,
-            'id'=>$id,
+            'data'=>$dataNew,
+            'id'=>$idNew,
             'arrUser'=>$arrUser,
         ],$this->viewPermission));
     }
+    public function ajaxItemReply() {
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $id = FunctionLib::outputId(Request::get('parent_id', 0));
+        $data = $dataNew = array();
+        if($id > 0) {
+            $data = HrMail::getItemById($id);
+        }
+        if(sizeof($data) > 0){
+            $dataAdd['hr_mail_project'] = $data->hr_mail_project;
+            $dataAdd['hr_mail_parent'] = $id;
+            $dataAdd['hr_mail_name'] = $data->hr_mail_name;
+            $dataAdd['hr_mail_content'] = $data->hr_mail_content;
+            $dataAdd['hr_mail_files'] = $data->hr_mail_files;
+            $dataAdd['hr_mail_person_send'] = $data->hr_mail_person_send;
+            $dataAdd['hr_mail_person_recive_list'] = $data->hr_mail_person_recive_list;
+            $dataAdd['hr_mail_status'] = Define::mail_nhap;
+            $dataAdd['hr_mail_type'] = -1;
+            $dataAdd['hr_mail_created'] = time();
+
+            $idNew = HrMail::createItem($dataAdd);
+
+            if($data->hr_mail_files != '') {
+                $hr_mail_files = ($data->hr_mail_files != '') ? unserialize($data->hr_mail_files) : array();
+                if(sizeof($hr_mail_files) > 0) {
+                    foreach ($hr_mail_files as $key => $file) {
+                        $folder_mail = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_MAIL;
+                        $path_current = $folder_mail . '/' . $data->hr_mail_id . '/' . $file;
+                        if(file_exists($path_current)){
+                            $folder_copy = $folder_mail . '/' .$idNew;
+                            $path_copy = $folder_copy . '/' .$file;
+                            if(!is_dir($folder_copy)){
+                                @mkdir($folder_copy,0777,true);
+                                @chmod($folder_copy,0777);
+                            }
+                            @copy($path_current, $path_copy);
+                        }
+                    }
+                }
+            }
+            $dataNew = HrMail::getItemById($idNew);
+        }
+
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        $this->getDataDefault();
+
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Mail.ajaxItemReply',array_merge([
+            'data'=>$dataNew,
+            'id'=>$idNew,
+            'arrUser'=>$arrUser,
+        ],$this->viewPermission));
+    }
+
     private function valid($data=array()) {
         if(!empty($data)) {
             if(!isset($data['hr_mail_person_recive_list'])) {

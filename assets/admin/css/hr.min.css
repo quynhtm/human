@@ -184,3 +184,9 @@ span.lbl {
     text-decoration: underline;
     cursor: pointer;
 }
+.page-content {
+    padding: 15px 15px 15px!important;
+}
+.panel {
+    margin-bottom: 5px !important;
+}
