@@ -109,5 +109,6 @@ use App\Library\AdminFunction\Define;
             </div>
         </div>
     </div>
+    <div class="replyline">Nhấp vào đây để Trả lời hoặc Chuyển tiếp</div>
 </div>
 @stop

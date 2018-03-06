@@ -179,3 +179,8 @@ span.lbl {
 .fstMultipleMode .fstControls{
     width: 100% !important;
 }
+.reply,
+.forward{
+    text-decoration: underline;
+    cursor: pointer;
+}

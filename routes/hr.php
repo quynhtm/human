@@ -102,6 +102,7 @@ Route::match(['GET','POST'],'mail/viewdraft', array('as' => 'hr.HrMailViewDraft'
 Route::get('mail/viewItemGet/{id?}',array('as' => 'hr.HrMailViewItemGet','uses' => HResources.'\HrMailController@viewItemGet'));
 Route::get('mail/viewItemSend/{id?}',array('as' => 'hr.HrMailViewItemSend','uses' => HResources.'\HrMailController@viewItemSend'));
 Route::get('mail/viewItemDraft/{id?}',array('as' => 'hr.HrMailViewItemDraft','uses' => HResources.'\HrMailController@viewItemDraft'));
+Route::get('mail/ajaxItemForward',array('as' => 'hr.ajaxItemForward','uses' => HResources.'\HrMailController@ajaxItemForward'));
 
 Route::get('mail/edit/{id?}',array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@getItem'));
 Route::post('mail/edit/{id?}', array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@postItem'));

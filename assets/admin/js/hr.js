@@ -3,6 +3,8 @@ $(document).ready(function () {
     HR.clickPostPageNext();
     HR.clickSubmitMailDraft();
     HR.showDate();
+    HR.submitMailSend();
+    HR.clickMailForward();
 });
 HR = {
     editItem: function (id, $url) {
@@ -140,16 +142,39 @@ HR = {
             $('#adminForm').submit();
         });
     },
+    submitMailSend:function(){
+        $('.submitMailSend').click(function(){
+            $('#adminForm').append('<input id="submitMailSend" name="submitMailSend" value="submitMailSend" type="hidden">');
+            $('#adminForm').submit();
+        });
+    },
+    clickMailForward:function(){
+        $('.forward').click(function(){
+            $('.replyline').hide();
+            var current_id = $('#id_hiden').val();
+            $.ajax({
+                type: "GET",
+                url: WEB_ROOT + '/manager/mail/ajaxItemForward',
+                data: {current_id: current_id},
+                success: function (res) {
+                   $('#getItemCurrent').append(res);
+                }
+            });
+        });
+    },
     showDate: function () {
         var dateToday = new Date();
-        /*
-        jQuery('.date').datetimepicker({
-            timepicker: false,
-            format: 'd-m-Y',
-            lang: 'vi',
-        });
-        */
+        if($('input').hasClass('.date')){
+            jQuery('input.date').datetimepicker({
+                timepicker: false,
+                format: 'd-m-Y',
+                lang: 'vi',
+            });
+        }
     },
+    /**
+     * QuynhTM add
+     */
     getInfoContractsPerson: function (person_id, contracts_id) {
         $('#sys_showPopupCommon').modal('show');
         $('#img_loading').show();
@@ -170,10 +195,6 @@ HR = {
             }
         });
     },
-
-    /**
-     * QuynhTM add
-     */
     contractsSubmit: function (elementForm, btnSubmit) {
         $("#loading").fadeIn().fadeOut(10);
         var isError = false;

@@ -109,5 +109,8 @@ use App\Library\AdminFunction\Define;
             </div>
         </div>
     </div>
+    <div class="replyline">Nhấp vào đây để <span class="reply">Trả lời</span> hoặc <span class="forward">Chuyển tiếp</span></div>
+    <input id="id_hiden" name="id_hiden" @isset($data['hr_mail_id'])rel="{{$data['hr_mail_id']}}" value="{{FunctionLib::inputId($data['hr_mail_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+    <div id="getItemCurrent"></div>
 </div>
 @stop
