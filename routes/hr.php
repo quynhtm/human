@@ -12,6 +12,8 @@ Route::match(['GET','POST'],'personnel/view', array('as' => 'hr.personnelView','
 Route::get('personnel/detail/{id?}', array('as' => 'hr.personnelDetail','uses' => HResources.'\PersonController@getDetail'));
 Route::get('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@getItem'));
 Route::post('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@postItem'));
+Route::get('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@getPersonWithAccount'));
+Route::post('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@postPersonWithAccount'));
 
 /*Thông tin hợp đồng lao động*/
 Route::get('infoPerson/viewContracts/{person_id?}', array('as' => 'hr.viewContracts','uses' => HResources.'\InfoPersonController@viewContracts'));

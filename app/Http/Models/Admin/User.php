@@ -19,7 +19,7 @@ class User extends BaseModel
     protected $primaryKey = 'user_id';
     public $timestamps = false;
 
-    protected $fillable = array('user_name', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
+    protected $fillable = array('user_name','user_object_id', 'user_parent', 'user_password', 'user_full_name', 'user_email', 'user_phone',
         'user_status', 'user_sex', 'user_view', 'user_group', 'user_group_menu', 'user_last_login', 'user_last_ip', 'user_create_id', 'user_create_name',
         'user_edit_id', 'user_edit_name', 'user_created', 'user_updated',
         'role_type', 'role_name', 'address', 'number_code', 'address_register', 'telephone');
@@ -28,6 +28,11 @@ class User extends BaseModel
      * @param $name
      * @return mixed
      */
+    public static function getUserByPersonId($person_id)
+    {
+        $admin = User::where('user_object_id', $person_id)->first();
+        return $admin;
+    }
     public static function getUserByName($name)
     {
         $admin = User::where('user_name', $name)->first();

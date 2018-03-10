@@ -70,7 +70,7 @@ class CGlobal
           10 => ['icons' => 'fa fa-level-up', 'name_url' => 'Kéo dài thời gian nghỉ hưu', 'link_url' => '/manager/retirement/editTime/'],
           11 => ['icons' => 'fa fa-exchange', 'name_url' => 'Nghỉ việc chuyển công tác', 'link_url' => '/manager/quitJob/editMove/'],
           12 => ['icons' => 'fa fa-thumbs-down', 'name_url' => 'Buộc thôi việc nhân sự', 'link_url' => '/manager/quitJob/editJob/'],
-         // 13 => ['icons' => 'fa fa-user', 'name_url' => 'Tạo tài khoản sử dụng hệ thống', 'link_url' => '/manager/infoPerson/getInfoPerson/'],
+          13 => ['icons' => 'fa fa-user', 'name_url' => 'Tạo tài khoản sử dụng hệ thống', 'link_url' => '/manager/personnel/editAccount/'],
           //14 => ['icons' => 'fa fa-trash', 'name_url' => 'Xoá nhân sự này', 'link_url' => '/manager/personnel/edit/']
     ];
 }

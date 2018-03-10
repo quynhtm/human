@@ -82,7 +82,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             @foreach($arrLinkEditPerson as $kl=>$val)
-                                            <li><a title="Sửa" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                            <li><a title="Sửa" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" target="_blank"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>

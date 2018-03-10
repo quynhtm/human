@@ -174,6 +174,7 @@ class AdminUserController extends BaseAdminController{
         }*/
 
         if (empty($this->error)) {
+            $groupRole = Role::getOptionRole();
             //Insert dữ liệu
             $dataInsert['user_name'] = $data['user_name'];
             $dataInsert['user_email'] = $data['user_email'];
@@ -182,7 +183,7 @@ class AdminUserController extends BaseAdminController{
             $dataInsert['address_register'] = $data['address_register'];
             $dataInsert['number_code'] = $data['number_code'];
             $dataInsert['role_type'] = $data['role_type'];
-            $dataInsert['role_name'] = Define::$arrUserRole[$data['role_type']];
+            $dataInsert['role_name'] = isset($groupRole[$data['role_type']]) ? $groupRole[$data['role_type']] : '';
             $dataInsert['user_full_name'] = $data['user_full_name'];
             $dataInsert['user_status'] = (int)$data['user_status'];
             $dataInsert['user_edit_id'] = User::user_id();

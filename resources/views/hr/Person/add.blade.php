@@ -14,8 +14,8 @@
                 <li class="active">@if($id == 0) Thêm mới nhân sự @else Sửa thông tin nhân sự@endif</li>
             </ul><!-- /.breadcrumb -->
         </div>
-
-        <div class="page-content">
+        <div class="clear"></div>
+        <div class="page-content marginTop30">
             <div class="row">
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
@@ -26,7 +26,7 @@
                                     <p>{!! $itmError !!}</p>
                                 @endforeach
                             </div>
-                    @endif
+                        @endif
                     <!--Block 1--->
                         <div class="form-group">
                             <div class="col-sm-2">
