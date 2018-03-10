@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Person;
+use App\Http\Models\Hr\Bonus;
+use App\Http\Models\Hr\HrDefine;
 
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -166,6 +168,42 @@ class PersonController extends BaseAdminController
             'optionShowPermission' => $optionShowPermission,
             'optionShowMenu' => $optionShowMenu,
             'optionMenuParent' => $optionMenuParent,
+        ], $this->viewPermission));
+    }
+
+    public function getDetail($personId)
+    {
+        $person_id = FunctionLib::outputId($personId);
+        CGlobal::$pageAdminTitle = 'Thông tin chi tiết nhân sự';
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->personBonusFull, $this->permission) && !in_array($this->personBonusView, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
+
+        //thông tin khen thưởng
+        $khenthuong = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
+        $arrTypeKhenthuong = HrDefine::getArrayByType(Define::khen_thuong);
+        //thông tin danh hieu
+        $danhhieu = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
+        $arrTypeDanhhieu = HrDefine::getArrayByType(Define::danh_hieu);
+
+        //thông tin kỷ luật
+        $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
+        $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Person.detail', array_merge([
+            'person_id' => $person_id,
+            'khenthuong' => $khenthuong,
+            'danhhieu' => $danhhieu,
+            'kyluat' => $kyluat,
+            'arrTypeKhenthuong' => $arrTypeKhenthuong,
+            'arrTypeDanhhieu' => $arrTypeDanhhieu,
+            'arrTypeKyluat' => $arrTypeKyluat,
+            'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }
 

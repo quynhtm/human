@@ -88,7 +88,9 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ $item['person_name'] }}
+                                    <a href="{{URL::route('hr.personnelDetail',array('id' => FunctionLib::inputId($item['person_id'])))}}" title="Chi tiết nhân sự" target="_blank">
+                                        {{ $item['person_name'] }}
+                                    </a>
                                     <br/>SN:{{date('d-m-Y',time())}}
                                 </td>
                                 <td class="text-center middle">Nữ</td>
