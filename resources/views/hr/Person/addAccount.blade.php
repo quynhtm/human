@@ -20,7 +20,7 @@
             <div class="col-xs-12">
                 <!-- PAGE CONTENT BEGINS -->
                 <form method="POST" action="" role="form">
-                @if(isset($error))
+                @if(isset($error) && !empty($error))
                     <div class="alert alert-danger" role="alert">
                         @foreach($error as $itmError)
                             <p>{!! $itmError !!}</p>
