@@ -15,70 +15,76 @@
     <hr>
     <form method="POST" action="" role="form" id="form_poup_ajax">
         <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
-        <input type="hidden" name="salary_id" id="salary_id" value="{{$salary_id}}">
+        <input type="hidden" name="allowance_id" id="allowance_id" value="{{$allowance_id}}">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="name" class="control-label">Từ tháng</label>
-                    <select name="salary_month" id="salary_month"  class="form-control input-sm input-required">
+                    <label for="name" class="control-label">Chọn loại phụ cấp</label>
+                    <select name="allowance_type" id="allowance_type"  class="form-control input-sm input-required">
                         {!! $optionMonth !!}
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
-                    <label for="name" class="control-label">Năm </label>
-                    <select name="salary_year" id="salary_year" class="form-control input-sm input-required">
-                        {!! $optionYears !!}
+                    <label for="name" class="control-label">Từ tháng</label>
+                    <select name="allowance_month_start" id="allowance_month_start"  class="form-control input-sm input-required">
+                        {!! $optionMonth2 !!}
                     </select>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
-                    <label for="name" class="control-label">% lương thực hưởng</label>
-                    <input type="text" id="salary_percent" name="salary_percent" class="form-control input-sm"
-                           value="@if(isset($data->salary_percent)){{$data->salary_percent}}@endif">
+                    <label for="name" class="control-label">Năm hưởng</label>
+                    <select name="allowance_year_start" id="allowance_year_start" class="form-control input-sm input-required">
+                        {!! $optionYears2 !!}
+                    </select>
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <div class="form-group">
-                    <label for="name" class="control-label">Lương cứng</label>
-                    <input type="text" id="salary_salaries" name="salary_salaries"
-                           class="form-control input-sm"
-                           value="@if(isset($data->salary_salaries)){{$data->salary_salaries}}@endif">
+                    <label for="name" class="control-label">Đến tháng</label>
+                    <select name="allowance_month_end" id="allowance_month_end"  class="form-control input-sm input-required">
+                        {!! $optionMonth3 !!}
+                    </select>
+                </div>
+            </div>
+            <div class="col-sm-2">
+                <div class="form-group">
+                    <label for="name" class="control-label">Năm kết thúc</label>
+                    <select name="allowance_year_end" id="allowance_year_end" class="form-control input-sm input-required">
+                        {!! $optionYears3 !!}
+                    </select>
                 </div>
             </div>
 
-            <div class="col-sm-3">
+            <div class="col-sm-12">
                 <div class="form-group">
-                    <label for="name" class="control-label">Thang bảng lương</label>
-                    <select name="salary_wage_table" id="salary_wage_table"  class="form-control input-sm input-required">
-                        {!! $optionMonth !!}
-                    </select>
+                    <label for="name" class="control-label col-sm-12 text-left textBold" style="text-align: left!important;">Phụ cấp trả theo hình thức</label>
+                    <input type="radio" name="allowance_method_type" value="1" checked> Phụ cấp trọn gói &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="allowance_method_type" value="2"> Phụ cấp bằng % lương &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="allowance_method_type" value="3"> Phụ cấp theo hệ số
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="name" class="control-label">Nghạch công chức </label>
-                    <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm input-required">
-                        {!! $optionYears !!}
-                    </select>
+                    <label for="name" class="control-label">Phụ cấp bằng tiền</label>
+                    <input type="text" id="allowance_method_value_1" name="allowance_method_value_1"
+                           class="form-control input-sm" value="@if(isset($data['allowance_method_value_1'])){{$data['allowance_method_value_1']}}@endif">
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="name" class="control-label">Bậc lương</label>
-                    <select name="salary_wage" id="salary_wage"  class="form-control input-sm input-required">
-                        {!! $optionMonth !!}
-                    </select>
+                    <label for="name" class="control-label">Phụ cấp bằng % lương</label>
+                    <input type="text" id="allowance_method_value_2" name="allowance_method_value_2"
+                           class="form-control input-sm" value="@if(isset($data['allowance_method_value_2'])){{$data['allowance_method_value_2']}}@endif">
                 </div>
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="name" class="control-label">Hệ số</label>
-                    <input type="text" id="salary_coefficients" name="salary_coefficients"
-                           class="form-control input-sm"
-                           value="@if(isset($data->salary_coefficients)){{$data->salary_coefficients}}@endif">
+                    <label for="name" class="control-label">Phụ cấp theo hệ số</label>
+                    <input type="text" id="allowance_method_value_3" name="allowance_method_value_3"
+                           class="form-control input-sm" value="@if(isset($data['allowance_method_value_3'])){{$data['allowance_method_value_3']}}@endif">
                 </div>
             </div>
 

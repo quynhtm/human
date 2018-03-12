@@ -16,7 +16,7 @@ class Allowance extends BaseModel
     protected $primaryKey = 'allowance_id';
     public $timestamps = false;
 
-    protected $fillable = array('allowance_project', 'allowance_person_id', 'allowance_type', 'allowance_value', 'allowance_month_start',
+    protected $fillable = array('allowance_project', 'allowance_person_id', 'allowance_type', 'allowance_method_type', 'allowance_method_value', 'allowance_month_start',
         'allowance_year_start', 'allowance_month_end', 'allowance_year_end');
     public static function getAllowanceByPersonId($person_id)
     {

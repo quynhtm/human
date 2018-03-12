@@ -53,8 +53,6 @@ class SalaryAllowanceController extends BaseAdminController
         ];
     }
 
-
-
     public function viewSalaryAllowance($personId)
     {
         $person_id = FunctionLib::outputId($personId);
@@ -218,7 +216,7 @@ class SalaryAllowanceController extends BaseAdminController
         $typeAction = Request::get('typeAction', '');
 
         $person_id = FunctionLib::outputId($personId);
-        $salary_id = FunctionLib::outputId($str_object_id);
+        $allowance_id = FunctionLib::outputId($str_object_id);
 
         $arrData = ['intReturn' => 0, 'msg' => ''];
 
@@ -226,22 +224,25 @@ class SalaryAllowanceController extends BaseAdminController
         $infoPerson = Person::getPersonById($person_id);
 
         //thông tin chung
-        $data = Allowance::find($salary_id);
-
-        $arrYears = FunctionLib::getListYears();
-        $optionYears = FunctionLib::getOption($arrYears, isset($data['salary_year']) ? $data['salary_year'] : (int)date('Y', time()));
+        $data = Allowance::find($allowance_id);
 
         $arrMonth = FunctionLib::getListMonth();
-        $optionMonth = FunctionLib::getOption($arrMonth, isset($data['salary_month']) ? $data['salary_month'] : (int)date('m', time()));
+        $arrYears = FunctionLib::getListYears();
+        $optionMonth2 = FunctionLib::getOption($arrMonth, isset($data['allowance_month_start']) ? $data['allowance_month_start'] : (int)date('m', time()));
+        $optionYears2 = FunctionLib::getOption($arrYears, isset($data['allowance_year_start']) ? $data['allowance_year_start'] : (int)date('Y', time()));
+        $optionMonth3 = FunctionLib::getOption($arrMonth, isset($data['allowance_month_end']) ? $data['allowance_month_end'] : (int)date('m', time()));
+        $optionYears3 = FunctionLib::getOption($arrYears, isset($data['allowance_year_end']) ? $data['allowance_year_end'] : (int)date('Y', time()));
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.SalaryAllowance.AllowancePopupAdd', [
             'data' => $data,
             'infoPerson' => $infoPerson,
-            'optionMonth' => $optionMonth,
-            'optionYears' => $optionYears,
+            'optionMonth2' => $optionMonth2,
+            'optionYears2' => $optionYears2,
+            'optionMonth3' => $optionMonth3,
+            'optionYears3' => $optionYears3,
             'person_id' => $person_id,
-            'salary_id' => $salary_id,
+            'allowance_id' => $allowance_id,
             'typeAction' => $typeAction,
         ], $this->viewPermission)->render();
         $arrData['intReturn'] = 1;

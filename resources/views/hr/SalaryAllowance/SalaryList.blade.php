@@ -22,10 +22,10 @@
                 <td class="text-center middle">{{$item['salary_month']}}/{{$item['salary_year']}}</td>
                 <td class="text-center middle">
                     @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceCreate == 1)
-                        <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item['salary_person_id'])}}','{{FunctionLib::inputId($item['salary_id'])}}','salaryAllowance/editAllowance',0)"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                        <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item['salary_person_id'])}}','{{FunctionLib::inputId($item['salary_id'])}}','salaryAllowance/editSalary',0)"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
                     @endif
                     @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceDelete == 1)
-                        <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item['salary_person_id'])}}','{{FunctionLib::inputId($item['salary_id'])}}','salaryAllowance/deleteAllowance','div_list_phucap',0)"><i class="fa fa-trash fa-2x"></i></a>
+                        <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item['salary_person_id'])}}','{{FunctionLib::inputId($item['salary_id'])}}','salaryAllowance/postSalary','div_list_lương',0)"><i class="fa fa-trash fa-2x"></i></a>
                     @endif
                 </td>
             </tr>
