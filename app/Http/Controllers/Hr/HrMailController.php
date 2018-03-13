@@ -201,12 +201,14 @@ class HrMailController extends BaseAdminController{
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
-        $data = array();
+        $data = $dataParent = array();
         $dataUser = User::getList();
         $arrUser = $this->getArrayUserFromData($dataUser);
         if($id > 0) {
             $user_id = $this->user['user_id'];
             $data = HrMail::getItemByIdAndPersonReciveId($id, $user_id);
+            $dataParent = HrMail::getItemByParentIdAndPersonReciveId($id, $user_id);
+            FunctionLib::bug($dataParent);
             if(sizeof($data) == 0){
                 return Redirect::route('hr.HrMailViewGet');
             }else{

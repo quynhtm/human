@@ -118,6 +118,7 @@ class HrMail extends BaseModel{
         if($id > 0){
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id);
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_send);
+            Cache::forget(Define::CACHE_HR_MAIL_PARENT_ID . $id . '_' . $data->hr_mail_person_send);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
@@ -171,6 +172,23 @@ class HrMail extends BaseModel{
                                  ->where('hr_mail_type', Define::mail_type_1)->first();
                 if ($result && Define::CACHE_ON) {
                     Cache::put(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+    public static function getItemByParentIdAndPersonReciveId($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_PARENT_ID . $id .'_'. $user_id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrMail::where('hr_mail_id', '>', 0)
+                    ->where('hr_mail_person_recive', $user_id)
+                    ->where('hr_mail_parent', $id)
+                    ->where('hr_mail_type', Define::mail_type_1)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_MAIL_PARENT_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         } catch (PDOException $e) {
