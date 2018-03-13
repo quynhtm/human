@@ -384,4 +384,24 @@ HR = {
             });
         }
     },
+    getInfoPersonPopup: function (str_person_id) {
+        $('#sys_showPopupCommon').modal('show');
+        $('#img_loading').show();
+        $('#sys_show_infor').html('');
+        $.ajax({
+            type: "GET",
+            url: WEB_ROOT + '/manager/personnel/infoPerson/'+str_person_id,
+            data: {str_person_id: str_person_id},
+            dataType: 'json',
+            success: function (res) {
+                $('#img_loading').hide();
+                if (res.intReturn == 1) {
+                    $('#sys_show_infor').html(res.html);
+                } else {
+                    alert(res.msg);
+                    $('#sys_showPopupCommon').modal('hide');
+                }
+            }
+        });
+    },
 }

@@ -91,6 +91,9 @@
                                     <a href="{{URL::route('hr.personnelDetail',array('id' => FunctionLib::inputId($item['person_id'])))}}" title="Chi tiết nhân sự" target="_blank">
                                         {{ $item['person_name'] }}
                                     </a>
+                                    <a class="viewItem" title="Chi tiết nhân sự" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['person_id'])}}')">
+                                        <i class="fa fa-eye"></i>
+                                    </a>
                                     <br/>SN:{{date('d-m-Y',time())}}
                                 </td>
                                 <td class="text-center middle">Nữ</td>

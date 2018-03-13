@@ -4,6 +4,7 @@
  */
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
+use App\Http\Models\Hr\HrContracts;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -146,5 +147,18 @@ class Person extends BaseModel
         if($id > 0){
             Cache::forget(Define::CACHE_PERSON.$id);
         }
+    }
+
+    public static function getInfoPerson($person_id){
+        if($person_id > 0){
+            $person = Person::find($person_id);
+            $person->contracts;
+            return $person;
+        }
+    }
+
+    public function contracts()
+    {
+        return $this->hasOne('App\Http\Models\Hr\HrContracts', 'contracts_person_id','person_id');
     }
 }

@@ -10,6 +10,7 @@ Route::get('department/deleteDepartment', array('as' => 'hr.deleteDepartment','u
 /*thông tin Nhân sự */
 Route::match(['GET','POST'],'personnel/view', array('as' => 'hr.personnelView','uses' => HResources.'\PersonController@view'));
 Route::get('personnel/detail/{id?}', array('as' => 'hr.personnelDetail','uses' => HResources.'\PersonController@getDetail'));
+Route::get('personnel/infoPerson/{id?}', array('as' => 'hr.personnelInfoPerson','uses' => HResources.'\PersonController@getInfoPerson'));
 Route::get('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@getItem'));
 Route::post('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@postItem'));
 Route::get('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@getPersonWithAccount'));

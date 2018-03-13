@@ -371,6 +371,30 @@ class PersonController extends BaseAdminController
         return true;
     }
 
+    //ajax get thong tin cơ bản của nhân sự
+    public function getInfoPerson()
+    {
+        //Check phan quyen.
+        $personId = Request::get('str_person_id', '');
+        $person_id = FunctionLib::outputId($personId);
+        $data = array();
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+
+        //thong tin nhan sự
+        $infoPerson = Person::getInfoPerson($person_id);
+        FunctionLib::debug($infoPerson->contracts->contracts_id);
+
+        $this->viewPermission = $this->getPermissionPage();
+        $html = view('hr.Person.infoPersonPopup', [
+            'infoPerson' => $infoPerson,
+            'person_id' => $person_id,
+        ], $this->viewPermission)->render();
+
+        $arrData['intReturn'] = 1;
+        $arrData['html'] = $html;
+        return response()->json($arrData);
+    }
+
     private function valid($data = array())
     {
         if (!empty($data)) {
