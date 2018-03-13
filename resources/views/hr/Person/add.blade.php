@@ -56,7 +56,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày sinh</label>
-                                    <input type="text" class="form-control" id="person_birth" name="person_birth"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_birth'])){{$data['person_birth']}}@endif">
+                                    <input type="text" class="form-control" id="person_birth" name="person_birth"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_birth']) && $data['person_birth'] > 0){{date('d-m-Y',$data['person_birth'])}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -73,7 +73,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Phòng ban đơn vị<span class="red"> (*) </span></label>
                                     <select name="person_depart_id" id="person_depart_id" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionDepart !!}
                                     </select>
                                 </div>
                             </div>
@@ -92,13 +92,13 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày thử việc</label>
-                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_trial_work'])){{$data['person_date_trial_work']}}@endif">
+                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] > 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày làm chính thức</label>
-                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work'])){{$data['person_date_start_work']}}@endif">
+                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] > 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
                                 </div>
                             </div>
 
@@ -112,7 +112,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày cấp<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt'])){{$data['person_date_range_cmt']}}@endif">
+                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] > 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -125,7 +125,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Chức vụ</label>
                                     <select name="person_position_define_id" id="person_position_define_id" class="form-control input-sm">
-                                        {!! $optionSex !!}
+                                        {!! $optionChucVu !!}
                                     </select>
                                 </div>
                             </div>
@@ -133,7 +133,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Chức danh nghề nghiệp</label>
                                     <select name="person_career_define_id" id="person_career_define_id" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionChucDanhNgheNghiep !!}
                                     </select>
                                 </div>
                             </div>
@@ -141,7 +141,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Nhóm máu</label>
                                     <select name="person_blood_group_define_id" id="person_blood_group_define_id" class="form-control input-sm">
-                                        {!! $optionSex !!}
+                                        {!! $optionNhomMau !!}
                                     </select>
                                 </div>
                             </div>
@@ -160,7 +160,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành nơi sinh<span class="red"> (*) </span></label>
                                     <select name="person_province_place_of_birth" id="person_province_place_of_birth" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành quê quán<span class="red"> (*) </span></label>
                                     <select name="person_province_home_town" id="person_province_home_town" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -183,7 +183,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Dân tộc</label>
                                     <select name="person_nation_define_id" id="person_nation_define_id" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionDanToc !!}
                                     </select>
                                 </div>
                             </div>
@@ -191,7 +191,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tôn giáo</label>
                                     <select name="person_respect" id="person_respect" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -207,7 +207,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành hiện tại<span class="red"> (*) </span></label>
                                     <select name="person_province_current" id="person_province_current" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -215,7 +215,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Quận huyện hiện tại<span class="red"> (*) </span></label>
                                     <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -223,7 +223,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Phường xã hiện tại<span class="red"> (*) </span></label>
                                     <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
-                                        {!! $optionStatus !!}
+                                        {!! $optionTonGiao !!}
                                     </select>
                                 </div>
                             </div>
@@ -244,29 +244,30 @@
                         </div>
 
                     <!--Block 3--->
+                    @if($id == 0)
                         <div class="clear marginTop20"></div>
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Thang bảng lương<span class="red"> (*) </span></label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
+                                    <select name="salary_wage_table" id="salary_wage_table" class="form-control input-sm">
+                                        {!! $optionThangBangLuong !!}
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Nghạch công chức<span class="red"> (*) </span></label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
+                                    <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm">
+                                        {!! $optionNgachCongChuc !!}
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Bậc lương<span class="red"> (*) </span></label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
+                                    <select name="salary_wage" id="salary_wage" class="form-control input-sm">
+                                        {!! $optionBacLuong !!}
                                     </select>
                                 </div>
                             </div>
@@ -274,22 +275,20 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Hệ số<span class="red"> (*) </span></label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
-                                    </select>
+                                    <input type="text" id="salary_coefficients" name="salary_coefficients" class="form-control input-sm" value="">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Lương thực hưởng<span class="red"> (*) </span></label>
-                                    <input type="text" id="user_email" name="user_email"  class="form-control input-sm" value="@if(isset($data['user_email'])){{$data['user_email']}}@endif">
+                                    <input type="text" id="salary_salaries" name="salary_salaries"  class="form-control input-sm" value="">
                                 </div>
                             </div>
                             <div class="col-sm-1">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Từ tháng</label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
+                                    <select name="salary_month" id="salary_month" class="form-control input-sm">
+                                        {!! $optionMonth !!}
                                     </select>
                                 </div>
                             </div>
@@ -297,13 +296,13 @@
                             <div class="col-sm-1">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Năm</label>
-                                    <select name="role_type" id="role_type" class="form-control input-sm">
-                                        {!! $optionRoleType !!}
+                                    <select name="salary_year" id="salary_year" class="form-control input-sm">
+                                        {!! $optionYears !!}
                                     </select>
                                 </div>
                             </div>
                         </div>
-
+                    @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}

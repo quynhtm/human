@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\HrDefine;
@@ -32,6 +33,7 @@ class PersonController extends BaseAdminController
     private $arrMenuParent = array();
     private $arrRoleType = array();
     private $arrSex = array();
+    private $arrTonGiao = array();
     private $viewPermission = array();//check quyen
 
     public function __construct()
@@ -50,6 +52,10 @@ class PersonController extends BaseAdminController
         $this->arrSex = array(
             CGlobal::status_hide => FunctionLib::controLanguage('sex_girl', $this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('sex_boy', $this->languageSite));
+
+        $this->arrTonGiao = array(
+            CGlobal::status_hide => 'Không',
+            CGlobal::status_show => 'Có');
     }
 
     public function getPermissionPage()
@@ -113,26 +119,57 @@ class PersonController extends BaseAdminController
         if ($id > 0) {
             $data = Person::find($id);
         }
+        $arr_thang_bangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
+        $arr_ngach_congchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $arr_bacluong = HrDefine::getArrayByType(Define::bac_luong);
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['active']) ? $data['active'] : CGlobal::status_show);
-        $optionShowContent = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
-        $optionShowPermission = FunctionLib::getOption($this->arrStatus, isset($data['show_permission']) ? $data['show_permission'] : CGlobal::status_hide);
-        $optionShowMenu = FunctionLib::getOption($this->arrStatus, isset($data['show_menu']) ? $data['show_menu'] : CGlobal::status_show);
-        $optionMenuParent = FunctionLib::getOption($this->arrMenuParent, isset($data['parent_id']) ? $data['parent_id'] : 0);
+
+        //phần lương
+        $optionThangBangLuong = FunctionLib::getOption($arr_thang_bangluong, 0);
+        $optionNgachCongChuc = FunctionLib::getOption($arr_ngach_congchuc, 0);
+        $optionBacLuong = FunctionLib::getOption($arr_bacluong, 0);
+        $arrYears = FunctionLib::getListYears();
+        $optionYears = FunctionLib::getOption($arrYears, (int)date('Y', time()));
+        $arrMonth = FunctionLib::getListMonth();
+        $optionMonth = FunctionLib::getOption($arrMonth, (int)date('m', time()));
+
+        //thông tin của nhân sự
+        $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
+        $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
+        $depart = Department::getDepartmentAll();
+        $optionDepart = FunctionLib::getOption($depart, isset($data['person_depart_id']) ? $data['person_depart_id'] : 0);
+
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+        $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_position_define_id']) ? $data['person_position_define_id'] : 0);
+
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
+        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_career_define_id']) ? $data['person_career_define_id'] : 0);
+
+        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
+        $optionNhomMau = FunctionLib::getOption($arrNhomMau, isset($data['person_blood_group_define_id']) ? $data['person_blood_group_define_id'] : 0);
+
+        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
+        $optionDanToc = FunctionLib::getOption($arrDanToc, isset($data['person_nation_define_id']) ? $data['person_nation_define_id'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
             'data' => $data,
             'id' => $id,
             'arrStatus' => $this->arrStatus,
-            'optionStatus' => $optionStatus,
-            'optionShowContent' => $optionShowContent,
-            'optionShowPermission' => $optionShowPermission,
-            'optionShowMenu' => $optionShowMenu,
-            'optionRoleType' => $optionShowMenu,
-            'optionSex' => $optionShowMenu,
-            'optionMenuParent' => $optionMenuParent,
+            'optionThangBangLuong' => $optionThangBangLuong,
+            'optionNgachCongChuc' => $optionNgachCongChuc,
+            'optionBacLuong' => $optionBacLuong,
+            'optionMonth' => $optionMonth,
+            'optionYears' => $optionYears,
+
+            'optionSex' => $optionSex,
+            'optionDepart' => $optionDepart,
+            'optionChucVu' => $optionChucVu,
+            'optionChucDanhNgheNghiep' => $optionChucDanhNgheNghiep,
+            'optionNhomMau' => $optionNhomMau,
+            'optionDanToc' => $optionDanToc,
+            'optionTonGiao' => $optionTonGiao,
         ], $this->viewPermission));
     }
 
@@ -145,7 +182,10 @@ class PersonController extends BaseAdminController
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
-        //$data['ordering'] = (int)($data['ordering']);
+        $data['ordering'] = (isset($data['person_birth']) && $data['person_birth'] != '')? strtotime($data['person_birth']): 0;
+        $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '')? strtotime($data['person_date_trial_work']): 0;
+        $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '')? strtotime($data['person_date_start_work']): 0;
+        $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '')? strtotime($data['person_date_range_cmt']): 0;
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             if ($id > 0) {
