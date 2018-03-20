@@ -82,6 +82,8 @@ class Define
 
     const CACHE_OPTION_ROLE = 'cache_option_role';
 
+    const CACHE_ALL_PROVINCE = 'cache_all_province';
+
     //Hr nhân sự
     const CACHE_PERSON = 'cache_info_person_id_';
 
@@ -124,6 +126,8 @@ class Define
 
     const JOBASSIGNMENT_THONG_BAO = 1;
     const JOBASSIGNMENT_DA_BO_NHIEM = 2;
+
+    const PROVINCE_HANOI = 22;
 
     //SuperAdmin, Admin, Customer
     const ROLE_TYPE_SUPER_ADMIN = 6;

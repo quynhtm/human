@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Admin\Districts;
+use App\Http\Models\Admin\Province;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
@@ -152,6 +154,15 @@ class PersonController extends BaseAdminController
         $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
         $optionDanToc = FunctionLib::getOption($arrDanToc, isset($data['person_nation_define_id']) ? $data['person_nation_define_id'] : 0);
 
+        $arrProvince = Province::getAllProvince();
+        $optionProvincePlaceBirth = FunctionLib::getOption($arrProvince, isset($data['person_province_place_of_birth']) ? $data['person_province_place_of_birth'] : Define::PROVINCE_HANOI);
+        $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
+
+        $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
+        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current );
+        $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
+        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0 );
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
             'data' => $data,
@@ -170,6 +181,10 @@ class PersonController extends BaseAdminController
             'optionNhomMau' => $optionNhomMau,
             'optionDanToc' => $optionDanToc,
             'optionTonGiao' => $optionTonGiao,
+            'optionProvincePlaceBirth' => $optionProvincePlaceBirth,
+            'optionProvinceHomeTown' => $optionProvinceHomeTown,
+            'optionProvinceCurrent' => $optionProvinceCurrent,
+            'optionDistrictsCurrent' => $optionDistrictsCurrent,
         ], $this->viewPermission));
     }
 

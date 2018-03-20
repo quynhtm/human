@@ -160,7 +160,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành nơi sinh<span class="red"> (*) </span></label>
                                     <select name="person_province_place_of_birth" id="person_province_place_of_birth" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
+                                        {!! $optionProvincePlaceBirth !!}
                                     </select>
                                 </div>
                             </div>
@@ -175,7 +175,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành quê quán<span class="red"> (*) </span></label>
                                     <select name="person_province_home_town" id="person_province_home_town" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
+                                        {!! $optionProvinceHomeTown !!}
                                     </select>
                                 </div>
                             </div>
@@ -207,22 +207,22 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành hiện tại<span class="red"> (*) </span></label>
                                     <select name="person_province_current" id="person_province_current" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
+                                        {!! $optionProvinceCurrent !!}
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Quận huyện hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
+                                    <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
+                                        {!! $optionDistrictsCurrent !!}
                                     </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Phường xã hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
+                                    <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
                                         {!! $optionTonGiao !!}
                                     </select>
                                 </div>

@@ -21,10 +21,11 @@ class Districts extends BaseModel{
 
     public static function getDistrictByProvinceId($province_id) {
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id) : array();
+        $data = array();
         if (sizeof($data) == 0) {
             $district = Districts::where('district_id', '>', 0)
                 ->where('district_province_id', '=',$province_id)
-                ->where('district_status', '=',CGlobal::status_show)
+                ->where('district_status', '=',Define::STATUS_SHOW)
                 ->orderBy('district_position', 'asc')->get();
             foreach($district as $itm) {
                 $data[$itm['district_id']] = $itm['district_name'];
