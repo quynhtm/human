@@ -24,6 +24,9 @@ Route::get('permission/edit/{id}',array('as' => 'admin.permission_edit','uses' =
 Route::post('permission/edit/{id}',array('as' => 'admin.permission_edit','uses' => Admin.'\AdminPermissionController@edit'))->where('id', '[0-9]+');
 Route::post('permission/deletePermission', array('as' => 'admin.deletePermission','uses' => Admin.'\AdminPermissionController@deletePermission'));//ajax
 
+//tỉnh thành quận huyện
+Route::post('districtsProvince/ajaxGetOption', array('as' => 'admin.districtsProvince','uses' => Admin.'\AdminDistrictsProvince@ajaxGetOption'));//ajax
+
 
 /*thông tin nhóm quyền*/
 Route::match(['GET','POST'],'groupUser/view',array('as' => 'admin.groupUser_view','uses' => Admin.'\AdminGroupUserController@view'));

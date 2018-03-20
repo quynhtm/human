@@ -12,7 +12,7 @@ class Province extends BaseModel{
     protected $primaryKey = 'province_id';
     public $timestamps = false;
 
-    protected $fillable = array('province_name', 'province_position', 'province_status', 'province_area');
+    protected $fillable = array('province_name', 'province_position', 'province_status', 'province_area', 'province_area_ship');
 
     /**
      * @param $name
