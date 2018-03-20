@@ -59,7 +59,7 @@ class AdminDistrictsProvince extends BaseAdminController{
                 break;
         }
         $arrData['optionSelect'] = $option;
-        $arrData['isOk'] = 1;
+        $arrData['isIntOk'] = 1;
         return response()->json( $arrData );
     }
 

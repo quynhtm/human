@@ -594,4 +594,25 @@ var Admin = {
             }
         });
     },
+
+    getAjaxDistrictsProvince: function (object,type,selectId) {
+        var _token = $('input[name="_token"]').val();
+        var url_ajax = WEB_ROOT + '/manager/districtsProvince/ajaxGetOption';
+        var object_id = $('#'+object.id).val();
+        $.ajax({
+            type: "post",
+            url: url_ajax,
+            data: {object_id: object_id, type: type, _token: _token},
+            dataType: 'json',
+            success: function (res) {
+                $('#img_loading_' + id).hide();
+                if (res.isIntOk === 1) {
+                    $('#'+selectId).html(res.optionSelect);
+                } else {
+                    $('#'+selectId).html('');
+                }
+            }
+        });
+
+    },
 }

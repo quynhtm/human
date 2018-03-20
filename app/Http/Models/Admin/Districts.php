@@ -21,7 +21,6 @@ class Districts extends BaseModel{
 
     public static function getDistrictByProvinceId($province_id) {
         $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id) : array();
-        $data = array();
         if (sizeof($data) == 0) {
             $district = Districts::where('district_id', '>', 0)
                 ->where('district_province_id', '=',$province_id)

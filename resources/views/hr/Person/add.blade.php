@@ -206,7 +206,7 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Tỉnh thành hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_province_current" id="person_province_current" class="form-control input-sm">
+                                    <select name="person_province_current" id="person_province_current" class="form-control input-sm" onchange="Admin.getAjaxDistrictsProvince(this,1,'person_districts_current')">
                                         {!! $optionProvinceCurrent !!}
                                     </select>
                                 </div>
@@ -214,17 +214,21 @@
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Quận huyện hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
-                                        {!! $optionDistrictsCurrent !!}
-                                    </select>
+                                    <div id="show_person_districts_current">
+                                        <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
+                                            {!! $optionDistrictsCurrent !!}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Phường xã hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
-                                    </select>
+                                    <div id="show_person_wards_current">
+                                        <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
+                                            {!! $optionWardsCurrent !!}
+                                        </select>
+                                    </div>
                                 </div>
                             </div>
 

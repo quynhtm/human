@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hr;
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Districts;
 use App\Http\Models\Admin\Province;
+use App\Http\Models\Admin\Wards;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
@@ -162,6 +163,9 @@ class PersonController extends BaseAdminController
         $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current );
         $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
         $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0 );
+        $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
+        $arrWards = Wards::getWardsByDistrictId($person_districts_current);
+        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0 );
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
@@ -185,6 +189,7 @@ class PersonController extends BaseAdminController
             'optionProvinceHomeTown' => $optionProvinceHomeTown,
             'optionProvinceCurrent' => $optionProvinceCurrent,
             'optionDistrictsCurrent' => $optionDistrictsCurrent,
+            'optionWardsCurrent' => $optionWardsCurrent,
         ], $this->viewPermission));
     }
 

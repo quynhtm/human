@@ -24,7 +24,7 @@ class Wards extends BaseModel{
         if (sizeof($data) == 0) {
             $district = Wards::where('wards_id', '>', 0)
                 ->where('district_id', '=',$district_id)
-                ->where('wards_status', '=',CGlobal::status_show)
+                ->where('wards_status', '=',Define::STATUS_SHOW)
                 ->orderBy('wards_order', 'asc')->get();
             foreach($district as $itm) {
                 $data[$itm['wards_id']] = $itm['wards_name'];
