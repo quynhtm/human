@@ -20,7 +20,7 @@
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
                     <form method="POST" action="" role="form">
-                        @if(isset($error))
+                        @if(isset($error) && !empty($error))
                             <div class="alert alert-danger" role="alert">
                                 @foreach($error as $itmError)
                                     <p>{!! $itmError !!}</p>
@@ -215,7 +215,7 @@
                                 <div class="form-group">
                                     <label for="name" class="control-label">Quận huyện hiện tại<span class="red"> (*) </span></label>
                                     <div id="show_person_districts_current">
-                                        <select name="person_districts_current" id="person_districts_current" class="form-control input-sm">
+                                        <select name="person_districts_current" id="person_districts_current" class="form-control input-sm" onchange="Admin.getAjaxDistrictsProvince(this,2,'person_wards_current')">
                                             {!! $optionDistrictsCurrent !!}
                                         </select>
                                     </div>

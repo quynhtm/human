@@ -221,12 +221,50 @@ class PersonController extends BaseAdminController
             }
         }
 
+        $arr_thang_bangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
+        $arr_ngach_congchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $arr_bacluong = HrDefine::getArrayByType(Define::bac_luong);
+
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['active']) ? $data['active'] : CGlobal::status_hide);
-        $optionShowContent = FunctionLib::getOption($this->arrStatus, isset($data['showcontent']) ? $data['showcontent'] : CGlobal::status_show);
-        $optionShowMenu = FunctionLib::getOption($this->arrStatus, isset($data['show_menu']) ? $data['show_menu'] : CGlobal::status_show);
-        $optionShowPermission = FunctionLib::getOption($this->arrStatus, isset($data['show_permission']) ? $data['show_permission'] : CGlobal::status_hide);
-        $optionMenuParent = FunctionLib::getOption($this->arrMenuParent, isset($data['parent_id']) ? $data['parent_id'] : 0);
+
+        //phần lương
+        $optionThangBangLuong = FunctionLib::getOption($arr_thang_bangluong, 0);
+        $optionNgachCongChuc = FunctionLib::getOption($arr_ngach_congchuc, 0);
+        $optionBacLuong = FunctionLib::getOption($arr_bacluong, 0);
+        $arrYears = FunctionLib::getListYears();
+        $optionYears = FunctionLib::getOption($arrYears, (int)date('Y', time()));
+        $arrMonth = FunctionLib::getListMonth();
+        $optionMonth = FunctionLib::getOption($arrMonth, (int)date('m', time()));
+
+        //thông tin của nhân sự
+        $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
+        $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
+        $depart = Department::getDepartmentAll();
+        $optionDepart = FunctionLib::getOption($depart, isset($data['person_depart_id']) ? $data['person_depart_id'] : 0);
+
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+        $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_position_define_id']) ? $data['person_position_define_id'] : 0);
+
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
+        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_career_define_id']) ? $data['person_career_define_id'] : 0);
+
+        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
+        $optionNhomMau = FunctionLib::getOption($arrNhomMau, isset($data['person_blood_group_define_id']) ? $data['person_blood_group_define_id'] : 0);
+
+        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
+        $optionDanToc = FunctionLib::getOption($arrDanToc, isset($data['person_nation_define_id']) ? $data['person_nation_define_id'] : 0);
+
+        $arrProvince = Province::getAllProvince();
+        $optionProvincePlaceBirth = FunctionLib::getOption($arrProvince, isset($data['person_province_place_of_birth']) ? $data['person_province_place_of_birth'] : Define::PROVINCE_HANOI);
+        $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
+
+        $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
+        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current );
+        $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
+        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0 );
+        $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
+        $arrWards = Wards::getWardsByDistrictId($person_districts_current);
+        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0 );
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
@@ -234,11 +272,24 @@ class PersonController extends BaseAdminController
             'id' => $id,
             'error' => $this->error,
             'arrStatus' => $this->arrStatus,
-            'optionStatus' => $optionStatus,
-            'optionShowContent' => $optionShowContent,
-            'optionShowPermission' => $optionShowPermission,
-            'optionShowMenu' => $optionShowMenu,
-            'optionMenuParent' => $optionMenuParent,
+            'optionThangBangLuong' => $optionThangBangLuong,
+            'optionNgachCongChuc' => $optionNgachCongChuc,
+            'optionBacLuong' => $optionBacLuong,
+            'optionMonth' => $optionMonth,
+            'optionYears' => $optionYears,
+
+            'optionSex' => $optionSex,
+            'optionDepart' => $optionDepart,
+            'optionChucVu' => $optionChucVu,
+            'optionChucDanhNgheNghiep' => $optionChucDanhNgheNghiep,
+            'optionNhomMau' => $optionNhomMau,
+            'optionDanToc' => $optionDanToc,
+            'optionTonGiao' => $optionTonGiao,
+            'optionProvincePlaceBirth' => $optionProvincePlaceBirth,
+            'optionProvinceHomeTown' => $optionProvinceHomeTown,
+            'optionProvinceCurrent' => $optionProvinceCurrent,
+            'optionDistrictsCurrent' => $optionDistrictsCurrent,
+            'optionWardsCurrent' => $optionWardsCurrent,
         ], $this->viewPermission));
     }
 
