@@ -21,7 +21,12 @@ class HrDocument extends BaseModel{
     protected $fillable = array('hr_document_project', 'hr_document_name', 'hr_document_desc', 'hr_document_content',
         'hr_document_code', 'hr_document_promulgate', 'hr_document_type', 'hr_document_field', 'hr_document_signer',
         'hr_document_date_issued', 'hr_document_effective_date', 'hr_document_date_expired', 'hr_document_delease_date',
-        'hr_document_created', 'hr_document_update', 'hr_document_files', 'hr_document_status');
+        'hr_document_created', 'hr_document_update', 'hr_document_files',
+        'hr_document_person_send', 'hr_document_person_recive', 'hr_document_person_recive_list', 'hr_document_send_cc',
+        'hr_document_date_send', 'hr_document_type_view', 'hr_document_status',
+        );
+        //note: Default value 0 ===> hr_document_type_view:0 = mail khong duoc xem tuong ung voi mail goc cua nguoi gui, 1= mail dc xem tuong ung voi nguoi nhan dc mail
+        //note: Default value 1 ===> hr_document_status: 1.Chưa đọc, 2. Đã đọc, 3.Thư nháp
 
     public static function createItem($data){
         try {
@@ -29,7 +34,7 @@ class HrDocument extends BaseModel{
             $checkData = new HrDocument();
             $fieldInput = $checkData->checkField($data);
             $item = new HrDocument();
-            if (is_array($fieldInput) && count($fieldInput) > 0) {
+            if(is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
@@ -55,8 +60,8 @@ class HrDocument extends BaseModel{
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->hr_document_id,$item);
-            return true;
+            self::removeCache($item->hr_document_id, $item);
+            return $item->hr_document_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
@@ -114,9 +119,11 @@ class HrDocument extends BaseModel{
             return false;
         }
     }
-    public static function removeCache($id = 0,$data){
+    public static function removeCache($id = 0, $data){
         if($id > 0){
             Cache::forget(Define::CACHE_HR_DOCUMENT_ID.$id);
+            Cache::forget(Define::CACHE_HR_DOCUMENT_ID . $id . '_' . $data->hr_document_person_send);
+            Cache::forget(Define::CACHE_HR_DOCUMENT_PARENT_ID . $id . '_' . $data->hr_document_person_send);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
@@ -125,7 +132,7 @@ class HrDocument extends BaseModel{
             if (isset($dataSearch['hr_document_name']) && $dataSearch['hr_document_name'] != '') {
                 $query->where('hr_document_name','LIKE', '%' . $dataSearch['hr_document_name'] . '%');
             }
-            if (isset($dataSearch['hr_document_status']) && $dataSearch['hr_document_status'] != -1) {
+            if (isset($dataSearch['hr_document_status']) && $dataSearch['hr_document_status'] >= 0) {
                 $query->where('hr_document_status',$dataSearch['hr_document_status']);
             }
             if (isset($dataSearch['hr_document_promulgate']) && $dataSearch['hr_document_promulgate'] != -1) {
@@ -136,6 +143,15 @@ class HrDocument extends BaseModel{
             }
             if (isset($dataSearch['hr_document_field']) && $dataSearch['hr_document_field'] != -1) {
                 $query->where('hr_document_field',$dataSearch['hr_document_field']);
+            }
+            if (isset($dataSearch['hr_document_person_recive']) && $dataSearch['hr_document_person_recive'] != -1) {
+                $query->where('hr_document_person_recive',$dataSearch['hr_document_person_recive']);
+            }
+            if (isset($dataSearch['hr_document_person_send']) && $dataSearch['hr_document_person_send'] != -1) {
+                $query->where('hr_document_person_send',$dataSearch['hr_document_person_send']);
+            }
+            if (isset($dataSearch['hr_document_type_view']) && $dataSearch['hr_document_type_view'] != -1) {
+                $query->where('hr_document_type_view',$dataSearch['hr_document_type_view']);
             }
 
             $total = $query->count();
@@ -159,5 +175,51 @@ class HrDocument extends BaseModel{
         }catch (PDOException $e){
             throw new PDOException();
         }
+    }
+    public static function getItemByIdAndPersonReciveId($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrDocument::where('hr_document_id', $id)
+                    ->where('hr_document_person_recive', $user_id)
+                    ->where('hr_document_type_view', Define::mail_type_1)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+    public static function getItemByIdAndPersonSendId($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrDocument::where('hr_document_id', $id)->where('hr_document_person_send', $user_id)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+    public static function getItemDraftById($id=0, $user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id) : array();
+        try {
+            if(empty($result)) {
+                $result = HrDocument::where('hr_document_id', $id)
+                    ->where('hr_document_person_send', $user_id)
+                    ->where('hr_document_status', Define::mail_nhap)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_DOCUMENT_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
     }
 }

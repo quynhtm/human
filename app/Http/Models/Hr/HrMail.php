@@ -22,6 +22,7 @@ class HrMail extends BaseModel{
         'hr_mail_person_send', 'hr_mail_send_cc','hr_mail_created','hr_mail_files','hr_mail_date_send', 'hr_mail_type', 'hr_mail_status');
 
         //note: hr_mail_type:0 = mail khong duoc xem tuong ung voi mail goc cua nguoi gui, 1= mail dc xem tuong ung voi nguoi nhan dc mail
+        //note: Default value 1 ===> hr_mail_status: 1.Chưa đọc, 2. Đã đọc, 3.Thư nháp
 
     public static function createItem($data){
         try {

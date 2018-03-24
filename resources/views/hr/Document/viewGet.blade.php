@@ -43,12 +43,6 @@
                                     {!! $optionField !!}
                                 </select>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label for="user_group"><i>Trạng thái</i></label>
-                                <select name="hr_document_status" id="hr_document_status" class="form-control input-sm" tabindex="12" data-placeholder="Trạng thái">
-                                    {!! $optionStatus !!}
-                                </select>
-                            </div>
                         </div>
                         <div class="panel-footer text-right">
                     <span class="">
@@ -64,7 +58,7 @@
                     </form>
                 </div>
                 @if(sizeof($data) > 0)
-                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> thư, tin nhắn @endif </div>
+                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> văn bản đến @endif </div>
                     <br>
                     <div class="list-view-file">
                         <div class="line-head">
@@ -75,15 +69,18 @@
                             </div>
                         </div>
                         @foreach($data as $k=>$item)
+                        <?php
+                        $class = ($item->hr_document_status == Define::mail_chua_doc) ? 'textBold' : '';
+                        ?>
                         <div class="one-item-file">
                             <div class="line-detail-desc">
                                <div class="row">
-                                   <div class="col-lg-2">{{$item->hr_document_code}}</div>
-                                   <div class="col-lg-8">{{$item->hr_document_name}}</div>
-                                   <div class="col-lg-2">
+                                   <div class="col-lg-2 {{$class}}">{{$item->hr_document_code}}</div>
+                                   <div class="col-lg-8 {{$class}}">{{$item->hr_document_name}}</div>
+                                   <div class="col-lg-2 {{$class}}">
                                        {{date('d/m/Y', $item->hr_document_date_issued)}} &nbsp;&nbsp;&nbsp;&nbsp;
                                        @if($is_root || $permission_edit)
-                                           <a class="rlt3 iclick" href="{{URL::route('hr.HrDocumentEdit',array('id' => FunctionLib::inputId($item['hr_document_id'])))}}" title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                           <a class="rlt3 iclick" href="{{URL::route('hr.HrDocumentViewItemGet',array('id' => FunctionLib::inputId($item['hr_document_id'])))}}" title="Xem"><i class="fa fa-eye fa-2x"></i></a>
                                        @endif
                                        @if($is_boss || $permission_remove)
                                            <a class="deleteItem rlt2 iclick" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['hr_document_id'])}}', WEB_ROOT + '/manager/document/deleteHrDocument')"><i class="fa fa-trash fa-2x"></i></a>

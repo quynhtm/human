@@ -108,12 +108,18 @@ Route::get('mail/viewItemSend/{id?}',array('as' => 'hr.HrMailViewItemSend','uses
 Route::get('mail/viewItemDraft/{id?}',array('as' => 'hr.HrMailViewItemDraft','uses' => HResources.'\HrMailController@viewItemDraft'));
 Route::get('mail/ajaxItemForward',array('as' => 'hr.ajaxItemForward','uses' => HResources.'\HrMailController@ajaxItemForward'));
 Route::get('mail/ajaxItemReply',array('as' => 'hr.ajaxItemReply','uses' => HResources.'\HrMailController@ajaxItemReply'));
-
 Route::get('mail/edit/{id?}',array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@getItem'));
 Route::post('mail/edit/{id?}', array('as' => 'hr.HrMailEdit','uses' => HResources.'\HrMailController@postItem'));
 Route::get('mail/deleteHrMail', array('as' => 'hr.deleteHrMail','uses' => HResources.'\HrMailController@deleteHrMail'));
 
-Route::match(['GET','POST'],'document/view', array('as' => 'hr.HrDocumentView','uses' => HResources.'\HrDocumentController@view'));
+Route::match(['GET','POST'],'document/viewsend', array('as' => 'hr.HrDocumentViewSend','uses' => HResources.'\HrDocumentController@viewSend'));
+Route::match(['GET','POST'],'document/viewget', array('as' => 'hr.HrDocumentViewGet','uses' => HResources.'\HrDocumentController@viewGet'));
+Route::match(['GET','POST'],'document/viewdraft', array('as' => 'hr.HrDocumentViewDraft','uses' => HResources.'\HrDocumentController@viewDraft'));
+Route::get('document/viewItemGet/{id?}',array('as' => 'hr.HrDocumentViewItemGet','uses' => HResources.'\HrDocumentController@viewItemGet'));
+Route::get('document/viewItemSend/{id?}',array('as' => 'hr.HrDocumentViewItemSend','uses' => HResources.'\HrDocumentController@viewItemSend'));
+Route::get('document/viewItemDraft/{id?}',array('as' => 'hr.HrDocumentViewItemDraft','uses' => HResources.'\HrDocumentController@viewItemDraft'));
+Route::get('document/ajaxItemForward',array('as' => 'hr.ajaxItemDocumentForward','uses' => HResources.'\HrDocumentController@ajaxItemForward'));
+Route::get('document/ajaxItemReply',array('as' => 'hr.ajaxItemDocumentReply','uses' => HResources.'\HrDocumentController@ajaxItemReply'));
 Route::get('document/edit/{id?}',array('as' => 'hr.HrDocumentEdit','uses' => HResources.'\HrDocumentController@getItem'));
 Route::post('document/edit/{id?}', array('as' => 'hr.HrDocumentEdit','uses' => HResources.'\HrDocumentController@postItem'));
 Route::get('document/deleteHrDocument', array('as' => 'hr.deleteHrDocument','uses' => HResources.'\HrDocumentController@deleteHrDocument'));

@@ -207,8 +207,7 @@ class HrMailController extends BaseAdminController{
         if($id > 0) {
             $user_id = $this->user['user_id'];
             $data = HrMail::getItemByIdAndPersonReciveId($id, $user_id);
-            $dataParent = HrMail::getItemByParentIdAndPersonReciveId($id, $user_id);
-            FunctionLib::bug($dataParent);
+            //$dataParent = HrMail::getItemByParentIdAndPersonReciveId($data->hr_mail_id, $user_id);
             if(sizeof($data) == 0){
                 return Redirect::route('hr.HrMailViewGet');
             }else{
@@ -348,7 +347,12 @@ class HrMailController extends BaseAdminController{
                         $this->sendDataToUsers($hr_mail_send_cc, $getItem);
                     }
                 }
-                return Redirect::route('hr.HrMailViewGet');
+
+                if(isset($data['submitMailSend']) && $data['submitMailSend'] == 'submitMailSend'){
+                    return Redirect::route('hr.HrMailViewSend');
+                }else{
+                    return Redirect::route('hr.HrMailViewDraft');
+                }
             }else{
                 $data['hr_mail_created'] = time();
                 $data['hr_mail_person_send'] = $this->user['user_id'];
@@ -376,7 +380,11 @@ class HrMailController extends BaseAdminController{
                     $this->sendDataToUsers($hr_mail_send_cc, $getItem);
                 }
 
-                return Redirect::route('hr.HrMailViewGet');
+                if(isset($data['submitMailSend']) && $data['submitMailSend'] == 'submitMailSend'){
+                    return Redirect::route('hr.HrMailViewSend');
+                }else{
+                    return Redirect::route('hr.HrMailViewDraft');
+                }
             }
         }
 
@@ -572,7 +580,9 @@ class HrMailController extends BaseAdminController{
     public function sendDataToUsers($dataUser, $getItem){
         if(sizeof($dataUser) > 0 && sizeof($getItem) >0){
             foreach($dataUser as $key=>$recive) {
+                $dataRecive['hr_mail_project'] = $getItem->hr_mail_project;
                 $dataRecive['hr_mail_name'] = $getItem->hr_mail_name;
+                $dataRecive['hr_mail_desc'] = $getItem->hr_mail_desc;
                 $dataRecive['hr_mail_content'] = $getItem->hr_mail_content;
                 $dataRecive['hr_mail_person_recive'] = (int)$recive;
                 $dataRecive['hr_mail_person_recive_list'] = $getItem->hr_mail_person_recive_list;

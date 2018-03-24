@@ -1,11 +1,18 @@
 $(document).ready(function () {
     HR.clickAddParentDepartment();
     HR.clickPostPageNext();
-    HR.clickSubmitMailDraft();
     HR.showDate();
+
+    HR.clickSubmitMailDraft();
     HR.submitMailSend();
     HR.clickMailForward();
     HR.clickMailReply();
+
+    HR.clickViewDocument();
+    HR.clickDocumentForward();
+    HR.clickSubmitDocumentDraft();
+    HR.submitDocumentSend();
+    HR.clickDocumentReply();
 });
 HR = {
     editItem: function (id, $url) {
@@ -201,6 +208,65 @@ HR = {
                 lang: 'vi',
             });
         }
+    },
+    clickViewDocument:function(){
+        jQuery('.iclick').click(function(event){
+            event.stopPropagation();
+        });
+        $('.list-view-file .one-item-file').click(function(){
+            if($(this).hasClass('act')){
+                $(this).removeClass('act');
+            }else{
+                $('.list-view-file .one-item-file').removeClass('act');
+                $(this).addClass('act');
+            }
+        });
+    },
+    clickSubmitDocumentDraft:function(){
+        $('.submitDocumentDraft').click(function(){
+            $('#adminForm').append('<input id="submitDocumentDraft" name="submitDocumentDraft" value="submitDocumentDraft" type="hidden">');
+            $('#adminForm').submit();
+        });
+    },
+    submitDocumentSend:function(){
+        $('.submitDocumentSend').click(function(){
+            $('#adminForm').append('<input id="submitDocumentSend" name="submitDocumentSend" value="submitDocumentSend" type="hidden">');
+            $('#adminForm').submit();
+        });
+    },
+    clickDocumentForward:function(){
+        $('.replyline .forwardDocument').click(function(){
+            $('.replyline').hide();
+            var parent_id = $('#parent_id').val();
+            $.ajax({
+                type: "GET",
+                url: WEB_ROOT + '/manager/document/ajaxItemForward',
+                data: {parent_id: parent_id},
+                success: function (res) {
+                    $('#getItemCurrent').append(res);
+                    HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
+                    HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
+                    CKEDITOR.replace('hr_document_content');
+                }
+            });
+        });
+    },
+    clickDocumentReply:function(){
+        $('.replyline .replyDocument').click(function(){
+            $('.replyline').hide();
+            var parent_id = $('#parent_id').val();
+            $.ajax({
+                type: "GET",
+                url: WEB_ROOT + '/manager/document/ajaxItemReply',
+                data: {parent_id: parent_id},
+                success: function (res) {
+                    $('#getItemCurrent').append(res);
+                    HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
+                    HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
+                    CKEDITOR.replace('hr_document_content');
+                }
+            });
+        });
     },
     /**
      * QuynhTM add
