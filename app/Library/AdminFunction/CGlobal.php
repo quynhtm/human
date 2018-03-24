@@ -23,11 +23,11 @@ class CGlobal
     public static $pageShopTitle = '';
 
     const project_name = 'manager_hr';
-    const code_shop_share = 'Manager HR';
-    const web_name = 'Manager HR';
-    const web_keywords = 'Manager HR';
-    const web_description = 'Manager HR';
-    public static $pageTitle = 'Manager HR';
+    const code_shop_share = 'PM QL HCTH';
+    const web_name = 'PM QL HCTH';
+    const web_keywords = 'PM QL HCTH';
+    const web_description = 'PM QL HCTH';
+    public static $pageTitle = 'PM QL HCTH';
 
     const phoneSupport = '';
 

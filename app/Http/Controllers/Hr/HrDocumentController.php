@@ -8,12 +8,14 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Admin\User;
 use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Hr\HrDocument;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\Loader;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -53,7 +55,8 @@ class HrDocumentController extends BaseAdminController{
             'permission_full'=>in_array($this->permission_full, $this->permission) ? 1 : 0,
         ];
     }
-    public function view(){
+
+    public function viewSend(){
 
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
@@ -65,9 +68,59 @@ class HrDocumentController extends BaseAdminController{
         $offset = ($pageNo - 1) * $limit;
 
         $dataSearch['hr_document_name'] = addslashes(Request::get('hr_document_name',''));
-        $dataSearch['hr_document_promulgate'] = addslashes(Request::get('hr_document_promulgate', -1));
-        $dataSearch['hr_document_field'] = addslashes(Request::get('hr_document_field', -1));
+        $dataSearch['hr_document_promulgate'] = (int)Request::get('hr_document_promulgate', -1);
+        $dataSearch['hr_document_field'] = (int)Request::get('hr_document_field', -1);
         $dataSearch['hr_document_type'] = (int)Request::get('hr_document_type', -1);
+        $dataSearch['hr_document_person_send'] = $this->user['user_id'];
+        $dataSearch['hr_document_type_view'] = Define::mail_type_0;
+        $dataSearch['hr_document_status'] = Define::mail_da_gui;
+        $dataSearch['field_get'] = '';
+
+        $data = HrDocument::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, $dataSearch['hr_document_promulgate']);
+        $optionType = FunctionLib::getOption($this->arrType, $dataSearch['hr_document_type']);
+        $optionField = FunctionLib::getOption($this->arrField, $dataSearch['hr_document_field']);
+
+        return view('hr.Document.viewSend',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'arrStatus'=>$this->arrStatus,
+            'arrPersion'=>$this->arrPersion,
+
+            'optionPromulgate'=>$optionPromulgate,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'optionType'=>$optionType,
+            'arrType'=>$this->arrType,
+            'optionField'=>$optionField,
+            'arrField'=>$this->arrField,
+
+        ],$this->viewPermission));
+    }
+    public function viewGet(){
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['hr_document_name'] = addslashes(Request::get('hr_document_name',''));
+        $dataSearch['hr_document_promulgate'] = (int)Request::get('hr_document_promulgate', -1);
+        $dataSearch['hr_document_field'] = (int)Request::get('hr_document_field', -1);
+        $dataSearch['hr_document_type'] = (int)Request::get('hr_document_type', -1);
+        $dataSearch['hr_document_person_recive'] = $this->user['user_id'];
+        $dataSearch['hr_document_type_view'] = Define::mail_type_1;
         $dataSearch['hr_document_status'] = (int)Request::get('hr_document_status', -1);
         $dataSearch['field_get'] = '';
 
@@ -76,18 +129,64 @@ class HrDocumentController extends BaseAdminController{
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_document_status']);
         $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, $dataSearch['hr_document_promulgate']);
         $optionType = FunctionLib::getOption($this->arrType, $dataSearch['hr_document_type']);
         $optionField = FunctionLib::getOption($this->arrField, $dataSearch['hr_document_field']);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Document.view',array_merge([
+        return view('hr.Document.viewGet',array_merge([
             'data'=>$data,
             'dataSearch'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
+            'optionPromulgate'=>$optionPromulgate,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'optionType'=>$optionType,
+            'arrType'=>$this->arrType,
+            'optionField'=>$optionField,
+            'arrField'=>$this->arrField,
+        ],$this->viewPermission));
+    }
+    public function viewDraft(){
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['hr_document_name'] = addslashes(Request::get('hr_document_name',''));
+        $dataSearch['hr_document_promulgate'] = (int)Request::get('hr_document_promulgate', -1);
+        $dataSearch['hr_document_field'] = (int)Request::get('hr_document_field', -1);
+        $dataSearch['hr_document_type'] = (int)Request::get('hr_document_type', -1);
+        $dataSearch['hr_document_status'] = Define::mail_nhap;
+        $dataSearch['hr_document_type_view'] = -1;
+        $dataSearch['hr_document_person_send'] = $this->user['user_id'];
+        $dataSearch['field_get'] = '';
+
+        $data = HrDocument::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['hr_document_status']);
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, $dataSearch['hr_document_promulgate']);
+        $optionType = FunctionLib::getOption($this->arrType, $dataSearch['hr_document_type']);
+        $optionField = FunctionLib::getOption($this->arrField, $dataSearch['hr_document_field']);
+
+        return view('hr.Document.viewDraft',array_merge([
+            'data'=>$data,
+            'dataSearch'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'arrPersion'=>$this->arrPersion,
             'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
             'optionPromulgate'=>$optionPromulgate,
@@ -98,6 +197,138 @@ class HrDocumentController extends BaseAdminController{
             'arrField'=>$this->arrField,
         ],$this->viewPermission));
     }
+
+    public function viewItemGet($ids) {
+
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
+        $data = $dataParent = array();
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+        if($id > 0) {
+            $user_id = $this->user['user_id'];
+            $data = HrDocument::getItemByIdAndPersonReciveId($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrDocumentViewGet');
+            }else{
+                $dataUpdate['hr_document_status'] = Define::mail_da_doc;
+                HrDocument::updateItem($id, $dataUpdate);
+            }
+        }else{
+            return Redirect::route('hr.HrDocumentViewGet');
+        }
+        $this->getDataDefault();
+
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Document.viewItemGet',array_merge([
+            'data'=>$data,
+            'arrUser'=>$arrUser,
+            'id'=>$id,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'arrType'=>$this->arrType,
+            'arrField'=>$this->arrField,
+        ],$this->viewPermission));
+    }
+    public function viewItemSend($ids) {
+
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
+        $data = $dataParent = array();
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        if($id > 0) {
+            $user_id = $this->user['user_id'];
+            $data = HrDocument::getItemByIdAndPersonSendId($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrDocumentViewSend');
+            }
+        }else{
+            return Redirect::route('hr.HrDocumentViewSend');
+        }
+        $this->getDataDefault();
+
+
+        $this->getDataDefault();
+
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Document.viewItemSend',array_merge([
+            'data'=>$data,
+            'arrUser'=>$arrUser,
+            'id'=>$id,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'arrType'=>$this->arrType,
+            'arrField'=>$this->arrField,
+        ],$this->viewPermission));
+    }
+    public function viewItemDraft($ids){
+        $id = FunctionLib::outputId($ids);
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
+        $data = $dataParent = array();
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        if($id > 0) {
+            $user_id = $this->user['user_id'];
+            $data = HrDocument::getItemDraftById($id, $user_id);
+            if(sizeof($data) == 0){
+                return Redirect::route('hr.HrDocumentViewDraft');
+            }
+        }
+
+        $this->getDataDefault();
+        $this->viewPermission = $this->getPermissionPage();
+
+        $optionPromulgate = FunctionLib::getOption($this->arrPromulgate, isset($data['hr_document_promulgate']) ? $data['hr_document_promulgate'] : -1);
+        $optionType = FunctionLib::getOption($this->arrType, isset($data['hr_document_type']) ? $data['hr_document_type'] : -1);
+        $optionField = FunctionLib::getOption($this->arrField, isset($data['hr_document_field']) ? $data['hr_document_field'] : -1);
+
+        return view('hr.Document.viewItemDraft',array_merge([
+            'data'=>$data,
+            'arrUser'=>$arrUser,
+            'id'=>$id,
+            'arrField'=>$this->arrField,
+            'optionPromulgate'=>$optionPromulgate,
+            'arrPromulgate'=>$this->arrPromulgate,
+            'optionType'=>$optionType,
+            'arrType'=>$this->arrType,
+            'arrField'=>$this->arrField,
+            'optionField'=>$optionField,
+
+        ],$this->viewPermission));
+    }
     public function getItem($ids) {
 
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
@@ -105,6 +336,8 @@ class HrDocumentController extends BaseAdminController{
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
         $id = FunctionLib::outputId($ids);
 
@@ -114,7 +347,18 @@ class HrDocumentController extends BaseAdminController{
         $data = array();
         if($id > 0) {
             $data = HrDocument::getItemById($id);
+            if(sizeof($data) > 0){
+                $user_id = $this->user['user_id'];
+                if($data->hr_document_person_send != $user_id){
+                    return Redirect::route('hr.HrDocumentEdit', array('id'=>FunctionLib::inputId(0)));
+                }
+            }
+
         }
+
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
         $this->getDataDefault();
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
@@ -130,9 +374,19 @@ class HrDocumentController extends BaseAdminController{
             'optionPromulgate'=>$optionPromulgate,
             'optionType'=>$optionType,
             'optionField'=>$optionField,
+            'arrUser'=>$arrUser,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
         $id = FunctionLib::outputId($ids);
 
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
@@ -141,12 +395,10 @@ class HrDocumentController extends BaseAdminController{
 
         $data = $_POST;
         $id_hiden = (int)FunctionLib::outputId($data['id_hiden']);
+        $data['hr_document_status'] = Define::mail_nhap;
 
         if(isset($data['hr_document_type'])) {
             $data['hr_document_type'] = (int)$data['hr_document_type'];
-        }
-        if(isset($data['hr_document_created'])) {
-            $data['hr_document_created'] = FunctionLib::convertDate($data['hr_document_created']);
         }
         if(isset($data['hr_document_date_issued'])) {
             $data['hr_document_date_issued'] = FunctionLib::convertDate($data['hr_document_date_issued']);
@@ -163,27 +415,73 @@ class HrDocumentController extends BaseAdminController{
         if(isset($data['hr_document_update'])) {
             $data['hr_document_update'] = FunctionLib::convertDate($data['hr_document_update']);
         }
-        if(isset($data['hr_document_status'])) {
-            $data['hr_document_status'] = (int)($data['hr_document_status']);
+        if(isset($data['submitDocumentSend']) && $data['submitDocumentSend'] == 'submitDocumentSend'){
+            $this->valid($data);
         }
 
-        if($this->valid($data) && empty($this->error)) {
+        if(sizeof($this->error) == 0) {
             $id = ($id == 0) ? $id_hiden : $id;
             if($id > 0) {
-                if(HrDocument::updateItem($id, $data)) {
-                    if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrDocumentEdit', array('id'=>FunctionLib::inputId(0)));
-                    }else{
-                        return Redirect::route('hr.HrDocumentView');
+
+                $data['hr_document_status'] = -1;
+                unset($data['hr_document_person_send']);
+                $data['hr_document_person_recive_list'] = (isset($data['hr_document_person_recive_list']) &&  sizeof($data['hr_document_person_recive_list']) > 0 ) ? implode(',', $data['hr_document_person_recive_list']) : '';
+                $data['hr_document_send_cc'] = (isset($data['hr_document_send_cc']) &&  sizeof($data['hr_document_send_cc']) > 0 ) ? implode(',', $data['hr_document_send_cc']) : '';
+                if(isset($data['submitDocumentDraft'])){
+                    $data['hr_document_status'] = Define::mail_nhap;
+                    $data['hr_document_type_view'] = -1;
+                    HrDocument::updateItem($id, $data);
+                }else{
+                    $data['hr_document_date_send'] = time();
+                    $data['hr_document_type_view'] = Define::mail_type_0;
+                    $data['hr_document_status'] = Define::mail_da_gui;
+                    $documentId = HrDocument::updateItem($id, $data);
+                    if($documentId > 0){
+                        $getItem = HrDocument::getItemById($documentId);
+                        //To
+                        $hr_document_person_recive = (isset($getItem['hr_document_person_recive_list']) &&  $getItem['hr_document_person_recive_list'] != '') ? explode(',', $getItem['hr_document_person_recive_list']) : array();
+                        $this->sendDataToUsers($hr_document_person_recive, $getItem);
+                        //CC
+                        $hr_document_send_cc = (isset($getItem['hr_document_send_cc']) && $getItem['hr_document_send_cc'] != '') ? explode(',', $getItem['hr_document_send_cc']) : array();
+                        $this->sendDataToUsers($hr_document_send_cc, $getItem);
                     }
                 }
+                if(isset($data['submitDocumentSend']) && $data['submitDocumentSend'] == 'submitDocumentSend'){
+                    return Redirect::route('hr.HrDocumentViewSend');
+                }else{
+                    return Redirect::route('hr.HrDocumentViewDraft');
+                }
             }else{
-                if(HrDocument::createItem($data)) {
-                    if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.HrDocumentEdit', array('id'=>FunctionLib::inputId(0)));
-                    }else{
-                        return Redirect::route('hr.HrDocumentView');
-                    }
+                $data['hr_document_created'] = time();
+                $data['hr_document_person_send'] = $this->user['user_id'];
+                if(isset($data['submitDocumentDraft'])){
+                    $data['hr_document_status'] = Define::mail_nhap;
+                    $data['hr_document_type_view'] = -1;
+                }else{
+                    $data['hr_document_type_view'] = Define::mail_type_0;
+                    $data['hr_document_status'] = Define::mail_da_gui;
+                    $data['hr_document_date_send'] = time();
+                }
+
+                $data['hr_document_person_recive_list'] = (isset($data['hr_document_person_recive_list']) && sizeof($data['hr_document_person_recive_list']) > 0) ? implode(',', $data['hr_document_person_recive_list']) : '';
+                $data['hr_document_send_cc'] = (isset($data['hr_document_send_cc']) && sizeof($data['hr_document_send_cc']) > 0) ? implode(',', $data['hr_document_send_cc']) : '';
+
+                $documentId = HrDocument::createItem($data);
+
+                if(!isset($data['submitDocumentDraft'])){
+                    $getItem = HrDocument::getItemById($documentId);
+                    //To
+                    $hr_document_person_recive = (isset($getItem['hr_document_person_recive_list']) &&  $getItem['hr_document_person_recive_list'] != '') ? explode(',', $getItem['hr_document_person_recive_list']) : array();
+                    $this->sendDataToUsers($hr_document_person_recive, $getItem);
+                    //CC
+                    $hr_document_send_cc = (isset($getItem['hr_document_send_cc']) && $getItem['hr_document_send_cc'] != '') ? explode(',', $getItem['hr_document_send_cc']) : array();
+                    $this->sendDataToUsers($hr_document_send_cc, $getItem);
+                }
+
+                if(isset($data['submitDocumentSend']) && $data['submitDocumentSend'] == 'submitDocumentSend'){
+                    return Redirect::route('hr.HrDocumentViewSend');
+                }else{
+                    return Redirect::route('hr.HrDocumentViewDraft');
                 }
             }
         }
@@ -208,6 +506,7 @@ class HrDocumentController extends BaseAdminController{
 
         ],$this->viewPermission));
     }
+
     public function deleteHrDocument(){
         $data = array('isIntOk' => 0);
         if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_delete,$this->permission)){
@@ -219,6 +518,141 @@ class HrDocumentController extends BaseAdminController{
         }
         return Response::json($data);
     }
+
+    public function ajaxItemForward() {
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $id = FunctionLib::outputId(Request::get('parent_id', 0));
+        $data = $dataNew = array();
+        if($id > 0) {
+            $data = HrDocument::getItemById($id);
+        }
+        if(sizeof($data) > 0){
+            $dataAdd['hr_document_project'] = $data->hr_document_project;
+            $dataAdd['hr_document_name'] = $data->hr_document_name;
+            $dataAdd['hr_document_desc'] = $data->hr_document_desc;
+            $dataAdd['hr_document_content'] = $data->hr_document_content;
+            $dataAdd['hr_document_code'] = $data->hr_document_code;
+            $dataAdd['hr_document_promulgate'] = $data->hr_document_promulgate;
+            $dataAdd['hr_document_type'] = $data->hr_document_type;
+            $dataAdd['hr_document_files'] = $data->hr_document_files;
+            $dataAdd['hr_document_signer'] = $data->hr_document_signer;
+            $dataAdd['hr_document_date_issued'] = $data->hr_document_date_issued;
+            $dataAdd['hr_document_effective_date'] = $data->hr_document_effective_date;
+            $dataAdd['hr_document_date_expired'] = $data->hr_document_date_expired;
+            $dataAdd['hr_document_delease_date'] = $data->hr_document_delease_date;
+            $dataAdd['hr_document_update'] = $data->hr_document_update;
+            $dataAdd['hr_document_person_send'] = $data->hr_document_person_send;
+            $dataAdd['hr_document_parent'] = $id;
+            $dataAdd['hr_document_status'] = Define::mail_nhap;
+            $dataAdd['hr_document_type_view'] = -1;
+            $dataAdd['hr_document_created'] = time();
+
+            $idNew = HrDocument::createItem($dataAdd);
+            if($data->hr_document_files != '') {
+                $hr_document_files = ($data->hr_document_files != '') ? unserialize($data->hr_document_files) : array();
+                if(sizeof($hr_document_files) > 0) {
+                    foreach ($hr_document_files as $key => $file) {
+                        $folder_document = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_DOCUMENT;
+                        $path_current = $folder_document . '/' . $data->hr_document_id . '/' . $file;
+                        if(file_exists($path_current)){
+                            $folder_copy = $folder_document . '/' .$idNew;
+                            $path_copy = $folder_copy . '/' .$file;
+                            if(!is_dir($folder_copy)){
+                                @mkdir($folder_copy,0777,true);
+                                @chmod($folder_copy,0777);
+                            }
+                            @copy($path_current, $path_copy);
+                        }
+                    }
+                }
+            }
+            $dataNew = HrDocument::getItemById($idNew);
+        }
+
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        $this->getDataDefault();
+
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Document.ajaxForward',array_merge([
+            'data'=>$dataNew,
+            'id'=>$idNew,
+            'arrUser'=>$arrUser,
+        ],$this->viewPermission));
+    }
+    public function ajaxItemReply() {
+
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission) && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+        $id = FunctionLib::outputId(Request::get('parent_id', 0));
+        $data = $dataNew = array();
+        if($id > 0) {
+            $data = HrDocument::getItemById($id);
+        }
+        if(sizeof($data) > 0){
+            $dataAdd['hr_document_project'] = $data->hr_document_project;
+            $dataAdd['hr_document_name'] = $data->hr_document_name;
+            $dataAdd['hr_document_desc'] = $data->hr_document_desc;
+            $dataAdd['hr_document_content'] = $data->hr_document_content;
+            $dataAdd['hr_document_code'] = $data->hr_document_code;
+            $dataAdd['hr_document_promulgate'] = $data->hr_document_promulgate;
+            $dataAdd['hr_document_type'] = $data->hr_document_type;
+            $dataAdd['hr_document_files'] = $data->hr_document_files;
+            $dataAdd['hr_document_signer'] = $data->hr_document_signer;
+            $dataAdd['hr_document_date_issued'] = $data->hr_document_date_issued;
+            $dataAdd['hr_document_effective_date'] = $data->hr_document_effective_date;
+            $dataAdd['hr_document_date_expired'] = $data->hr_document_date_expired;
+            $dataAdd['hr_document_delease_date'] = $data->hr_document_delease_date;
+            $dataAdd['hr_document_update'] = $data->hr_document_update;
+            $dataAdd['hr_document_person_send'] = $data->hr_document_person_send;
+            $dataAdd['hr_document_person_recive_list'] = $data->hr_document_person_recive_list;
+            $dataAdd['hr_document_parent'] = $id;
+            $dataAdd['hr_document_status'] = Define::mail_nhap;
+            $dataAdd['hr_document_type_view'] = -1;
+            $dataAdd['hr_document_created'] = time();
+
+            $idNew = HrDocument::createItem($dataAdd);
+
+            if($data->hr_document_files != '') {
+                $hr_document_files = ($data->hr_document_files != '') ? unserialize($data->hr_document_files) : array();
+                if(sizeof($hr_document_files) > 0) {
+                    foreach ($hr_document_files as $key => $file) {
+                        $folder_document = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_DOCUMENT;
+                        $path_current = $folder_document . '/' . $data->hr_document_id . '/' . $file;
+                        if(file_exists($path_current)){
+                            $folder_copy = $folder_document . '/' .$idNew;
+                            $path_copy = $folder_copy . '/' .$file;
+                            if(!is_dir($folder_copy)){
+                                @mkdir($folder_copy,0777,true);
+                                @chmod($folder_copy,0777);
+                            }
+                            @copy($path_current, $path_copy);
+                        }
+                    }
+                }
+            }
+            $dataNew = HrDocument::getItemById($idNew);
+        }
+
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
+        $this->getDataDefault();
+
+        $this->viewPermission = $this->getPermissionPage();
+
+        return view('hr.Document.ajaxItemReply',array_merge([
+            'data'=>$dataNew,
+            'id'=>$idNew,
+            'arrUser'=>$arrUser,
+        ],$this->viewPermission));
+    }
     private function valid($data=array()) {
         if(!empty($data)) {
             if(isset($data['hr_document_type']) && trim($data['hr_document_type']) == '') {
@@ -229,5 +663,71 @@ class HrDocumentController extends BaseAdminController{
             }
         }
         return true;
+    }
+
+    public function getArrayUserFromData($data=array()){
+        $result = array();
+        if(sizeof($data) > 0){
+            foreach($data as $item){
+                if(!in_array($item->user_id, Define::mail_user_unset)){
+                    if($item->user_full_name != ''){
+                        $result[$item->user_id] = $item->user_full_name;
+                    }else{
+                        $result[$item->user_id] = $item->user_name;
+                    }
+                }
+            }
+        }
+        return $result;
+    }
+    public function sendDataToUsers($dataUser, $getItem){
+        if(sizeof($dataUser) > 0 && sizeof($getItem) >0){
+            foreach($dataUser as $key=>$recive) {
+                $dataRecive['hr_document_project'] = $getItem->hr_document_project;
+                $dataRecive['hr_document_name'] = $getItem->hr_document_name;
+                $dataRecive['hr_document_desc'] = $getItem->hr_document_desc;
+                $dataRecive['hr_document_content'] = $getItem->hr_document_content;
+                $dataRecive['hr_document_code'] = $getItem->hr_document_code;
+                $dataRecive['hr_document_promulgate'] = $getItem->hr_document_promulgate;
+                $dataRecive['hr_document_type'] = $getItem->hr_document_type;
+                $dataRecive['hr_document_field'] = $getItem->hr_document_field;
+                $dataRecive['hr_document_signer'] = $getItem->hr_document_signer;
+                $dataRecive['hr_document_date_issued'] = $getItem->hr_document_date_issued;
+                $dataRecive['hr_document_effective_date'] = $getItem->hr_document_effective_date;
+                $dataRecive['hr_document_date_expired'] = $getItem->hr_document_date_expired;
+                $dataRecive['hr_document_delease_date'] = $getItem->hr_document_delease_date;
+
+                $dataRecive['hr_document_person_recive'] = (int)$recive;
+                $dataRecive['hr_document_person_recive_list'] = $getItem->hr_document_person_recive_list;
+                $dataRecive['hr_document_person_send'] = $this->user['user_id'];
+                $dataRecive['hr_document_send_cc'] = $getItem->hr_document_send_cc;
+                $dataRecive['hr_document_created'] = time();
+                $dataRecive['hr_document_update'] = time();
+                $dataRecive['hr_document_date_send'] = time();
+                $dataRecive['hr_document_files'] = $getItem->hr_document_files;
+                $dataRecive['hr_document_type_view'] = Define::mail_type_1;
+                $dataRecive['hr_document_status'] = Define::mail_chua_doc;
+                $idDocumentOther = HrDocument::createItem($dataRecive);
+
+                if($getItem->hr_document_files != '') {
+                    $hr_document_files = ($getItem->hr_document_files != '') ? unserialize($getItem->hr_document_files) : array();
+                    if(sizeof($hr_document_files) > 0) {
+                        foreach ($hr_document_files as $key => $file) {
+                            $folder_document = Config::get('config.DIR_ROOT').'uploads/'.Define::FOLDER_DOCUMENT;
+                            $path_current = $folder_document . '/' . $getItem->hr_document_id . '/' . $file;
+                            if(file_exists($path_current)){
+                                $folder_copy = $folder_document . '/' .$idDocumentOther;
+                                $path_copy = $folder_copy . '/' .$file;
+                                if(!is_dir($folder_copy)){
+                                    @mkdir($folder_copy,0777,true);
+                                    @chmod($folder_copy,0777);
+                                }
+                                @copy($path_current, $path_copy);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

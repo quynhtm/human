@@ -96,6 +96,7 @@ class Define
     const CACHE_DEFINED_ALL = 'cache_defined_all';
     const CACHE_DEVICE_ID = 'cache_device_id_';
     const CACHE_HR_DOCUMENT_ID = 'cache_hr_document_id_';
+    const CACHE_HR_DOCUMENT_PARENT_ID = 'cache_hr_document_parent_id_';
     const CACHE_HR_MAIL_ID = 'cache_hr_mail_id_';
     const CACHE_HR_MAIL_PARENT_ID = 'cache_hr_mail_parent_id_';
     /***************************************************************************************************************

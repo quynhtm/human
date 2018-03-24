@@ -64,7 +64,7 @@
                     </form>
                 </div>
                 @if(sizeof($data) > 0)
-                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> thư, tin nhắn @endif </div>
+                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> văn bản đến @endif </div>
                     <br>
                     <div class="list-view-file">
                         <div class="line-head">
@@ -83,7 +83,7 @@
                                    <div class="col-lg-2">
                                        {{date('d/m/Y', $item->hr_document_date_issued)}} &nbsp;&nbsp;&nbsp;&nbsp;
                                        @if($is_root || $permission_edit)
-                                           <a class="rlt3 iclick" href="{{URL::route('hr.HrDocumentEdit',array('id' => FunctionLib::inputId($item['hr_document_id'])))}}" title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
+                                           <a class="rlt3 iclick" href="{{URL::route('hr.HrDocumentViewItemDraft',array('id' => FunctionLib::inputId($item['hr_document_id'])))}}" title="Xem"><i class="fa fa-edit fa-2x"></i></a>
                                        @endif
                                        @if($is_boss || $permission_remove)
                                            <a class="deleteItem rlt2 iclick" title="Xóa" onclick="HR.deleteItem('{{FunctionLib::inputId($item['hr_document_id'])}}', WEB_ROOT + '/manager/document/deleteHrDocument')"><i class="fa fa-trash fa-2x"></i></a>

@@ -37,6 +37,48 @@ use App\Library\AdminFunction\Define;
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm adminFormDevidetAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>Người nhận</label>
+                                            <div class="multipleSelectRecive" multiple style="display: none">
+                                                @foreach($arrUser as $k=>$val)
+                                                    <option value="{{$k}}">{{$val}}</option>
+                                                @endforeach
+                                            </div>
+                                            <script>
+                                                $('.multipleSelectRecive').fastselect({
+                                                    placeholder: 'Chọn người nhận',
+                                                    searchPlaceholder: 'Tìm kiếm',
+                                                    noResultsText: 'Không có kết quả',
+                                                    userOptionPrefix: 'Thêm ',
+                                                    nameElement:'hr_document_person_recive_list'
+                                                });
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label>CC</label>
+                                            <div class="multipleSelectCC" multiple style="display: none">
+                                                @foreach($arrUser as $k=>$val)
+                                                    <option value="{{$k}}">{{$val}}</option>
+                                                @endforeach
+                                            </div>
+                                        </div>
+                                        <script>
+                                            $('.multipleSelectCC').fastselect({
+                                                placeholder: 'Chọn người nhận',
+                                                searchPlaceholder: 'Tìm kiếm',
+                                                noResultsText: 'Không có kết quả',
+                                                userOptionPrefix: 'Thêm ',
+                                                nameElement:'hr_document_send_cc'
+                                            });
+                                        </script>
+                                    </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Tên văn bản</label>
@@ -129,18 +171,6 @@ use App\Library\AdminFunction\Define;
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col-sm-2">
-                                        <div class="form-group">
-                                            <label class="control-label">Trạng thái</label>
-                                            <div class="controls">
-                                                <select class="form-control input-sm"  id="hr_document_status" name="hr_document_status">
-                                                    {!! $optionStatus !!}
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
                                             <label class="control-label">&nbsp;</label>
@@ -161,7 +191,8 @@ use App\Library\AdminFunction\Define;
                                 <div class="row">
                                     <div class="col-md-12">
                                         {!! csrf_field() !!}
-                                        <button type="submit" class="btn btn-success btn-sm submitFinish"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
+                                        <button type="submit" class="btn btn-success btn-sm submitDocumentSend"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
+                                        <button type="submit" class="btn btn-success btn-sm submitDocumentDraft"><i class="fa fa-save"></i>&nbsp;Lưu nháp</button>
                                         <input id="id_hiden" name="id_hiden" @isset($data['hr_document_id'])rel="{{$data['hr_document_id']}}" value="{{FunctionLib::inputId($data['hr_document_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                 </div>

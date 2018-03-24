@@ -180,7 +180,9 @@ span.lbl {
     width: 100% !important;
 }
 .reply,
-.forward{
+.forward,
+.replyDocument,
+.forwardDocument{
     text-decoration: underline;
     cursor: pointer;
 }
@@ -189,4 +191,52 @@ span.lbl {
 }
 .panel {
     margin-bottom: 5px !important;
+}
+.text-bold{
+    font-weight: bold;
+}
+.line-head {
+    padding: 10px 5px;
+    background: #efefef;
+    text-transform: uppercase;
+    border-bottom: 1px solid #ddd;
+    border-top-right-radius: 2px;
+    border-top-left-radius: 2px;
+    border: 1px solid #ddd;
+}
+.line-detail-desc {
+    padding: 10px 5px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+.item-detail-content{
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    background: #efefef;
+    border-top: 0;
+    padding: 8px 0px;
+    display: none;
+}
+.one-item-file.act .line-detail-desc{
+    background-color: rgb(33, 150, 243);
+    color: #fff;
+    line-height: 25px;
+}
+.one-item-file.act .line-detail-desc a{
+    color: #fff;
+}
+.one-item-file.act .item-detail-content{
+    display: block;
+}
+.item-detail-content th,
+.item-detail-content td{
+    border: none!important;
+}
+.rlt2{
+    top: 2px;
+    position: relative;
+}
+.rlt3{
+    top: 3px;
+    position: relative;
 }

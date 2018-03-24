@@ -90,8 +90,8 @@
             <span class="icon-bar"></span>
         </button>
         <div class="navbar-header pull-left">
-            <a href="#" class="navbar-brand">
-                <small>
+            <a href="javascript:void(0)" class="navbar-brand">
+                <small class="rlt3">
                     <i class="fa fa-leaf"></i>
                     {{CGlobal::web_name}}
                 </small>
