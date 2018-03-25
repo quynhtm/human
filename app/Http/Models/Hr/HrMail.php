@@ -12,6 +12,7 @@ use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\View;
 
 class HrMail extends BaseModel{
     protected $table = Define::TABLE_HR_MAIL;
@@ -121,10 +122,11 @@ class HrMail extends BaseModel{
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_send);
             Cache::forget(Define::CACHE_HR_MAIL_PARENT_ID . $id . '_' . $data->hr_mail_person_send);
 
-            //Notify
+            //Notify mail
             if(isset($data->hr_mail_person_recive) && $data->hr_mail_person_recive > 0){
                 Cache::forget(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $data->hr_mail_person_recive);
-                HrMail::countItemNewByIdAndPersonReciveId($data->hr_mail_person_recive);
+                $count = HrMail::countItemNewByIdAndPersonReciveId($data->hr_mail_person_recive);
+                View::share('newMailInbox', $count);
             }
         }
     }
