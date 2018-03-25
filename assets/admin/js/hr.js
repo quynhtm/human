@@ -159,6 +159,10 @@ HR = {
     clickMailForward:function(){
         $('.replyline .forward').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -178,6 +182,10 @@ HR = {
     clickMailReply:function(){
         $('.replyline .reply').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -241,6 +249,10 @@ HR = {
     clickDocumentForward:function(){
         $('.replyline .forwardDocument').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -260,6 +272,10 @@ HR = {
     clickDocumentReply:function(){
         $('.replyline .replyDocument').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",

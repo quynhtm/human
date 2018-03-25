@@ -34,7 +34,7 @@ class HrDocumentController extends BaseAdminController{
 
     public function __construct(){
         parent::__construct();
-        CGlobal::$pageAdminTitle = 'Quản lý văn bản, thư gửi';
+        CGlobal::$pageAdminTitle = 'Quản lý văn bản';
     }
     public function getDataDefault(){
         $this->arrStatus = array(
@@ -487,6 +487,9 @@ class HrDocumentController extends BaseAdminController{
             }
         }
 
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
         $this->getDataDefault();
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
@@ -504,6 +507,7 @@ class HrDocumentController extends BaseAdminController{
             'optionPromulgate'=>$optionPromulgate,
             'optionType'=>$optionType,
             'optionField'=>$optionField,
+            'arrUser'=>$arrUser,
 
         ],$this->viewPermission));
     }

@@ -19,7 +19,7 @@ class CGlobal
     public static $extraFooterCSS = '';
     public static $extraFooterJS = '';
     public static $extraMeta = '';
-    public static $pageAdminTitle = 'Dashboard Admin';
+    public static $pageAdminTitle = 'Phần mềm quản lý hành chính tổng hợp';
     public static $pageShopTitle = '';
 
     const project_name = 'manager_hr';
