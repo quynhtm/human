@@ -4,7 +4,6 @@
  */
 namespace App\Http\Models\Hr;
 use App\Http\Models\BaseModel;
-use App\Http\Models\Hr\HrContracts;
 
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
@@ -160,5 +159,19 @@ class Person extends BaseModel
     public function contracts()
     {
         return $this->hasOne('App\Http\Models\Hr\HrContracts', 'contracts_person_id','person_id');
+    }
+
+    public function salary()
+    {
+        return $this->hasOne('App\Http\Models\Hr\Salary', 'salary_person_id','person_id');
+    }
+    public function allowance()
+    {
+        return $this->hasOne('App\Http\Models\Hr\Allowance', 'allowance_person_id','person_id');
+    }
+
+    public function passport()
+    {
+        return $this->hasOne('App\Http\Models\Hr\Passport', 'passport_person_id','person_id');
     }
 }

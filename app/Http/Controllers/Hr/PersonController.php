@@ -493,7 +493,7 @@ class PersonController extends BaseAdminController
 
         //thong tin nhan sự
         $infoPerson = Person::getInfoPerson($person_id);
-        FunctionLib::debug($infoPerson->contracts->contracts_id);
+        //FunctionLib::debug($infoPerson->contracts->contracts_id);
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.Person.infoPersonPopup', [

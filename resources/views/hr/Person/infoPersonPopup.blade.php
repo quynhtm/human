@@ -1,37 +1,77 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
 <?php use App\Library\AdminFunction\Define; ?>
-<div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> {{$nameTem}} @endif </div>
-<table class="table table-bordered table-hover">
-    <thead class="thin-border-bottom">
-    <tr class="">
-        <th width="5%" class="text-center">STT</th>
-        <th width="30%">Danh hiệu</th>
-        <th width="10%" class="text-center">Năm đạt</th>
-        <th width="20%" class="text-center">Quyết định đính kèm</th>
-        <th width="30%" class="text-center">Ghi chú</th>
-        <th width="5%" class="text-center">Xóa</th>
-    </tr>
-    </thead>
-    @if(sizeof($dataList) > 0)
-        <tbody>
-        @foreach ($dataList as $key2 => $item2)
-            <tr>
-                <td class="text-center middle">{{ $key2+1 }}</td>
-                <td>@if(isset($arrType[$item2['bonus_define_id']])){{ $arrType[$item2['bonus_define_id']] }}@endif</td>
-                <td class="text-center middle"> {{ $item2['bonus_year'] }}</td>
-                <td class="text-center middle">{{$item2['bonus_decision']}}</td>
-                <td class="text-center middle">{{$item2['bonus_note']}}</td>
-                <td class="text-center middle">
-                    @if($is_root== 1 || $personContracts_full== 1 || $personContracts_delete == 1)
-                        <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
-                    @endif
-                </td>
-            </tr>
-        @endforeach
-        </tbody>
-    @else
-        <tr>
-            <td colspan="7"> Chưa có dữ liệu</td>
-        </tr>
-    @endif
-</table>
+
+<div class="modal-content">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+        <h4 class="modal-title" id="myModalLabel">Thông tin nhân sự</h4>
+    </div>
+
+    <div class="modal-body" style="height: 300px">
+        <div class="float_left col-sm-3">
+            <div style="width: 100%; height: 200px; border: 1px solid #ccc">
+            </div>
+        </div>
+
+        <div class="float_left col-sm-3">
+            <div class="form-group">
+                Họ và tên: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+            </div>
+            <div class="form-group">
+                Điện thoại: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+            </div>
+                <div class="form-group">
+                Email: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+                </div>
+            <div class="form-group">
+                Số CMT: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+            </div>
+            <div class="form-group">
+                Ngày cấp: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+            </div>
+            <div class="form-group">
+                Nơi cấp: <span class="color_msg">{{ $infoPerson->person_name }}</span>
+            </div>
+        </div>
+
+        <div class="float_left col-sm-3">
+            <div class="form-group">
+            Ngày nâng lương: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Nghạch bậc: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Hệ số lương: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Phụ cấp: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Mã số thuế: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+        </div>
+
+        <div class="float_left col-sm-3">
+            <div class="form-group">
+                Chức danh KHCN: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Cấp ủy hiện tại, cấp ủy kiêm: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Nơi ở hiện nay: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Lý luận chính trị: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Hộ chiếu phổ thông: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+            <div class="form-group">
+                Ngày hết hạn: <span class="color_msg">{{ $infoPerson->person_code }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
