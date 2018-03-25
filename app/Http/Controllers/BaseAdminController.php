@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\MenuSystem;
@@ -102,7 +103,6 @@ class BaseAdminController extends Controller
             }
             $this->languageSite = (Session::has('languageSite')) ? Session::get('languageSite') : $this->languageSite;
 
-            //FunctionLib::debug($this->menuSystem);
             View::share('languageSite', $this->languageSite);
             View::share('menu', $this->menuSystem);
             View::share('aryPermissionMenu', $this->user_group_menu);
@@ -112,18 +112,25 @@ class BaseAdminController extends Controller
             View::share('user_id', $this->user_id);
             View::share('user_name', $this->user_name);
             View::share('user', $this->user);
+
+            //Count mail notify
+            $newMailInbox = $this->countMailNotify();
+            View::share('newMailInbox', $newMailInbox);
+
             return $next($request);
         });
     }
 
-    public function getMenuSystem()
-    {
+    public function getMenuSystem(){
         $menuTree = MenuSystem::buildMenuAdmin();
         return $menuTree;
     }
 
-    public function getControllerAction()
-    {
+    public function getControllerAction(){
         return $routerName = Route::currentRouteName();
+    }
+    public function countMailNotify(){
+        $count = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id']) : 0;
+        return $count;
     }
 }
