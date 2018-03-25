@@ -91,7 +91,7 @@
         </button>
         <div class="navbar-header pull-left">
             <a href="javascript:void(0)" class="navbar-brand">
-                <small class="rlt3">
+                <small class="rlt3" style="text-transform: uppercase;font-size: 12px;font-style: italic;">
                     <i class="fa fa-leaf"></i>
                     {{CGlobal::web_name}}
                 </small>

@@ -19,15 +19,15 @@ class CGlobal
     public static $extraFooterCSS = '';
     public static $extraFooterJS = '';
     public static $extraMeta = '';
-    public static $pageAdminTitle = 'Phần mềm quản lý hành chính tổng hợp';
+    public static $pageAdminTitle = 'Quản lý hành chính tổng hợp';
     public static $pageShopTitle = '';
 
     const project_name = 'manager_hr';
     const code_shop_share = 'PM QL HCTH';
-    const web_name = 'QL HCTH';
-    const web_keywords = 'QL HCTH';
-    const web_description = 'QL HCTH';
-    public static $pageTitle = 'QL HCTH';
+    const web_name = 'Quản lý hành chính tổng hợp';
+    const web_keywords = 'Quản lý hành chính tổng hợp';
+    const web_description = 'Quản lý hành chính tổng hợp';
+    public static $pageTitle = 'Quản lý hành chính tổng hợp';
 
     const phoneSupport = '';
 
