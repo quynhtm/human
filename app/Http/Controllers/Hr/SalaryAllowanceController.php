@@ -225,7 +225,18 @@ class SalaryAllowanceController extends BaseAdminController
 
         //thông tin chung
         $data = Allowance::find($allowance_id);
-
+        /*
+         * loại phụ cấp
+         * <select class="required form-control input-sm" data-val="true" data-val-required="The TitleIID field is required." id="AllowanceModel_TitleIID" min="0" name="AllowanceModel.TitleIID"><option value="">- Loại phụ cấp -</option>
+<option value="1">Phụ cấp chức vụ</option>
+<option value="2">Phụ cấp thâm niên vượt khung</option>
+<option value="3">Phụ cấp thâm niên</option>
+<option value="4">Phụ cấp trách nhiệm</option>
+<option value="5">Phụ cấp Kế toán trưởng</option>
+<option value="6">Phụ cấp khu vực</option>
+<option value="7">Hệ số chênh lệch bảo lưu</option>
+</select>
+         * */
         $arrMonth = FunctionLib::getListMonth();
         $arrYears = FunctionLib::getListYears();
         $optionMonth2 = FunctionLib::getOption($arrMonth, isset($data['allowance_month_start']) ? $data['allowance_month_start'] : (int)date('m', time()));
