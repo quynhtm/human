@@ -24,10 +24,10 @@ class CGlobal
 
     const project_name = 'manager_hr';
     const code_shop_share = 'PM QL HCTH';
-    const web_name = 'PM QL HCTH';
-    const web_keywords = 'PM QL HCTH';
-    const web_description = 'PM QL HCTH';
-    public static $pageTitle = 'PM QL HCTH';
+    const web_name = 'QL HCTH';
+    const web_keywords = 'QL HCTH';
+    const web_description = 'QL HCTH';
+    public static $pageTitle = 'QL HCTH';
 
     const phoneSupport = '';
 
