@@ -159,6 +159,10 @@ HR = {
     clickMailForward:function(){
         $('.replyline .forward').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -169,6 +173,8 @@ HR = {
                    HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
                    HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
                    CKEDITOR.replace('hr_mail_content');
+                   HR.clickSubmitMailDraft();
+                   HR.submitMailSend();
                 }
             });
         });
@@ -176,6 +182,10 @@ HR = {
     clickMailReply:function(){
         $('.replyline .reply').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -186,6 +196,8 @@ HR = {
                     HR.multipleSelect('.multipleSelectRecive', 'hr_mail_person_recive_list', 'Chọn người nhận');
                     HR.multipleSelect('.multipleSelectCC', 'hr_mail_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_mail_content');
+                    HR.clickSubmitMailDraft();
+                    HR.submitMailSend();
                 }
             });
         });
@@ -237,6 +249,10 @@ HR = {
     clickDocumentForward:function(){
         $('.replyline .forwardDocument').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -247,6 +263,8 @@ HR = {
                     HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
                     HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_document_content');
+                    HR.clickSubmitDocumentDraft();
+                    HR.submitDocumentSend();
                 }
             });
         });
@@ -254,6 +272,10 @@ HR = {
     clickDocumentReply:function(){
         $('.replyline .replyDocument').click(function(){
             $('.replyline').hide();
+
+            $("#getItemCurrent").css('height', 500);
+            $('html,body').animate({scrollTop: $("#getItemCurrent").offset().top - 50},'slow');
+
             var parent_id = $('#parent_id').val();
             $.ajax({
                 type: "GET",
@@ -264,6 +286,8 @@ HR = {
                     HR.multipleSelect('.multipleSelectRecive', 'hr_document_person_recive_list', 'Chọn người nhận');
                     HR.multipleSelect('.multipleSelectCC', 'hr_document_send_cc', 'Chọn người CC');
                     CKEDITOR.replace('hr_document_content');
+                    HR.clickSubmitDocumentDraft();
+                    HR.submitDocumentSend();
                 }
             });
         });

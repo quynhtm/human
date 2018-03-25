@@ -33,7 +33,7 @@ class HrMailController extends BaseAdminController{
 
     public function __construct(){
         parent::__construct();
-        CGlobal::$pageAdminTitle = 'Quản lý văn bản, thư gửi';
+        CGlobal::$pageAdminTitle = 'Quản lý thư gửi';
     }
     public function getDataDefault(){
         $this->arrStatus = array(

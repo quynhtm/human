@@ -240,3 +240,6 @@ span.lbl {
     top: 3px;
     position: relative;
 }
+.main-content-inner{
+    padding-bottom: 50px;
+}

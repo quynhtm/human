@@ -34,7 +34,7 @@ class HrDocumentController extends BaseAdminController{
 
     public function __construct(){
         parent::__construct();
-        CGlobal::$pageAdminTitle = 'Quản lý văn bản, thư gửi';
+        CGlobal::$pageAdminTitle = 'Quản lý văn bản';
     }
     public function getDataDefault(){
         $this->arrStatus = array(
@@ -427,6 +427,7 @@ class HrDocumentController extends BaseAdminController{
                 unset($data['hr_document_person_send']);
                 $data['hr_document_person_recive_list'] = (isset($data['hr_document_person_recive_list']) &&  sizeof($data['hr_document_person_recive_list']) > 0 ) ? implode(',', $data['hr_document_person_recive_list']) : '';
                 $data['hr_document_send_cc'] = (isset($data['hr_document_send_cc']) &&  sizeof($data['hr_document_send_cc']) > 0 ) ? implode(',', $data['hr_document_send_cc']) : '';
+
                 if(isset($data['submitDocumentDraft'])){
                     $data['hr_document_status'] = Define::mail_nhap;
                     $data['hr_document_type_view'] = -1;
@@ -486,6 +487,9 @@ class HrDocumentController extends BaseAdminController{
             }
         }
 
+        $dataUser = User::getList();
+        $arrUser = $this->getArrayUserFromData($dataUser);
+
         $this->getDataDefault();
 
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['hr_document_status'])? $data['hr_document_status']: CGlobal::status_show);
@@ -503,6 +507,7 @@ class HrDocumentController extends BaseAdminController{
             'optionPromulgate'=>$optionPromulgate,
             'optionType'=>$optionType,
             'optionField'=>$optionField,
+            'arrUser'=>$arrUser,
 
         ],$this->viewPermission));
     }
@@ -513,8 +518,20 @@ class HrDocumentController extends BaseAdminController{
             return Response::json($data);
         }
         $id = isset($_GET['id'])?FunctionLib::outputId($_GET['id']):0;
-        if ($id > 0 && HrDocument::deleteItem($id)) {
-            $data['isIntOk'] = 1;
+        if ($id > 0) {
+            $getItem = HrDocument::getItemById($id);
+            $user_id = $this->user['user_id'];
+            $data['isIntOk'] = 0;
+            if(sizeof($getItem) > 0){
+                if(($getItem->hr_document_type_view == Define::mail_type_0 || $getItem->hr_document_type_view == -1) && $getItem->hr_document_person_send == $user_id){
+                    HrDocument::deleteItem($id);
+                    $data['isIntOk'] = 1;
+                }
+                if($getItem->hr_document_type_view == Define::mail_type_1 && $getItem->hr_document_person_recive == $user_id){
+                    HrDocument::deleteItem($id);
+                    $data['isIntOk'] = 1;
+                }
+            }
         }
         return Response::json($data);
     }
