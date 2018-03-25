@@ -28,7 +28,7 @@ use App\Library\AdminFunction\Define;
                         <h4><i class="fa fa-list" aria-hidden="true"></i> Thêm văn bản</h4>
                     </div>
                     <div class="btn-group btn-group-sm pull-right mgt3">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrDocumentView')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
+                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.HrDocumentViewGet')}}"><i class="fa fa-arrow-left"></i>&nbsp;Quay lại</a>
                     </div>
                 </div>
                 <div class="panel-body">
