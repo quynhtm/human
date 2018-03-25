@@ -182,4 +182,14 @@ use App\Library\AdminFunction\CGlobal;
     </div>
 </div>
 <!--Popup Upload Img-->
+<script type="text/javascript">
+    jQuery(document).ready(function($){
+        var dateToday = new Date();
+        jQuery('.date').datetimepicker({
+            timepicker:false,
+            format:'d-m-Y',
+            lang:'vi',
+        });
+    });
+</script>
 @stop
