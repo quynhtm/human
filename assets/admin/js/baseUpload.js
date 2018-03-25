@@ -80,7 +80,7 @@
                     jQuery( "#sys_show_button_upload").show();
 
                     //show ảnh
-                    var html = "<img width='300' src='" + dataResult.info.src + "'/><span class='remove_file one' onclick='baseUpload.deleteOneImageAdvanced(0, \""+dataResult.id_item+"\",\""+dataResult.info.name_img+"\", "+type+")'>X</span>";
+                    var html = "<img src='" + dataResult.info.src + "'/><span class='remove_file one' onclick='baseUpload.deleteOneImageAdvanced(0, \""+dataResult.id_item+"\",\""+dataResult.info.name_img+"\", "+type+")'>X</span>";
                     jQuery('#sys_show_image_one').html(html);
 
                     var img_new = dataResult.info.name_img;

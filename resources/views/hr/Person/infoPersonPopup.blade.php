@@ -1,5 +1,9 @@
-<?php use App\Library\AdminFunction\FunctionLib; ?>
-<?php use App\Library\AdminFunction\Define; ?>
+<?php
+use App\Library\AdminFunction\FunctionLib;
+use App\Library\AdminFunction\Define;
+use App\Library\PHPThumb\ThumbImg;
+use App\Library\AdminFunction\CGlobal;
+?>
 
 <div class="modal-content">
     <div class="modal-header">
@@ -9,7 +13,12 @@
 
     <div class="modal-body" style="height: 300px">
         <div class="float_left col-sm-3">
-            <div style="width: 100%; height: 200px; border: 1px solid #ccc">
+            <div style="width: 200px; height: 250px; overflow: hidden">
+                @if($infoPerson->person_avatar != '')
+                    <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $infoPerson->person_avatar, Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
+                @else
+                    <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/no-profile-image.gif"/>
+                @endif
             </div>
         </div>
 

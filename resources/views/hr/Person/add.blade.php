@@ -1,6 +1,9 @@
-<?php use App\Library\AdminFunction\CGlobal; ?>
-<?php use App\Library\AdminFunction\Define; ?>
-<?php use App\Library\AdminFunction\FunctionLib; ?>
+<?php
+use App\Library\AdminFunction\FunctionLib;
+use App\Library\AdminFunction\Define;
+use App\Library\PHPThumb\ThumbImg;
+use App\Library\AdminFunction\CGlobal;
+?>
 @extends('admin.AdminLayouts.index')
 @section('content')
     <div class="main-content-inner">
@@ -15,7 +18,7 @@
             </ul><!-- /.breadcrumb -->
         </div>
         <div class="clear"></div>
-        <div class="page-content marginTop30">
+        <div class="page-content">
             <div class="row">
                 <div class="col-xs-12">
                     <!-- PAGE CONTENT BEGINS -->
@@ -29,6 +32,26 @@
                         @endif
                     <!--Block 1--->
                         <div class="form-group">
+                            <div class="col-md-2" >
+                                <div class="control-group">
+                                    <div class="controls">
+                                        <label for="name" class="control-label">
+                                            <a href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
+                                        </label>
+                                        <div id="sys_show_image_one" style="width: 200px; height: 300px; overflow: hidden">
+                                            @if(isset($data['person_avatar']) && $data['person_avatar'] !='')
+                                                <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $data['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
+                                                <span class="remove_file one" onclick="baseUpload.deleteOneImageAdvanced(0, '{{FunctionLib::inputId($data['person_id'])}}', '{{$data['person_avatar']}}', 2)">X</span>
+                                            @else
+                                                <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/no-profile-image.gif"/>
+                                            @endif
+                                        </div>
+                                        <input name="img" type="hidden" id="img" @if(isset($data['person_avatar']))value="{{$data['person_avatar']}}"@endif>
+                                        <input name="img_old" type="hidden" id="img_old" @if(isset($data['person_avatar']))value="{{$data['person_avatar']}}"@endif>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Họ và tên khai sinh<span class="red"> (*) </span></label>
@@ -59,16 +82,8 @@
                                     <input type="text" class="form-control" id="person_birth" name="person_birth"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_birth']) && $data['person_birth'] > 0){{date('d-m-Y',$data['person_birth'])}}@endif">
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Giới tính</label>
-                                    <select name="person_sex" id="person_sex" class="form-control input-sm">
-                                        {!! $optionSex !!}
-                                    </select>
-                                </div>
-                            </div>
 
-                            <div class="clear"></div>
+
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Phòng ban đơn vị<span class="red"> (*) </span></label>
@@ -79,8 +94,16 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Số hiệucông chức</label>
+                                    <label for="name" class="control-label">Số hiệu công chức</label>
                                     <input type="text" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Giới tính</label>
+                                    <select name="person_sex" id="person_sex" class="form-control input-sm">
+                                        {!! $optionSex !!}
+                                    </select>
                                 </div>
                             </div>
                             <div class="col-sm-2">
@@ -89,20 +112,9 @@
                                     <input type="text" id="person_mail" name="person_mail"  class="form-control input-sm" value="@if(isset($data['person_mail'])){{$data['person_mail']}}@endif">
                                 </div>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày thử việc</label>
-                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] > 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày làm chính thức</label>
-                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] > 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
-                                </div>
-                            </div>
 
-                            <div class="clear"></div>
+
+
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Số CMT<span class="red"> (*) </span></label>
@@ -111,16 +123,11 @@
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Ngày cấp<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] > 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
                                     <label for="name" class="control-label">Nơi cấp</label>
                                     <input type="text"  id="person_issued_cmt" name="person_issued_cmt"  class="form-control input-sm" value="@if(isset($data['person_issued_cmt'])){{$data['person_issued_cmt']}}@endif">
                                 </div>
                             </div>
+
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Chức vụ</label>
@@ -146,6 +153,26 @@
                                 </div>
                             </div>
                         </div>
+
+
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Ngày cấp CMT<span class="red"> (*) </span></label>
+                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] > 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Ngày thử việc</label>
+                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] > 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <label for="name" class="control-label">Ngày làm chính thức</label>
+                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] > 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
+                                </div>
+                            </div>
 
                     <!--Block 2--->
                         <div class="clear"></div>
@@ -310,6 +337,7 @@
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}
+                            <input id="id_hiden" name="id_hiden" @isset($data['person_id'])rel="{{$data['person_id']}}" value="{{FunctionLib::inputId($data['person_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                             <a class="btn btn-warning" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-reply"></i> Trở lại</a>
                             <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại</button>
                         </div>
@@ -326,4 +354,32 @@
             var person_date_range_cmt = $('#person_date_range_cmt').datepicker({ });
         });
     </script>
+
+    <!--Popup Upload Img-->
+    <div class="modal fade" id="sys_PopupUploadImgOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel">Upload ảnh</h4>
+                </div>
+                <div class="modal-body">
+                    <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
+                        <div class="form_group">
+                            <div id="sys_show_button_upload">
+                                <div id="sys_mulitplefileuploader" class="btn btn-primary">Upload ảnh</div>
+                            </div>
+                            <div id="status"></div>
+
+                            <div class="clearfix"></div>
+                            <div class="clearfix" style='margin: 5px 10px; width:100%;'>
+                                <div id="div_image"></div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Popup Upload Img-->
 @stop

@@ -237,6 +237,7 @@ class Define
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
+    const FOLDER_PERSONAL = 'personal';
     const FOLDER_DOCUMENT = 'document';
     const FOLDER_MAIL = 'mail';
 
@@ -244,6 +245,7 @@ class Define
     const sizeImage_100 = 100;
     const sizeImage_150 = 150;
     const sizeImage_200 = 200;
+    const sizeImage_240 = 240;
     const sizeImage_300 = 300;
     const sizeImage_400 = 400;
     const sizeImage_450 = 450;
@@ -251,6 +253,7 @@ class Define
     public static $arrSizeImage = array(
         self::sizeImage_100 => array('w' => self::sizeImage_100, 'h' => self::sizeImage_100),
         self::sizeImage_200 => array('w' => self::sizeImage_200, 'h' => self::sizeImage_200),
+        self::sizeImage_240 => array('w' => self::sizeImage_240, 'h' => self::sizeImage_300),
         self::sizeImage_300 => array('w' => self::sizeImage_300, 'h' => self::sizeImage_300),
         self::sizeImage_450 => array('w' => self::sizeImage_450, 'h' => self::sizeImage_450),
     );

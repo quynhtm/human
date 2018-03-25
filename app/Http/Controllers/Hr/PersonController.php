@@ -23,6 +23,9 @@ use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
 
+use App\Library\AdminFunction\Loader;
+use App\Library\AdminFunction\Upload;
+
 class PersonController extends BaseAdminController
 {
     private $permission_view = 'person_view';
@@ -88,7 +91,7 @@ class PersonController extends BaseAdminController
         $total = 0;
 
         $search['person_name'] = addslashes(Request::get('person_name', ''));
-        $search['active'] = (int)Request::get('active', -1);
+        $search['person_status'] = (int)Request::get('person_status', Define::STATUS_SHOW);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);
@@ -96,7 +99,7 @@ class PersonController extends BaseAdminController
 
         //FunctionLib::debug($data);
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $search['active']);
+        $optionStatus = FunctionLib::getOption($this->arrStatus, $search['person_status']);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.view', array_merge([
@@ -113,6 +116,13 @@ class PersonController extends BaseAdminController
 
     public function getItem($ids)
     {
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadJS('lib/dragsort/jquery.dragsort.js', CGlobal::$POS_HEAD);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+
         CGlobal::$pageAdminTitle = 'Thông tin nhân sự';
         $id = FunctionLib::outputId($ids);
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
@@ -195,6 +205,13 @@ class PersonController extends BaseAdminController
 
     public function postItem($ids)
     {
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadJS('lib/dragsort/jquery.dragsort.js', CGlobal::$POS_HEAD);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+
         CGlobal::$pageAdminTitle = 'Thông tin nhân sự';
         $id = FunctionLib::outputId($ids);
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
@@ -206,6 +223,8 @@ class PersonController extends BaseAdminController
         $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '')? strtotime($data['person_date_trial_work']): 0;
         $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '')? strtotime($data['person_date_start_work']): 0;
         $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '')? strtotime($data['person_date_range_cmt']): 0;
+        $data['person_avatar'] = (isset($data['img']) && $data['img'] != '')? trim($data['img']): '';
+        $data['person_status'] = Define::STATUS_SHOW;
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             if ($id > 0) {

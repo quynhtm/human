@@ -8,6 +8,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Models\Hr\Device;
+use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDocument;
 use App\Http\Models\Hr\HrMail;
 use App\Library\AdminFunction\Define;
@@ -59,6 +60,9 @@ class AjaxUploadController extends BaseAdminController{
 			case 1 ://Img device
 				$aryData = $this->uploadImageToFolderOnce($dataImg, $id_hiden, Define::FOLDER_DEVICE, $type);
 				break;
+			case 2 ://Img person
+				$aryData = $this->uploadImageToFolderOnce($dataImg, $id_hiden, Define::FOLDER_PERSONAL, $type);
+				break;
 			default:
 				break;
 		}
@@ -78,6 +82,11 @@ class AjaxUploadController extends BaseAdminController{
 					case 1://Img Banner
 						$new_row['device_status'] = Define::IMAGE_ERROR;
 						$item_id = Device::createItem($new_row);
+						break;
+
+					case 2://Img person
+						$new_row['person_status'] = Define::STATUS_HIDE;
+						$item_id = Person::createItem($new_row);
 						break;
 					default:
 						break;
@@ -124,6 +133,34 @@ class AjaxUploadController extends BaseAdminController{
 									}
 								}
 								$url_thumb = ThumbImg::thumbBaseNormal(Define::FOLDER_DEVICE, $file_name, $x, $y, '', true, true);
+								$tmpImg['src'] = $url_thumb;
+							}
+							break;
+
+						case 2://Img Person
+							$result = Person::find($item_id);
+							if($result != null){
+								$path_image = ($result->person_avatar != '') ? $result->person_avatar : '';
+								if($path_image != ''){
+									$folder_image = 'uploads/'.$folder;
+									$this->unlinkFileAndFolder($path_image, $folder_image, 0, 0);
+									$folder_thumb = 'uploads/thumbs/'.$folder;
+									$this->unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
+								}
+
+								$path_image = $file_name;
+								$new_row['person_avatar'] = $path_image;
+                                Person::updateItem($item_id, $new_row);
+								$arrSize = Define::$arrSizeImage;
+                                $x = $y = Define::sizeImage_240;
+								if(isset($arrSize[Define::sizeImage_240])){
+                                    $size = $arrSize[Define::sizeImage_240];
+									if(!empty($size)){
+										$x = (int)$size['w'];
+										$y = (int)$size['h'];
+									}
+								}
+								$url_thumb = ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $file_name, $x, $y, '', true, true);
 								$tmpImg['src'] = $url_thumb;
 							}
 							break;
@@ -237,6 +274,15 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
+			case 2://Img Person
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
 			case 9://File mail
 				if($id > 0 && $nameImage != ''){
 					$delete_action = $this->delete_image_item($id, $nameImage, $type);
@@ -275,6 +321,14 @@ class AjaxUploadController extends BaseAdminController{
 				}
 				$folder_image = 'uploads/'.Define::FOLDER_DEVICE;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DEVICE;
+				break;
+			case 2://Img Person
+				$result = Person::find($id);
+				if($result != null){
+					$aryImages = array($result->person_avatar);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_PERSONAL;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_PERSONAL;
 				break;
 			case 9://File mail
 				$result = HrMail::getItemById($id);

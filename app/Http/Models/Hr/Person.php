@@ -22,7 +22,7 @@ class Person extends BaseModel
         'person_career_define_id','person_career_define_name','person_address_place_of_birth','person_province_place_of_birth','person_address_home_town','person_province_home_town',
         'person_address_current','person_province_current','person_wards_current','person_districts_current',
         'person_nation_define_id','person_nation_define_name','person_respect','person_height','person_weight',
-        'person_blood_group_define_id','person_blood_group_define_name',
+        'person_blood_group_define_id','person_blood_group_define_name','person_status','person_avatar',
         'person_creater_time','person_creater_user_id','person_creater_user_name',
         'person_update_time','person_update_user_id','person_update_user_name');
 
@@ -45,6 +45,9 @@ class Person extends BaseModel
             $query = Person::where('person_id','>',0);
             if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
                 $query->where('person_name','LIKE', '%' . $dataSearch['person_name'] . '%');
+            }
+            if (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
+                $query->where('person_status', $dataSearch['person_status'] );
             }
             $total = $query->count();
             $query->orderBy('person_id', 'desc');
