@@ -130,7 +130,10 @@ class BaseAdminController extends Controller
         return $routerName = Route::currentRouteName();
     }
     public function countMailNotify(){
-        $count = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id']) : 0;
+        $count = 0;
+        if(Cache::has(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id'])){
+            $count = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $this->user['user_id']) : 0;
+        }
         return $count;
     }
 }
