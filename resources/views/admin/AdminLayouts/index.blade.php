@@ -100,9 +100,9 @@
         <div class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue">
-                    <a class="dropdown-toggle" href="#">
+                    <a class="dropdown-toggle" href="{{URL::route('hr.HrMailViewGet')}}">
                         <i class="fa fa-envelope-o fa-2x marginTop5" aria-hidden="true">
-                            <span class="msg_notify">3</span>
+                            @if(isset($newMailInbox) && $newMailInbox > 0)<span class="msg_notify">{{$newMailInbox}}</span>@endif
                         </i>
                     </a>
                 </li>

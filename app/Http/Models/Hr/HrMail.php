@@ -30,7 +30,7 @@ class HrMail extends BaseModel{
             $checkData = new HrMail();
             $fieldInput = $checkData->checkField($data);
             $item = new HrMail();
-            if (is_array($fieldInput) && count($fieldInput) > 0) {
+            if(is_array($fieldInput) && count($fieldInput) > 0) {
                 foreach ($fieldInput as $k => $v) {
                     $item->$k = $v;
                 }
@@ -68,7 +68,7 @@ class HrMail extends BaseModel{
         try {
             if (empty($result)) {
                 $result = HrMail::where('hr_mail_id', $id)->first();
-                if ($result && Define::CACHE_ON) {
+                if($result && Define::CACHE_ON) {
                     Cache::put(Define::CACHE_HR_MAIL_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
@@ -115,11 +115,17 @@ class HrMail extends BaseModel{
             return false;
         }
     }
-    public static function removeCache($id = 0,$data){
+    public static function removeCache($id = 0, $data){
         if($id > 0){
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id);
             Cache::forget(Define::CACHE_HR_MAIL_ID . $id . '_' . $data->hr_mail_person_send);
             Cache::forget(Define::CACHE_HR_MAIL_PARENT_ID . $id . '_' . $data->hr_mail_person_send);
+
+            //Notify
+            if(isset($data->hr_mail_person_recive) && $data->hr_mail_person_recive > 0){
+                Cache::forget(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $data->hr_mail_person_recive);
+                HrMail::countItemNewByIdAndPersonReciveId($data->hr_mail_person_recive);
+            }
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
@@ -220,6 +226,23 @@ class HrMail extends BaseModel{
                                  ->where('hr_mail_status', Define::mail_nhap)->first();
                 if ($result && Define::CACHE_ON) {
                     Cache::put(Define::CACHE_HR_MAIL_ID . $id .'_'. $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+
+    public static function countItemNewByIdAndPersonReciveId($user_id){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $user_id) : 0;
+        try {
+            if ($result == 0) {
+                $result = HrMail::where('hr_mail_person_recive', $user_id)
+                        ->where('hr_mail_type', Define::mail_type_1)
+                        ->where('hr_mail_status', Define::mail_chua_doc)->count();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_MAIL_COUNT_NEW_INBOX . $user_id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         } catch (PDOException $e) {
