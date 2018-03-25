@@ -8,7 +8,6 @@ namespace App\Http\Models\Admin;
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
-use App\library\AdminFunction\Memcache;
 use Illuminate\Support\Facades\Cache;
 
 class Wards extends BaseModel{
@@ -20,7 +19,7 @@ class Wards extends BaseModel{
     protected $fillable = array('district_id','wards_name','wards_alias','wards_order','wards_status');
 
     public static function getWardsByDistrictId($district_id) {
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_WARDS_WITH_DISTRICT_ID.$district_id) : array();
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_WARDS_WITH_DISTRICT_ID.$district_id) : array();
         if (sizeof($data) == 0) {
             $district = Wards::where('wards_id', '>', 0)
                 ->where('district_id', '=',$district_id)
@@ -29,8 +28,8 @@ class Wards extends BaseModel{
             foreach($district as $itm) {
                 $data[$itm['wards_id']] = $itm['wards_name'];
             }
-            if(!empty($data) && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_WARDS_WITH_DISTRICT_ID.$district_id, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+            if(!empty($data) && Define::CACHE_ON){
+                Cache::put(Define::CACHE_WARDS_WITH_DISTRICT_ID.$district_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;
@@ -140,7 +139,7 @@ class Wards extends BaseModel{
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Memcache::CACHE_WARDS_WITH_DISTRICT_ID.$data->district_id);
+            Cache::forget(Define::CACHE_WARDS_WITH_DISTRICT_ID.$data->district_id);
         }
     }
 

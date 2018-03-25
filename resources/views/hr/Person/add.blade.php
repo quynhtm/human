@@ -38,7 +38,7 @@ use App\Library\AdminFunction\CGlobal;
                                         <label for="name" class="control-label">
                                             <a href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
                                         </label>
-                                        <div id="sys_show_image_one" style="width: 200px; height: 300px; overflow: hidden">
+                                        <div id="sys_show_image_one" style="width:100%; height: 240px; overflow: hidden">
                                             @if(isset($data['person_avatar']) && $data['person_avatar'] !='')
                                                 <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $data['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
                                                 <span class="remove_file one" onclick="baseUpload.deleteOneImageAdvanced(0, '{{FunctionLib::inputId($data['person_id'])}}', '{{$data['person_avatar']}}', 2)">X</span>
@@ -223,7 +223,7 @@ use App\Library\AdminFunction\CGlobal;
                                 </div>
                             </div>
 
-                            <div class="clear marginTop20"></div>
+                            <div class="clear"></div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Địa chỉ hiện tại<span class="red"> (*) </span></label>
@@ -276,7 +276,7 @@ use App\Library\AdminFunction\CGlobal;
 
                     <!--Block 3--->
                     @if($id == 0)
-                        <div class="clear marginTop20"></div>
+                        <div class="clear"></div>
                         <div class="form-group">
                             <div class="col-sm-2">
                                 <div class="form-group">

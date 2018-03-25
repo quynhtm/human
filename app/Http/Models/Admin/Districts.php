@@ -8,7 +8,6 @@ namespace App\Http\Models\Admin;
 use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
-use App\library\AdminFunction\Memcache;
 use Illuminate\Support\Facades\Cache;
 
 class Districts extends BaseModel{
@@ -20,7 +19,7 @@ class Districts extends BaseModel{
     protected $fillable = array('district_id','district_name', 'district_status','district_province_id','district_position','district_in_area');
 
     public static function getDistrictByProvinceId($province_id) {
-        $data = (Memcache::CACHE_ON)? Cache::get(Memcache::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id) : array();
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id) : array();
         if (sizeof($data) == 0) {
             $district = Districts::where('district_id', '>', 0)
                 ->where('district_province_id', '=',$province_id)
@@ -29,8 +28,8 @@ class Districts extends BaseModel{
             foreach($district as $itm) {
                 $data[$itm['district_id']] = $itm['district_name'];
             }
-            if(!empty($data) && Memcache::CACHE_ON){
-                Cache::put(Memcache::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id, $data, Memcache::CACHE_TIME_TO_LIVE_ONE_MONTH);
+            if(!empty($data) && Define::CACHE_ON){
+                Cache::put(Define::CACHE_DISTRICT_WITH_PROVINCE_ID.$province_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
             }
         }
         return $data;
@@ -149,7 +148,7 @@ class Districts extends BaseModel{
     }
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            Cache::forget(Memcache::CACHE_DISTRICT_WITH_PROVINCE_ID.$data->district_province_id);
+            Cache::forget(Define::CACHE_DISTRICT_WITH_PROVINCE_ID.$data->district_province_id);
         }
     }
 

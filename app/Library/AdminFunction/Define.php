@@ -84,6 +84,9 @@ class Define
 
     const CACHE_ALL_PROVINCE = 'cache_all_province';
 
+    const CACHE_DISTRICT_WITH_PROVINCE_ID    = 'cache_district_with_province_id_';
+    const CACHE_WARDS_WITH_DISTRICT_ID    = 'cache_wards_with_district_id_';
+
     //Hr nhân sự
     const CACHE_PERSON = 'cache_info_person_id_';
 

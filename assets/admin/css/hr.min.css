@@ -124,7 +124,7 @@ span.lbl {
     display: inline-block;
 }
 #sys_show_image_one img{
-    border: 1px solid #ddd;
+    border: 1px solid #fff;
 }
 #sys_show_image_one .remove_file.one{
     color: #ff0000;
