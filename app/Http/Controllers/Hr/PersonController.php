@@ -91,7 +91,9 @@ class PersonController extends BaseAdminController
         $total = 0;
 
         $search['person_name'] = addslashes(Request::get('person_name', ''));
-        $search['person_status'] = (int)Request::get('person_status', Define::STATUS_SHOW);
+        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+        $search['person_code'] = addslashes(Request::get('person_code', ''));
+        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);
@@ -101,6 +103,11 @@ class PersonController extends BaseAdminController
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $search['person_status']);
 
+        $depart = Department::getDepartmentAll();
+        $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
+
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.view', array_merge([
             'data' => $data,
@@ -108,8 +115,11 @@ class PersonController extends BaseAdminController
             'total' => $total,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
-            'optionStatus' => $optionStatus,
-            'optionRoleType' => $optionStatus,
+            'arrSex' => $this->arrSex,
+            'arrDepart' => $depart,
+            'arrChucVu' => $arrChucVu,
+            'arrChucDanhNgheNghiep' => $arrChucDanhNgheNghiep,
+            'optionDepart' => $optionDepart,
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
         ], $this->viewPermission));
     }

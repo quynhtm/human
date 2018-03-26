@@ -22,22 +22,22 @@
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <div class="form-group col-sm-2">
-                                <label for="user_name" class="control-label"><i>Tên đăng nhập</i></label>
-                                <input type="text" class="form-control input-sm" id="user_name" name="user_name" autocomplete="off" placeholder="Tên đăng nhập" @if(isset($dataSearch['user_name']))value="{{$dataSearch['user_name']}}"@endif>
+                                <label for="user_name" class="control-label"><i>Họ tên nhân sự</i></label>
+                                <input type="text" class="form-control input-sm" id="person_name" name="person_name" @if(isset($dataSearch['person_name']))value="{{$dataSearch['person_name']}}"@endif>
                             </div>
                             <div class="form-group col-lg-3">
                                 <label for="user_email"><i>Email</i></label>
-                                <input type="text" class="form-control input-sm" id="user_email" name="user_email" autocomplete="off" placeholder="Địa chỉ email" @if(isset($dataSearch['user_email']))value="{{$dataSearch['user_email']}}"@endif>
+                                <input type="text" class="form-control input-sm" id="person_mail" name="person_mail" placeholder="Địa chỉ email" @if(isset($dataSearch['person_mail']))value="{{$dataSearch['person_mail']}}"@endif>
                             </div>
                             <div class="form-group col-lg-3">
-                                <label for="user_phone"><i>Di động</i></label>
-                                <input type="text" class="form-control input-sm" id="user_phone" name="user_phone" autocomplete="off" placeholder="Số di động" @if(isset($dataSearch['user_phone']))value="{{$dataSearch['user_phone']}}"@endif>
+                                <label for="user_phone"><i>Mã nhân sự</i></label>
+                                <input type="text" class="form-control input-sm" id="person_code" name="person_code" placeholder="Mã nhân sự" @if(isset($dataSearch['person_code']))value="{{$dataSearch['person_code']}}"@endif>
                             </div>
                             <div class="form-group col-lg-3">
-                                <label for="user_group"><i>Nhóm quyền</i></label>
-                                <select name="role_type" id="role_type" class="form-control input-sm" tabindex="12" data-placeholder="Chọn nhóm quyền">
-                                    <option value="0">--- Chọn nhóm quyền ---</option>
-                                    {!! $optionRoleType !!}
+                                <label for="user_group"><i>Phòng ban</i></label>
+                                <select name="person_depart_id" id="person_depart_id" class="form-control input-sm" tabindex="12" data-placeholder="Chọn phòng ban">
+                                    <option value="0">--- Chọn phòng ban---</option>
+                                    {!! $optionDepart !!}
                                 </select>
                             </div>
                         </div>
@@ -72,7 +72,7 @@
                         </thead>
                         <tbody>
                         @foreach ($data as $key => $item)
-                            <tr @if($item['user_status'] == \App\Library\AdminFunction\Define::STATUS_BLOCK)class="red bg-danger middle" {else} class="middle" @endif>
+                            <tr class="middle">
                                 <td class="text-center middle">{{ $stt+$key+1 }}</td>
                                 <td>
                                     <div class="dropdown">
@@ -82,7 +82,7 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             @foreach($arrLinkEditPerson as $kl=>$val)
-                                            <li><a title="Sửa" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" target="_blank"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                            <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" target="_blank"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
                                             @endforeach
                                         </ul>
                                     </div>
@@ -94,13 +94,23 @@
                                     <a class="viewItem" title="Chi tiết nhân sự" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['person_id'])}}')">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <br/>SN:{{date('d-m-Y',time())}}
+                                    <br/>SN: @if($item['person_birth'] > 0){{date('d-m-Y',$item['person_birth'])}}@endif
                                 </td>
-                                <td class="text-center middle">Nữ</td>
-                                <td class="text-center middle">{{date('d-m-Y',time())}}</td>
-                                <td class="text-center middle">Hành chính nhân sự</td>
-                                <td class="text-center middle">Tuyển sinh</td>
-                                <td class="text-center middle">Tuyển trách viên</td>
+                                <td class="text-center middle">
+                                    @if(isset($arrSex[$item['person_date_start_work']])){{$arrSex[$item['person_date_start_work']]}}@endif
+                                </td>
+                                <td class="text-center middle">
+                                    @if($item['person_date_start_work'] > 0){{date('d-m-Y',$item['person_date_start_work'])}}@endif
+                                </td>
+                                <td class="text-center middle">
+                                    @if(isset($arrDepart[$item['person_depart_id']])){{$arrDepart[$item['person_depart_id']]}}@endif
+                                </td>
+                                <td class="text-center middle">
+                                    @if(isset($arrChucDanhNgheNghiep[$item['person_career_define_id']])){{$arrChucDanhNgheNghiep[$item['person_career_define_id']]}}@endif
+                                </td>
+                                <td class="text-center middle">
+                                    @if(isset($arrChucVu[$item['person_position_define_id']])){{$arrChucVu[$item['person_position_define_id']]}}@endif
+                                </td>
                             </tr>
                         @endforeach
                         </tbody>

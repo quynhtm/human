@@ -46,8 +46,14 @@ class Person extends BaseModel
             if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
                 $query->where('person_name','LIKE', '%' . $dataSearch['person_name'] . '%');
             }
-            if (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
-                $query->where('person_status', $dataSearch['person_status'] );
+            if (isset($dataSearch['person_mail']) && $dataSearch['person_mail'] != '') {
+                $query->where('person_mail','LIKE', '%' . $dataSearch['person_mail'] . '%');
+            }
+            if (isset($dataSearch['person_code']) && $dataSearch['person_code'] != '') {
+                $query->where('person_code','LIKE', '%' . $dataSearch['person_code'] . '%');
+            }
+            if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
+                $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
             $total = $query->count();
             $query->orderBy('person_id', 'desc');
