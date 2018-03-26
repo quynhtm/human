@@ -69,15 +69,18 @@ class SalaryAllowanceController extends BaseAdminController
         $arrNgachBac = HrDefine::getArrayByType(Define::nghach_bac);
 
         //thông tin phu cap
-        $phucap = Salary::getSalaryByPersonId($person_id);
+        $phucap = Allowance::getAllowanceByPersonId($person_id);
 
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.SalaryAllowance.View', array_merge([
             'person_id' => $person_id,
             'lương' => $lương,
-            'phucap' => $phucap,
             'arrNgachBac' => $arrNgachBac,
+
+            'phucap' => $phucap,
+            'arrOptionPhuCap' => Define::$arrOptionPhuCap,
+            'arrMethodPhuCap' => Define::$arrMethodPhuCap,
             'infoPerson' => $infoPerson,
         ], $this->viewPermission));
     }
@@ -225,24 +228,14 @@ class SalaryAllowanceController extends BaseAdminController
 
         //thông tin chung
         $data = Allowance::find($allowance_id);
-        /*
-         * loại phụ cấp
-         * <select class="required form-control input-sm" data-val="true" data-val-required="The TitleIID field is required." id="AllowanceModel_TitleIID" min="0" name="AllowanceModel.TitleIID"><option value="">- Loại phụ cấp -</option>
-<option value="1">Phụ cấp chức vụ</option>
-<option value="2">Phụ cấp thâm niên vượt khung</option>
-<option value="3">Phụ cấp thâm niên</option>
-<option value="4">Phụ cấp trách nhiệm</option>
-<option value="5">Phụ cấp Kế toán trưởng</option>
-<option value="6">Phụ cấp khu vực</option>
-<option value="7">Hệ số chênh lệch bảo lưu</option>
-</select>
-         * */
+
         $arrMonth = FunctionLib::getListMonth();
         $arrYears = FunctionLib::getListYears();
         $optionMonth2 = FunctionLib::getOption($arrMonth, isset($data['allowance_month_start']) ? $data['allowance_month_start'] : (int)date('m', time()));
         $optionYears2 = FunctionLib::getOption($arrYears, isset($data['allowance_year_start']) ? $data['allowance_year_start'] : (int)date('Y', time()));
         $optionMonth3 = FunctionLib::getOption($arrMonth, isset($data['allowance_month_end']) ? $data['allowance_month_end'] : (int)date('m', time()));
         $optionYears3 = FunctionLib::getOption($arrYears, isset($data['allowance_year_end']) ? $data['allowance_year_end'] : (int)date('Y', time()));
+        $optionAllowanceType = FunctionLib::getOption(Define::$arrOptionPhuCap, isset($data['allowance_type']) ? $data['allowance_type'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.SalaryAllowance.AllowancePopupAdd', [
@@ -252,6 +245,7 @@ class SalaryAllowanceController extends BaseAdminController
             'optionYears2' => $optionYears2,
             'optionMonth3' => $optionMonth3,
             'optionYears3' => $optionYears3,
+            'optionAllowanceType' => $optionAllowanceType,
             'person_id' => $person_id,
             'allowance_id' => $allowance_id,
             'typeAction' => $typeAction,
@@ -272,28 +266,38 @@ class SalaryAllowanceController extends BaseAdminController
         $salary_id = Request::get('salary_id', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if ($data['salary_salaries'] == '') {
+        $allowance_method_type = $data['allowance_method_type'];
+        $data['allowance_method_value'] = $data['allowance_method_value_'.$allowance_method_type];
+        if ($data['allowance_method_value'] == '') {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         } else {
             if ($person_id > 0) {
-                $data['salary_person_id'] = $person_id;
+                $dataAllowance = ['allowance_person_id' => $person_id,
+                    'allowance_type' => $data['allowance_type'],
+                    'allowance_method_type' => $data['allowance_method_type'],
+                    'allowance_method_value' => $data['allowance_method_value'],
+                    'allowance_month_start' => $data['allowance_month_start'],
+                    'allowance_year_start' => $data['allowance_year_start'],
+                    'allowance_month_end' => $data['allowance_month_end'],
+                    'allowance_year_end' => $data['allowance_year_end']
+                ];
                 if ($salary_id > 0) {
-                    Allowance::updateItem($salary_id, $data);
+                    Allowance::updateItem($salary_id, $dataAllowance);
                 } else {
-                    Allowance::createItem($data);
+                    Allowance::createItem($dataAllowance);
                 }
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
 
-                //thông tin lương
+                //thông tin phu cap
                 $phucap = Allowance::getAllowanceByPersonId($person_id);
-                $arrNgachBac = HrDefine::getArrayByType(Define::nghach_bac);
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
                 $html = view('hr.SalaryAllowance.AllowanceList' , array_merge([
                     'person_id' => $person_id,
                     'phucap' => $phucap,
-                    'arrNgachBac' => $arrNgachBac,
+                    'arrOptionPhuCap' => Define::$arrOptionPhuCap,
+                    'arrMethodPhuCap' => Define::$arrMethodPhuCap,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
             } else {

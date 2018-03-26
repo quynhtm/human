@@ -21,7 +21,7 @@
                 <div class="form-group">
                     <label for="name" class="control-label">Chọn loại phụ cấp</label>
                     <select name="allowance_type" id="allowance_type"  class="form-control input-sm input-required">
-                        {!! $optionMonth !!}
+                        {!! $optionAllowanceType !!}
                     </select>
                 </div>
             </div>
@@ -61,9 +61,9 @@
             <div class="col-sm-12">
                 <div class="form-group">
                     <label for="name" class="control-label col-sm-12 text-left textBold" style="text-align: left!important;">Phụ cấp trả theo hình thức</label>
-                    <input type="radio" name="allowance_method_type" value="1" checked> Phụ cấp trọn gói &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="allowance_method_type" value="2"> Phụ cấp bằng % lương &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <input type="radio" name="allowance_method_type" value="3"> Phụ cấp theo hệ số
+                    <input type="radio" name="allowance_method_type" value="{{\App\Library\AdminFunction\Define::allowance_method_type_1}}" checked> Phụ cấp trọn gói &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="allowance_method_type" value="{{\App\Library\AdminFunction\Define::allowance_method_type_2}}"> Phụ cấp bằng % lương &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <input type="radio" name="allowance_method_type" value="{{\App\Library\AdminFunction\Define::allowance_method_type_3}}"> Phụ cấp theo hệ số
                 </div>
             </div>
             <div class="col-sm-4">

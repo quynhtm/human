@@ -231,6 +231,34 @@ class Define
         Define::linh_vuc => 'Lĩnh vực',
     );
 
+    // kiểu phụ cấp
+    const phucap_chucvu = 1;
+    const phucap_thamnienvuotkhung = 2;
+    const phucap_thamnien = 3;
+    const phucap_trachnhiem = 4;
+    const phucap_kettoan = 5;
+    const phucap_khuvuc = 6;
+    const phucap_hesochenhlech = 7;
+    static $arrOptionPhuCap = array(
+        Define::phucap_chucvu => 'Phụ cấp chức vụ',
+        Define::phucap_thamnienvuotkhung => 'Phụ cấp thâm niên vượt khung',
+        Define::phucap_thamnien => 'Phụ cấp thâm niên',
+        Define::phucap_trachnhiem => 'Phụ cấp trách nhiệm',
+        Define::phucap_kettoan => 'Phụ cấp Kế toán trưởng',
+        Define::phucap_khuvuc => 'Phụ cấp khu vực',
+        Define::phucap_hesochenhlech => 'Hệ số chênh lệch bảo lưu',
+    );
+
+    //phuong thuc tra phu cap
+    const allowance_method_type_1 = 1;
+    const allowance_method_type_2 = 2;
+    const allowance_method_type_3 = 3;
+    static $arrMethodPhuCap = array(
+        Define::allowance_method_type_1 => 'Phụ cấp trọn gói',
+        Define::allowance_method_type_2 => 'Phụ cấp bằng % lương',
+        Define::allowance_method_type_3 => 'Phụ cấp theo hệ số',
+    );
+
     const mail_chua_doc = 1;//Mail chưa đọc
     const mail_da_doc = 2;//Mail đã đọc
     const mail_nhap = 3;//Mail nháp
