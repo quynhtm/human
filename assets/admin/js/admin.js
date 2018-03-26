@@ -119,7 +119,7 @@ var Admin = {
                 url_ajax = 'deleteSystemSetting';
             } else if (type == 14) {
                 url_ajax = 'deleteCarrierSetting';
-            } else if (type == 15) {
+            }else if (type == 15) {
                 url_ajax = 'deleteDeviceToken';
             }
             if (url_ajax != '') {

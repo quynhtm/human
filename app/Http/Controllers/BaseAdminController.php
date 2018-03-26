@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\Loader;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Models\Admin\User;
@@ -34,8 +35,8 @@ class BaseAdminController extends Controller
     protected $role_type = Define::ROLE_TYPE_CUSTOMER;
     protected $languageSite = Define::VIETNAM_LANGUAGE;
 
-    public function __construct()
-    {
+    public function __construct(){
+
         $this->middleware(function ($request, $next) {
             if (!User::isLogin()) {
                 Redirect::route('admin.login')->send();

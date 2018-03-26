@@ -241,7 +241,6 @@ use App\Library\AdminFunction\Define;
 
     <script>
         CKEDITOR.replace('hr_document_content');
-
         var dateToday = new Date();
         jQuery('.date').datetimepicker({
             timepicker:false,
