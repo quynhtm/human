@@ -25,12 +25,8 @@ use App\Library\AdminFunction\Pagging;
 
 class ReportController extends BaseAdminController
 {
-    private $permission_view = 'person_view';
-    private $permission_full = 'person_full';
-    private $permission_delete = 'person_delete';
-    private $permission_create = 'person_create';
-    private $permission_edit = 'person_edit';
-    private $person_creater_user = 'person_creater_user';
+    private $viewTienLuongCongChuc = 'viewTienLuongCongChuc';
+    private $exportTienLuongCongChuc = 'exportTienLuongCongChuc';
     private $arrStatus = array();
     private $error = array();
     private $arrMenuParent = array();
@@ -65,19 +61,19 @@ class ReportController extends BaseAdminController
     {
         return $this->viewPermission = [
             'is_root' => $this->is_root ? 1 : 0,
-            'permission_edit' => in_array($this->permission_edit, $this->permission) ? 1 : 0,
-            'permission_create' => in_array($this->permission_create, $this->permission) ? 1 : 0,
-            'permission_delete' => in_array($this->permission_delete, $this->permission) ? 1 : 0,
-            'permission_full' => in_array($this->permission_full, $this->permission) ? 1 : 0,
-            'person_creater_user' => in_array($this->person_creater_user, $this->permission) ? 1 : 0,
+            'viewTienLuongCongChuc' => in_array($this->viewTienLuongCongChuc, $this->permission) ? 1 : 0,
+            'exportTienLuongCongChuc' => in_array($this->exportTienLuongCongChuc, $this->permission) ? 1 : 0,
         ];
     }
 
-    public function view()
+    /*************************************************************************************************************************************
+     * Báo cáo Tiền lương công chức
+     ************************************************************************************************************************************/
+    public function viewTienLuongCongChuc()
     {
-        CGlobal::$pageAdminTitle = 'Quản lý nhân sự';
+        CGlobal::$pageAdminTitle = 'Báo cáo danh sách và tiền lương công chức';
         //Check phan quyen.
-        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
+        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
         $page_no = (int)Request::get('page_no', 1);
@@ -94,12 +90,16 @@ class ReportController extends BaseAdminController
         $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
+        if($sbmValue == 2){
+            $this->ExportTienLuongCongChuc($data);
+        }
+
         //FunctionLib::debug($data);
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $search['active']);
 
         $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Report.reportPerson', array_merge([
+        return view('hr.Report.reportTienLuongCongChuc', array_merge([
             'data' => $data,
             'search' => $search,
             'total' => $total,
@@ -110,8 +110,10 @@ class ReportController extends BaseAdminController
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
         ], $this->viewPermission));
     }
-
-    public function ExportCsv($request){
+    public function ExportTienLuongCongChuc($request){
+        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
         ini_set('max_execution_time', 0);
 
         //Helper::debugData($projects);
