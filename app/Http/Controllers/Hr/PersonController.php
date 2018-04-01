@@ -101,8 +101,6 @@ class PersonController extends BaseAdminController
 
         //FunctionLib::debug($data);
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, $search['person_status']);
-
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
 
