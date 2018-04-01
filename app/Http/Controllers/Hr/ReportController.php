@@ -110,7 +110,7 @@ class ReportController extends BaseAdminController
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
         ], $this->viewPermission));
     }
-    public function ExportTienLuongCongChuc($request){
+    public function ExportTienLuongCongChuc($data){
         if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
@@ -119,12 +119,12 @@ class ReportController extends BaseAdminController
         //Helper::debugData($projects);
         require(dirname(__FILE__) . '/../../../Library/ClassPhpExcel/PHPExcel/IOFactory.php');
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-        $objPHPExcel = $objReader->load(dirname(__FILE__) ."/../templates/bao-cao-chi-tien-NDT.xls");
+        $objPHPExcel = $objReader->load(dirname(__FILE__) ."/report/reportTienLuongCongChuc.xls");
         $generatedDate = date("d-m-Y");
 
         $objPHPExcel->getActiveSheet()->mergeCells('B2:F2')->setCellValue('B2', __("Report on receivables"));
 
-        if($request->get('startdate') !='' && $request->get('enddate')){
+        /*if($request->get('startdate') !='' && $request->get('enddate')){
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('B3', '('. date("d/m/Y", strtotime($request->get('startdate'))) .' - '. date("d/m/Y", strtotime($request->get('enddate'))).')');
         }elseif ($request->get('startdate1') !='' && $request->get('enddate1')){
@@ -133,7 +133,7 @@ class ReportController extends BaseAdminController
         }elseif ($request->get('start_payment_date') !='' && $request->get('enddate1')){
             $objPHPExcel->setActiveSheetIndex(0)
                 ->setCellValue('B3', '('. date("d/m/Y", strtotime($request->get('start_payment_date'))) .' - '. date("d/m/Y", strtotime($request->get('end_payment_date'))).')');
-        }
+        }*/
         //title table excel
         $row_title = 5;
         $objPHPExcel->setActiveSheetIndex(0)
@@ -160,40 +160,40 @@ class ReportController extends BaseAdminController
             ->setCellValue('U'.$row_title, __("Group debt"));//nhóm nợ
 
         $baseRow = 7;
-        $check = ($projects->isEmpty())? false: true;
+        /*$check = ($projects->isEmpty())? false: true;*/
 
-        if($check){
-            foreach ($projects as $r =>$value){
+        if($data){
+            foreach ($data as $r =>$value){
                 $row = $baseRow + $r;
                 $objPHPExcel->getActiveSheet()->insertNewRowBefore($row,1);
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A'.$row, $r+1)
-                    ->setCellValue('B'.$row, 'KH'.$value->loaner_id.'-'.$value->loaner_name)
+                    ->setCellValue('B'.$row, $r+1)
                     //->setCellValue('C'.$row, (isset($value->receipt()->first()->transaction_code) )? $value->receipt()->first()->transaction_code:'')//mã giao dịch vimo
-                    ->setCellValue('C'.$row, $value->transaction_code)//mã giao dịch vimo
-                    ->setCellValue('D'.$row, $value->contract_code)//mã khoản vay
+                    ->setCellValue('C'.$row, $r+1)//mã giao dịch vimo
+                    ->setCellValue('D'.$row, $r+1)//mã khoản vay
                     ->setCellValue('E'.$row, '')
                     ->setCellValue('F'.$row, '')
-                    ->setCellValue('G'.$row, $value->approve_duration)//số ngày vay
-                    ->setCellValue('H'.$row, date('d/m/Y',strtotime($value->disbursed_date)) )//ngày giải ngân
-                    ->setCellValue('I'.$row, Helper::numberFormat($value->approve_amount))//Sô tiền vay
-                    ->setCellValue('J'.$row, date('d/m/Y',strtotime($value->repayment_date)))//ngày đến hạn
-                    ->setCellValue('K'.$row, Helper::numberFormat($value->period_amount))//tổng phải thu cuối kỳ
-                    ->setCellValue('L'.$row, (trim($value->payment_date) != '')?date('d/m/Y',strtotime($value->payment_date)): '')//ngày thu thực tế
-                    ->setCellValue('M'.$row, $value->receipts_id)//mã phiếu thu
-                    ->setCellValue('N'.$row, Helper::numberFormat($value->amount))//số tiền đã trả
+                    ->setCellValue('G'.$row, $r+1)//số ngày vay
+                    ->setCellValue('H'.$row, $r+1 )//ngày giải ngân
+                    ->setCellValue('I'.$row, $r+1)//Sô tiền vay
+                    ->setCellValue('J'.$row, $r+1)//ngày đến hạn
+                    ->setCellValue('K'.$row, $r+1)//tổng phải thu cuối kỳ
+                    ->setCellValue('L'.$row, $r+1)//ngày thu thực tế
+                    ->setCellValue('M'.$row, $r+1)//mã phiếu thu
+                    ->setCellValue('N'.$row, $r+1)//số tiền đã trả
                     ->setCellValue('O'.$row, '')
                     ->setCellValue('P'.$row, '')
                     ->setCellValue('Q'.$row, '')
                     ->setCellValue('R'.$row, '')
                     ->setCellValue('S'.$row, '')//lãi thu thêm
-                    ->setCellValue('T'.$row, $this->getStatus($value->status))
+                    ->setCellValue('T'.$row, $r+1)
                     ->setCellValue('U'.$row, '');//nhóm nợ
             }
             $objPHPExcel->getActiveSheet()->removeRow($baseRow-1,1);
         }
 
-        $filename = 'VM_BaoCaoThuHoiNo';
+        $filename = 'reportTienLuongCongChuc';
         // We'll be outputting an excel file
         header('Content-type: application/vnd.ms-excel');
         // It will be called file.xls

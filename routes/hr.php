@@ -124,3 +124,6 @@ Route::get('document/edit/{id?}',array('as' => 'hr.HrDocumentEdit','uses' => HRe
 Route::post('document/edit/{id?}', array('as' => 'hr.HrDocumentEdit','uses' => HResources.'\HrDocumentController@postItem'));
 Route::get('document/deleteHrDocument', array('as' => 'hr.deleteHrDocument','uses' => HResources.'\HrDocumentController@deleteHrDocument'));
 
+//Report
+Route::match(['GET','POST'],'report/viewTienLuongCongChuc', array('as' => 'hr.viewTienLuongCongChuc','uses' => HResources.'\ReportController@viewTienLuongCongChuc'));
+

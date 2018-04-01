@@ -33,13 +33,6 @@
                                 <label for="user_phone"><i>Mã nhân sự</i></label>
                                 <input type="text" class="form-control input-sm" id="person_code" name="person_code" placeholder="Mã nhân sự" @if(isset($dataSearch['person_code']))value="{{$dataSearch['person_code']}}"@endif>
                             </div>
-                            <div class="form-group col-lg-3">
-                                <label for="user_group"><i>Phòng ban</i></label>
-                                <select name="person_depart_id" id="person_depart_id" class="form-control input-sm" tabindex="12" data-placeholder="Chọn phòng ban">
-                                    <option value="0">--- Chọn phòng ban---</option>
-                                    {!! $optionDepart !!}
-                                </select>
-                            </div>
                         </div>
                         <div class="panel-footer text-right">
                             <span class="">

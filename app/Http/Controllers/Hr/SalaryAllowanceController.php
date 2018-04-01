@@ -331,7 +331,8 @@ class SalaryAllowanceController extends BaseAdminController
             $html = view('hr.SalaryAllowance.AllowanceList' , array_merge([
                 'person_id' => $person_id,
                 'phucap' => $phucap,
-                'arrNgachBac' => $arrNgachBac,
+                'arrOptionPhuCap' => Define::$arrOptionPhuCap,
+                'arrMethodPhuCap' => Define::$arrMethodPhuCap,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
         }
