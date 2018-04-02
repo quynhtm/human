@@ -37,17 +37,24 @@
                                     {!! $optionStatus !!}
                                 </select>
                             </div>
+                            <div class="form-group col-lg-4">
+
+                            </div>
                         </div>
                         <div class="panel-footer text-right">
-                    <span class="">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.deviceEdit',array('id' => FunctionLib::inputId(0)))}}">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                            Thêm mới
-                        </a>
-                    </span>
-                            <span class="">
-                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
-                    </span>
+                            <span>
+                                <a class="btn btn-danger btn-sm" href="{{URL::route('hr.deviceEdit',array('id' => FunctionLib::inputId(0)))}}">
+                                    <i class="ace-icon fa fa-plus-circle"></i>
+                                    Thêm mới
+                                </a>
+                            </span>
+                            <span>
+                                <a href="{{URL::route('hr.exportDevice')}}" class="btn btn-default btn-sm">
+                                    <i class="fa fa-file-excel-o"></i> Xuất ra file</a>
+                            </span>
+                            <span>
+                                <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
+                            </span>
                         </div>
                     </form>
                 </div>
