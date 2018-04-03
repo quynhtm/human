@@ -145,4 +145,10 @@ Route::get('smsTeplate/view',array('as' => 'admin.smsTemplate','uses' => Admin.'
 Route::post('smsTeplate/addTemplate',array('as' => 'admin.addTemplate','uses' => Admin.'\AdminSMSTemplateController@addTemplate'));
 Route::get('smsTeplate/deleteTemplate',array('as' => 'admin.deleteTemplate','uses' => Admin.'\AdminSMSTemplateController@deleteTemplate'));
 
+/*Admin cronjob*/
+Route::match(['GET','POST'],'cronjob/view', array('as' => 'admin.CronjobView','uses' => Admin.'\AdminCronjobController@view'));
+Route::get('cronjob/edit/{id?}',array('as' => 'admin.CronjobEdit','uses' => Admin.'\AdminCronjobController@getItem'));
+Route::post('cronjob/edit/{id?}', array('as' => 'admin.CronjobEdit','uses' => Admin.'\AdminCronjobController@postItem'));
+Route::get('cronjob/deleteCronjob', array('as' => 'admin.deleteCronjob','uses' => Admin.'\AdminCronjobController@deleteCronjob'));
+
 
