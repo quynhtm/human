@@ -106,6 +106,7 @@ Route::match(['GET','POST'],'device/viewDeviceNotUse', array('as' => 'hr.viewDev
 Route::get('device/edit/{id?}',array('as' => 'hr.deviceEdit','uses' => HResources.'\DeviceController@getItem'));
 Route::post('device/edit/{id?}', array('as' => 'hr.deviceEdit','uses' => HResources.'\DeviceController@postItem'));
 Route::get('device/deleteDevice', array('as' => 'hr.deleteDevice','uses' => HResources.'\DeviceController@deleteDevice'));
+Route::get('device/export', array('as' => 'hr.exportDevice','uses' => HResources.'\DeviceController@exportDevice'));
 
 /*thông tin Document: mail, document */
 Route::match(['GET','POST'],'mail/viewsend', array('as' => 'hr.HrMailViewSend','uses' => HResources.'\HrMailController@viewSend'));
@@ -134,4 +135,7 @@ Route::get('document/deleteHrDocument', array('as' => 'hr.deleteHrDocument','use
 
 //Report
 Route::match(['GET','POST'],'report/viewTienLuongCongChuc', array('as' => 'hr.viewTienLuongCongChuc','uses' => HResources.'\ReportController@viewTienLuongCongChuc'));
+
+
+Route::match(['GET','POST'],'staff/view', array('as' => 'hr.HrstaffView','uses' => HResources.'\HrStaffController@view'));
 

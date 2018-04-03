@@ -141,9 +141,13 @@ class Device extends BaseModel{
             if (isset($dataSearch['device_person_id']) && $dataSearch['device_person_id'] == 0) {
                 $query->where('device_person_id', 0);
             }
+            if (isset($dataSearch['order_sort_device_id']) && $dataSearch['order_sort_device_id'] == 'asc') {
+                $query->where('device_id', 'asc');
+            }else{
+                $query->orderBy('device_id', 'desc');
+            }
 
             $total = $query->count();
-            $query->orderBy('device_id', 'desc');
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();

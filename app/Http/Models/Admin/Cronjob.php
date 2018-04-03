@@ -8,7 +8,6 @@ use App\Http\Models\BaseModel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use App\library\AdminFunction\Define;
-use App\Library\AdminFunction\FunctionLib;
 
 class Cronjob extends BaseModel
 {
