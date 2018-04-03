@@ -118,6 +118,14 @@ class Define
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
 
+    const PERSON_STATUS_DANGLAMVIEC = 1;
+    const PERSON_STATUS_AN = 0;
+    const PERSON_STATUS_DAXOA = -1;
+    const PERSON_STATUS_NGHIVIEC = -2;
+    const PERSON_STATUS_CHUYENCONGTAC = -3;
+    const PERSON_STATUS_NGHIHUU = -4;
+    const PERSON_STATUS_SAPNGHIHUU = -5;
+
     const BONUS_KHEN_THUONG = 1;
     const BONUS_DANH_HIEU = 2;
     const BONUS_KY_LUAT = 3;

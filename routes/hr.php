@@ -83,6 +83,14 @@ Route::get('infoPerson/viewTransferDepartment/{person_id?}', array('as' => 'hr.v
 Route::get('infoPerson/getInfoPerson/{person_id?}', array('as' => 'hr.getInfoPerson','uses' => HResources.'\InfoPersonController@getInfoPerson'));
 Route::post('infoPerson/getInfoPerson/{person_id?}', array('as' => 'hr.getInfoPerson','uses' => HResources.'\InfoPersonController@postInfoPerson'));
 
+
+//List thong tin chung cac nhan su
+Route::match(['GET','POST'],'personList/viewBirthday', array('as' => 'hr.viewBirthday','uses' => HResources.'\PersonListController@viewBirthday'));
+Route::match(['GET','POST'],'personList/viewQuitJob', array('as' => 'hr.viewQuitJob','uses' => HResources.'\PersonListController@viewQuitJob'));
+Route::match(['GET','POST'],'personList/viewMoveJob', array('as' => 'hr.viewMoveJob','uses' => HResources.'\PersonListController@viewMoveJob'));
+Route::match(['GET','POST'],'personList/viewRetired', array('as' => 'hr.viewRetired','uses' => HResources.'\PersonListController@viewRetired'));
+Route::match(['GET','POST'],'personList/viewPreparingRetirement', array('as' => 'hr.viewPreparingRetirement','uses' => HResources.'\PersonListController@viewPreparingRetirement'));
+
 /*Định nghĩa chung*/
 Route::match(['GET','POST'],'defined/view',array('as' => 'hr.definedView','uses' => HResources.'\HrDefinedController@view'));
 Route::post('defined/edit/{id?}',array('as' => 'hr.definedEdit','uses' => HResources.'\HrDefinedController@postItem'));

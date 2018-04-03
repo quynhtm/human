@@ -55,8 +55,22 @@ class Person extends BaseModel
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
                 $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
+            if (isset($dataSearch['start_birth']) && $dataSearch['start_birth'] > 0) {
+                $query->where('person_birth', '>=', $dataSearch['start_birth']);
+            }
+            if (isset($dataSearch['end_birth']) && $dataSearch['end_birth'] > 0) {
+                $query->where('person_birth', '<=', $dataSearch['end_birth']);
+            }
+            if (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
+                $query->where('person_status',  $dataSearch['person_status']);
+            }
             $total = $query->count();
-            $query->orderBy('person_id', 'desc');
+
+            if(isset($dataSearch['orderBy']) && $dataSearch['orderBy'] != '' && isset($dataSearch['sortOrder']) && $dataSearch['sortOrder'] != ''){
+                $query->orderBy($dataSearch['orderBy'], $dataSearch['sortOrder']);
+            }else{
+                $query->orderBy('person_id', 'desc');
+            }
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
