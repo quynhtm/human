@@ -2,118 +2,321 @@
 <?php use App\Library\AdminFunction\Define; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
-<div class="main-content-inner">
-    <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
-        <ul class="breadcrumb">
-            <li>
-                <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
-            </li>
-            <li class="active">Danh sách nhân sự</li>
-        </ul>
-    </div>
-
-    <div class="page-content">
-        <div class="row">
-            <div class="col-xs-12">
-                <!-- PAGE CONTENT BEGINS -->
-                <div class="panel panel-info">
-                    <form method="Post" action="" role="form">
-                        {{ csrf_field() }}
-                        <div class="panel-body">
-                            <div class="form-group col-sm-2">
-                                <label for="user_name" class="control-label"><i>Họ tên nhân sự</i></label>
-                                <input type="text" class="form-control input-sm" id="person_name" name="person_name" @if(isset($dataSearch['person_name']))value="{{$dataSearch['person_name']}}"@endif>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="user_email"><i>Email</i></label>
-                                <input type="text" class="form-control input-sm" id="person_mail" name="person_mail" placeholder="Địa chỉ email" @if(isset($dataSearch['person_mail']))value="{{$dataSearch['person_mail']}}"@endif>
-                            </div>
-                            <div class="form-group col-lg-3">
-                                <label for="user_phone"><i>Mã nhân sự</i></label>
-                                <input type="text" class="form-control input-sm" id="person_code" name="person_code" placeholder="Mã nhân sự" @if(isset($dataSearch['person_code']))value="{{$dataSearch['person_code']}}"@endif>
-                            </div>
-                        </div>
-                        <div class="panel-footer text-right">
-                            <span class="">
-                                <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1"><i class="fa fa-search"></i> Tìm kiếm</button>
-                                <button class="btn btn-warning btn-sm" type="submit" name="submit" value="2"><i class="fa fa-file-excel-o"></i> Xuất Excel</button>
-                            </span>
-                        </div>
-                    </form>
-                </div>
-                @if(sizeof($data) > 0)
-                    <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
-                    <br>
-                    <table class="table table-bordered table-hover">
-                        <thead class="thin-border-bottom">
-                        <tr class="">
-                            <th width="3%" class="text-center">STT</th>
-                            <th width="8%">Chức năng</th>
-                            <th width="20%">Họ tên</th>
-                            <th width="5%" class="text-center">Giới tính</th>
-                            <th width="10%" class="text-center">Ngày làm việc</th>
-                            <th width="15%" class="text-center">Đơn vị/Bộ phận</th>
-                            <th width="15%" class="text-center">Chức danh nghề nghiệp</th>
-                            <th width="15%" class="text-center">Chức vụ</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        @foreach ($data as $key => $item)
-                            <tr class="middle">
-                                <td class="text-center middle">{{ $stt+$key+1 }}</td>
-                                <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            - Chọn -
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach($arrLinkEditPerson as $kl=>$val)
-                                            <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" target="_blank"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
-                                            @endforeach
-                                        </ul>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <div class="main-content-inner">
+        <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
+            <ul class="breadcrumb">
+                <li>
+                    <i class="ace-icon fa fa-home home-icon"></i>
+                    <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
+                </li>
+                <li class="active">Quản lý lương</li>
+            </ul>
+        </div>
+        <div class="page-content">
+            <div class="panel panel-default">
+                {{ csrf_field() }}
+                <div class="panel-body-ns">
+                    <div class="row">
+                        <div class="col-xs-12 table-responsive">
+                            <div class="line">
+                                <div class="panel-heading clearfix">
+                                    <h4 class="panel-title pull-left">BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC 2018</h4>
+                                    <div class="btn-group btn-group-sm pull-right">
+                                        <span>
+                                            <a href="{{URL::route('hr.exportDevice')}}" class="btn btn-default btn-sm">
+                                                <i class="fa fa-file-excel-o"></i> Xuất ra file</a>
+                                        </span>
                                     </div>
-                                </td>
-                                <td>
-                                    <a href="{{URL::route('hr.personnelDetail',array('id' => FunctionLib::inputId($item['person_id'])))}}" title="Chi tiết nhân sự" target="_blank">
-                                        {{ $item['person_name'] }}
-                                    </a>
-                                    <a class="viewItem" title="Chi tiết nhân sự" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['person_id'])}}')">
-                                        <i class="fa fa-eye"></i>
-                                    </a>
-                                    <br/>SN: @if($item['person_birth'] > 0){{date('d-m-Y',$item['person_birth'])}}@endif
-                                </td>
-                                <td class="text-center middle">
-                                    @if(isset($arrSex[$item['person_date_start_work']])){{$arrSex[$item['person_date_start_work']]}}@endif
-                                </td>
-                                <td class="text-center middle">
-                                    @if($item['person_date_start_work'] > 0){{date('d-m-Y',$item['person_date_start_work'])}}@endif
-                                </td>
-                                <td class="text-center middle">
-                                    @if(isset($arrDepart[$item['person_depart_id']])){{$arrDepart[$item['person_depart_id']]}}@endif
-                                </td>
-                                <td class="text-center middle">
-                                    @if(isset($arrChucDanhNgheNghiep[$item['person_career_define_id']])){{$arrChucDanhNgheNghiep[$item['person_career_define_id']]}}@endif
-                                </td>
-                                <td class="text-center middle">
-                                    @if(isset($arrChucVu[$item['person_position_define_id']])){{$arrChucVu[$item['person_position_define_id']]}}@endif
-                                </td>
-                            </tr>
-                        @endforeach
-                        </tbody>
-                    </table>
-                    <div class="text-right">
-                        {!! $paging !!}
+                                </div>
+                                <div class="panel-body">
+                                    <form class="form-horizontal" action="" method="post" id="adminForm" name="adminForm">
+                                        <div class="form-group">
+                                            <div class="col-md-4">
+                                                <label>Chọn Đơn vị/ Phòng ban</label>
+                                                <select class="form-control input-sm" id="DepartmentSID" name="DepartmentSID"><option value="">- Đơn vị/ Phòng ban -</option>
+                                                    <option value="5a660f2e473c2c9a98c0c4fd">Chỉnh sương ống chân</option>
+                                                </select>
+                                            </div>
+                                            <div class="col-md-4">
+                                                <label>Chọn năm báo cáo</label>
+                                                <select class="required form-control input-sm" data-val="true" data-val-required="The ReportYear field is required." id="ReportYear" min="0" name="ReportYear"><option value="">- Chọn năm báo cáo -</option>
+                                                    <option selected="selected">2018</option>
+                                                    <option>2017</option>
+                                                    <option>2016</option>
+                                                    <option>2015</option>
+                                                    <option>2014</option>
+                                                    <option>2013</option>
+                                                    <option>2012</option>
+                                                    <option>2011</option>
+                                                </select>
+                                                <input id="hdAction" name="hdAction" value="" type="hidden">
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>&nbsp;</label>
+                                                <div class="input-group-btn">
+                                                    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <table style="width: 100%;" class="table table-bordered table-condensed">
+                                                <tbody>
+                                                <tr class="text-center">
+                                                    <th rowspan="2">TT</th>
+                                                    <th rowspan="2">Họ Và tên</th>
+                                                    <th colspan="2">Ngày, tháng năm sinh</th>
+                                                    <th rowspan="2">Chức vụ hoặc chức danh công tác</th>
+                                                    <th rowspan="2">Cơ quan, đơn vị đang làm việc</th>
+                                                    <th rowspan="2">Thời gian giữ ngạch (kể cả ngạch tương đương)</th>
+                                                    <th colspan="2">Mức lương hiện hưởng</th>
+                                                    <th colspan="5">Phụ cấp</th>
+                                                    <th rowspan="2">Ghi chú</th>
+                                                </tr>
+                                                <tr class="text-center">
+                                                    <th>Nam</th>
+                                                    <th>Nữ</th>
+                                                    <th>Hệ số lương</th>
+                                                    <th>Mã ngạch</th>
+                                                    <th>Chức vụ</th>
+                                                    <th>Trách nhiệm</th>
+                                                    <th>Khu vực</th>
+                                                    <th>Phụ cấp vượt khung</th>
+                                                    <th>Tổng phụ cấp</th>
+                                                </tr>
+                                                <tr>
+                                                    <td>1</td>
+                                                    <td class="text-nowrap">Nguyễn Thị B</td>
+                                                    <td></td>
+                                                    <td>29/03/2017</td>
+                                                    <td>Trưởng phòng</td>
+                                                    <td>Khoa duoc</td>
+
+                                                    <td>01/01/2016</td>
+                                                    <td class="text-right">4.4</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>2</td>
+                                                    <td class="text-nowrap">Nguyễn Thị C</td>
+                                                    <td></td>
+                                                    <td>01/01/1972</td>
+                                                    <td>Trưởng phòng</td>
+                                                    <td>Phòng vật tư xuất nhập khẩu</td>
+
+                                                    <td>01/01/2016</td>
+                                                    <td class="text-right">4.4</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>3</td>
+                                                    <td class="text-nowrap">Nguyễn Thị D</td>
+                                                    <td></td>
+                                                    <td>01/01/1973</td>
+                                                    <td>Trưởng phòng</td>
+                                                    <td>Khoa dieu duong</td>
+
+                                                    <td>01/07/2017</td>
+                                                    <td class="text-right">5.08</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>4</td>
+                                                    <td class="text-nowrap">Nguyễn Văn A</td>
+                                                    <td>01/01/1975</td>
+                                                    <td></td>
+                                                    <td>Phó trưởng phòng</td>
+                                                    <td>Khoa CDHA</td>
+
+                                                    <td>01/07/2014</td>
+                                                    <td class="text-right">4.4</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>5</td>
+                                                    <td class="text-nowrap">Lê Văn C</td>
+                                                    <td>01/01/1975</td>
+                                                    <td></td>
+                                                    <td>Chuyên viên</td>
+                                                    <td>Phòng tổ chức</td>
+
+                                                    <td>01/01/2016</td>
+                                                    <td class="text-right">2.67</td>
+                                                    <td>01.003</td>
+
+                                                    <td class="text-right">0.3</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0.2</td>
+                                                    <td class="text-right">0.7</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>6</td>
+                                                    <td class="text-nowrap">Hoàng Huyền Trang</td>
+                                                    <td></td>
+                                                    <td>15/09/1994</td>
+                                                    <td>Chuyên viên</td>
+                                                    <td>Phòng tổ chức</td>
+
+                                                    <td>01/02/2017</td>
+                                                    <td class="text-right">2.67</td>
+                                                    <td>01.003</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>7</td>
+                                                    <td class="text-nowrap">Lê Văn E</td>
+                                                    <td>01/01/1960</td>
+                                                    <td></td>
+                                                    <td>Phó trưởng phòng</td>
+                                                    <td>Phòng Kế toán</td>
+
+                                                    <td>01/01/2016</td>
+                                                    <td class="text-right">5.08</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>8</td>
+                                                    <td class="text-nowrap">Đặng Văn N</td>
+                                                    <td>01/06/1957</td>
+                                                    <td></td>
+                                                    <td>Trưởng phòng</td>
+                                                    <td>Phòng Kế toán</td>
+
+                                                    <td>01/01/2015</td>
+                                                    <td class="text-right">4.74</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>9</td>
+                                                    <td class="text-nowrap">Nguyễn Thị A</td>
+                                                    <td></td>
+                                                    <td>01/01/1970</td>
+                                                    <td>Trưởng phòng</td>
+                                                    <td>Khoa duoc</td>
+
+                                                    <td>01/01/2016</td>
+                                                    <td class="text-right">4.4</td>
+                                                    <td>01.002</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>10</td>
+                                                    <td class="text-nowrap">Nguyễn Văn B</td>
+                                                    <td>01/01/1982</td>
+                                                    <td></td>
+                                                    <td>Chuyên viên</td>
+                                                    <td>Khoa chấn thương chỉnh hình</td>
+
+                                                    <td>01/05/2014</td>
+                                                    <td class="text-right">3</td>
+                                                    <td>01.003</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                <tr>
+                                                    <td>11</td>
+                                                    <td class="text-nowrap">trương mạnh quỳnh</td>
+                                                    <td>22/01/2018</td>
+                                                    <td></td>
+                                                    <td>Phó trưởng phòng</td>
+                                                    <td>Khoa CDHA</td>
+
+                                                    <td>01/09/2010</td>
+                                                    <td class="text-right">6.56</td>
+                                                    <td>01.001</td>
+
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td class="text-right">0</td>
+                                                    <td></td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                @else
-                    <div class="alert">
-                        Không có dữ liệu
-                    </div>
-                @endif
+                </div>
             </div>
         </div>
-    </div><!-- /.page-content -->
-</div>
-
+    </div>
 @stop
