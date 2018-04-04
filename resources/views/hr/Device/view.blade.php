@@ -17,7 +17,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="panel panel-info">
-                    <form method="get" action="" role="form">
+                    <form method="get" action="" role="form" id="formSearchDevice">
                         {{ csrf_field() }}
                         <div class="panel-body">
                             <div class="form-group col-sm-2">
@@ -49,7 +49,7 @@
                                 </a>
                             </span>
                             <span>
-                                <a href="{{URL::route('hr.exportDevice')}}" class="btn btn-default btn-sm">
+                                <a href="{{URL::route('hr.exportDevice')}}" class="btn btn-default btn-sm exportDevice">
                                     <i class="fa fa-file-excel-o"></i> Xuất ra file</a>
                             </span>
                             <span>

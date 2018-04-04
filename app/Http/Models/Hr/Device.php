@@ -126,6 +126,7 @@ class Device extends BaseModel{
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Device::where('device_id','>',0);
+
             if (isset($dataSearch['device_name']) && $dataSearch['device_name'] != '') {
                 $query->where('device_name','LIKE', '%' . $dataSearch['device_name'] . '%');
             }
@@ -142,7 +143,7 @@ class Device extends BaseModel{
                 $query->where('device_person_id', 0);
             }
             if (isset($dataSearch['order_sort_device_id']) && $dataSearch['order_sort_device_id'] == 'asc') {
-                $query->where('device_id', 'asc');
+                $query->orderBy('device_id', 'asc');
             }else{
                 $query->orderBy('device_id', 'desc');
             }
