@@ -96,6 +96,7 @@ class PersonListController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['start_birth'] = time();
         $search['end_birth'] = strtotime(time() . " +1 month");
         $search['orderBy'] = 'person_birth';
