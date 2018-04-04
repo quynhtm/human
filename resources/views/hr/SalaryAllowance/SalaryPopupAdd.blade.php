@@ -53,7 +53,7 @@
                     <div class="form-group">
                         <label for="name" class="control-label">Thang bảng lương</label>
                         <select name="salary_wage_table" id="salary_wage_table"  class="form-control input-sm input-required">
-                            {!! $optionMonth !!}
+                            {!! $optionThangbangluong !!}
                         </select>
                     </div>
                 </div>
@@ -61,7 +61,7 @@
                     <div class="form-group">
                         <label for="name" class="control-label">Nghạch công chức </label>
                         <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm input-required">
-                            {!! $optionYears !!}
+                            {!! $optionNghachcongchuc !!}
                         </select>
                     </div>
                 </div>
@@ -69,7 +69,7 @@
                     <div class="form-group">
                         <label for="name" class="control-label">Bậc lương</label>
                         <select name="salary_wage" id="salary_wage"  class="form-control input-sm input-required">
-                            {!! $optionMonth !!}
+                            {!! $optionBacluong !!}
                         </select>
                     </div>
                 </div>

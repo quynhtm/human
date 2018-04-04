@@ -116,12 +116,27 @@ class SalaryAllowanceController extends BaseAdminController
         $arrMonth = FunctionLib::getListMonth();
         $optionMonth = FunctionLib::getOption($arrMonth, isset($data['salary_month']) ? $data['salary_month'] : (int)date('m', time()));
 
+        //thang bang luong
+        $arrThangbangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
+        $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
+
+        //Nghạch công chức
+        $arrNghachcongchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
+
+        //bac luong
+        $arrBacluong = HrDefine::getArrayByType(Define::bac_luong);
+        $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
+
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.SalaryAllowance.SalaryPopupAdd', [
             'data' => $data,
             'infoPerson' => $infoPerson,
             'optionMonth' => $optionMonth,
             'optionYears' => $optionYears,
+            'optionThangbangluong' => $optionThangbangluong,
+            'optionNghachcongchuc' => $optionNghachcongchuc,
+            'optionBacluong' => $optionBacluong,
             'person_id' => $person_id,
             'salary_id' => $salary_id,
             'typeAction' => $typeAction,
@@ -197,7 +212,7 @@ class SalaryAllowanceController extends BaseAdminController
             $html = view('hr.SalaryAllowance.SalaryList' , array_merge([
                 'person_id' => $person_id,
                 'lương' => $lương,
-                '$arrNgachBac' => $arrNgachBac,
+                'arrNgachBac' => $arrNgachBac,
             ], $this->viewPermission))->render();
             $arrData['html'] = $html;
         }
