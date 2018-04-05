@@ -26,6 +26,13 @@ use App\Library\AdminFunction\Pagging;
 use App\Library\AdminFunction\Loader;
 use App\Library\AdminFunction\Upload;
 
+use PHPExcel;
+use PHPExcel_IOFactory;
+use PHPExcel_Worksheet_PageSetup;
+use PHPExcel_Style_Alignment;
+use PHPExcel_Style_Fill;
+use PHPExcel_Style_Border;
+
 class PersonController extends BaseAdminController
 {
     private $permission_view = 'person_view';
@@ -100,6 +107,9 @@ class PersonController extends BaseAdminController
         $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
+        if($sbmValue == 2){
+            $this->exportData($data,'Danh sách nhân sự đang làm việc');
+        }
         //FunctionLib::debug($data);
         $this->getDataDefault();
         $depart = Department::getDepartmentAll();
@@ -559,5 +569,124 @@ class PersonController extends BaseAdminController
             }
         }
         return true;
+    }
+
+    public function exportData($data,$title ='') {
+        if(empty($data)){
+            return;
+        }
+        //FunctionLib::debug($data);
+        $objPHPExcel = new PHPExcel();
+        $objPHPExcel->setActiveSheetIndex(0);
+        $sheet = $objPHPExcel->getActiveSheet();
+
+        // Set Orientation, size and scaling
+        $sheet->getPageSetup()->setOrientation(PHPExcel_Worksheet_PageSetup::ORIENTATION_PORTRAIT);
+        $sheet->getPageSetup()->setPaperSize(PHPExcel_Worksheet_PageSetup::PAPERSIZE_A4);
+        $sheet->getPageSetup()->setFitToPage(true);
+        $sheet->getPageSetup()->setFitToWidth(1);
+        $sheet->getPageSetup()->setFitToHeight(0);
+
+        // Set font
+        $sheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
+        $sheet->getStyle('A1')->getFont()->setSize(16)->setBold(true)->getColor()->setRGB('000000');
+        $sheet->mergeCells('A1:H1');
+        $sheet->setCellValue("A1", $title );
+        $sheet->getRowDimension("1")->setRowHeight(32);
+        $sheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+
+        // setting header
+        $position_hearder = 3;
+        $sheet->getRowDimension($position_hearder)->setRowHeight(30);
+        $val10 = 5; $val18 = 18; $val35 = 35;$val45 = 60; $val25 = 25;$val55 = 55;
+        $ary_cell = array(
+            'A'=>array('w'=>$val10,'val'=>'STT','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'B'=>array('w'=>$val35,'val'=>'Họ tên','align'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT),
+            'C'=>array('w'=>$val10,'val'=>'Giới tính','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'D'=>array('w'=>$val18,'val'=>'Ngày sinh','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'E'=>array('w'=>$val18,'val'=>'Ngày làm việc','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'F'=>array('w'=>$val35,'val'=>'Đơn vị bộ phận','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'G'=>array('w'=>$val35,'val'=>'Chức danh nghề nghiệp','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'H'=>array('w'=>$val35,'val'=>'Chức vụ','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+        );
+
+        //build header title
+        foreach($ary_cell as $col => $attr){
+            $sheet->getColumnDimension($col)->setWidth($attr['w']);
+            $sheet->setCellValue("$col{$position_hearder}",$attr['val']);
+            $sheet->getStyle($col)->getAlignment()->setWrapText(true);
+            $sheet->getStyle($col . $position_hearder)->applyFromArray(
+                array(
+                    'fill' => array(
+                        'type' => PHPExcel_Style_Fill::FILL_SOLID,
+                        'color' => array('rgb' => '05729C'),
+                        'style' => array('font-weight' => 'bold')
+                    ),
+                    'font'  => array(
+                        'bold'  => true,
+                        'color' => array('rgb' => 'FFFFFF'),
+                        'size'  => 10,
+                        'name'  => 'Verdana'
+                    ),
+                    'borders' => array(
+                        'allborders' => array(
+                            'style' => PHPExcel_Style_Border::BORDER_THIN,
+                            'color' => array('rgb' => '333333')
+                        )
+                    ),
+                    'alignment' => array(
+                        'horizontal' => $attr['align'],
+                    )
+                )
+            );
+        }
+        //hien thị dũ liệu
+        $rowCount = $position_hearder+1; // hang bat dau xuat du lieu
+        $i = 1;
+        $break="\r";
+        foreach ($data as $k => $v) {
+            $sheet->getRowDimension($rowCount)->setRowHeight(30);//chiều cao của row
+
+            $sheet->getStyle('A' . $rowCount)->getAlignment()->applyFromArray(
+                array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('A' . $rowCount, $i);
+
+            $sheet->getStyle('B' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT,));
+            $sheet->SetCellValue('B' . $rowCount, $v['person_name']);
+
+            $sheet->getStyle('C' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('C' . $rowCount, isset($this->arrSex[$v['person_sex']])? $this->arrSex[$v['person_sex']]: '' );
+
+            $sheet->getStyle('D' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('D' . $rowCount, date('d-m-Y',$v['person_birth']));
+
+            $sheet->getStyle('E' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('E' . $rowCount, date('d-m-Y',$v['person_date_start_work']));
+
+            $sheet->getStyle('F' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('F' . $rowCount, isset($this->depart[$v['person_depart_id']])? $this->depart[$v['person_depart_id']]: '');
+
+            $sheet->getStyle('G' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('G' . $rowCount, isset($this->arrChucDanhNgheNghiep[$v['person_career_define_id']])? $this->arrChucDanhNgheNghiep[$v['person_career_define_id']]: '');
+
+            $sheet->getStyle('H' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
+            $sheet->SetCellValue('H' . $rowCount, isset($this->arrChucVu[$v['person_position_define_id']])? $this->arrChucVu[$v['person_position_define_id']]: '');
+
+            $rowCount++;
+            $i++;
+        }
+
+        // output file
+        ob_clean();
+        $filename = "Danh sách nhân sự" . "_" . date("_d/m_") . '.xls';
+        @header("Cache-Control: ");
+        @header("Pragma: ");
+        @header("Content-type: application/octet-stream");
+        @header("Content-Disposition: attachment; filename=\"{$filename}\"");
+
+        $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
+        $objWriter->save("php://output");
+        exit();
     }
 }

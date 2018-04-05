@@ -42,15 +42,12 @@
                             </div>
                         </div>
                         <div class="panel-footer text-right">
-                    <span class="">
-                        <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId(0)))}}">
-                            <i class="ace-icon fa fa-plus-circle"></i>
-                            Thêm mới
-                        </a>
-                    </span>
-                            <span class="">
-                        <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-search"></i> Tìm kiếm</button>
-                    </span>
+                            <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId(0)))}}">
+                                <i class="ace-icon fa fa-plus-circle"></i>
+                                Thêm mới
+                            </a>
+                            <button class="btn btn-warning btn-sm" type="submit" name="submit" value="2"><i class="fa fa-file-excel-o"></i> Xuất excel</button>
+                            <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1"><i class="fa fa-search"></i> Tìm kiếm</button>
                         </div>
                     </form>
                 </div>
@@ -97,7 +94,7 @@
                                     <br/>SN: @if($item['person_birth'] > 0){{date('d-m-Y',$item['person_birth'])}}@endif
                                 </td>
                                 <td class="text-center middle">
-                                    @if(isset($arrSex[$item['person_date_start_work']])){{$arrSex[$item['person_date_start_work']]}}@endif
+                                    @if(isset($arrSex[$item['person_sex']])){{$arrSex[$item['person_sex']]}}@endif
                                 </td>
                                 <td class="text-center middle">
                                     @if($item['person_date_start_work'] > 0){{date('d-m-Y',$item['person_date_start_work'])}}@endif
