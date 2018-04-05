@@ -3,6 +3,7 @@ Auth::routes();
 
 const Admin = "Admin";
 const HResources = "Hr";
+const Cronjob = "Cronjob";
 
 // Used for dev by Quynh
 $isDev = Request::get('is_debug','');

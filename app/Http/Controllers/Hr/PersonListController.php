@@ -7,7 +7,6 @@ use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
-use App\Http\Models\Admin\Role;
 
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
