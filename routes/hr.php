@@ -15,6 +15,7 @@ Route::get('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HR
 Route::post('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => HResources.'\PersonController@postItem'));
 Route::get('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@getPersonWithAccount'));
 Route::post('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@postPersonWithAccount'));
+Route::get('personnel/personStatusDelete/{id?}', array('as' => 'hr.personnelStatusDelete','uses' => HResources.'\PersonController@statusDeletePerson'));
 
 /*Thông tin hợp đồng lao động*/
 Route::get('infoPerson/viewContracts/{person_id?}', array('as' => 'hr.viewContracts','uses' => HResources.'\InfoPersonController@viewContracts'));

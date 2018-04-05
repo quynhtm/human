@@ -93,6 +93,7 @@ class PersonController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
+        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -531,6 +532,23 @@ class PersonController extends BaseAdminController
         $arrData['intReturn'] = 1;
         $arrData['html'] = $html;
         return response()->json($arrData);
+    }
+
+    //cap nhat trạng thái xóa của user
+    public function statusDeletePerson($personId)
+    {
+        //check permission
+        if (!$this->is_root && !in_array($this->permission_delete, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        $person_id = FunctionLib::outputId($personId);
+
+        $dataUpdate['person_status'] = Define::PERSON_STATUS_DAXOA;
+        if (Person::updateItem($person_id,$dataUpdate)) {
+            return Redirect::route('hr.personnelView');
+        } else {
+            return Redirect::route('hr.personnelView');
+        }
     }
 
     private function valid($data = array())
