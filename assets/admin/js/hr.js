@@ -13,6 +13,8 @@ $(document).ready(function () {
     HR.clickSubmitDocumentDraft();
     HR.submitDocumentSend();
     HR.clickDocumentReply();
+
+    HR.exportDevice();
 });
 HR = {
     editItem: function (id, $url) {
@@ -494,4 +496,27 @@ HR = {
             }
         });
     },
+
+    /** DuyNX export data **/
+    exportDevice:function(){
+        $('.exportDevice').click(function(){
+            var _token = $('meta[name="csrf-token"]').attr('content');
+            var device_name = $('#formSearchDevice #device_name').val();
+            var device_type = $('#formSearchDevice #device_type').val();
+            var device_status = $('#formSearchDevice #device_status').val();
+            var r = confirm("Bạn muốn xuất excel [OK]:Yes[Cancel]:No?");
+            if(r){
+                url = WEB_ROOT + '/manager/device/export';
+                jQuery.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {device_name:device_name, device_type:device_type,device_status:device_status, _token:_token},
+                    success: function(data){
+                        return false;
+                    }
+                });
+            }
+            return false;
+        });
+    }
 }
