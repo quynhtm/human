@@ -364,10 +364,10 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = Request::get('device_name', '');
         $dataSearch['device_type'] = Request::get('device_type', -1);
-        $dataSearch['device_status'] = Request::get('device_status', -1);
+        $dataSearch['device_status'] = Request::get('device_status', -2);
         $dataSearch['order_sort_device_id'] = 'asc';
-        $total = 0;
-        $data = Device::searchByCondition($dataSearch, 0, 0, $total);
+
+        $data = Device::searchExport($dataSearch, 0);
 
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportdevice.xls");

@@ -126,7 +126,6 @@ class Device extends BaseModel{
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = Device::where('device_id','>',0);
-
             if (isset($dataSearch['device_name']) && $dataSearch['device_name'] != '') {
                 $query->where('device_name','LIKE', '%' . $dataSearch['device_name'] . '%');
             }
@@ -157,6 +156,46 @@ class Device extends BaseModel{
             }
             if($offset > 0){
                 $query->skip($offset);
+            }
+            if(!empty($fields)){
+                $result = $query->get($fields);
+            }else{
+                $result = $query->get();
+            }
+            return $result;
+
+        }catch (PDOException $e){
+            throw new PDOException();
+        }
+    }
+    public static function searchExport($dataSearch = array(), $limit =0){
+        try{
+            $query = Device::where('device_id','>',0);
+            if (isset($dataSearch['device_name']) && $dataSearch['device_name'] != '') {
+                $query->where('device_name','LIKE', '%' . $dataSearch['device_name'] . '%');
+            }
+            if (isset($dataSearch['device_status']) && $dataSearch['device_status'] != -2) {
+                $query->where('device_status',$dataSearch['device_status']);
+            }
+            if (isset($dataSearch['device_type']) && $dataSearch['device_type'] != -1) {
+                $query->where('device_type',$dataSearch['device_type']);
+            }
+            if (isset($dataSearch['device_person_id']) && $dataSearch['device_person_id'] > 0) {
+                $query->where('device_person_id', '>', 0);
+            }
+            if (isset($dataSearch['device_person_id']) && $dataSearch['device_person_id'] == 0) {
+                $query->where('device_person_id', 0);
+            }
+            if (isset($dataSearch['order_sort_device_id']) && $dataSearch['order_sort_device_id'] == 'asc') {
+                $query->orderBy('device_id', 'asc');
+            }else{
+                $query->orderBy('device_id', 'desc');
+            }
+
+            //get field can lay du lieu
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
             }
             if(!empty($fields)){
                 $result = $query->get($fields);
