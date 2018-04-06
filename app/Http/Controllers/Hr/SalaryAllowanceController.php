@@ -28,8 +28,7 @@ class SalaryAllowanceController extends BaseAdminController
     private $arrStatus = array(1 => 'hiển thị', 2 => 'Ẩn');
     private $viewPermission = array();//check quyen
 
-    public function __construct()
-    {
+    public function __construct(){
         parent::__construct();
 
     }
