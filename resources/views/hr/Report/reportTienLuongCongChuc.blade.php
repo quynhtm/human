@@ -1,5 +1,10 @@
-<?php use App\Library\AdminFunction\FunctionLib; ?>
-<?php use App\Library\AdminFunction\Define; ?>
+<?php
+use App\Library\AdminFunction\FunctionLib;
+use App\Library\AdminFunction\Define;
+use App\Http\Models\Hr\Salary;
+use App\Http\Models\Hr\Allowance;
+?>
+
 @extends('admin.AdminLayouts.index')
 @section('content')
     <meta name="csrf-token" content="{{ csrf_token() }}">
@@ -94,16 +99,43 @@
                                                     <td>{{(isset($item->person_sex) && $item->person_sex == 0 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : ''}}</td>
                                                     <td>@if(isset($arrChucVu[$item['person_position_define_id']])){{$arrChucVu[$item['person_position_define_id']]}}@endif</td>
                                                     <td>@if(isset($arrDepart[$item['person_depart_id']])){{$arrDepart[$item['person_depart_id']]}}@endif</td>
+                                                    <?php
+                                                    $dataSalary = Salary::getSalaryByPersonIdAndYear($item->person_id, $search['reportYear']);
+                                                    $salary_coefficients = isset($dataSalary->salary_coefficients) ? $dataSalary->salary_coefficients : 0;
+                                                    $salary_civil_servants = isset($dataSalary->salary_civil_servants) ? $dataSalary->salary_civil_servants : '';
 
-                                                    <td>01/01/2016</td>
-                                                    <td class="text-right">4.4</td>
-                                                    <td>01.002</td>
+                                                    $salary_month = isset($dataSalary->salary_month) ? $dataSalary->salary_month : '';
+                                                    $salary_year = isset($dataSalary->salary_year) ? $dataSalary->salary_year : '';
 
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
+                                                    //phucap
+                                                    $listAllowance = Allowance::getAllowanceByPersonId($item->person_id);
+                                                    $phucap_chucvu = $phucap_trachnhiem = $phucap_khuvuc = $phucap_thamnienvuotkhung = $phucap_total = 0;
+                                                    foreach($listAllowance as $_k => $pc){
+                                                        if($pc->allowance_type == Define::phucap_chucvu && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
+                                                            $phucap_chucvu = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                                                        }
+                                                        if($pc->allowance_type == Define::phucap_trachnhiem && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
+                                                            $phucap_trachnhiem = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                                                        }
+                                                        if($pc->allowance_type == Define::phucap_khuvuc && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
+                                                            $phucap_khuvuc = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                                                        }
+                                                        if($pc->allowance_type == Define::phucap_thamnienvuotkhung && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
+                                                            $phucap_thamnienvuotkhung = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                                                        }
+                                                    }
+                                                    $phucap_total = $phucap_chucvu + $phucap_trachnhiem + $phucap_khuvuc + $phucap_thamnienvuotkhung;
+
+                                                    ?>
+                                                    <td>{{$salary_month.'/'.$salary_year}}</td>
+                                                    <td class="text-right">{{$salary_coefficients}}</td>
+                                                    <td>{{$salary_civil_servants}}</td>
+
+                                                    <td class="text-right">{{$phucap_chucvu}}</td>
+                                                    <td class="text-right">{{$phucap_trachnhiem}}</td>
+                                                    <td class="text-right">{{$phucap_khuvuc}}</td>
+                                                    <td class="text-right">{{$phucap_thamnienvuotkhung}}</td>
+                                                    <td class="text-right">{{$phucap_total}}</td>
                                                     <td></td>
                                                 </tr>
                                                 @endforeach
