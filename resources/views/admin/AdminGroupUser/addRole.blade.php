@@ -7,7 +7,7 @@
         <ul class="breadcrumb">
             <li>
                 <i class="ace-icon fa fa-home home-icon"></i>
-                <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
             </li>
             <li><a href="{{URL::route('admin.viewRole')}}"> Danh sách phân quyền theo role</a></li>
             <li class="active">@if($id > 0)Cập nhật @else Tạo mới @endif</li>

@@ -11,7 +11,7 @@ use App\Library\AdminFunction\CGlobal;
             <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                    <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
                 <li><a href="{{URL::route('hr.personnelView')}}"> Danh sách nhân sự</a></li>
                 <li class="active">@if($id == 0) Thêm mới nhân sự @else Sửa thông tin nhân sự@endif</li>
