@@ -49,19 +49,27 @@ class Person extends BaseModel
             if (isset($dataSearch['person_mail']) && $dataSearch['person_mail'] != '') {
                 $query->where('person_mail','LIKE', '%' . $dataSearch['person_mail'] . '%');
             }
+
             if (isset($dataSearch['person_code']) && $dataSearch['person_code'] != '') {
                 $query->where('person_code','LIKE', '%' . $dataSearch['person_code'] . '%');
             }
+
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
                 $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
+
             if (isset($dataSearch['start_birth']) && $dataSearch['start_birth'] > 0) {
                 $query->where('person_birth', '>=', $dataSearch['start_birth']);
             }
+
             if (isset($dataSearch['end_birth']) && $dataSearch['end_birth'] > 0) {
                 $query->where('person_birth', '<=', $dataSearch['end_birth']);
             }
-            if (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
+
+            if (isset($dataSearch['person_status']) && is_array($dataSearch['person_status'])) {
+                $query->whereIn('person_status',  $dataSearch['person_status']);
+            }
+            elseif (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
                 $query->where('person_status',  $dataSearch['person_status']);
             }
             if (isset($dataSearch['reportYear']) && $dataSearch['reportYear'] > 0) {

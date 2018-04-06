@@ -129,6 +129,10 @@ class Define
     const PERSON_STATUS_NGHIHUU = -4;
     const PERSON_STATUS_SAPNGHIHUU = -5;
 
+    const QUITJOB_THOI_VIEC = 1;//nghỉ việc
+    const QUITJOB_CHUYEN_CONGTAC = 2;//chuẩn bị nghỉ việc theo ngày
+    const QUITJOB_CHUYEN_PHONG_BAN = 3;
+
     const BONUS_KHEN_THUONG = 1;
     const BONUS_DANH_HIEU = 2;
     const BONUS_KY_LUAT = 3;
@@ -137,10 +141,6 @@ class Define
     const CURRICULUMVITAE_CHUNG_CHI_KHAC = 2;
     const CURRICULUMVITAE_CONG_TAC = 3;
     const CURRICULUMVITAE_HOAT_DONG_DANG = 4;
-
-    const QUITJOB_THOI_VIEC = 1;
-    const QUITJOB_CHUYEN_CONGTAC = 2;
-    const QUITJOB_CHUYEN_PHONG_BAN = 3;
 
     const JOBASSIGNMENT_THONG_BAO = 1;
     const JOBASSIGNMENT_DA_BO_NHIEM = 2;
