@@ -64,6 +64,14 @@ class Person extends BaseModel
             if (isset($dataSearch['person_status']) && $dataSearch['person_status'] != '') {
                 $query->where('person_status',  $dataSearch['person_status']);
             }
+            if (isset($dataSearch['reportYear']) && $dataSearch['reportYear'] > 0) {
+                $timeCurrentLast = date('d', time()).'-'.date('m', time()).'-'.$dataSearch['reportYear'].' '.date('H', time()).':'.date('i', time()) ;
+                $timeCurrentLast = strtotime($timeCurrentLast);
+                $timeCurrentFirst = '01-01-'.$dataSearch['reportYear'].' 00:00';
+                $timeCurrentFirst = strtotime($timeCurrentFirst);
+                $query->whereBetween('person_creater_time', array($timeCurrentFirst, $timeCurrentLast));
+            }
+
             $total = $query->count();
 
             if(isset($dataSearch['orderBy']) && $dataSearch['orderBy'] != '' && isset($dataSearch['sortOrder']) && $dataSearch['sortOrder'] != ''){

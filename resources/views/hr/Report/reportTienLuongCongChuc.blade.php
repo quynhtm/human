@@ -21,47 +21,43 @@
                         <div class="col-xs-12 table-responsive">
                             <div class="line">
                                 <div class="panel-heading clearfix">
-                                    <h4 class="panel-title pull-left">BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC 2018</h4>
+                                    <h4 class="panel-title pull-left">BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC {{isset($search['reportYear']) ? $search['reportYear'] : ''}}</h4>
                                     <div class="btn-group btn-group-sm pull-right">
                                         <span>
-                                            <a href="{{URL::route('hr.exportDevice')}}" class="btn btn-default btn-sm">
+                                            <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-default btn-sm exportViewTienLuongCongChuc">
                                                 <i class="fa fa-file-excel-o"></i> Xuất ra file</a>
                                         </span>
                                     </div>
                                 </div>
                                 <div class="panel-body">
-                                    <form class="form-horizontal" action="" method="post" id="adminForm" name="adminForm">
+                                    <form class="form-horizontal" action="" method="get" id="adminFormExportViewTienLuongCongChuc" name="adminFormExportViewTienLuongCongChuc">
                                         <div class="form-group">
                                             <div class="col-md-4">
                                                 <label>Chọn Đơn vị/ Phòng ban</label>
-                                                <select class="form-control input-sm" id="DepartmentSID" name="DepartmentSID"><option value="">- Đơn vị/ Phòng ban -</option>
-                                                    <option value="5a660f2e473c2c9a98c0c4fd">Chỉnh sương ống chân</option>
+                                                <select class="form-control input-sm" name="person_depart_id">
+                                                    <option value="">- Đơn vị/ Phòng ban -</option>
+                                                   {!! $optionDepart !!}
                                                 </select>
                                             </div>
                                             <div class="col-md-4">
                                                 <label>Chọn năm báo cáo</label>
-                                                <select class="required form-control input-sm" data-val="true" data-val-required="The ReportYear field is required." id="ReportYear" min="0" name="ReportYear"><option value="">- Chọn năm báo cáo -</option>
-                                                    <option selected="selected">2018</option>
-                                                    <option>2017</option>
-                                                    <option>2016</option>
-                                                    <option>2015</option>
-                                                    <option>2014</option>
-                                                    <option>2013</option>
-                                                    <option>2012</option>
-                                                    <option>2011</option>
+                                                <select class="required form-control input-sm" name="reportYear">
+                                                    <option value="">- Chọn năm báo cáo -</option>
+                                                    {!! $optionYear !!}
                                                 </select>
-                                                <input id="hdAction" name="hdAction" value="" type="hidden">
                                             </div>
                                             <div class="col-md-2">
                                                 <label>&nbsp;</label>
                                                 <div class="input-group-btn">
-                                                    <button class="btn btn-primary btn-sm" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
+                                                    <button class="btn btn-primary btn-sm clickFormReportLuong" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
                                     <div class="row">
                                         <div class="col-md-12">
+                                            <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> thiết bị @endif </div>
+                                            <br>
                                             <table style="width: 100%;" class="table table-bordered table-condensed">
                                                 <tbody>
                                                 <tr class="text-center">
@@ -86,13 +82,18 @@
                                                     <th>Phụ cấp vượt khung</th>
                                                     <th>Tổng phụ cấp</th>
                                                 </tr>
+                                                @if(sizeof($data) > 0)
+                                                @foreach($data as $k => $item)
                                                 <tr>
-                                                    <td>1</td>
-                                                    <td class="text-nowrap">Nguyễn Thị B</td>
-                                                    <td></td>
-                                                    <td>29/03/2017</td>
-                                                    <td>Trưởng phòng</td>
-                                                    <td>Khoa duoc</td>
+                                                    <td>{{$stt+$k+1}}</td>
+                                                    <td class="text-nowrap">{{$item->person_name}}</td>
+                                                    <?php
+                                                        $person_birth = (isset($item->person_birth) && $item->person_birth > 0) ? $item->person_birth : 0;
+                                                    ?>
+                                                    <td>{{(isset($item->person_sex) && $item->person_sex == 1 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : ''}}</td>
+                                                    <td>{{(isset($item->person_sex) && $item->person_sex == 0 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : ''}}</td>
+                                                    <td>@if(isset($arrChucVu[$item['person_position_define_id']])){{$arrChucVu[$item['person_position_define_id']]}}@endif</td>
+                                                    <td>@if(isset($arrDepart[$item['person_depart_id']])){{$arrDepart[$item['person_depart_id']]}}@endif</td>
 
                                                     <td>01/01/2016</td>
                                                     <td class="text-right">4.4</td>
@@ -104,213 +105,13 @@
                                                     <td class="text-right">0</td>
                                                     <td class="text-right">0</td>
                                                     <td></td>
-
                                                 </tr>
-                                                <tr>
-                                                    <td>2</td>
-                                                    <td class="text-nowrap">Nguyễn Thị C</td>
-                                                    <td></td>
-                                                    <td>01/01/1972</td>
-                                                    <td>Trưởng phòng</td>
-                                                    <td>Phòng vật tư xuất nhập khẩu</td>
-
-                                                    <td>01/01/2016</td>
-                                                    <td class="text-right">4.4</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>3</td>
-                                                    <td class="text-nowrap">Nguyễn Thị D</td>
-                                                    <td></td>
-                                                    <td>01/01/1973</td>
-                                                    <td>Trưởng phòng</td>
-                                                    <td>Khoa dieu duong</td>
-
-                                                    <td>01/07/2017</td>
-                                                    <td class="text-right">5.08</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>4</td>
-                                                    <td class="text-nowrap">Nguyễn Văn A</td>
-                                                    <td>01/01/1975</td>
-                                                    <td></td>
-                                                    <td>Phó trưởng phòng</td>
-                                                    <td>Khoa CDHA</td>
-
-                                                    <td>01/07/2014</td>
-                                                    <td class="text-right">4.4</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>5</td>
-                                                    <td class="text-nowrap">Lê Văn C</td>
-                                                    <td>01/01/1975</td>
-                                                    <td></td>
-                                                    <td>Chuyên viên</td>
-                                                    <td>Phòng tổ chức</td>
-
-                                                    <td>01/01/2016</td>
-                                                    <td class="text-right">2.67</td>
-                                                    <td>01.003</td>
-
-                                                    <td class="text-right">0.3</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0.2</td>
-                                                    <td class="text-right">0.7</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>6</td>
-                                                    <td class="text-nowrap">Hoàng Huyền Trang</td>
-                                                    <td></td>
-                                                    <td>15/09/1994</td>
-                                                    <td>Chuyên viên</td>
-                                                    <td>Phòng tổ chức</td>
-
-                                                    <td>01/02/2017</td>
-                                                    <td class="text-right">2.67</td>
-                                                    <td>01.003</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>7</td>
-                                                    <td class="text-nowrap">Lê Văn E</td>
-                                                    <td>01/01/1960</td>
-                                                    <td></td>
-                                                    <td>Phó trưởng phòng</td>
-                                                    <td>Phòng Kế toán</td>
-
-                                                    <td>01/01/2016</td>
-                                                    <td class="text-right">5.08</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>8</td>
-                                                    <td class="text-nowrap">Đặng Văn N</td>
-                                                    <td>01/06/1957</td>
-                                                    <td></td>
-                                                    <td>Trưởng phòng</td>
-                                                    <td>Phòng Kế toán</td>
-
-                                                    <td>01/01/2015</td>
-                                                    <td class="text-right">4.74</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>9</td>
-                                                    <td class="text-nowrap">Nguyễn Thị A</td>
-                                                    <td></td>
-                                                    <td>01/01/1970</td>
-                                                    <td>Trưởng phòng</td>
-                                                    <td>Khoa duoc</td>
-
-                                                    <td>01/01/2016</td>
-                                                    <td class="text-right">4.4</td>
-                                                    <td>01.002</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>10</td>
-                                                    <td class="text-nowrap">Nguyễn Văn B</td>
-                                                    <td>01/01/1982</td>
-                                                    <td></td>
-                                                    <td>Chuyên viên</td>
-                                                    <td>Khoa chấn thương chỉnh hình</td>
-
-                                                    <td>01/05/2014</td>
-                                                    <td class="text-right">3</td>
-                                                    <td>01.003</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
-                                                <tr>
-                                                    <td>11</td>
-                                                    <td class="text-nowrap">trương mạnh quỳnh</td>
-                                                    <td>22/01/2018</td>
-                                                    <td></td>
-                                                    <td>Phó trưởng phòng</td>
-                                                    <td>Khoa CDHA</td>
-
-                                                    <td>01/09/2010</td>
-                                                    <td class="text-right">6.56</td>
-                                                    <td>01.001</td>
-
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td class="text-right">0</td>
-                                                    <td></td>
-
-                                                </tr>
+                                                @endforeach
+                                                @endif
                                                 </tbody>
                                             </table>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
                         </div>

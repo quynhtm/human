@@ -15,6 +15,7 @@ $(document).ready(function () {
     HR.clickDocumentReply();
 
     HR.exportDevice();
+    HR.exportViewTienLuongCongChuc();
 });
 HR = {
     editItem: function (id, $url) {
@@ -505,6 +506,18 @@ HR = {
                 url = WEB_ROOT + '/manager/device/export';
                 $('#formSearchDevice').attr('action', url);
                 $('#formSearchDevice').submit();
+                return false;
+            }
+            return false;
+        });
+    },
+    exportViewTienLuongCongChuc:function(){
+        $('.exportViewTienLuongCongChuc').click(function(){
+            var r = confirm("Bạn muốn xuất excel [OK]:Yes[Cancel]:No?");
+            if(r){
+                url = WEB_ROOT + '/manager/report/exportTienLuongCongChuc';
+                $('#adminFormExportViewTienLuongCongChuc').attr('action', url);
+                $('#adminFormExportViewTienLuongCongChuc').submit();
                 return false;
             }
             return false;
