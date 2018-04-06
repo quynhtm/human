@@ -18,6 +18,25 @@ class Cronjob extends BaseModel
     protected $fillable = array('cronjob_project', 'cronjob_name', 'cronjob_router', 'cronjob_type', 'cronjob_date_run',
         'cronjob_number_plan', 'cronjob_number_running', 'cronjob_status', 'cronjob_result');
 
+    public static function getListData(){
+        $result = Cache::get(Define::CACHE_ALL_CRONJOB);
+        try {
+            if (empty($result)) {
+                $listItem = Cronjob::where('cronjob_status', Define::STATUS_SHOW)
+                    ->orderBy('cronjob_id', 'ASC')->get();
+                foreach ($listItem as $item) {
+                    $result[$item->cronjob_id] = $item;
+                }
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_ALL_CRONJOB, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();
@@ -109,6 +128,7 @@ class Cronjob extends BaseModel
         if($id > 0){
             Cache::forget(Define::CACHE_CRONJOB_ID_.$id);
         }
+        Cache::forget(Define::CACHE_ALL_CRONJOB);
     }
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){

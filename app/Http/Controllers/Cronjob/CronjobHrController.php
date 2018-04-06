@@ -1,4 +1,7 @@
 <?php
+/**
+ * QuynhTM
+ */
 
 namespace App\Http\Controllers\Cronjob;
 
@@ -11,8 +14,10 @@ use App\Http\Models\Hr\QuitJob;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
+use App\Library\AdminFunction\Curl;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\URL;
 
 class CronjobHrController extends BaseCronjobController{
 
@@ -23,6 +28,32 @@ class CronjobHrController extends BaseCronjobController{
 	public function __construct(){
 		parent::__construct();
 	}
+
+	//quét cac cronjob để run
+	public function callRunCronjob(){
+        $listCronjob = Cronjob::getListData();
+        if(!empty($listCronjob)){
+            foreach ($listCronjob as $val){
+                if($val['cronjob_router'] != ''){
+                    $dateRun = $val['cronjob_date_run'];
+                    $timeRun = date('Ymd',$dateRun);
+                    $timeNow = date('Ymd',time());
+                    if($timeNow != $timeRun){
+                        $curl = Curl::getInstance();
+                        $call = $curl->get(URL::route($val['cronjob_router']));
+                        $dataCurl = json_decode($call, true);
+                        if(!empty($dataCurl)){
+                            //cap nhat bang cronjob
+                            $dataUpdateCronjob['cronjob_date_run'] = time();
+                            $dataUpdateCronjob['cronjob_number_running'] = $val->cronjob_number_running+1;
+                            $dataUpdateCronjob['cronjob_result'] = $val->cronjob_number_running.'<br/>'.$call;
+                            Cronjob::updateItem($val->cronjob_id,$dataUpdateCronjob);
+                        }
+                    }
+                }
+            }
+        }
+    }
 
 	//quét nghỉ việc
     public function runCronjobQuitJob(){

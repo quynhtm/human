@@ -84,6 +84,9 @@ class Define
 
     const CACHE_ALL_PROVINCE = 'cache_all_province';
 
+    const CACHE_CRONJOB_ID_ = 'cache_cronjob_id_';
+    const CACHE_ALL_CRONJOB = 'cache_all_cronjob';
+
     const CACHE_DISTRICT_WITH_PROVINCE_ID    = 'cache_district_with_province_id_';
     const CACHE_WARDS_WITH_DISTRICT_ID    = 'cache_wards_with_district_id_';
 
@@ -103,7 +106,7 @@ class Define
     const CACHE_HR_MAIL_ID = 'cache_hr_mail_id_';
     const CACHE_HR_MAIL_PARENT_ID = 'cache_hr_mail_parent_id_';
     const CACHE_HR_MAIL_COUNT_NEW_INBOX = 'cache_hr_mail_count_new_inbox_';
-    const CACHE_CRONJOB_ID_ = 'cache_cronjob_id_';
+
 
     /***************************************************************************************************************
      * //Define

@@ -5,5 +5,7 @@ Route::get('cronjob/edit/{id?}',array('as' => 'cr.CronjobEdit','uses' => Cronjob
 Route::post('cronjob/edit/{id?}', array('as' => 'cr.CronjobEdit','uses' => Cronjob.'\CronjobUserController@postItem'));
 Route::get('cronjob/deleteCronjob', array('as' => 'cr.deleteCronjob','uses' => Cronjob.'\CronjobUserController@deleteCronjob'));
 
+Route::match(['GET','POST'],'callRunCronjob', array('as' => 'cr.callRunCronjob','uses' => Cronjob.'\CronjobHrController@callRunCronjob'));
+
 //CronjobHrController
 Route::match(['GET','POST'],'runCronjobQuitJob', array('as' => 'cr.runCronjobQuitJob','uses' => Cronjob.'\CronjobHrController@runCronjobQuitJob'));
