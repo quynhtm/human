@@ -15,6 +15,8 @@ if(Session::has('is_debug_of_tech')){
     Config::set('compile.debug',true);
 }
 
+require __DIR__.'/site.php';
+
 //Quan tri CMS cho admin
 Route::get('login', array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@getLogin'));
 Route::post('login',  array('as' => 'admin.login','uses' => Admin.'\AdminLoginController@postLogin'));
