@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Districts;
 use App\Http\Models\Admin\Province;
 use App\Http\Models\Admin\Wards;
+use App\Http\Models\Hr\CurriculumVitae;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
@@ -133,8 +134,7 @@ class PersonController extends BaseAdminController
         ], $this->viewPermission));
     }
 
-    public function getItem($ids)
-    {
+    public function getItem($ids){
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
@@ -242,6 +242,7 @@ class PersonController extends BaseAdminController
         $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '')? strtotime($data['person_date_trial_work']): 0;
         $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '')? strtotime($data['person_date_start_work']): 0;
         $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '')? strtotime($data['person_date_range_cmt']): 0;
+        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '')? strtotime($data['person_birth']): 0;
         $data['person_avatar'] = (isset($data['img']) && $data['img'] != '')? trim($data['img']): '';
         $data['person_status'] = Define::STATUS_SHOW;
         if ($this->valid($data) && empty($this->error)) {
@@ -331,8 +332,7 @@ class PersonController extends BaseAdminController
         ], $this->viewPermission));
     }
 
-    public function getDetail($personId)
-    {
+    public function getDetail($personId){
         $person_id = FunctionLib::outputId($personId);
         CGlobal::$pageAdminTitle = 'Thông tin chi tiết nhân sự';
         //Check phan quyen.
@@ -352,8 +352,26 @@ class PersonController extends BaseAdminController
         //thông tin kỷ luật
         $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
         $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
-
         $this->getDataDefault();
+
+        $arrDepart = Department::getDepartmentAll();
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
+        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
+        $arrTonGiao = $this->arrTonGiao;
+        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
+
+        $arrCurriculumVitaeMain = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_DAO_TAO);
+        $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+        $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+        $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+
+        $arrCurriculumVitaeOther = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
+        $arrQuaTrinhCongTac = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CONG_TAC);
+
+        $arrHoatDongDang = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+        $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
             'person_id' => $person_id,
@@ -364,6 +382,21 @@ class PersonController extends BaseAdminController
             'arrTypeDanhhieu' => $arrTypeDanhhieu,
             'arrTypeKyluat' => $arrTypeKyluat,
             'infoPerson' => $infoPerson,
+            'arrDepart' => $arrDepart,
+            'arrChucVu' => $arrChucVu,
+            'arrChucDanhNgheNghiep' => $arrChucDanhNgheNghiep,
+            'arrDanToc' => $arrDanToc,
+            'arrTonGiao' => $arrTonGiao,
+            'arrNhomMau' => $arrNhomMau,
+            'arrVanBangChungChi' => $arrVanBangChungChi,
+            'arrCurriculumVitaeMain' => $arrCurriculumVitaeMain,
+            'arrHinhThucHoc' => $arrHinhThucHoc,
+            'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+            'arrCurriculumVitaeOther' => $arrCurriculumVitaeOther,
+            'arrQuaTrinhCongTac' => $arrQuaTrinhCongTac,
+            'arrHoatDongDang' => $arrHoatDongDang,
+            'arrChucVuDang' => $arrChucVuDang,
+
         ], $this->viewPermission));
     }
 

@@ -7,9 +7,9 @@
             <ul class="breadcrumb">
                 <li>
                     <i class="ace-icon fa fa-home home-icon"></i>
-                    <a href="{{URL::route('admin.dashboard')}}">Home</a>
+                    <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
-                <li class="active">Chi tiết nhân sự</li>
+                <li class="active">Chi tiết nhân sự 2C</li>
             </ul>
         </div>
 
@@ -24,10 +24,10 @@
                                     <h4 class="panel-title pull-left">Chi tiết nhân sự 2C</h4>
                                     <div class="btn-group btn-group-sm pull-right">
                                         <span>
-                                            <a class="btn btn-warning btn-sm" href=""><i class="fa fa-edit"></i> Sửa thông tin nhân sự</a>&nbsp;
+                                            <a class="btn btn-warning btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId($infoPerson['person_id'])))}}"><i class="fa fa-edit"></i> Sửa thông tin nhân sự</a>&nbsp;
                                         </span>
                                         <span>
-                                            <a class="btn btn-danger btn-sm" href=""><i class="fa fa-arrow-left"></i> Quay lại</a>
+                                            <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-arrow-left"></i> Quay lại</a>
                                         </span>
 
                                     </div>
@@ -38,162 +38,162 @@
                                             <tbody>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Phòng ban/ Đơn vị</span></td>
-                                                <td><span class="val">Phòng tổ chức</span></td>
+                                                <td><span class="val">@if(isset($arrDepart[$infoPerson['person_depart_id']])){{$arrDepart[$infoPerson['person_depart_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Số hiệu cán bộ, công chức</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">{{$infoPerson->person_code}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Họ và tên khai sinh</span></td>
-                                                <td><span class="val">Hoàng Huyền Trang</span></td>
+                                                <td><span class="val">{{$infoPerson->person_name}}</span></td>
                                                 <td><span class="lbl text-nowrap">Tên gọi khác</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">{{$infoPerson->person_name_other}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Email</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">{{$infoPerson->person_mail}}</span></td>
                                                 <td><span class="lbl text-nowrap">Điện thoại</span></td>
-                                                <td><span class="val">0967855612</span></td>
+                                                <td><span class="val">{{$infoPerson->person_phone}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày sinh</span></td>
-                                                <td><span class="val">15/09/1994</span></td>
+                                                <td><span class="val">{{($infoPerson['person_birth'] > 0) ? date('d/m/Y', $infoPerson['person_birth']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Giới tính</span></td>
-                                                <td><span class="val">Nữ</span></td>
+                                                <td><span class="val">{{(isset($item->person_sex) && $item->person_sex == 1) ? 'Nam' : 'Nữ'}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chức vụ (Vị trí việc làm)</span></td>
-                                                <td><span class="val">Chuyên viên</span></td>
+                                                <td><span class="val">@if(isset($arrChucVu[$infoPerson['person_position_define_id']])){{$arrChucVu[$infoPerson['person_position_define_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Chức danh</span></td>
-                                                <td><span class="val">Chuyên viên</span></td>
+                                                <td><span class="val">@if(isset($arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']])){{$arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']]}}@endif</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chức danh KHCN</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">---------</span></td>
                                                 <td><span class="lbl text-nowrap">Cấp ủy hiện tại, cấp ủy kiêm</span></td>
-                                                <td><span class="val">, </span></td>
+                                                <td><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi sinh</span></td>
-                                                <td><span class="val">Quảng Ninh, Hà Nội</span></td>
+                                                <td><span class="val">{{$infoPerson['person_address_place_of_birth']}}</span></td>
                                                 <td><span class="lbl text-nowrap">Quê quán</span></td>
-                                                <td><span class="val">Quảng Yên, Quảng Ninh</span></td>
+                                                <td><span class="val">{{$infoPerson['person_address_home_town']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi ở hiện nay</span></td>
-                                                <td><span class="val">Cổ Nhuế- Cổ Nhuế Nam Từ Liêm Hà Nội</span></td>
+                                                <td><span class="val">{{$infoPerson['person_address_current']}}</span></td>
                                                 <td><span class="lbl text-nowrap">Dân tộc</span></td>
-                                                <td><span class="val">Kinh</span></td>
+                                                <td><span class="val">@if(isset($arrDanToc[$infoPerson['person_nation_define_id']])){{$arrDanToc[$infoPerson['person_nation_define_id']]}}@endif</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Tôn giáo</span></td>
-                                                <td><span class="val">Không</span></td>
+                                                <td><span class="val">@if(isset($arrTonGiao[$infoPerson['person_respect']])){{$arrTonGiao[$infoPerson['person_respect']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nghề nghiệp bản thân trước khi được tuyển dụng</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Vào cơ quan nào, ở đâu</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào cơ quan đang công tác</span></td>
-                                                <td><span class="val">15/2/2017</span></td>
+                                                <td><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia cách mạng</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào Đảng</span></td>
-                                                <td><span class="val">Dự bị:  Chính thức: </span></td>
+                                                <td><span class="val">-----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia các tổ chức chính trị, xã hội</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày nhập ngũ</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày xuất ngũ</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Quân hàm, Chức vụ cao nhất (năm)</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ học vấn: GDPT</span></td>
-                                                <td><span class="val">10/10</span></td>
+                                                <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Học hàm</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Học vị</span></td>
-                                                <td><span class="val">Cử nhân</span></td>
+                                                <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Lý luận chính trị</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ ngoại ngữ</span></td>
-                                                <td><span class="val">Tiếng Anh (C); Tiếng Trung (A); Tiếng Hàn (C); Tiếng Đức (C); </span></td>
+                                                <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Danh hiệu được phong</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Khen thưởng</span></td>
-                                                <td><span class="val">Chiến sĩ thi đua toàn quốc(2017), Chiến sĩ thi đua cấp Bộ, ngành, tỉnh, đoàn thể trung ương(2018), Huân chương Sao vàng(2014), </span></td>
+                                                <td><span class="val">-------<span></td>
                                                 <td><span class="lbl text-nowrap">Công tác chính đang làm</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Sở trường công tác</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Công việc làm lâu nhất</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Kỷ luật</span></td>
-                                                <td><span class="val">Cảnh cáo(2017), </span></td>
+                                                <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Tình trạng sức khỏe</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chiều cao</span></td>
-                                                <td><span class="val">0</span></td>
+                                                <td><span class="val">{{$infoPerson->person_height}}</span></td>
                                                 <td><span class="lbl text-nowrap">Cân nặng</span></td>
-                                                <td><span class="val">0</span></td>
+                                                <td><span class="val">{{$infoPerson->person_weight}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nhóm máu</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">@if(isset($arrNhomMau[$infoPerson['person_blood_group_define_id']])){{$arrNhomMau[$infoPerson['person_blood_group_define_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Số chứng minh thư</span></td>
-                                                <td><span class="val">101242715</span></td>
+                                                <td><span class="val">{{$infoPerson['person_chung_minh_thu']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày cấp</span></td>
-                                                <td><span class="val">07/11/2011</span></td>
+                                                <td><span class="val">{{($infoPerson['person_date_range_cmt']  > 0) ? date('d/m/Y', $infoPerson['person_date_range_cmt']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Nơi cấp</span></td>
-                                                <td><span class="val">CA Quảng Ninh</span></td>
+                                                <td><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Thương binh hạng</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Gia đình chính sách</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu phổ thông</span></td>
                                                 <td>
-                                                    <span class="val">13333</span><span class="lbl"> - Cấp từ ngày: </span><span class="val"></span> <span class="lbl"> - Đến ngày:</span><span class="val "></span>
+                                                    <span class="val">---</span><span class="lbl"> - Cấp từ ngày: </span>
+                                                    <span class="val">----</span> <span class="lbl"> - Đến ngày:</span><span class="val ">----</span>
                                                 </td>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu công vụ</span></td>
-                                                <td>
-                                                </td>
+                                                <td>-----</td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Mã số thuế cá nhân</span></td>
-                                                <td><span class="val"></span></td>
+                                                <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Tài khoản ngân hàng</span></td>
-                                                <td><span class="val"> -  </span></td>
+                                                <td><span class="val">----</span></td>
                                             </tr>
                                             </tbody>
                                         </table>
@@ -203,103 +203,130 @@
                                             <div class="tit mgt-20">ĐÀO TẠO BỒI DƯỠNG VỀ CHUYÊN MÔN NGHIỆP VỤ, LÝ LUÂN CHÍNH TRỊ, NGOẠI NGỮ</div>
                                             <p><strong class="text-uppercase">Các khóa đào tạo có chuyên ngành trong hệ thống</strong></p>
                                             <table class="table table-bordered" id="tblDiploma">
-                                                <tbody><tr>
+                                                <tbody>
+                                                <tr>
                                                     <th>Tên trường</th>
                                                     <th>Ngành học hoặc tên lớp học</th>
                                                     <th>Thời gian học</th>
                                                     <th>Hình thức học</th>
                                                     <th>Văng bằng, chứng chỉ, trình độ gì</th>
                                                 </tr>
-                                                <tr>
-                                                    <td>noi dao tao</td>
-                                                    <td>SƠ CẤP NGHỀ VÀ DẠY NGHỀ DƯỚI 3 THÁNG, lop học</td>
-                                                    <td>1/2015-10/2018</td>
-                                                    <td>Chính quy</td>
-                                                    <td>Bác sĩ</td>
-                                                </tr>
-                                                </tbody></table>
+                                                @if(sizeof($arrCurriculumVitaeMain) > 0)
+                                                    @foreach($arrCurriculumVitaeMain as $item)
+                                                    <tr>
+                                                        <td>{{$item->curriculum_address_train}}</td>
+                                                        <td>@if(isset($arrChuyenNghanhDaoTao[$item['curriculum_training_id']])){{$arrChuyenNghanhDaoTao[$item['curriculum_training_id']]}}@endif, Lớp học: {{$item->curriculum_classic}}</td>
+                                                        <td>{{$item['curriculum_month_in']}}/{{$item['curriculum_year_in']}} -{{$item['curriculum_month_out']}}/{{$item['curriculum_year_out']}}</td>
+                                                        <td>@if(isset($arrHinhThucHoc[$item['curriculum_formalities_id']])){{$arrHinhThucHoc[$item['curriculum_formalities_id']]}}@endif</td>
+                                                        <td>
+                                                            @if(isset($arrVanBangChungChi[$item['curriculum_certificate_id']])){{$arrVanBangChungChi[$item['curriculum_certificate_id']]}}@endif
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop10 row">
                                         <div class="col-md-12">
                                             <p><strong class="text-uppercase">Các khóa đào tạo có chuyên ngành khác</strong></p>
                                             <table class="table table-bordered" id="tblDiploma">
-                                                <tbody><tr>
-                                                    <th>Tên trường, địa điểm</th>
-                                                    <th>Ngành học hoặc tên lớp học</th>
-                                                    <th>Thời gian học</th>
-                                                    <th>Văng bằng, chứng chỉ, trình độ gì</th>
-                                                    <th>Tổ chức cấp</th>
-                                                </tr>
-                                                </tbody></table>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Tên trường, địa điểm</th>
+                                                        <th>Ngành học hoặc tên lớp học</th>
+                                                        <th>Thời gian học</th>
+                                                        <th>Văng bằng, chứng chỉ, trình độ gì</th>
+                                                        <th>Tổ chức cấp</th>
+                                                    </tr>
+                                                    @if(sizeof($arrCurriculumVitaeOther) > 0)
+                                                        @foreach($arrCurriculumVitaeOther as $item)
+                                                            <tr>
+                                                                <td>{{$item->curriculum_address_train}}</td>
+                                                                <td>{{$item->curriculum_training_name}}</td>
+                                                                <td>{{$item['curriculum_month_in']}}/{{$item['curriculum_year_in']}} -{{$item['curriculum_month_out']}}/{{$item['curriculum_year_out']}}</td>
+                                                                <td>{{$item->curriculum_certificate_name}}</td>
+                                                                <td>{{$item->curriculum_formalities_name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop20 row">
                                         <div class="col-md-12  table-responsive">
                                             <div class="tit mgt-20">TÓM TẮT QUÁ TRÌNH CÔNG TÁC</div>
                                             <table class="table table-bordered" id="tblWork">
-                                                <tbody><tr>
-                                                    <th>Từ tháng năm đến tháng năm</th>
-                                                    <th>Chức danh, Chức vụ, Đơn vị công tác</th>
-                                                </tr>
-                                                <tr>
-                                                    <td>8/2016-1/2017</td>
-                                                    <td>Chuyên viên</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>1/2016-5/2016</td>
-                                                    <td>Nhân viên</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>3/2014-12/2014</td>
-                                                    <td>Nhân viên</td>
-                                                </tr>
-                                                </tbody></table>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Từ tháng năm đến tháng năm</th>
+                                                        <th>Chức danh, Chức vụ, Đơn vị công tác</th>
+                                                    </tr>
+                                                    @if(sizeof($arrQuaTrinhCongTac) > 0)
+                                                        @foreach($arrQuaTrinhCongTac as $item)
+                                                            <tr>
+                                                                <td>{{$item['curriculum_month_in']}}/{{$item['curriculum_year_in']}} -{{$item['curriculum_month_out']}}/{{$item['curriculum_year_out']}}</td>
+                                                                <td>{{$item->curriculum_name}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                    @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop20 row">
                                         <div class="col-md-12">
                                             <div class="tit">TÓM TẮT QUÁ TRÌNH HOẠT ĐỘNG ĐẢNG, CHÍNH QUYỀN, ĐOÀN THỂ</div>
                                             <table class="table table-bordered" id="tblPoliticActivity">
-                                                <tbody><tr>
+                                                <tbody>
+                                                <tr>
                                                     <th>Chi bộ</th>
                                                     <th>Thời gian</th>
                                                     <th>Chức vụ</th>
                                                     <th>Cấp ủy kiêm</th>
                                                 </tr>
-                                                </tbody></table>
+                                                @if(sizeof($arrHoatDongDang) > 0)
+                                                    @foreach($arrHoatDongDang as $item)
+                                                        <td>{{$item->curriculum_chibo}}</td>
+                                                        <td>{{$item['curriculum_month_in']}}/{{$item['curriculum_year_in']}} -{{$item['curriculum_month_out']}}/{{$item['curriculum_year_out']}}</td>
+                                                        <td>@if(isset($arrChucVuDang[$item['curriculum_chucvu_id']])){{$arrChucVuDang[$item['curriculum_chucvu_id']]}}@endif</td>
+                                                        <td>{{$item['curriculum_cap_uykiem']}}</td>
+                                                    @endforeach
+                                                @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop20">
                                         <div class="block_title">KHEN THƯỞNG</div>
                                         <div id="div_list_khenthuong">
-                                            <table class="table table-bordered table-hover">
-                                                <thead class="thin-border-bottom">
-                                                <tr class="">
-                                                    <th width="20%">Thành tích</th>
-                                                    <th width="10%" class="text-center">Năm đạt</th>
-                                                    <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                                    <th width="10%" class="text-center">Thưởng</th>
-                                                    <th width="30%" class="text-center">Ghi chú</th>
-                                                </tr>
-                                                </thead>
-                                                @if(sizeof($khenthuong) > 0)
-                                                    <tbody>
-                                                    @foreach ($khenthuong as $key => $item)
+                                            <table class="table table-bordered" id="tblWork">
+                                                <tbody>
+                                                    <tr>
+                                                        <th width="20%">Thành tích</th>
+                                                        <th width="15%">Năm đạt</th>
+                                                        <th>Quyết định đính kèm</th>
+                                                        <th>Thưởng</th>
+                                                        <th>Ghi chú</th>
+                                                    </tr>
+                                                    @if(sizeof($khenthuong) > 0)
+                                                        @foreach ($khenthuong as $key => $item)
                                                         <tr>
                                                             <td>@if(isset($arrTypeKhenthuong[$item['bonus_define_id']])){{ $arrTypeKhenthuong[$item['bonus_define_id']] }}@endif</td>
-                                                            <td class="text-center middle"> {{ $item['bonus_year'] }}</td>
-                                                            <td class="text-center middle">{{$item['bonus_decision']}}</td>
-                                                            <td class="text-center middle">{{ number_format($item['bonus_number'])}}</td>
-                                                            <td class="text-center middle">{{$item['bonus_note']}}</td>
+                                                            <td>{{ $item['bonus_year'] }}</td>
+                                                            <td>{{$item['bonus_decision']}}</td>
+                                                            <td>{{ number_format($item['bonus_number'])}}</td>
+                                                            <td>{{$item['bonus_note']}}</td>
                                                         </tr>
-                                                    @endforeach
-                                                    </tbody>
-                                                @else
+                                                        @endforeach
+                                                    @else
                                                     <tr>
-                                                        <td colspan="7"> Chưa có dữ liệu</td>
+                                                        <td colspan="5"> Chưa có dữ liệu</td>
                                                     </tr>
-                                                @endif
+                                                    @endif
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -307,31 +334,29 @@
                                     <div class="marginTop20">
                                         <div class="block_title">DANH HIỆU</div>
                                         <div id="div_list_danhhieu">
-                                            <table class="table table-bordered table-hover">
-                                                <thead class="thin-border-bottom">
-                                                <tr class="">
-                                                    <th width="30%">Danh hiệu</th>
-                                                    <th width="10%" class="text-center">Năm đạt</th>
-                                                    <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                                    <th width="30%" class="text-center">Ghi chú</th>
+                                            <table class="table table-bordered" id="tblWork">
+                                                <tbody>
+                                                <tr>
+                                                    <th width="20%">Danh hiệu</th>
+                                                    <th width="15%">Năm đạt</th>
+                                                    <th>Quyết định đính kèm</th>
+                                                    <th>Ghi chú</th>
                                                 </tr>
-                                                </thead>
                                                 @if(sizeof($danhhieu) > 0)
-                                                    <tbody>
                                                     @foreach ($danhhieu as $key2 => $item2)
                                                         <tr>
                                                             <td>@if(isset($arrTypeDanhhieu[$item2['bonus_define_id']])){{ $arrTypeDanhhieu[$item2['bonus_define_id']] }}@endif</td>
-                                                            <td class="text-center middle"> {{ $item2['bonus_year'] }}</td>
-                                                            <td class="text-center middle">{{$item2['bonus_decision']}}</td>
-                                                            <td class="text-center middle">{{$item2['bonus_note']}}</td>
+                                                            <td>{{$item2['bonus_year'] }}</td>
+                                                            <td>{{$item2['bonus_decision']}}</td>
+                                                            <td>{{$item2['bonus_note']}}</td>
                                                         </tr>
                                                     @endforeach
-                                                    </tbody>
                                                 @else
                                                     <tr>
-                                                        <td colspan="7"> Chưa có dữ liệu</td>
+                                                        <td colspan="4"> Chưa có dữ liệu</td>
                                                     </tr>
                                                 @endif
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -339,31 +364,30 @@
                                     <div class="marginTop20">
                                         <div class="block_title">KỶ LUẬT</div>
                                         <div id="div_list_kyluat">
-                                            <table class="table table-bordered table-hover">
-                                                <thead class="thin-border-bottom">
-                                                <tr class="">
-                                                    <th width="30%">Hình thức</th>
-                                                    <th width="10%" class="text-center">Năm bị kỷ luật</th>
-                                                    <th width="20%" class="text-center">Quyết định đính kèm</th>
-                                                    <th width="30%" class="text-center">Ghi chú</th>
+
+                                            <table class="table table-bordered" id="tblWork">
+                                                <tbody>
+                                                <tr>
+                                                    <th width="20%">Hình thức</th>
+                                                    <th width="15%">Năm bị kỷ luật</th>
+                                                    <th>Quyết định đính kèm</th>
+                                                    <th>Ghi chú</th>
                                                 </tr>
-                                                </thead>
                                                 @if(sizeof($kyluat) > 0)
-                                                    <tbody>
                                                     @foreach ($kyluat as $key3 => $item3)
                                                         <tr>
                                                             <td>@if(isset($arrTypeKyluat[$item3['bonus_define_id']])){{ $arrTypeKyluat[$item3['bonus_define_id']] }}@endif</td>
-                                                            <td class="text-center middle">{{ $item3['bonus_year'] }}</td>
-                                                            <td class="text-center middle">{{$item3['bonus_decision']}}</td>
-                                                            <td class="text-center middle">{{$item3['bonus_note']}}</td>
+                                                            <td>{{$item3['bonus_year'] }}</td>
+                                                            <td>{{$item3['bonus_decision']}}</td>
+                                                            <td>{{$item3['bonus_note']}}</td>
                                                         </tr>
                                                     @endforeach
-                                                    </tbody>
                                                 @else
                                                     <tr>
-                                                        <td colspan="7"> Chưa có dữ liệu</td>
+                                                        <td colspan="4"> Chưa có dữ liệu</td>
                                                     </tr>
                                                 @endif
+                                                </tbody>
                                             </table>
                                         </div>
                                     </div>
@@ -371,13 +395,15 @@
                                         <div class="col-md-12">
                                             <div class="tit mgt-20">TÓM TẮT QUÁ TRÌNH HOẠT ĐỘNG ĐẢNG, CHÍNH QUYỀN, ĐOÀN THỂ</div>
                                             <table class="table table-bordered">
-                                                <tbody><tr>
-                                                    <th>Chi bộ</th>
-                                                    <th>Thời gian</th>
-                                                    <th>Chức vụ</th>
-                                                    <th>Cấp ủy kiêm</th>
-                                                </tr>
-                                                </tbody></table>
+                                                <tbody>
+                                                    <tr>
+                                                        <th>Chi bộ</th>
+                                                        <th>Thời gian</th>
+                                                        <th>Chức vụ</th>
+                                                        <th>Cấp ủy kiêm</th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop20 row">
