@@ -393,21 +393,6 @@
                                     </div>
                                     <div class="marginTop20 row">
                                         <div class="col-md-12">
-                                            <div class="tit mgt-20">TÓM TẮT QUÁ TRÌNH HOẠT ĐỘNG ĐẢNG, CHÍNH QUYỀN, ĐOÀN THỂ</div>
-                                            <table class="table table-bordered">
-                                                <tbody>
-                                                    <tr>
-                                                        <th>Chi bộ</th>
-                                                        <th>Thời gian</th>
-                                                        <th>Chức vụ</th>
-                                                        <th>Cấp ủy kiêm</th>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                    <div class="marginTop20 row">
-                                        <div class="col-md-12">
                                             <div class="tit mgt-20">ĐẶC ĐIỂM LỊCH SỬ BẢN THÂN</div>
                                             <div class="form-group">
                                                 <label>Khai rõ: Bị bắt, bị tù (từ ngày, tháng, năm nào đến ngày, tháng, năm nào, ở đâu), đã khai báo cho ai, những vấn đề gì</label>
@@ -415,7 +400,6 @@
 
                                                 </div>
                                             </div>
-
                                         </div>
                                     </div>
                                     <div class="row">
@@ -466,31 +450,18 @@
                                                     <th class="text-nowrap">Năm sinh</th>
                                                     <th>Quê quán, nghề nghiệp, chức danh, chức vụ, đơn vị công tác, học tập, nơi ở; Thành viên các tổ chức chính trị xã hội</th>
                                                 </tr>
-                                                <tr>
-                                                    <td>Bố đẻ</td>
-                                                    <td>Hoàng Văn Nam</td>
-                                                    <td>1954</td>
-                                                    <td>Quảng Ninh</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Mẹ đẻ</td>
-                                                    <td>Nguyễn Thị Hiên</td>
-                                                    <td>1964</td>
-                                                    <td>Quảng Ninh</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Anh</td>
-                                                    <td>Hoàng Phúc Thái Linh</td>
-                                                    <td>1992</td>
-                                                    <td>Quảng Ninh</td>
-                                                </tr>
-                                                <tr>
-                                                    <td>Bố đẻ</td>
-                                                    <td>nguyên văn A</td>
-                                                    <td>2016</td>
-                                                    <td>đâsdas</td>
-                                                </tr>
-                                                </tbody></table>
+                                                @if(sizeof($quanHeGiaDinh) > 0)
+                                                    @foreach ($quanHeGiaDinh as $item)
+                                                    <tr>
+                                                        <td>@if(isset($arrQuanHeGiaDinh[$item['relationship_define_id']])){{ $arrQuanHeGiaDinh[$item['relationship_define_id']] }}@endif</td>
+                                                        <td>{{$item['relationship_human_name']}}</td>
+                                                        <td>{{$item['relationship_year_birth']}}</td>
+                                                        <td>{{$item['relationship_describe']}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                 @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                     <div class="marginTop20 row">
@@ -552,18 +523,22 @@
                                                     <th>Ngày hiệu lực</th>
                                                     <th>Thỏa thuận khác</th>
                                                 </tr>
-                                                <tr>
-                                                    <td>1</td>
-                                                    <td>12 tháng</td>
-                                                    <td>Công chức</td>
-                                                    <td>HD01</td>
-                                                    <td>5,000,000</td>
-                                                    <td>01/03/2016</td>
-                                                    <td>02/03/2016</td>
-                                                    <td>Thỏa thuận khác 2</td>
-                                                </tr>
-                                                </tbody></table>
-
+                                                @if(sizeof($contractsPerson) > 0)
+                                                    @foreach($contractsPerson as $k=>$item)
+                                                    <tr>
+                                                        <td>{{$k+1}}</td>
+                                                        <td>@if(isset($arrLoaihopdong[$item['contracts_type_define_id']])){{ $arrLoaihopdong[$item['contracts_type_define_id']] }} @endif</td>
+                                                        <td>@if(isset($arrChedothanhtoan[$item['contracts_payment_define_id']])){{ $arrChedothanhtoan[$item['contracts_payment_define_id']] }} @endif</td>
+                                                        <td>{{$item['contracts_code']}}</td>
+                                                        <td>{{ number_format($item['contracts_money'])}}</td>
+                                                        <td>{{date('d-m-Y',$item['contracts_sign_day'])}}</td>
+                                                        <td>{{date('d-m-Y',$item['contracts_effective_date'])}}</td>
+                                                        <td>{{$item['contracts_describe']}}</td>
+                                                    </tr>
+                                                    @endforeach
+                                                @endif
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
                                 </div>
