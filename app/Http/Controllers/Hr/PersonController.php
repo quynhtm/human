@@ -8,6 +8,7 @@ use App\Http\Models\Admin\Province;
 use App\Http\Models\Admin\Wards;
 use App\Http\Models\Hr\CurriculumVitae;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\HrContracts;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\HrDefine;
@@ -16,6 +17,7 @@ use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\Role;
 use App\Http\Models\Admin\RoleMenu;
 
+use App\Http\Models\Hr\Relationship;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -372,6 +374,13 @@ class PersonController extends BaseAdminController
         $arrHoatDongDang = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_HOAT_DONG_DANG);
         $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
+        $quanHeGiaDinh = Relationship::getRelationshipByPersonId($person_id);
+        $arrQuanHeGiaDinh = HrDefine::getArrayByType(Define::quan_he_gia_dinh);
+
+        $contractsPerson = HrContracts::getListContractsByPersonId($person_id);
+        $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
+        $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
             'person_id' => $person_id,
@@ -396,6 +405,11 @@ class PersonController extends BaseAdminController
             'arrQuaTrinhCongTac' => $arrQuaTrinhCongTac,
             'arrHoatDongDang' => $arrHoatDongDang,
             'arrChucVuDang' => $arrChucVuDang,
+            'quanHeGiaDinh' => $quanHeGiaDinh,
+            'arrQuanHeGiaDinh' => $arrQuanHeGiaDinh,
+            'contractsPerson' => $contractsPerson,
+            'arrLoaihopdong' => $arrLoaihopdong,
+            'arrChedothanhtoan' => $arrChedothanhtoan,
 
         ], $this->viewPermission));
     }
