@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
+use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Admin\Role;
+use App\Http\Models\Hr\Salary;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -127,7 +129,8 @@ class ReportController extends BaseAdminController
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportTienLuongCongChuc.xls");
         $generatedDate = date("d-m-Y");
-        $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . date('Y', time());
+        $yearExport = $search['reportYear'];
+        $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . $yearExport;
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $titleReport);
 
@@ -153,17 +156,46 @@ class ReportController extends BaseAdminController
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $person_sex_0);
                 }
 
+                $dataSalary = Salary::getSalaryByPersonIdAndYear($item->person_id, $yearExport);
+                $salary_coefficients = isset($dataSalary->salary_coefficients) ? $dataSalary->salary_coefficients : 0;
+                $salary_civil_servants = isset($dataSalary->salary_civil_servants) ? $dataSalary->salary_civil_servants : '';
+
+                $salary_month = isset($dataSalary->salary_month) ? $dataSalary->salary_month : '';
+                $salary_year = isset($dataSalary->salary_year) ? $dataSalary->salary_year : '';
+
+                //phucap
+                $listAllowance = Allowance::getAllowanceByPersonId($item->person_id);
+                $phucap_chucvu = $phucap_trachnhiem = $phucap_khuvuc = $phucap_thamnienvuotkhung = $phucap_total = 0;
+                foreach($listAllowance as $_k => $pc){
+                    if($pc->allowance_type == Define::phucap_chucvu && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
+                        $phucap_chucvu = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                    }
+                    if($pc->allowance_type == Define::phucap_trachnhiem && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
+                        $phucap_trachnhiem = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                    }
+                    if($pc->allowance_type == Define::phucap_khuvuc && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
+                        $phucap_khuvuc = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                    }
+                    if($pc->allowance_type == Define::phucap_thamnienvuotkhung && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
+                        $phucap_thamnienvuotkhung = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
+                    }
+                }
+                $phucap_total = $phucap_chucvu + $phucap_trachnhiem + $phucap_khuvuc + $phucap_thamnienvuotkhung;
+
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A'.$i, $stt)
                     ->setCellValue('B'.$i, $item->person_name)
                     ->setCellValue('E'.$i, isset($arrChucVu[$item->person_position_define_id]) ? $arrChucVu[$item->person_position_define_id] : '')
                     ->setCellValue('F'.$i, isset($arrDepart[$item->person_depart_id]) ? $arrDepart[$item->person_depart_id] : '')
-                    ->setCellValue('G'.$i, '')
-                    ->setCellValue('H'.$i, '')
-                    ->setCellValue('I'.$i, '')
-                    ->setCellValue('J'.$i, '')
-                    ->setCellValue('K'.$i, '')
-                    ->setCellValue('L'.$i, '');
+                    ->setCellValue('G'.$i, $salary_month.'/'.$salary_year)
+                    ->setCellValue('H'.$i, $salary_coefficients)
+                    ->setCellValue('I'.$i, $salary_civil_servants)
+                    ->setCellValue('J'.$i, $phucap_chucvu)
+                    ->setCellValue('K'.$i, $phucap_trachnhiem)
+                    ->setCellValue('L'.$i, $phucap_khuvuc)
+                    ->setCellValue('M'.$i, $phucap_thamnienvuotkhung)
+                    ->setCellValue('N'.$i, $phucap_total)
+                    ->setCellValue('O'.$i, '');
             }
         }
         $filename = 'reportTienLuongCongChuc';

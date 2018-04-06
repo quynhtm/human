@@ -18,11 +18,19 @@ class Salary extends BaseModel
 
     protected $fillable = array('salary_project', 'salary_person_id', 'salary_month', 'salary_year', 'salary_percent',
         'salary_salaries', 'salary_wage_table', 'salary_civil_servants', 'salary_wage', 'salary_coefficients');
-    public static function getSalaryByPersonId($person_id)
-    {
+    public static function getSalaryByPersonId($person_id){
         if ($person_id > 0) {
             $result = Salary::where('salary_person_id', $person_id)
                 ->orderBy('salary_id', 'ASC')->get();
+            return $result;
+        }
+        return array();
+    }
+    public static function getSalaryByPersonIdAndYear($person_id=0, $year=0){
+        if ($person_id > 0 && $year > 0) {
+            $result = Salary::where('salary_person_id', $person_id)
+                    ->where('salary_year', $year)
+                    ->orderBy('salary_id', 'DESC')->first();
             return $result;
         }
         return array();
