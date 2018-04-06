@@ -106,7 +106,7 @@
                         </i>
                     </a>
                 </li>
-                <li class="light-blue">
+                <li class="light-blue" style="display: none">
                     <a class="dropdown-toggle" href="#">
                         <i class="fa fa-bell-o fa-2x marginTop5" aria-hidden="true">
                             <span class="msg_notify">13</span>

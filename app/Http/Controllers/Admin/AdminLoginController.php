@@ -7,6 +7,7 @@
 */
 namespace App\Http\Controllers\Admin;
 
+use App\Library\AdminFunction\Curl;
 use App\Library\AdminFunction\FunctionLib;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -15,6 +16,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\GroupUserPermission;
 use App\Library\AdminFunction\CGlobal;
+use Illuminate\Support\Facades\URL;
 
 class AdminLoginController extends Controller{
 
@@ -23,6 +25,8 @@ class AdminLoginController extends Controller{
     }
 
     public function getLogin($url = ''){
+
+
         if (Session::has('user')) {
             if ($url === '' || $url === 'user') {
                 return Redirect::route('admin.dashboard');
@@ -30,11 +34,16 @@ class AdminLoginController extends Controller{
                 return Redirect::to(self::buildUrlDecode($url));
             }
         } else {
+            //call cronjob auto
+            $curl = Curl::getInstance();
+            $curl->get(URL::route('cr.callRunCronjob'));
+
             return view('admin.AdminUser.login');
         }
     }
 
     public function postLogin(Request $request, $url = ''){
+
 
         if(Session::has('user')){
             if ($url === '' || $url === 'user'){
