@@ -344,14 +344,14 @@ class PersonController extends BaseAdminController
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
-        //thông tin khen thưởng
+        //Thông tin khen thưởng
         $khenthuong = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
         $arrTypeKhenthuong = HrDefine::getArrayByType(Define::khen_thuong);
-        //thông tin danh hieu
+        //Thông tin danh hieu
         $danhhieu = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
         $arrTypeDanhhieu = HrDefine::getArrayByType(Define::danh_hieu);
 
-        //thông tin kỷ luật
+        //Thông tin kỷ luật
         $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
         $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
         $this->getDataDefault();
@@ -380,6 +380,7 @@ class PersonController extends BaseAdminController
         $contractsPerson = HrContracts::getListContractsByPersonId($person_id);
         $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
         $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
