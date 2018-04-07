@@ -418,7 +418,6 @@ class HrDocumentController extends BaseAdminController{
         if(isset($data['submitDocumentSend']) && $data['submitDocumentSend'] == 'submitDocumentSend'){
             $this->valid($data);
         }
-
         if(sizeof($this->error) == 0) {
             $id = ($id == 0) ? $id_hiden : $id;
             if($id > 0) {
@@ -431,6 +430,7 @@ class HrDocumentController extends BaseAdminController{
                 if(isset($data['submitDocumentDraft'])){
                     $data['hr_document_status'] = Define::mail_nhap;
                     $data['hr_document_type_view'] = -1;
+                    $data['hr_document_person_send'] = $this->user['user_id'];
                     HrDocument::updateItem($id, $data);
                 }else{
                     $data['hr_document_date_send'] = time();
@@ -458,6 +458,7 @@ class HrDocumentController extends BaseAdminController{
                 if(isset($data['submitDocumentDraft'])){
                     $data['hr_document_status'] = Define::mail_nhap;
                     $data['hr_document_type_view'] = -1;
+                    $data['hr_document_person_send'] = $this->user['user_id'];
                 }else{
                     $data['hr_document_type_view'] = Define::mail_type_0;
                     $data['hr_document_status'] = Define::mail_da_gui;

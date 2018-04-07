@@ -36,7 +36,7 @@ use App\Library\AdminFunction\CGlobal;
                                 <div class="control-group">
                                     <div class="controls">
                                         <label for="name" class="control-label">
-                                            <a href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
+                                            <a class="text-italic" href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
                                         </label>
                                         <div id="sys_show_image_one" style="width:100%; height: 240px; overflow: hidden">
                                             @if(isset($data['person_avatar']) && $data['person_avatar'] !='')

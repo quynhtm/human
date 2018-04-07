@@ -331,6 +331,7 @@ class HrMailController extends BaseAdminController{
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
                     $data['hr_mail_type'] = -1;
+                    $data['hr_mail_person_send'] = $this->user['user_id'];
                     HrMail::updateItem($id, $data);
                 }else{
                     $data['hr_mail_date_send'] = time();
@@ -359,6 +360,7 @@ class HrMailController extends BaseAdminController{
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
                     $data['hr_mail_type'] = -1;
+                    $data['hr_mail_person_send'] = $this->user['user_id'];
                 }else{
                     $data['hr_mail_type'] = Define::mail_type_0;
                     $data['hr_mail_status'] = Define::mail_da_gui;

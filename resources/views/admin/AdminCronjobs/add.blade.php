@@ -63,7 +63,7 @@
                 <div class="clearfix"></div>
                 <div class="form-group col-sm-12 text-left">
                     {!! csrf_field() !!}
-                    <a class="btn btn-warning" href="{{URL::route('cr.CronjobView')}}"><i class="fa fa-reply"></i> Trở lại</a>
+                    <a class="btn btn-warning" href="{{URL::route('admin.CronjobView')}}"><i class="fa fa-reply"></i> Trở lại</a>
                     <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại</button>
                     <input id="id_hiden" name="id_hiden" @isset($data['cronjob_id'])rel="{{$data['cronjob_id']}}" value="{{FunctionLib::inputId($data['cronjob_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                 </div>
