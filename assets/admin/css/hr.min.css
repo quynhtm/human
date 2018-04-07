@@ -247,3 +247,8 @@ span.lbl {
 .text-italic{
 	font-style: italic;
 }
+#adminFormExportViewTienLuongCongChuc {
+    display: inline-block;
+    width: 80%;
+    float: left;
+}

@@ -28,14 +28,14 @@ use App\Http\Models\Hr\Allowance;
                                 <div class="panel-body">
                                     <form class="form-horizontal" action="" method="get" id="adminFormExportViewTienLuongCongChuc" name="adminFormExportViewTienLuongCongChuc">
                                         <div class="form-group">
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
                                                 <label>Chọn Đơn vị/ Phòng ban</label>
                                                 <select class="form-control input-sm" name="person_depart_id">
                                                     <option value="">- Đơn vị/ Phòng ban -</option>
                                                    {!! $optionDepart !!}
                                                 </select>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-md-5">
                                                 <label>Chọn năm báo cáo</label>
                                                 <select class="required form-control input-sm" name="reportYear">
                                                     <option value="">- Chọn năm báo cáo -</option>
@@ -48,16 +48,16 @@ use App\Http\Models\Hr\Allowance;
                                                     <button class="btn btn-primary btn-sm clickFormReportLuong" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
                                                 </div>
                                             </div>
-                                            <div class="col-md-2">
-                                                <label>&nbsp;</label>
-                                                <div class="input-group-btn">
-                                                    <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-default btn-sm exportViewTienLuongCongChuc">
-                                                        <i class="fa fa-file-excel-o"></i> Xuất ra file
-                                                    </a>
-                                                </div>
-                                            </div>
                                         </div>
                                     </form>
+                                    <div class="col-md-2">
+                                        <label>&nbsp;</label>
+                                        <div class="input-group-btn">
+                                            <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-warning btn-sm exportViewTienLuongCongChuc">
+                                                <i class="fa fa-file-excel-o"></i> Xuất ra file
+                                            </a>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> thiết bị @endif </div>
@@ -66,13 +66,13 @@ use App\Http\Models\Hr\Allowance;
                                                 <tbody>
                                                 <tr class="text-center">
                                                     <th rowspan="2">TT</th>
-                                                    <th rowspan="2">Họ Và tên</th>
-                                                    <th colspan="2">Ngày, tháng năm sinh</th>
+                                                    <th rowspan="2" width="10%">Họ Và tên</th>
+                                                    <th colspan="2" class="text-center">Ngày, tháng năm sinh</th>
                                                     <th rowspan="2">Chức vụ hoặc chức danh công tác</th>
                                                     <th rowspan="2">Cơ quan, đơn vị đang làm việc</th>
                                                     <th rowspan="2">Thời gian giữ ngạch (kể cả ngạch tương đương)</th>
-                                                    <th colspan="2">Mức lương hiện hưởng</th>
-                                                    <th colspan="5">Phụ cấp</th>
+                                                    <th colspan="2" class="text-center">Mức lương hiện hưởng</th>
+                                                    <th colspan="5" class="text-center">Phụ cấp</th>
                                                     <th rowspan="2">Ghi chú</th>
                                                 </tr>
                                                 <tr class="text-center">
