@@ -15,7 +15,7 @@ use App\Http\Models\Hr\Allowance;
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
                 </li>
-                <li class="active">Quản lý lương</li>
+                <li class="active">Báo cáo danh sách và tiền lương công chức {{isset($search['reportYear']) ? $search['reportYear'] : ''}}</li>
             </ul>
         </div>
         <div class="page-content">
@@ -25,15 +25,6 @@ use App\Http\Models\Hr\Allowance;
                     <div class="row">
                         <div class="col-xs-12 table-responsive">
                             <div class="line">
-                                <div class="panel-heading clearfix">
-                                    <h4 class="panel-title pull-left">BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC {{isset($search['reportYear']) ? $search['reportYear'] : ''}}</h4>
-                                    <div class="btn-group btn-group-sm pull-right">
-                                        <span>
-                                            <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-default btn-sm exportViewTienLuongCongChuc">
-                                                <i class="fa fa-file-excel-o"></i> Xuất ra file</a>
-                                        </span>
-                                    </div>
-                                </div>
                                 <div class="panel-body">
                                     <form class="form-horizontal" action="" method="get" id="adminFormExportViewTienLuongCongChuc" name="adminFormExportViewTienLuongCongChuc">
                                         <div class="form-group">
@@ -55,6 +46,14 @@ use App\Http\Models\Hr\Allowance;
                                                 <label>&nbsp;</label>
                                                 <div class="input-group-btn">
                                                     <button class="btn btn-primary btn-sm clickFormReportLuong" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2">
+                                                <label>&nbsp;</label>
+                                                <div class="input-group-btn">
+                                                    <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-default btn-sm exportViewTienLuongCongChuc">
+                                                        <i class="fa fa-file-excel-o"></i> Xuất ra file
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
