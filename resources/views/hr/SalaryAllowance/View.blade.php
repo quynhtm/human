@@ -50,6 +50,11 @@
                                             <td class="text-center middle">{{$item['salary_month']}}/{{$item['salary_year']}}</td>
                                             <td class="text-center middle">
                                                 @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceCreate == 1)
+                                                    <a class="viewItem" title="Chi tiết lương" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['salary_person_id'])}}')">
+                                                        <i class="fa fa-eye fa-2x"></i>
+                                                    </a>
+                                                @endif
+                                                @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceCreate == 1)
                                                     <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item['salary_person_id'])}}','{{FunctionLib::inputId($item['salary_id'])}}','salaryAllowance/editSalary',0)"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>
                                                 @endif
                                                 @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceDelete == 1)
