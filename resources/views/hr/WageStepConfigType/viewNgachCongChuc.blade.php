@@ -9,7 +9,7 @@
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
                 </li>
-                <li class="active">Quản lý thang bảng lương</li>
+                <li class="active">Quản lý ngạch công chức</li>
             </ul>
         </div>
         <div class="page-content">
@@ -17,7 +17,7 @@
                 <div class="col-md-8 panel-content">
                     <div class="panel panel-primary">
                         <div class="panel-heading paddingTop1 paddingBottom1">
-                            <h4><i class="fa fa-list" aria-hidden="true"></i> Quản lý thang bảng lương</h4>
+                            <h4><i class="fa fa-list" aria-hidden="true"></i> Quản lý ngạch công chức</h4>
                         </div>
                         {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                         <div style="margin-top: 10px">
@@ -33,7 +33,7 @@
                                 <button class="btn btn-primary btn-sm" type="submit" name="submit" value="1">
                                     <i class="fa fa-search"></i> {{FunctionLib::viewLanguage('search')}}
                                 </button>
-                                <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadForm')" title="Thêm mới">Thêm mới</a>
+                                <a class="btn btn-warning btn-sm" onclick="HR.editItem('{{FunctionLib::inputId(0)}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadFormNgachCongChuc')" title="Thêm mới">Thêm mới</a>
                             </div>
 
                         </div>
@@ -61,7 +61,7 @@
                                             <td class="text-center">{{isset($arrStatus[$item->wage_step_config_status]) ? $arrStatus[$item->wage_step_config_status] : 'Chưa xác định'}}</td>
                                             <td class="text-center middle" align="center">
                                                 @if($is_root || $permission_edit)
-                                                    <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadForm')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                                    <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadFormNgachCongChuc')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
                                                 @endif
                                                 @if($is_boss || $permission_remove)
                                                     <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/deleteWageStepConfig')"><i class="fa fa-trash fa-2x"></i></a>
@@ -92,6 +92,13 @@
                                     <input type="text" name="wage_step_config_name" title="Tên thang bảng lương" class="form-control input-required" id="wage_step_config_name">
                                 </div>
                                 <div class="form-group">
+                                    <label for="define_name">Thang bảng lương</label>
+                                    <select name="wage_step_config_parent_id" id="wage_step_config_parent_id" class="form-control">
+                                        <option value="-1">--Chọn thang bảng lương--</option>
+                                        {!! $optionParent !!}
+                                    </select>
+                                </div>
+                                <div class="form-group">
                                     <label for="define_order">Thứ tự hiển thị</label>
                                     <input type="text" name="wage_step_config_order" title="Thứ tự hiển thị" class="form-control" id="wage_step_config_order">
                                 </div>
@@ -101,7 +108,7 @@
                                         {!! $optionStatus !!}
                                     </select>
                                 </div>
-                                <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config/edit/' + '{{FunctionLib::inputId(0)}}')">
+                                <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config-ngach-cong-chuc/edit/' + '{{FunctionLib::inputId(0)}}')">
                                     <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
                                 </a>
                                 <a class="btn btn-default" id="cancel" onclick="HR.resetItem('#id', '{{FunctionLib::inputId(0)}}')">

@@ -141,8 +141,13 @@ Route::match(['GET','POST'],'report/exportTienLuongCongChuc', array('as' => 'hr.
 
 Route::match(['GET','POST'],'staff/view', array('as' => 'hr.HrstaffView','uses' => HResources.'\HrStaffController@view'));
 
-
+//Thang bang luong
 Route::match(['GET','POST'],'wage-step-config/view', array('as' => 'hr.wageStepConfigView','uses' => HResources.'\HrWageStepConfigController@view'));
 Route::post('wage-step-config/edit/{id?}',array('as' => 'hr.wageStepConfigEdit','uses' => HResources.'\HrWageStepConfigController@postItem'));
 Route::get('wage-step-config/deleteWageStepConfig', array('as' => 'hr.deleteWageStepConfig','uses' => HResources.'\HrWageStepConfigController@deleteWageStepConfig'));
 Route::post('wage-step-config/ajaxLoadForm',array('as' => 'hr.loadFormWageStepConfig','uses' => HResources.'\HrWageStepConfigController@ajaxLoadForm'));
+
+Route::match(['GET','POST'],'wage-step-config/viewNgachCongChuc', array('as' => 'hr.wageStepConfigViewNgachCongChuc','uses' => HResources.'\HrWageStepConfigController@viewNgachCongChuc'));
+Route::post('wage-step-config-ngach-cong-chuc/edit/{id?}',array('as' => 'hr.wageStepConfigEditNgachCongChuc','uses' => HResources.'\HrWageStepConfigController@postItemNgachCongChuc'));
+Route::post('wage-step-config/ajaxLoadFormNgachCongChuc',array('as' => 'hr.ajaxLoadFormNgachCongChuc','uses' => HResources.'\HrWageStepConfigController@ajaxLoadFormNgachCongChuc'));
+

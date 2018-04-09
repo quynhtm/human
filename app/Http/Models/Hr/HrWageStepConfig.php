@@ -146,4 +146,17 @@ class HrWageStepConfig extends BaseModel{
             throw new PDOException();
         }
     }
+    public static function getArrayByType($config_type = 0){
+        $results = array();
+        if($config_type > 0){
+            $result = HrWageStepConfig::where('wage_step_config_id','>', 0)
+                        ->where('wage_step_config_type', $config_type)->get();
+            if(sizeof($result) > 0){
+                foreach($result as $item){
+                    $results[$item->wage_step_config_id] = $item->wage_step_config_name;
+                }
+            }
+        }
+        return $results;
+    }
 }
