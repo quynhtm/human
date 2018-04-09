@@ -64,7 +64,7 @@ class CGlobal
           4 => ['icons' => 'fa fa-money', 'name_url' => 'Cập nhật lương phụ cấp', 'link_url' => '/manager/salaryAllowance/viewSalaryAllowance/','blank'=>1],
           5 => ['icons' => 'fa fa-child', 'name_url' => 'Thông báo-bổ nhiệm chức vụ', 'link_url' => '/manager/jobAssignment/viewJobAssignment/','blank'=>1],
           6 => ['icons' => 'fa fa-file-o', 'name_url' => 'Hợp đồng lao động', 'link_url' => '/manager/infoPerson/viewContracts/','blank'=>1],
-          7 => ['icons' => 'fa fa-plane', 'name_url' => 'Cập nhật thông tinh hộ chiếu,MST', 'link_url' => '/manager/passport/edit/','blank'=>1],
+          7 => ['icons' => 'fa fa-plane', 'name_url' => 'Cập nhật thông tin hộ chiếu,MST', 'link_url' => '/manager/passport/edit/','blank'=>1],
           8 => ['icons' => 'fa fa-retweet', 'name_url' => 'Chuyển bộ phận phòng ban', 'link_url' => '/manager/quitJob/editMoveDepart/','blank'=>1],
           9 => ['icons' => 'fa fa-clock-o', 'name_url' => 'Thiết lập thời gian nghỉ hưu', 'link_url' => '/manager/retirement/edit/','blank'=>1],
           10 => ['icons' => 'fa fa-level-up', 'name_url' => 'Kéo dài thời gian nghỉ hưu', 'link_url' => '/manager/retirement/editTime/','blank'=>1],
