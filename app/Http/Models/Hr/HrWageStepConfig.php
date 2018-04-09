@@ -1,0 +1,149 @@
+<?php
+/*
+* @Created by: HaiAnhEm
+* @Author    : nguyenduypt86@gmail.com
+* @Date      : 01/2017
+* @Version   : 1.0
+*/
+namespace App\Http\Models\Hr;
+use App\Http\Models\BaseModel;
+
+use App\Library\AdminFunction\Define;
+use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\DB;
+
+class HrWageStepConfig extends BaseModel{
+    protected $table = Define::TABLE_HR_WAGE_STEP_CONFIG;
+    protected $primaryKey = 'wage_step_config_id';
+    public $timestamps = false;
+
+    protected $fillable = array('wage_step_config_project', 'wage_step_config_parent_id', 'wage_step_config_name', 'wage_step_config_value', 'wage_step_config_type',
+        'wage_step_config_order', 'wage_step_config_status');
+
+    public static function createItem($data){
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $checkData = new HrWageStepConfig();
+            $fieldInput = $checkData->checkField($data);
+            $item = new HrWageStepConfig();
+            if (is_array($fieldInput) && count($fieldInput) > 0) {
+                foreach ($fieldInput as $k => $v) {
+                    $item->$k = $v;
+                }
+            }
+            $item->save();
+
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->wage_step_config_id,$item);
+            return $item->wage_step_config_id;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+        }
+    }
+    public static function updateItem($id,$data){
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $checkData = new HrWageStepConfig();
+            $fieldInput = $checkData->checkField($data);
+            $item = HrWageStepConfig::find($id);
+            foreach ($fieldInput as $k => $v) {
+                $item->$k = $v;
+            }
+            $item->update();
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->wage_step_config_id,$item);
+            return true;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+        }
+    }
+    public static function getItemById($id=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_WAGE_STEP_CONFIG_ID . $id) : array();
+        try {
+            if (empty($result)) {
+                $result = HrWageStepConfig::where('wage_step_config_id', $id)->first();
+                if ($result && Define::CACHE_ON) {
+                    Cache::put(Define::CACHE_HR_WAGE_STEP_CONFIG_ID . $id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+    public function checkField($dataInput) {
+        $fields = $this->fillable;
+        $dataDB = array();
+        if(!empty($fields)) {
+            foreach($fields as $field) {
+                if(isset($dataInput[$field])) {
+                    $dataDB[$field] = $dataInput[$field];
+                }
+            }
+        }
+        return $dataDB;
+    }
+    public static function deleteItem($id){
+        if($id <= 0) return false;
+        try {
+            DB::connection()->getPdo()->beginTransaction();
+            $item = HrWageStepConfig::find($id);
+            if($item){
+                $item->delete();
+            }
+            DB::connection()->getPdo()->commit();
+            self::removeCache($item->wage_step_config_id,$item);
+            return true;
+        } catch (PDOException $e) {
+            DB::connection()->getPdo()->rollBack();
+            throw new PDOException();
+            return false;
+        }
+    }
+    public static function removeCache($id = 0,$data){
+        if($id > 0){
+            Cache::forget(Define::CACHE_HR_WAGE_STEP_CONFIG_ID.$id);
+        }
+    }
+    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+        try{
+            $query = HrWageStepConfig::where('wage_step_config_id','>',0);
+            if (isset($dataSearch['wage_step_config_name']) && $dataSearch['wage_step_config_name'] != '') {
+                $query->where('wage_step_config_name','LIKE', '%' . $dataSearch['wage_step_config_name'] . '%');
+            }
+            if (isset($dataSearch['wage_step_config_status']) && $dataSearch['wage_step_config_status'] != -1) {
+                $query->where('wage_step_config_status',$dataSearch['wage_step_config_status']);
+            }
+            if (isset($dataSearch['wage_step_config_type']) && $dataSearch['wage_step_config_type'] != -1) {
+                $query->where('wage_step_config_type',$dataSearch['wage_step_config_type']);
+            }
+            if (isset($dataSearch['order_sort_wage_step_config_id']) && $dataSearch['order_sort_wage_step_config_id'] == 'asc') {
+                $query->orderBy('wage_step_config_id', 'asc');
+            }else{
+                $query->orderBy('wage_step_config_id', 'desc');
+            }
+
+            $total = $query->count();
+
+            //get field can lay du lieu
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
+            if($limit > 0){
+                $query->take($limit);
+            }
+            if($offset > 0){
+                $query->skip($offset);
+            }
+            if(!empty($fields)){
+                $result = $query->get($fields);
+            }else{
+                $result = $query->get();
+            }
+            return $result;
+
+        }catch (PDOException $e){
+            throw new PDOException();
+        }
+    }
+}
