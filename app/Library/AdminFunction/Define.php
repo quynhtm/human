@@ -52,6 +52,8 @@ class Define
     const TABLE_HR_PASSPORT = 'hr_passport';// Hộ chiếu mã số thuế
     const TABLE_HR_SALARY = 'hr_salary';// Lương
     const TABLE_HR_ALLOWANCE = 'hr_allowance';// phụ cấp
+    const TABLE_HR_WAGE_STEP_CONFIG = 'hr_wage_step_config';// cấu hình lương theo thang bảng lương , ngạch công chức
+    const TABLE_HR_DEPARTMENT_CONFIG = 'hr_department_config';// cấu hình độ tuổi nghỉ hưu cho depart
 
     /***************************************************************************************************************
      * //Memcache
