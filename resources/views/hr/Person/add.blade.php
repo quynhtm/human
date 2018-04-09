@@ -169,7 +169,7 @@ use App\Library\AdminFunction\CGlobal;
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
-                                    <label for="name" class="control-label">Ngày làm chính thức</label>
+                                    <label for="name" class="control-label">Ngày làm chính thức<span class="red"> (*) </span></label>
                                     <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] > 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
                                 </div>
                             </div>
@@ -274,66 +274,6 @@ use App\Library\AdminFunction\CGlobal;
                             </div>
                         </div>
 
-                    <!--Block 3--->
-                    @if($id == 0)
-                        <div class="clear"></div>
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Thang bảng lương<span class="red"> (*) </span></label>
-                                    <select name="salary_wage_table" id="salary_wage_table" class="form-control input-sm">
-                                        {!! $optionThangBangLuong !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Nghạch công chức<span class="red"> (*) </span></label>
-                                    <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm">
-                                        {!! $optionNgachCongChuc !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Bậc lương<span class="red"> (*) </span></label>
-                                    <select name="salary_wage" id="salary_wage" class="form-control input-sm">
-                                        {!! $optionBacLuong !!}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Hệ số<span class="red"> (*) </span></label>
-                                    <input type="text" id="salary_coefficients" name="salary_coefficients" class="form-control input-sm" value="">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Lương thực hưởng<span class="red"> (*) </span></label>
-                                    <input type="text" id="salary_salaries" name="salary_salaries"  class="form-control input-sm" value="">
-                                </div>
-                            </div>
-                            <div class="col-sm-1">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Từ tháng</label>
-                                    <select name="salary_month" id="salary_month" class="form-control input-sm">
-                                        {!! $optionMonth !!}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-1">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Năm</label>
-                                    <select name="salary_year" id="salary_year" class="form-control input-sm">
-                                        {!! $optionYears !!}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}

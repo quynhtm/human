@@ -153,20 +153,8 @@ class PersonController extends BaseAdminController
         if ($id > 0) {
             $data = Person::find($id);
         }
-        $arr_thang_bangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
-        $arr_ngach_congchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
-        $arr_bacluong = HrDefine::getArrayByType(Define::bac_luong);
 
         $this->getDataDefault();
-
-        //phần lương
-        $optionThangBangLuong = FunctionLib::getOption($arr_thang_bangluong, 0);
-        $optionNgachCongChuc = FunctionLib::getOption($arr_ngach_congchuc, 0);
-        $optionBacLuong = FunctionLib::getOption($arr_bacluong, 0);
-        $arrYears = FunctionLib::getListYears();
-        $optionYears = FunctionLib::getOption($arrYears, (int)date('Y', time()));
-        $arrMonth = FunctionLib::getListMonth();
-        $optionMonth = FunctionLib::getOption($arrMonth, (int)date('m', time()));
 
         //thông tin của nhân sự
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
@@ -203,11 +191,6 @@ class PersonController extends BaseAdminController
             'data' => $data,
             'id' => $id,
             'arrStatus' => $this->arrStatus,
-            'optionThangBangLuong' => $optionThangBangLuong,
-            'optionNgachCongChuc' => $optionNgachCongChuc,
-            'optionBacLuong' => $optionBacLuong,
-            'optionMonth' => $optionMonth,
-            'optionYears' => $optionYears,
 
             'optionSex' => $optionSex,
             'optionDepart' => $optionDepart,
@@ -262,20 +245,7 @@ class PersonController extends BaseAdminController
             }
         }
 
-        $arr_thang_bangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
-        $arr_ngach_congchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
-        $arr_bacluong = HrDefine::getArrayByType(Define::bac_luong);
-
         $this->getDataDefault();
-
-        //phần lương
-        $optionThangBangLuong = FunctionLib::getOption($arr_thang_bangluong, 0);
-        $optionNgachCongChuc = FunctionLib::getOption($arr_ngach_congchuc, 0);
-        $optionBacLuong = FunctionLib::getOption($arr_bacluong, 0);
-        $arrYears = FunctionLib::getListYears();
-        $optionYears = FunctionLib::getOption($arrYears, (int)date('Y', time()));
-        $arrMonth = FunctionLib::getListMonth();
-        $optionMonth = FunctionLib::getOption($arrMonth, (int)date('m', time()));
 
         //thông tin của nhân sự
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
@@ -313,11 +283,6 @@ class PersonController extends BaseAdminController
             'id' => $id,
             'error' => $this->error,
             'arrStatus' => $this->arrStatus,
-            'optionThangBangLuong' => $optionThangBangLuong,
-            'optionNgachCongChuc' => $optionNgachCongChuc,
-            'optionBacLuong' => $optionBacLuong,
-            'optionMonth' => $optionMonth,
-            'optionYears' => $optionYears,
 
             'optionSex' => $optionSex,
             'optionDepart' => $optionDepart,
@@ -561,6 +526,7 @@ class PersonController extends BaseAdminController
             if (isset($data['user_full_name']) && trim($data['user_full_name']) == '') {
                 $this->error[] = 'Tên nhân viên không được bỏ trống';
             }
+
             if (isset($data['user_email']) && trim($data['user_email']) == '') {
                 $this->error[] = 'Mail không được bỏ trống';
             }
@@ -612,8 +578,32 @@ class PersonController extends BaseAdminController
     private function valid($data = array())
     {
         if (!empty($data)) {
-            if (isset($data['banner_name']) && trim($data['banner_name']) == '') {
-                $this->error[] = 'Null';
+            if (isset($data['person_name']) && trim($data['person_name']) == '') {
+                $this->error[] = 'Họ và tên khai sinh KHÔNG được bỏ trống';
+            }
+            if (isset($data['person_chung_minh_thu']) && trim($data['person_chung_minh_thu']) == '') {
+                $this->error[] = 'Số CMT KHÔNG được bỏ trống';
+            }
+            if (isset($data['person_depart_id']) && trim($data['person_depart_id']) <= 0) {
+                $this->error[] = 'Chưa chọn Phòng ban đơn vị';
+            }
+            if (isset($data['person_date_range_cmt']) && trim($data['person_date_range_cmt']) <= 0) {
+                $this->error[] = 'Chưa chọn ngày cấp CMT';
+            }
+            if (isset($data['person_date_start_work']) && trim($data['person_date_start_work']) <= 0) {
+                $this->error[] = 'Chưa chọn ngày làm việc chính thức';
+            }
+            if (isset($data['person_wards_current']) && trim($data['person_wards_current']) <= 0) {
+                $this->error[] = 'Chưa chọn phường xã hiện tại';
+            }
+            if (isset($data['person_address_place_of_birth']) && trim($data['person_address_place_of_birth']) == '') {
+                $this->error[] = 'Địa chỉ nơi sinh KHÔNG được bỏ trống';
+            }
+            if (isset($data['person_address_home_town']) && trim($data['person_address_home_town']) == '') {
+                $this->error[] = 'Địa chỉ quê quán KHÔNG được bỏ trống';
+            }
+            if (isset($data['person_address_current']) && trim($data['person_address_current']) == '') {
+                $this->error[] = 'Địa chỉ hiện tại KHÔNG được bỏ trống';
             }
         }
         return true;
