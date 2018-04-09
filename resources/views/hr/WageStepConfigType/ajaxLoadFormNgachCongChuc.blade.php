@@ -17,6 +17,13 @@
                 <input type="text" name="wage_step_config_name" title="Tên thang bảng lương" class="form-control input-required" id="wage_step_config_name" @if(isset($data['wage_step_config_name']))value="{{$data['wage_step_config_name']}}"@endif>
             </div>
             <div class="form-group">
+                <label for="define_name">Thang bảng lương</label>
+                <select name="wage_step_config_parent_id" id="wage_step_config_parent_id" class="form-control">
+                    <option value="-1">--Chọn thang bảng lương--</option>
+                    {!! $optionParent !!}
+                </select>
+            </div>
+            <div class="form-group">
                 <label for="define_order">Thứ tự hiển thị</label>
                 <input type="text" name="wage_step_config_order" title="Thứ tự hiển thị" class="form-control" id="wage_step_config_order" @if(isset($data['wage_step_config_order']))value="{{$data['wage_step_config_order']}}"@endif>
             </div>
@@ -26,7 +33,7 @@
                     {!! $optionStatus !!}
                 </select>
             </div>
-            <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config/edit/' + '{{FunctionLib::inputId($data["wage_step_config_id"])}}')">
+            <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config-ngach-cong-chuc/edit/' + '{{FunctionLib::inputId($data["wage_step_config_id"])}}')">
                 <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
             </a>
             <a class="btn btn-default" id="cancel" onclick="HR.resetItem('#id', '{{FunctionLib::inputId($data["wage_step_config_id"])}}')">
