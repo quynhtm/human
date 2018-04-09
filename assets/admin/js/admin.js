@@ -121,6 +121,8 @@ var Admin = {
                 url_ajax = 'deleteCarrierSetting';
             }else if (type == 15) {
                 url_ajax = 'deleteDeviceToken';
+            }else if (type == 16) {
+                url_ajax = 'deleteWageStepConfig';
             }
             if (url_ajax != '') {
                 $.ajax({

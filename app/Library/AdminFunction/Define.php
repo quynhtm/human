@@ -108,6 +108,7 @@ class Define
     const CACHE_HR_MAIL_ID = 'cache_hr_mail_id_';
     const CACHE_HR_MAIL_PARENT_ID = 'cache_hr_mail_parent_id_';
     const CACHE_HR_MAIL_COUNT_NEW_INBOX = 'cache_hr_mail_count_new_inbox_';
+    const CACHE_HR_WAGE_STEP_CONFIG_ID = 'wage_step_config_id_';
 
 
     /***************************************************************************************************************
