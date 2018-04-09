@@ -113,7 +113,7 @@ class HrWageStepConfig extends BaseModel{
             if (isset($dataSearch['wage_step_config_name']) && $dataSearch['wage_step_config_name'] != '') {
                 $query->where('wage_step_config_name','LIKE', '%' . $dataSearch['wage_step_config_name'] . '%');
             }
-            if (isset($dataSearch['wage_step_config_status']) && $dataSearch['wage_step_config_status'] != -1) {
+            if (isset($dataSearch['wage_step_config_status']) && $dataSearch['wage_step_config_status'] != -2) {
                 $query->where('wage_step_config_status',$dataSearch['wage_step_config_status']);
             }
             if (isset($dataSearch['wage_step_config_type']) && $dataSearch['wage_step_config_type'] != -1) {
