@@ -287,6 +287,7 @@ class Define
     const FOLDER_DEVICE = 'device';
     const FOLDER_PERSONAL = 'personal';
     const FOLDER_DOCUMENT = 'document';
+    const FOLDER_SALARY = 'salary';
     const FOLDER_MAIL = 'mail';
 
     const sizeImage_80 = 80;

@@ -16,6 +16,7 @@
         <form method="POST" action="" role="form" id="form_poup_ajax">
             <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
             <input type="hidden" name="salary_id" id="salary_id" value="{{$salary_id}}">
+            <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($salary_id)}}" type="hidden">
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">
@@ -42,7 +43,7 @@
                 </div>
                 <div class="col-sm-3">
                     <div class="form-group">
-                        <label for="name" class="control-label">Lương cứng</label>
+                        <label for="name" class="control-label">Lương cơ sở</label>
                         <input type="text" id="salary_salaries" name="salary_salaries"
                                class="form-control input-sm"
                                value="@if(isset($data->salary_salaries)){{$data->salary_salaries}}@endif">
@@ -65,7 +66,15 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-3">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label for="name" class="control-label">Mã ngạch</label>
+                        <select name="salary_tariffs" id="salary_tariffs"  class="form-control input-sm input-required">
+                            {!! $optionMaNgach !!}
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name" class="control-label">Bậc lương</label>
                         <select name="salary_wage" id="salary_wage"  class="form-control input-sm input-required">
@@ -73,12 +82,32 @@
                         </select>
                     </div>
                 </div>
-                <div class="col-sm-3">
+
+                <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name" class="control-label">Hệ số</label>
                         <input type="text" id="salary_coefficients" name="salary_coefficients"
                                class="form-control input-sm"
                                value="@if(isset($data->salary_coefficients)){{$data->salary_coefficients}}@endif">
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="form-group">
+                        <label for="device_name" class="control-label">Ghi chú</label>
+                        <textarea class="form-control input-sm" id="salary_note" name="salary_note" rows="3">@if(isset($data->salary_note)){!! $data->salary_note !!}@endif</textarea>
+                    </div>
+                </div>
+                <div class="col-sm-12">
+                    <div class="controls">
+                        <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced(11);">Tải tệp đính kèm</a>
+                        <div id="sys_show_file">
+                            @if(isset($data->salary_file_attach) && $data->salary_file_attach !='')
+                                <?php $arrfiles = ($data->salary_file_attach != '') ? unserialize($data->salary_file_attach) : array(); ?>
+                                @foreach($arrfiles as $_key=>$file)
+                                    <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_SALARY.'/'.$salary_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($salary_id)}}', {{$_key}}, '{{$file}}',11)">X</span></div>
+                                @endforeach
+                            @endif
+                        </div>
                     </div>
                 </div>
 
@@ -90,6 +119,33 @@
             </div>
         </form>
 </div>
+<!--Popup Upload File-->
+<div class="modal fade" id="sys_PopupUploadDocumentOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Tải tệp đính kèm</h4>
+            </div>
+            <div class="modal-body">
+                <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
+                    <div class="form_group">
+                        <div id="sys_show_button_upload_file">
+                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Tải tệp đính kèm</div>
+                        </div>
+                        <div id="status_file"></div>
+
+                        <div class="clearfix"></div>
+                        <div class="clearfix" style='margin: 5px 10px; width:100%;'>
+                            <div id="div_image_file"></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!--Popup Upload File-->
 
 <script>
     $(document).ready(function(){

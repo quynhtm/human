@@ -11,6 +11,7 @@ use App\Http\Models\Hr\Device;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDocument;
 use App\Http\Models\Hr\HrMail;
+use App\Http\Models\Hr\Salary;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Upload;
@@ -301,6 +302,15 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
+			case 11://File salary
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
 			default:
 				$folder_image = '';
 				break;
@@ -346,6 +356,14 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_DOCUMENT;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DOCUMENT;
 				break;
+			case 11://File salary
+				$result = Salary::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->salary_file_attach);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_SALARY;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_SALARY;
+				break;
 			default:
 				$folder_image = '';
 				$folder_thumb = '';
@@ -383,6 +401,10 @@ class AjaxUploadController extends BaseAdminController{
 						case 10://File document
 							$new_row['hr_document_files'] = $aryImages;
 							HrDocument::updateItem($id, $new_row);
+							break;
+						case 11://File salary
+							$new_row['salary_file_attach'] = $aryImages;
+							Salary::updateItem($id, $new_row);
 							break;
 						default:
 							$folder_image = '';
@@ -532,6 +554,9 @@ class AjaxUploadController extends BaseAdminController{
 			case 10 ://File Document
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_DOCUMENT, $type);
 				break;
+			case 11 ://File attach của Lương
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_SALARY, $type);
+				break;
 			default:
 				break;
 		}
@@ -556,6 +581,10 @@ class AjaxUploadController extends BaseAdminController{
 						$new_row['hr_document_created'] = time();
 						$new_row['hr_document_status'] = Define::IMAGE_ERROR;
 						$item_id = HrDocument::createItem($new_row);
+						break;
+					case 11://File lương
+						$new_row['salary_note'] = '';
+						$item_id = Salary::createItem($new_row);
 						break;
 					default:
 						break;
@@ -598,6 +627,23 @@ class AjaxUploadController extends BaseAdminController{
 								$arr_file[] = $file_name;
 								$new_row['hr_document_files'] = serialize($arr_file);
 								HrDocument::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
+
+						case 11://File lương
+							$result = Salary::find($item_id);
+							if($result != null){
+								$arr_file = ($result->salary_file_attach != '') ? unserialize($result->salary_file_attach) : array();
+								$arr_file[] = $file_name;
+								$new_row['salary_file_attach'] = serialize($arr_file);
+                                Salary::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
 								foreach($arr_file as $_k=>$_v){

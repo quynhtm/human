@@ -17,7 +17,7 @@ class Salary extends BaseModel
     public $timestamps = false;
 
     protected $fillable = array('salary_project', 'salary_person_id', 'salary_month', 'salary_year', 'salary_percent',
-        'salary_salaries', 'salary_wage_table', 'salary_civil_servants', 'salary_wage', 'salary_coefficients');
+        'salary_salaries', 'salary_wage_table', 'salary_civil_servants','salary_tariffs', 'salary_wage', 'salary_coefficients', 'salary_note', 'salary_file_attach');
     public static function getSalaryByPersonId($person_id){
         if ($person_id > 0) {
             $result = Salary::where('salary_person_id', $person_id)

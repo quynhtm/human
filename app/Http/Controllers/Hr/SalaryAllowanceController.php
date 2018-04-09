@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
 use App\Library\AdminFunction\Pagging;
+use App\Library\AdminFunction\Loader;
 
 class SalaryAllowanceController extends BaseAdminController
 {
@@ -60,6 +61,15 @@ class SalaryAllowanceController extends BaseAdminController
         if (!$this->is_root && !in_array($this->salaryAllowanceFull, $this->permission) && !in_array($this->salaryAllowanceView, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
@@ -94,6 +104,7 @@ class SalaryAllowanceController extends BaseAdminController
             $arrData['msg'] = 'Bạn không có quyền thao tác';
             return response()->json($arrData);
         }
+
         $personId = Request::get('str_person_id', '');
         $str_object_id = Request::get('str_object_id', '');
         $typeAction = Request::get('typeAction', '');
@@ -123,6 +134,10 @@ class SalaryAllowanceController extends BaseAdminController
         $arrNghachcongchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
         $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
+        //mã Nghạch
+        $arrNghachcongchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $optionMaNgach = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
+
         //bac luong
         $arrBacluong = HrDefine::getArrayByType(Define::bac_luong);
         $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
@@ -135,6 +150,7 @@ class SalaryAllowanceController extends BaseAdminController
             'optionYears' => $optionYears,
             'optionThangbangluong' => $optionThangbangluong,
             'optionNghachcongchuc' => $optionNghachcongchuc,
+            'optionMaNgach' => $optionMaNgach,
             'optionBacluong' => $optionBacluong,
             'person_id' => $person_id,
             'salary_id' => $salary_id,
@@ -152,8 +168,9 @@ class SalaryAllowanceController extends BaseAdminController
             return response()->json($arrData);
         }
         $data = $_POST;
-        $person_id = Request::get('person_id', '');
-        $salary_id = Request::get('salary_id', '');
+        $person_id = (int)Request::get('person_id', '');
+        $salary_id = (int)Request::get('salary_id', '');
+        $id_hiden = (int)Request::get('id_hiden', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         if ($data['salary_salaries'] == '') {
@@ -161,6 +178,7 @@ class SalaryAllowanceController extends BaseAdminController
         } else {
             if ($person_id > 0) {
                 $data['salary_person_id'] = $person_id;
+                $salary_id = ($salary_id > 0)? $salary_id: $id_hiden;
                 if ($salary_id > 0) {
                     Salary::updateItem($salary_id, $data);
                 } else {
