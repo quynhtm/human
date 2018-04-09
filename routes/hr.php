@@ -143,7 +143,6 @@ Route::match(['GET','POST'],'staff/view', array('as' => 'hr.HrstaffView','uses' 
 
 
 Route::match(['GET','POST'],'wage-step-config/view', array('as' => 'hr.wageStepConfigView','uses' => HResources.'\HrWageStepConfigController@view'));
-Route::get('wage-step-config/edit/{id?}',array('as' => 'hr.wageStepConfigEdit','uses' => HResources.'\HrWageStepConfigController@getItem'));
-Route::post('wage-step-config/edit/{id?}', array('as' => 'hr.wageStepConfigEdit','uses' => HResources.'\HrWageStepConfigController@postItem'));
-Route::get('wage-step-config/deleteDepartment', array('as' => 'hr.deleteWageStepConfig','uses' => HResources.'\HrWageStepConfigController@deleteWageStepConfig'));
-
+Route::post('wage-step-config/edit/{id?}',array('as' => 'hr.wageStepConfigEdit','uses' => HResources.'\HrWageStepConfigController@postItem'));
+Route::get('wage-step-config/deleteWageStepConfig', array('as' => 'hr.deleteWageStepConfig','uses' => HResources.'\HrWageStepConfigController@deleteWageStepConfig'));
+Route::post('wage-step-config/ajaxLoadForm',array('as' => 'hr.loadFormWageStepConfig','uses' => HResources.'\HrWageStepConfigController@ajaxLoadForm'));
