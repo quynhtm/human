@@ -413,6 +413,7 @@ class HrWageStepConfigController extends BaseAdminController{
             case 3:// get option
             case 4:// get option
                 $arrData = HrWageStepConfig::getDataOption($object_id,$type);
+                $arrData = !empty($arrData) ? array(0 => '---------') + $arrData : array(0 => '---------');
                 $option = FunctionLib::getOption($arrData,0);
                 break;
             case 5: // get giá trị hệ số

@@ -78,7 +78,7 @@ class SalaryAllowanceController extends BaseAdminController
         //thông tin lương
         $lương = Salary::getSalaryByPersonId($person_id);
         //Nghạch công chức
-        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
+        $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
 
         //thông tin phu cap
         $phucap = Allowance::getAllowanceByPersonId($person_id);
@@ -135,17 +135,17 @@ class SalaryAllowanceController extends BaseAdminController
         $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
 
         //Nghạch công chức
-        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
+        $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
         $arrNghachcongchuc = !empty($arrNghachcongchuc) ? array(0 => 'Chọn ngạch công chức') + $arrNghachcongchuc : array(0 => 'Chọn ngạch công chức');
         $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //mã Nghạch
-        $arrMaNgach = HrDefine::getArrayByType(Define::type_ma_ngach);
+        $arrMaNgach = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
         $arrMaNgach = !empty($arrMaNgach) ? array(0 => 'Chọn mã ngạch') + $arrMaNgach : array(0 => 'Chọn mã ngạch');
-        $optionMaNgach = FunctionLib::getOption($arrMaNgach, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
+        $optionMaNgach = FunctionLib::getOption($arrMaNgach, isset($data['salary_tariffs']) ? $data['salary_tariffs'] : 0);
 
         //bac luong
-        $arrBacluong = HrDefine::getArrayByType(Define::type_bac_luong);
+        $arrBacluong = HrWageStepConfig::getArrayByType(Define::type_bac_luong);
         $arrBacluong = !empty($arrBacluong) ? array(0 => 'Chọn bậc lương') + $arrBacluong : array(0 => 'Chọn bậc lương');
         $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
 
@@ -197,7 +197,7 @@ class SalaryAllowanceController extends BaseAdminController
                 //thông tin lương
                 $lương = Salary::getSalaryByPersonId($person_id);
                 //Nghạch công chức
-                $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
+                $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
