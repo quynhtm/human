@@ -34,6 +34,7 @@ Route::get('salaryAllowance/viewSalaryAllowance/{person_id?}', array('as' => 'hr
 Route::get('salaryAllowance/editSalary', array('as' => 'hr.editSalary','uses' => HResources.'\SalaryAllowanceController@editSalary'));
 Route::post('salaryAllowance/postSalary', array('as' => 'hr.postSalary','uses' => HResources.'\SalaryAllowanceController@postSalary'));
 Route::post('salaryAllowance/deleteSalary', array('as' => 'hr.deleteSalary','uses' => HResources.'\SalaryAllowanceController@deleteSalary'));
+Route::get('salaryAllowance/getInfoSalary/{id?}', array('as' => 'hr.getInfoSalary','uses' => HResources.'\SalaryAllowanceController@getInfoSalary'));
 Route::get('salaryAllowance/editAllowance', array('as' => 'hr.editAllowance','uses' => HResources.'\SalaryAllowanceController@editAllowance'));
 Route::post('salaryAllowance/postAllowance', array('as' => 'hr.postAllowance','uses' => HResources.'\SalaryAllowanceController@postAllowance'));
 Route::post('salaryAllowance/deleteAllowance', array('as' => 'hr.deleteAllowance','uses' => HResources.'\SalaryAllowanceController@deleteAllowance'));

@@ -50,7 +50,7 @@
                                             <td class="text-center middle">{{$item['salary_month']}}/{{$item['salary_year']}}</td>
                                             <td class="text-center middle">
                                                 @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceCreate == 1)
-                                                    <a class="viewItem" title="Chi tiết lương" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['salary_person_id'])}}')">
+                                                    <a class="viewItem" title="Chi tiết lương" onclick="HR.getInfoSalaryPopup('{{FunctionLib::inputId($item['salary_id'])}}')">
                                                         <i class="fa fa-eye fa-2x"></i>
                                                     </a>
                                                 @endif

@@ -30,6 +30,11 @@ class SalaryAllowanceController extends BaseAdminController
     private $arrStatus = array(1 => 'hiển thị', 2 => 'Ẩn');
     private $viewPermission = array();//check quyen
 
+    private $arrThangbangluong = array();
+    private $arrNghachcongchuc = array();
+    private $arrMaNgach = array();
+    private $arrBacluong = array();
+
     public function __construct()
     {
         parent::__construct();
@@ -42,6 +47,11 @@ class SalaryAllowanceController extends BaseAdminController
             CGlobal::status_block => FunctionLib::controLanguage('status_choose', $this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('status_show', $this->languageSite),
             CGlobal::status_hide => FunctionLib::controLanguage('status_hidden', $this->languageSite));
+
+        $this->arrThangbangluong = HrWageStepConfig::getArrayByType(Define::type_thang_bang_luong);
+        $this->arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+        $this->arrMaNgach = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
+        $this->arrBacluong = HrWageStepConfig::getArrayByType(Define::type_bac_luong);
     }
 
     public function getPermissionPage()
@@ -77,8 +87,6 @@ class SalaryAllowanceController extends BaseAdminController
 
         //thông tin lương
         $lương = Salary::getSalaryByPersonId($person_id);
-        //Nghạch công chức
-        $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
 
         //thông tin phu cap
         $phucap = Allowance::getAllowanceByPersonId($person_id);
@@ -88,7 +96,7 @@ class SalaryAllowanceController extends BaseAdminController
         return view('hr.SalaryAllowance.View', array_merge([
             'person_id' => $person_id,
             'lương' => $lương,
-            'arrNgachBac' => $arrNghachcongchuc,
+            'arrNgachBac' => $this->arrNghachcongchuc,
 
             'phucap' => $phucap,
             'arrOptionPhuCap' => Define::$arrOptionPhuCap,
@@ -129,24 +137,22 @@ class SalaryAllowanceController extends BaseAdminController
         $arrMonth = FunctionLib::getListMonth();
         $optionMonth = FunctionLib::getOption($arrMonth, isset($data['salary_month']) ? $data['salary_month'] : (int)date('m', time()));
 
+        $this->getDataDefault();
+
         //thang bang luong
-        $arrThangbangluong = HrWageStepConfig::getArrayByType(Define::type_thang_bang_luong);
-        $arrThangbangluong = !empty($arrThangbangluong) ? array(0 => 'Chọn thang bảng lương') + $arrThangbangluong : array(0 => 'Chọn thang bảng lương');
+        $arrThangbangluong = !empty($this->arrThangbangluong) ? array(0 => 'Chọn thang bảng lương') + $this->arrThangbangluong : array(0 => 'Chọn thang bảng lương');
         $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
 
         //Nghạch công chức
-        $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
-        $arrNghachcongchuc = !empty($arrNghachcongchuc) ? array(0 => 'Chọn ngạch công chức') + $arrNghachcongchuc : array(0 => 'Chọn ngạch công chức');
+        $arrNghachcongchuc = !empty($this->arrNghachcongchuc) ? array(0 => 'Chọn ngạch công chức') + $this->arrNghachcongchuc : array(0 => 'Chọn ngạch công chức');
         $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //mã Nghạch
-        $arrMaNgach = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
-        $arrMaNgach = !empty($arrMaNgach) ? array(0 => 'Chọn mã ngạch') + $arrMaNgach : array(0 => 'Chọn mã ngạch');
+        $arrMaNgach = !empty($this->arrMaNgach) ? array(0 => 'Chọn mã ngạch') + $this->arrMaNgach : array(0 => 'Chọn mã ngạch');
         $optionMaNgach = FunctionLib::getOption($arrMaNgach, isset($data['salary_tariffs']) ? $data['salary_tariffs'] : 0);
 
         //bac luong
-        $arrBacluong = HrWageStepConfig::getArrayByType(Define::type_bac_luong);
-        $arrBacluong = !empty($arrBacluong) ? array(0 => 'Chọn bậc lương') + $arrBacluong : array(0 => 'Chọn bậc lương');
+        $arrBacluong = !empty($this->arrBacluong) ? array(0 => 'Chọn bậc lương') + $this->arrBacluong : array(0 => 'Chọn bậc lương');
         $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
@@ -196,15 +202,13 @@ class SalaryAllowanceController extends BaseAdminController
 
                 //thông tin lương
                 $lương = Salary::getSalaryByPersonId($person_id);
-                //Nghạch công chức
-                $arrNghachcongchuc = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
                 $html = view('hr.SalaryAllowance.SalaryList', array_merge([
                     'person_id' => $person_id,
                     'lương' => $lương,
-                    'arrNgachBac' => $arrNghachcongchuc,
+                    'arrNgachBac' => $this->arrNghachcongchuc,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
             } else {
@@ -244,6 +248,38 @@ class SalaryAllowanceController extends BaseAdminController
             $arrData['html'] = $html;
         }
         return Response::json($arrData);
+    }
+
+    //ajax get thong tin cơ bản của nhân sự
+    public function getInfoSalary()
+    {
+        //Check phan quyen.
+        $salaryId = Request::get('str_salary_id', '');
+        $salary_id = FunctionLib::outputId($salaryId);
+        $arrData = ['intReturn' => 0, 'msg' => ''];
+
+        $this->getDataDefault();
+
+        //thong tin lương
+        $salary = Salary::find($salary_id);
+
+        //thong tin nhân sự
+        $person_id = isset($salary->salary_person_id)? $salary->salary_person_id: 0;
+        $infoPerson = Person::getInfoPerson($person_id);
+
+        $this->viewPermission = $this->getPermissionPage();
+        $html = view('hr.SalaryAllowance.SalaryInfoPopup', [
+            'salary' => $salary,
+            'infoPerson' => $infoPerson,
+            'arrThangbangluong' => $this->arrThangbangluong,
+            'arrNghachcongchuc' => $this->arrNghachcongchuc,
+            'arrMaNgach' => $this->arrMaNgach,
+            'arrBacluong' => $this->arrBacluong,
+        ], $this->viewPermission)->render();
+
+        $arrData['intReturn'] = 1;
+        $arrData['html'] = $html;
+        return response()->json($arrData);
     }
 
     /************************************************************************************************************************************

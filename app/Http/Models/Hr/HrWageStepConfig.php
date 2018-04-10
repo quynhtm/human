@@ -34,7 +34,7 @@ class HrWageStepConfig extends BaseModel{
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->wage_step_config_id,$item);
+            self::removeCache($item->wage_step_config_id,$item->wage_step_config_type);
             return $item->wage_step_config_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -52,7 +52,7 @@ class HrWageStepConfig extends BaseModel{
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->wage_step_config_id,$item);
+            self::removeCache($item->wage_step_config_id,$item->wage_step_config_type);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -90,11 +90,13 @@ class HrWageStepConfig extends BaseModel{
         try {
             DB::connection()->getPdo()->beginTransaction();
             $item = HrWageStepConfig::find($id);
+            $type = 0;
             if($item){
+                $type = $item->wage_step_config_type;
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->wage_step_config_id,$item);
+            self::removeCache($id,$type);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -102,9 +104,12 @@ class HrWageStepConfig extends BaseModel{
             return false;
         }
     }
-    public static function removeCache($id = 0,$data){
+    public static function removeCache($id = 0,$type = 0){
         if($id > 0){
             Cache::forget(Define::CACHE_HR_WAGE_STEP_CONFIG_ID.$id);
+        }
+        if($type > 0){
+            Cache::forget(Define::CACHE_WAGE_STEP_CONFIG_TYPE.$type);
         }
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
@@ -148,13 +153,19 @@ class HrWageStepConfig extends BaseModel{
     }
 
     public static function getArrayByType($config_type = 0){
-        $results = array();
-        if($config_type > 0){
-            $result = HrWageStepConfig::where('wage_step_config_id','>', 0)
-                        ->where('wage_step_config_type', $config_type)->get();
-            if(sizeof($result) > 0){
-                foreach($result as $item){
-                    $results[$item->wage_step_config_id] = $item->wage_step_config_name;
+        $results = Cache::get(Define::CACHE_WAGE_STEP_CONFIG_TYPE.$config_type);
+        if (sizeof($results) == 0) {
+            if($config_type > 0){
+                $result = HrWageStepConfig::where('wage_step_config_id','>', 0)
+                            ->where('wage_step_config_type', $config_type)
+                            ->where('wage_step_config_status', Define::STATUS_SHOW)->get();
+                if(sizeof($result) > 0){
+                    foreach($result as $item){
+                        $results[$item->wage_step_config_id] = $item->wage_step_config_name;
+                    }
+                }
+                if(!empty($results)){
+                    Cache::put(Define::CACHE_WAGE_STEP_CONFIG_TYPE.$config_type, $results, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         }

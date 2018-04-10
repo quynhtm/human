@@ -86,6 +86,8 @@ class Define
 
     const CACHE_ALL_PROVINCE = 'cache_all_province';
 
+    const CACHE_WAGE_STEP_CONFIG_TYPE = 'cache_wage_step_config_type_';
+
     const CACHE_CRONJOB_ID_ = 'cache_cronjob_id_';
     const CACHE_ALL_CRONJOB = 'cache_all_cronjob';
 
