@@ -6,6 +6,12 @@ Route::get('department/edit/{id?}',array('as' => 'hr.departmentEdit','uses' => H
 Route::post('department/edit/{id?}', array('as' => 'hr.departmentEdit','uses' => HResources.'\HrDepartmentController@postItem'));
 Route::get('department/deleteDepartment', array('as' => 'hr.deleteDepartment','uses' => HResources.'\HrDepartmentController@deleteDepartment'));
 
+/*Cau hinh Department */
+Route::match(['GET','POST'],'departmentconfig/view', array('as' => 'hr.departmentConfigView','uses' => HResources.'\DepartmentConfigController@view'));
+Route::get('departmentconfig/edit/{id?}',array('as' => 'hr.departmentConfigEdit','uses' => HResources.'\DepartmentConfigController@getItem'));
+Route::post('departmentconfig/edit/{id?}', array('as' => 'hr.departmentConfigEdit','uses' => HResources.'\DepartmentConfigController@postItem'));
+Route::get('departmentconfig/deleteDepartmentConfig', array('as' => 'hr.deleteDepartmentConfig','uses' => HResources.'\DepartmentConfigController@deleteDepartmentConfig'));
+
 
 /*thông tin Nhân sự */
 Route::match(['GET','POST'],'personnel/view', array('as' => 'hr.personnelView','uses' => HResources.'\PersonController@view'));
