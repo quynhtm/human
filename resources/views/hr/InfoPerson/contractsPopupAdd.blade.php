@@ -49,16 +49,22 @@
             </div>
         </div>
 
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label for="name" class="control-label">Ngày ký<span class="red"> (*) </span></label>
                 <input type="text" class="form-control input-required" title = 'Ngày ký' id="contracts_sign_day" name="contracts_sign_day"  data-date-format="dd-mm-yyyy" value="@if(isset($contracts->contracts_sign_day)){{date('d-m-Y',$contracts->contracts_sign_day)}}@endif">
             </div>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-4">
             <div class="form-group">
                 <label for="name" class="control-label">Ngày có hiệu lực<span class="red"> (*) </span></label>
                 <input type="text" class="form-control input-required" title = 'Ngày có hiệu lực' id="contracts_effective_date" name="contracts_effective_date"  data-date-format="dd-mm-yyyy" value="@if(isset($contracts->contracts_effective_date)){{date('d-m-Y',$contracts->contracts_effective_date)}}@endif">
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="name" class="control-label">Ngày hết hạn<span class="red"> (*) </span></label>
+                <input type="text" class="form-control input-required" title = 'Ngày hết hạn' id="contracts_dealine_date" name="contracts_dealine_date"  data-date-format="dd-mm-yyyy" value="@if(isset($contracts->contracts_dealine_date)){{date('d-m-Y',$contracts->contracts_dealine_date)}}@endif">
             </div>
         </div>
 
@@ -83,5 +89,6 @@
     $(document).ready(function(){
         var contracts_sign_day = $('#contracts_sign_day').datepicker({ });
         var contracts_effective_date = $('#contracts_effective_date').datepicker({ });
+        var contracts_dealine_date = $('#contracts_dealine_date').datepicker({ });
     });
 </script>

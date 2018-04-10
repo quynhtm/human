@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hr;
 use App\Http\Controllers\BaseAdminController;
 
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\HrContracts;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
 
@@ -327,6 +328,71 @@ class PersonListController extends BaseAdminController
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
         ], $this->viewPermission));
     }
+
+    /******************************************************************************************************************
+     * NS sắp sinh nhật
+     ******************************************************************************************************************/
+    public function viewDealineContract()
+    {
+        CGlobal::$pageAdminTitle = 'Nhân sự sắp hết Hợp đồng';
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+
+        $searchContract['start_dealine_date'] = time();
+        $searchContract['end_dealine_date'] = strtotime(time() . " +1 month");
+        $searchContract['orderBy'] = 'contracts_dealine_date';
+        $searchContract['sortOrder'] = 'asc';
+        $search['field_get'] = 'contracts_person_id,contracts_id';//cac truong can lay
+        $dataContract = HrContracts::searchByCondition($search, 5000, 0, $total2);
+        $arrPersonId = array();
+        if(count($dataContract) > 0){
+            foreach ($dataContract as $contr){
+                $arrPersonId[$contr->contracts_person_id] = $contr->contracts_person_id;
+            }
+        }
+
+        $page_no = (int)Request::get('page_no', 1);
+        $sbmValue = Request::get('submit', 1);
+        $limit = CGlobal::number_show_20;
+        $offset = ($page_no - 1) * $limit;
+        $search = $data = array();
+        $total = 0;
+
+        $search['person_name'] = addslashes(Request::get('person_name', ''));
+        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+        $search['person_code'] = addslashes(Request::get('person_code', ''));
+        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
+        $search['list_person_id'] = $arrPersonId;
+
+        $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
+        $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
+
+        if($sbmValue == 2){
+            $this->exportData($data,'Danh sách nhân sự sắp hết hợp đồng lao động');
+        }
+        //FunctionLib::debug($data);
+        $this->getDataDefault();
+        $optionDepart = FunctionLib::getOption($this->depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.PersonList.viewCommon', array_merge([
+            'data' => $data,
+            'search' => $search,
+            'total' => $total,
+            'stt' => ($page_no - 1) * $limit,
+            'paging' => $paging,
+            'titlePage' => CGlobal::$pageAdminTitle,
+            'arrSex' => $this->arrSex,
+            'arrDepart' => $this->depart,
+            'arrChucVu' => $this->arrChucVu,
+            'arrChucDanhNgheNghiep' => $this->arrChucDanhNgheNghiep,
+            'optionDepart' => $optionDepart,
+            'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
+        ], $this->viewPermission));
+    }
+
 
     public function exportData($data,$title ='') {
         if(empty($data)){

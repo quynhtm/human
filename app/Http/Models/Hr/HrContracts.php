@@ -19,7 +19,7 @@ class HrContracts extends BaseModel
     public $timestamps = false;
 
     protected $fillable = array('contracts_project', 'contracts_code', 'contracts_person_id', 'contracts_type_define_id', 'contracts_type_define_name',
-        'contracts_payment_define_id', 'contracts_payment_define_name', 'contracts_sign_day', 'contracts_effective_date', 'contracts_describe', 'contracts_money',
+        'contracts_payment_define_id', 'contracts_payment_define_name', 'contracts_sign_day', 'contracts_effective_date','contracts_dealine_date', 'contracts_describe', 'contracts_money',
         'contracts_creater_time', 'contracts_creater_user_id', 'contracts_creater_user_name',
         'contracts_update_time', 'contracts_update_user_id', 'contracts_update_user_name');
 
@@ -122,11 +122,20 @@ class HrContracts extends BaseModel
     {
         try {
             $query = HrContracts::where('contracts_id', '>', 0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
+            if (isset($dataSearch['start_dealine_date']) && $dataSearch['start_dealine_date'] > 0) {
+                $query->where('contracts_dealine_date', '>=', $dataSearch['start_dealine_date']);
             }
+
+            if (isset($dataSearch['end_dealine_date']) && $dataSearch['end_dealine_date'] > 0) {
+                $query->where('contracts_dealine_date', '<=', $dataSearch['end_dealine_date']);
+            }
+
             $total = $query->count();
-            $query->orderBy('contracts_id', 'desc');
+            if(isset($dataSearch['orderBy']) && $dataSearch['orderBy'] != '' && isset($dataSearch['sortOrder']) && $dataSearch['sortOrder'] != ''){
+                $query->orderBy($dataSearch['orderBy'], $dataSearch['sortOrder']);
+            }else{
+                $query->orderBy('contracts_id', 'desc');
+            }
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();

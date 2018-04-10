@@ -169,7 +169,7 @@ class InfoPersonController extends BaseAdminController
         //$contracts_id = FunctionLib::outputId($contractsId);
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if($data['contracts_sign_day'] == '' || $data['contracts_effective_date'] == ''){
+        if($data['contracts_sign_day'] == '' || $data['contracts_effective_date'] == ''|| $data['contracts_dealine_date'] == ''){
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         }else{
             if($person_id > 0){
@@ -180,6 +180,7 @@ class InfoPersonController extends BaseAdminController
                     'contracts_describe'=>$data['contracts_describe'],
                     'contracts_sign_day'=>($data['contracts_sign_day'] != '')? strtotime($data['contracts_sign_day']):'',
                     'contracts_effective_date'=>($data['contracts_effective_date'] != '')? strtotime($data['contracts_effective_date']):'',
+                    'contracts_dealine_date'=>($data['contracts_dealine_date'] != '')? strtotime($data['contracts_dealine_date']):'',
                     'contracts_person_id'=>$person_id,
                 );
                 if($contracts_id > 0){

@@ -149,7 +149,7 @@ class HrWageStepConfigController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
-        $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($dataSearch['wage_step_config_parent_id']) ? $dataSearch['wage_step_config_parent_id'] : CGlobal::status_show);
 
 
         $this->viewPermission = $this->getPermissionPage();
@@ -234,7 +234,7 @@ class HrWageStepConfigController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
-        $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($dataSearch['wage_step_config_parent_id']) ? $dataSearch['wage_step_config_parent_id'] : CGlobal::status_show);
 
 
         $this->viewPermission = $this->getPermissionPage();
@@ -319,7 +319,7 @@ class HrWageStepConfigController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
-        $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($dataSearch['wage_step_config_parent_id']) ? $dataSearch['wage_step_config_parent_id'] : CGlobal::status_show);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.WageStepConfigType.viewBacLuong',array_merge([
