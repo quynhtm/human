@@ -44,7 +44,8 @@
                                     <thead>
                                     <tr>
                                         <th class="text-center w10">STT</th>
-                                        <th>Tên thang bảng lương</th>
+                                        <th>Tên ngạch công chức</th>
+                                        <th>Mã ngạch công chức</th>
                                         <th class="text-center">Thứ tự</th>
                                         <th class="text-center">Trạng thái</th>
                                         <th class="text-center">Chức năng</th>
@@ -55,6 +56,7 @@
                                         <tr>
                                             <td>{{ $stt + $key+1 }}</td>
                                             <td>{{$item->wage_step_config_name}}</td>
+                                            <td>{{$item->wage_step_config_value}}</td>
                                             <td class="text-center">
                                                 {{$item->wage_step_config_order}}
                                             </td>
@@ -88,8 +90,12 @@
                             <form id="formAdd" method="post">
                                 <input type="hidden" name="id" value="{{FunctionLib::inputId(0)}}" class="form-control" id="id">
                                 <div class="form-group">
-                                    <label for="define_name">Tên định nghĩa</label>
-                                    <input type="text" name="wage_step_config_name" title="Tên thang bảng lương" class="form-control input-required" id="wage_step_config_name">
+                                    <label for="define_name">Tên ngạch công chức</label>
+                                    <input type="text" name="wage_step_config_name" title="Tên ngạch" class="form-control input-required" id="wage_step_config_name">
+                                </div>
+                                <div class="form-group">
+                                    <label for="define_name">Mã ngạch công chức</label>
+                                    <input type="text" name="wage_step_config_value" title="Mã ngạch công chức" class="form-control input-required" id="wage_step_config_value">
                                 </div>
                                 <div class="form-group">
                                     <label for="define_name">Thang bảng lương</label>

@@ -151,3 +151,6 @@ Route::match(['GET','POST'],'wage-step-config/viewNgachCongChuc', array('as' => 
 Route::post('wage-step-config-ngach-cong-chuc/edit/{id?}',array('as' => 'hr.wageStepConfigEditNgachCongChuc','uses' => HResources.'\HrWageStepConfigController@postItemNgachCongChuc'));
 Route::post('wage-step-config/ajaxLoadFormNgachCongChuc',array('as' => 'hr.ajaxLoadFormNgachCongChuc','uses' => HResources.'\HrWageStepConfigController@ajaxLoadFormNgachCongChuc'));
 
+Route::match(['GET','POST'],'wage-step-config/viewBacLuong', array('as' => 'hr.wageStepConfigViewBacLuong','uses' => HResources.'\HrWageStepConfigController@viewBacLuong'));
+Route::post('wage-step-config-bac-luong/edit/{id?}',array('as' => 'hr.wageStepConfigEditBacLuong','uses' => HResources.'\HrWageStepConfigController@postItemBacLuong'));
+Route::post('wage-step-config/ajaxLoadFormBacLuong',array('as' => 'hr.ajaxLoadFormBacLuong','uses' => HResources.'\HrWageStepConfigController@ajaxLoadFormBacLuong'));
