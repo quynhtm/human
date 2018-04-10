@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\HrDefine;
+use App\Http\Models\Hr\HrWageStepConfig;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\Allowance;
@@ -127,19 +128,19 @@ class SalaryAllowanceController extends BaseAdminController
         $optionMonth = FunctionLib::getOption($arrMonth, isset($data['salary_month']) ? $data['salary_month'] : (int)date('m', time()));
 
         //thang bang luong
-        $arrThangbangluong = HrDefine::getArrayByType(Define::thang_bang_luong);
+        $arrThangbangluong = HrWageStepConfig::getArrayByType(Define::type_thang_bang_luong);
         $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
 
         //Nghạch công chức
-        $arrNghachcongchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
         $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //mã Nghạch
-        $arrNghachcongchuc = HrDefine::getArrayByType(Define::ngach_cong_chuc);
+        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ma_ngach);
         $optionMaNgach = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //bac luong
-        $arrBacluong = HrDefine::getArrayByType(Define::bac_luong);
+        $arrBacluong = HrDefine::getArrayByType(Define::type_bac_luong);
         $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
