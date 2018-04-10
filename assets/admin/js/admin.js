@@ -617,4 +617,29 @@ var Admin = {
         });
 
     },
+    getAjaxOptionConfigSalary: function (object,type,selectId) {
+        $('#'+selectId).html('');
+        var _token = $('input[name="_token"]').val();
+        var url_ajax = WEB_ROOT + '/manager/wageStepConfig/ajaxGetOption';
+        var object_id = $('#'+object.id).val();
+        $.ajax({
+            type: "post",
+            url: url_ajax,
+            data: {object_id: object_id, type: type, selectId: selectId, _token: _token},
+            dataType: 'json',
+            success: function (res) {
+                if (res.isIntOk === 1) {
+                    if(type == 5){
+                        $('#'+selectId).val(res.optionSelect);
+                    }else {
+                        $('#'+selectId).html(res.optionSelect);
+                    }
+
+                } else {
+                    $('#'+selectId).html('');
+                }
+            }
+        });
+
+    },
 }

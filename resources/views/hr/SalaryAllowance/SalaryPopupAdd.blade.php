@@ -53,7 +53,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="name" class="control-label">Thang bảng lương</label>
-                        <select name="salary_wage_table" id="salary_wage_table"  class="form-control input-sm input-required">
+                        <select name="salary_wage_table" id="salary_wage_table"  class="form-control input-sm input-required" onchange = "Admin.getAjaxOptionConfigSalary(this,2,'salary_civil_servants')">
                             {!! $optionThangbangluong !!}
                         </select>
                     </div>
@@ -61,7 +61,7 @@
                 <div class="col-sm-3">
                     <div class="form-group">
                         <label for="name" class="control-label">Nghạch công chức </label>
-                        <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm input-required">
+                        <select name="salary_civil_servants" id="salary_civil_servants" class="form-control input-sm input-required" onchange = "Admin.getAjaxOptionConfigSalary(this,3,'salary_tariffs')">
                             {!! $optionNghachcongchuc !!}
                         </select>
                     </div>
@@ -69,7 +69,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name" class="control-label">Mã ngạch</label>
-                        <select name="salary_tariffs" id="salary_tariffs"  class="form-control input-sm input-required">
+                        <select name="salary_tariffs" id="salary_tariffs"  class="form-control input-sm input-required" onchange = "Admin.getAjaxOptionConfigSalary(this,4,'salary_wage')">
                             {!! $optionMaNgach !!}
                         </select>
                     </div>
@@ -77,7 +77,7 @@
                 <div class="col-sm-2">
                     <div class="form-group">
                         <label for="name" class="control-label">Bậc lương</label>
-                        <select name="salary_wage" id="salary_wage"  class="form-control input-sm input-required">
+                        <select name="salary_wage" id="salary_wage"  class="form-control input-sm input-required" onchange = "Admin.getAjaxOptionConfigSalary(this,5,'salary_coefficients')">
                             {!! $optionBacluong !!}
                         </select>
                     </div>

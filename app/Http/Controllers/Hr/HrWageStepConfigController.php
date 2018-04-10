@@ -243,4 +243,27 @@ class HrWageStepConfigController extends BaseAdminController{
         }
         return true;
     }
+
+    //Quynhtm
+    //ajax get option ngach công chức,mã ngach, bậc lương
+    public function ajaxGetOption(){
+        $object_id = Request::get('object_id',0);
+        $type = Request::get('type',2);
+        $option = '';
+        switch ($type){
+            case 2:// get option
+            case 3:// get option
+            case 4:// get option
+                $arrData = HrWageStepConfig::getDataOption($object_id,$type);
+                $option = FunctionLib::getOption($arrData,0);
+                break;
+            case 5: // get giá trị hệ số
+                $info = HrWageStepConfig::find($object_id);
+                $option = $info->wage_step_config_value;
+                break;
+        }
+        $arrData['optionSelect'] = $option;
+        $arrData['isIntOk'] = 1;
+        return response()->json( $arrData );
+    }
 }

@@ -146,11 +146,29 @@ class HrWageStepConfig extends BaseModel{
             throw new PDOException();
         }
     }
+
     public static function getArrayByType($config_type = 0){
         $results = array();
         if($config_type > 0){
             $result = HrWageStepConfig::where('wage_step_config_id','>', 0)
                         ->where('wage_step_config_type', $config_type)->get();
+            if(sizeof($result) > 0){
+                foreach($result as $item){
+                    $results[$item->wage_step_config_id] = $item->wage_step_config_name;
+                }
+            }
+        }
+        return $results;
+    }
+
+    public static function getDataOption($object_id,$config_type = 0){
+        $results = array();
+        if($object_id > 0 && $config_type > 0){
+            $result = HrWageStepConfig::where('wage_step_config_id','>', 0)
+                ->where('wage_step_config_status', Define::STATUS_SHOW)
+                ->where('wage_step_config_type', $config_type)
+                ->where('wage_step_config_parent_id', $object_id)
+                ->get();
             if(sizeof($result) > 0){
                 foreach($result as $item){
                     $results[$item->wage_step_config_id] = $item->wage_step_config_name;
