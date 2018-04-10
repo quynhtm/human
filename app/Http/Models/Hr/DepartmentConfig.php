@@ -61,6 +61,21 @@ class DepartmentConfig extends BaseModel
         }
     }
 
+    public static function getItemById($id=0){
+        $result = (Define::CACHE_ON) ? Cache::get(Define::CACHE_HR_DEPARTMENT_CONFIG_ID.$id) : array();
+        try {
+            if(empty($result)){
+                $result = DepartmentConfig::where('department_config_id', $id)->first();
+                if($result && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_HR_DEPARTMENT_CONFIG_ID.$id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        } catch (PDOException $e) {
+            throw new PDOException();
+        }
+        return $result;
+    }
+
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();
@@ -94,15 +109,18 @@ class DepartmentConfig extends BaseModel
 
     public static function removeCache($id = 0,$data){
         if($id > 0){
-            //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
+            Cache::forget(Define::CACHE_HR_DEPARTMENT_CONFIG_ID.$id);
         }
     }
 
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
             $query = DepartmentConfig::where('department_config_id','>',0);
-            if (isset($dataSearch['position_config_name']) && $dataSearch['position_config_name'] != '') {
-                $query->where('position_config_name','LIKE', '%' . $dataSearch['position_config_name'] . '%');
+            if (isset($dataSearch['department_id']) && $dataSearch['department_id'] != -1) {
+                $query->where('department_id','=', $dataSearch['department_id']);
+            }
+            if (isset($dataSearch['department_config_status']) && $dataSearch['department_config_status'] != -1) {
+                $query->where('department_config_status','=', $dataSearch['department_config_status']);
             }
             $total = $query->count();
             $query->orderBy('department_config_id', 'desc');
