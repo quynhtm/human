@@ -30,7 +30,8 @@ class SalaryAllowanceController extends BaseAdminController
     private $arrStatus = array(1 => 'hiển thị', 2 => 'Ẩn');
     private $viewPermission = array();//check quyen
 
-    public function __construct(){
+    public function __construct()
+    {
         parent::__construct();
 
     }
@@ -76,7 +77,8 @@ class SalaryAllowanceController extends BaseAdminController
 
         //thông tin lương
         $lương = Salary::getSalaryByPersonId($person_id);
-        $arrNgachBac = HrDefine::getArrayByType(Define::nghach_bac);
+        //Nghạch công chức
+        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
 
         //thông tin phu cap
         $phucap = Allowance::getAllowanceByPersonId($person_id);
@@ -86,7 +88,7 @@ class SalaryAllowanceController extends BaseAdminController
         return view('hr.SalaryAllowance.View', array_merge([
             'person_id' => $person_id,
             'lương' => $lương,
-            'arrNgachBac' => $arrNgachBac,
+            'arrNgachBac' => $arrNghachcongchuc,
 
             'phucap' => $phucap,
             'arrOptionPhuCap' => Define::$arrOptionPhuCap,
@@ -129,18 +131,22 @@ class SalaryAllowanceController extends BaseAdminController
 
         //thang bang luong
         $arrThangbangluong = HrWageStepConfig::getArrayByType(Define::type_thang_bang_luong);
+        $arrThangbangluong = !empty($arrThangbangluong) ? array(0 => 'Chọn thang bảng lương') + $arrThangbangluong : array(0 => 'Chọn thang bảng lương');
         $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
 
         //Nghạch công chức
         $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
+        $arrNghachcongchuc = !empty($arrNghachcongchuc) ? array(0 => 'Chọn ngạch công chức') + $arrNghachcongchuc : array(0 => 'Chọn ngạch công chức');
         $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //mã Nghạch
-        $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ma_ngach);
-        $optionMaNgach = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
+        $arrMaNgach = HrDefine::getArrayByType(Define::type_ma_ngach);
+        $arrMaNgach = !empty($arrMaNgach) ? array(0 => 'Chọn mã ngạch') + $arrMaNgach : array(0 => 'Chọn mã ngạch');
+        $optionMaNgach = FunctionLib::getOption($arrMaNgach, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
 
         //bac luong
         $arrBacluong = HrDefine::getArrayByType(Define::type_bac_luong);
+        $arrBacluong = !empty($arrBacluong) ? array(0 => 'Chọn bậc lương') + $arrBacluong : array(0 => 'Chọn bậc lương');
         $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
@@ -161,6 +167,7 @@ class SalaryAllowanceController extends BaseAdminController
         $arrData['html'] = $html;
         return response()->json($arrData);
     }
+
     public function postSalary()
     {
         //Check phan quyen.
@@ -179,7 +186,7 @@ class SalaryAllowanceController extends BaseAdminController
         } else {
             if ($person_id > 0) {
                 $data['salary_person_id'] = $person_id;
-                $salary_id = ($salary_id > 0)? $salary_id: $id_hiden;
+                $salary_id = ($salary_id > 0) ? $salary_id : $id_hiden;
                 if ($salary_id > 0) {
                     Salary::updateItem($salary_id, $data);
                 } else {
@@ -189,14 +196,15 @@ class SalaryAllowanceController extends BaseAdminController
 
                 //thông tin lương
                 $lương = Salary::getSalaryByPersonId($person_id);
-                $arrNgachBac = HrDefine::getArrayByType(Define::nghach_bac);
+                //Nghạch công chức
+                $arrNghachcongchuc = HrDefine::getArrayByType(Define::type_ngach_cong_chuc);
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
-                $html = view('hr.SalaryAllowance.SalaryList' , array_merge([
+                $html = view('hr.SalaryAllowance.SalaryList', array_merge([
                     'person_id' => $person_id,
                     'lương' => $lương,
-                    'arrNgachBac' => $arrNgachBac,
+                    'arrNgachBac' => $arrNghachcongchuc,
                 ], $this->viewPermission))->render();
                 $arrData['html'] = $html;
             } else {
@@ -205,6 +213,7 @@ class SalaryAllowanceController extends BaseAdminController
         }
         return response()->json($arrData);
     }
+
     public function deleteSalary()
     {
         //Check phan quyen.
@@ -227,7 +236,7 @@ class SalaryAllowanceController extends BaseAdminController
 
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
-            $html = view('hr.SalaryAllowance.SalaryList' , array_merge([
+            $html = view('hr.SalaryAllowance.SalaryList', array_merge([
                 'person_id' => $person_id,
                 'lương' => $lương,
                 'arrNgachBac' => $arrNgachBac,
@@ -287,6 +296,7 @@ class SalaryAllowanceController extends BaseAdminController
         $arrData['html'] = $html;
         return response()->json($arrData);
     }
+
     public function postAllowance()
     {
         //Check phan quyen.
@@ -300,7 +310,7 @@ class SalaryAllowanceController extends BaseAdminController
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         $allowance_method_type = $data['allowance_method_type'];
-        $data['allowance_method_value'] = $data['allowance_method_value_'.$allowance_method_type];
+        $data['allowance_method_value'] = $data['allowance_method_value_' . $allowance_method_type];
         if ($data['allowance_method_value'] == '') {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         } else {
@@ -326,7 +336,7 @@ class SalaryAllowanceController extends BaseAdminController
 
                 $this->getDataDefault();
                 $this->viewPermission = $this->getPermissionPage();
-                $html = view('hr.SalaryAllowance.AllowanceList' , array_merge([
+                $html = view('hr.SalaryAllowance.AllowanceList', array_merge([
                     'person_id' => $person_id,
                     'phucap' => $phucap,
                     'arrOptionPhuCap' => Define::$arrOptionPhuCap,
@@ -339,6 +349,7 @@ class SalaryAllowanceController extends BaseAdminController
         }
         return response()->json($arrData);
     }
+
     public function deleteAllowance()
     {
         //Check phan quyen.
@@ -361,7 +372,7 @@ class SalaryAllowanceController extends BaseAdminController
 
             $this->getDataDefault();
             $this->viewPermission = $this->getPermissionPage();
-            $html = view('hr.SalaryAllowance.AllowanceList' , array_merge([
+            $html = view('hr.SalaryAllowance.AllowanceList', array_merge([
                 'person_id' => $person_id,
                 'phucap' => $phucap,
                 'arrOptionPhuCap' => Define::$arrOptionPhuCap,
