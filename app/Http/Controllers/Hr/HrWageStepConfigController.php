@@ -25,10 +25,8 @@ class HrWageStepConfigController extends BaseAdminController{
     private $permission_create = 'wagestepconfig_create';
     private $permission_edit = 'wagestepconfig_edit';
     private $arrStatus = array();
-    private $arrWageStepConfigType = array();
     private $arrParent = array();
     private $error = array();
-    private $arrPersion = array();
     private $viewPermission = array();
 
     public function __construct(){
@@ -74,7 +72,6 @@ class HrWageStepConfigController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
-        $optionWageStepConfigType = FunctionLib::getOption($this->arrWageStepConfigType, isset($data['wage_step_config_type'])? $data['wage_step_config_type']: CGlobal::status_show);
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.WageStepConfigType.view',array_merge([
             'data'=>$data,
@@ -84,9 +81,6 @@ class HrWageStepConfigController extends BaseAdminController{
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
-            'arrWageStepConfigType'=>$this->arrWageStepConfigType,
-            'optionWageStepConfigType'=>$optionWageStepConfigType,
-            'arrPersion'=>$this->arrPersion,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
@@ -155,7 +149,6 @@ class HrWageStepConfigController extends BaseAdminController{
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
-        $optionWageStepConfigType = FunctionLib::getOption($this->arrWageStepConfigType, isset($data['wage_step_config_type'])? $data['wage_step_config_type']: CGlobal::status_show);
         $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
 
 
@@ -168,10 +161,7 @@ class HrWageStepConfigController extends BaseAdminController{
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'arrStatus'=>$this->arrStatus,
-            'arrWageStepConfigType'=>$this->arrWageStepConfigType,
-            'optionWageStepConfigType'=>$optionWageStepConfigType,
             'optionParent'=>$optionParent,
-            'arrPersion'=>$this->arrPersion,
         ],$this->viewPermission));
     }
     public function postItemNgachCongChuc($ids) {
@@ -220,6 +210,174 @@ class HrWageStepConfigController extends BaseAdminController{
             ], $this->viewPermission));
     }
 
+    //Ma ngach cong chuc
+    public function viewMaNgachCongChuc(){
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['wage_step_config_name'] = addslashes(Request::get('wage_step_config_name',''));
+        $dataSearch['wage_step_config_type'] = Define::type_ma_ngach;
+        $dataSearch['wage_step_config_status'] = (int)Request::get('wage_step_config_status', -2);
+        $dataSearch['field_get'] = '';
+
+        $data = HrWageStepConfig::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->arrParent = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
+
+
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.WageStepConfigType.viewMaNgachCongChuc',array_merge([
+            'data'=>$data,
+            'search'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'optionStatus'=>$optionStatus,
+            'arrStatus'=>$this->arrStatus,
+            'optionParent'=>$optionParent,
+        ],$this->viewPermission));
+    }
+    public function postItemMaNgachCongChuc($ids) {
+
+        $id = FunctionLib::outputId($ids);
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        $arrSucces = ['isOk' => 0];
+        $id_hiden = (int)Request::get('id', 0);
+        $data = $_POST;
+        unset($data['id']);
+        $data['wage_step_config_order'] = (int)($data['wage_step_config_order']);
+        if ($this->valid($data) && empty($this->error)) {
+            $id = ($id == 0) ? $id_hiden : $id;
+            $data['wage_step_config_type'] = Define::type_ma_ngach;
+            if ($id > 0) {
+                HrWageStepConfig::updateItem($id, $data);
+            } else {
+                HrWageStepConfig::createItem($data);
+            }
+            $arrSucces['isOk'] = 1;
+            $arrSucces['url'] = URL::route('hr.wageStepConfigViewMaNgachCongChuc', array('wage_step_config_type' => Define::type_ma_ngach));
+            return $arrSucces;
+        }
+        return $arrSucces;
+    }
+    public function ajaxLoadFormMaNgachCongChuc(){
+        $ids = $_POST['id'];
+        $id = FunctionLib::outputId($ids);
+        $data['wage_step_config_id'] = 0;
+        if($id > 0) {
+            $data = HrWageStepConfig::find($id);
+        }
+
+        $this->arrParent = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['wage_step_config_status']) ? $data['wage_step_config_status'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($data['wage_step_config_parent_id']) ? $data['wage_step_config_parent_id'] : CGlobal::status_show);
+        return view('hr.WageStepConfigType.ajaxLoadFormMaNgachCongChuc',
+            array_merge([
+                'data' => $data,
+                'optionStatus' => $optionStatus,
+                'optionParent' => $optionParent,
+            ], $this->viewPermission));
+    }
+
+    //Bac luong
+    public function viewBacLuong(){
+        if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
+            return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
+        }
+
+        $pageNo = (int) Request::get('page_no',1);
+        $limit = CGlobal::number_limit_show;
+        $total = 0;
+        $offset = ($pageNo - 1) * $limit;
+
+        $dataSearch['wage_step_config_name'] = addslashes(Request::get('wage_step_config_name',''));
+        $dataSearch['wage_step_config_type'] = Define::type_bac_luong;
+        $dataSearch['wage_step_config_status'] = (int)Request::get('wage_step_config_status', -2);
+        $dataSearch['field_get'] = '';
+
+        $data = HrWageStepConfig::searchByCondition($dataSearch, $limit, $offset,$total);
+        unset($dataSearch['field_get']);
+        $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        $this->arrParent = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($dataSearch['wage_step_config_status']) ? $dataSearch['wage_step_config_status'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($search['wage_step_config_parent_id']) ? $search['wage_step_config_parent_id'] : CGlobal::status_show);
+
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.WageStepConfigType.viewBacLuong',array_merge([
+            'data'=>$data,
+            'search'=>$dataSearch,
+            'total'=>$total,
+            'stt'=>($pageNo - 1) * $limit,
+            'paging'=>$paging,
+            'optionStatus'=>$optionStatus,
+            'arrStatus'=>$this->arrStatus,
+            'optionParent'=>$optionParent,
+        ],$this->viewPermission));
+    }
+    public function postItemBacLuong($ids) {
+
+        $id = FunctionLib::outputId($ids);
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        $arrSucces = ['isOk' => 0];
+        $id_hiden = (int)Request::get('id', 0);
+        $data = $_POST;
+        unset($data['id']);
+        $data['wage_step_config_order'] = (int)($data['wage_step_config_order']);
+        if ($this->valid($data) && empty($this->error)) {
+            $id = ($id == 0) ? $id_hiden : $id;
+            $data['wage_step_config_type'] = Define::type_bac_luong;
+            if ($id > 0) {
+                HrWageStepConfig::updateItem($id, $data);
+            } else {
+                HrWageStepConfig::createItem($data);
+            }
+            $arrSucces['isOk'] = 1;
+            $arrSucces['url'] = URL::route('hr.wageStepConfigViewBacLuong', array('wage_step_config_type' => Define::type_bac_luong));
+            return $arrSucces;
+        }
+        return $arrSucces;
+    }
+    public function ajaxLoadFormBacLuong(){
+        $ids = $_POST['id'];
+        $id = FunctionLib::outputId($ids);
+        $data['wage_step_config_id'] = 0;
+        if($id > 0) {
+            $data = HrWageStepConfig::find($id);
+        }
+
+        $this->arrParent = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
+
+        $this->getDataDefault();
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['wage_step_config_status']) ? $data['wage_step_config_status'] : CGlobal::status_show);
+        $optionParent = FunctionLib::getOption($this->arrParent, isset($data['wage_step_config_parent_id']) ? $data['wage_step_config_parent_id'] : CGlobal::status_show);
+        return view('hr.WageStepConfigType.ajaxLoadFormBacLuong',
+            array_merge([
+                'data' => $data,
+                'optionStatus' => $optionStatus,
+                'optionParent' => $optionParent,
+            ], $this->viewPermission));
+    }
 
     public function deleteWageStepConfig(){
         $data = array('isIntOk' => 0);

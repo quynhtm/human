@@ -275,11 +275,11 @@ class Define
         Define::allowance_method_type_3 => 'Phụ cấp theo hệ số',
     );
 
-    //Phan loai: 1.thang bang luong, 2.ngach cong chuc, 3.ma ngach, 4.bac luong
+    //Phan loai: 1.thang bang luong, 2.ngach cong chuc, 3.ma ngach, 4.bac luong-he so
     const type_thang_bang_luong = 1;
     const type_ngach_cong_chuc = 2;
     const type_ma_ngach = 3;
-    const type_bac_luong = 3;
+    const type_bac_luong = 4;
 
 
     const mail_chua_doc = 1;//Mail chưa đọc
