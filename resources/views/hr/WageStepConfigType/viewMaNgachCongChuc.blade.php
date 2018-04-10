@@ -17,12 +17,12 @@
                 <div class="col-md-8 panel-content">
                     <div class="panel panel-primary">
                         <div class="panel-heading paddingTop1 paddingBottom1">
-                            <h4><i class="fa fa-list" aria-hidden="true"></i> Quản lý ngạch công chức</h4>
+                            <h4><i class="fa fa-list" aria-hidden="true"></i> Quản lý mã ngạch công chức</h4>
                         </div>
                         {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                         <div style="margin-top: 10px">
                             <div class="col-sm-4" >
-                                <input @if(isset($search['wage_step_config_name'])) value="{{$search['wage_step_config_name']}}" @endif placeholder="Tên ngạch công chức" name="wage_step_config_name" class="form-control" id="wage_step_config_name">
+                                <input @if(isset($search['wage_step_config_name'])) value="{{$search['wage_step_config_name']}}" @endif placeholder="Mã ngạch công chức" name="wage_step_config_name" class="form-control" id="wage_step_config_name">
                             </div>
                             <div class="col-sm-4">
                                 <select class="form-control input-sm" name="wage_step_config_status" id="wage_step_config_status">
@@ -44,7 +44,7 @@
                                     <thead>
                                     <tr>
                                         <th class="text-center w10">STT</th>
-                                        <th>Tên ngạch công chức</th>
+                                        <th>Mã ngạch công chức</th>
                                         <th class="text-center">Thứ tự</th>
                                         <th class="text-center">Trạng thái</th>
                                         <th class="text-center">Chức năng</th>
@@ -61,7 +61,7 @@
                                             <td class="text-center">{{isset($arrStatus[$item->wage_step_config_status]) ? $arrStatus[$item->wage_step_config_status] : 'Chưa xác định'}}</td>
                                             <td class="text-center middle" align="center">
                                                 @if($is_root || $permission_edit)
-                                                    <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadFormNgachCongChuc')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
+                                                    <a class="editItem" onclick="HR.editItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/ajaxLoadFormMaNgachCongChuc')" title="Sửa item"><i class="fa fa-edit fa-2x"></i></a>
                                                 @endif
                                                 @if($is_boss || $permission_remove)
                                                     <a class="deleteItem" onclick="HR.deleteItem('{{FunctionLib::inputId($item['wage_step_config_id'])}}', WEB_ROOT + '/manager/wage-step-config/deleteWageStepConfig')"><i class="fa fa-trash fa-2x"></i></a>
@@ -88,13 +88,13 @@
                             <form id="formAdd" method="post">
                                 <input type="hidden" name="id" value="{{FunctionLib::inputId(0)}}" class="form-control" id="id">
                                 <div class="form-group">
-                                    <label for="define_name">Tên ngạch công chức</label>
-                                    <input type="text" name="wage_step_config_name" title="Tên ngạch" class="form-control input-required" id="wage_step_config_name">
+                                    <label for="define_name">Mã ngạch công chức</label>
+                                    <input type="text" name="wage_step_config_name" title="Mã ngạch công chức" class="form-control input-required" id="wage_step_config_name">
                                 </div>
                                 <div class="form-group">
-                                    <label for="define_name">Thang bảng lương</label>
+                                    <label for="define_name">Ngạch công chức</label>
                                     <select name="wage_step_config_parent_id" id="wage_step_config_parent_id" class="form-control">
-                                        <option value="-1">--Chọn thang bảng lương--</option>
+                                        <option value="-1">--Chọn ngạch công chức--</option>
                                         {!! $optionParent !!}
                                     </select>
                                 </div>
@@ -108,7 +108,7 @@
                                         {!! $optionStatus !!}
                                     </select>
                                 </div>
-                                <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config-ngach-cong-chuc/edit/' + '{{FunctionLib::inputId(0)}}')">
+                                <a class="btn btn-success" id="submit" onclick="HR.addItem('form#formAdd', 'form#formAdd :input', '#submit', WEB_ROOT + '/manager/wage-step-config-ma-ngach-cong-chuc/edit/' + '{{FunctionLib::inputId(0)}}')">
                                     <i class="fa fa-floppy-o" aria-hidden="true"></i> Lưu
                                 </a>
                                 <a class="btn btn-default" id="cancel" onclick="HR.resetItem('#id', '{{FunctionLib::inputId(0)}}')">
