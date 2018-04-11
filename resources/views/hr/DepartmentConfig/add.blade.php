@@ -33,16 +33,20 @@
                         <div class="col-md-12">
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Đơn vị/phòng ban</label>
-                                            <select class="form-control input-sm" name="department_id" id="department_id">
-                                                {!! $optionDepartment !!}
-                                            </select>
+                                @if(isset($data->department_id) && $data->department_id > 0)
+                                    <input class="form-control input-sm input-required" title="Đơn vị/phòng ban" id="department_id" name="department_id" @isset($data['department_id'])value="{{$data['department_id']}}"@endif type="hidden">
+                                @else
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Đơn vị/phòng ban</label>
+                                                <select class="form-control input-sm" name="department_id" id="department_id">
+                                                    {!! $optionDepartment !!}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">

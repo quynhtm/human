@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\DepartmentConfig;
 use App\Http\Models\Hr\HrDefine;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -155,8 +156,15 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_user_name_update'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 if(Department::updateItem($id, $data)) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
-
+                        //return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                        $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        if($departConfigId == 0){
+                            $this->createItemDepart($id);
+                            $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                            $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        }
+                        return Redirect::route('hr.departmentConfigEdit', array('id'=>FunctionLib::inputId($departConfigId)));
                     }else{
                         return Redirect::route('hr.departmentView');
                     }
@@ -165,10 +173,14 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_creater_time'] = time();
                 $data['department_user_id_creater'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
                 $data['department_user_name_creater'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
-
-                if(Department::createItem($data)) {
+                $id = Department::createItem($data);
+                if($id) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        //return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        $this->createItemDepart($id);
+                        $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                        $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        return Redirect::route('hr.departmentConfigEdit', array('id'=>FunctionLib::inputId($departConfigId)));
                     }else{
                         return Redirect::route('hr.departmentView');
                     }
@@ -245,5 +257,17 @@ class HrDepartmentController extends BaseAdminController
                 self::showCategoriesView($categories, $item['department_id'], $char.'<span class="indent"></span>', $str);
             }
         }
+    }
+    public function createItemDepart($id){
+        $dataDepart = array(
+            'department_id'=>$id,
+            'department_retired_age_min_girl'=>55,
+            'department_retired_age_max_girl'=>60,
+            'department_retired_age_min_boy'=>55,
+            'department_retired_age_max_boy'=>65,
+            'month_regular_wage_increases'=>36,
+            'month_raise_the_salary_ahead_of_time'=>24,
+        );
+        DepartmentConfig::createItem($dataDepart);
     }
 }
