@@ -107,6 +107,7 @@ HR = {
         $('.icChage').removeClass('fa-edit').addClass('fa-plus-square');
     },
     clickAddParentDepartment: function () {
+        /*
         $('.list-group.ext li').click(function () {
             $('.list-group.ext li').removeClass('act');
             var parent_id = $(this).attr('data');
@@ -133,6 +134,23 @@ HR = {
                 $('#department_type').removeAttr('disabled');
             }
         });
+        */
+        $('select#department_type').change(function(){
+           var dataType= $(this).val();
+            if(dataType == 43){
+                $('select#department_parent_id').attr('disabled', 'disabled');
+                $('select#department_parent_id option').removeAttr('selected');
+            }else{
+                $('select#department_parent_id').removeAttr('disabled');
+            }
+        });
+        var dataType= $('select#department_type').val();
+        if(dataType == 43){
+            $('select#department_parent_id').attr('disabled', 'disabled');
+            $('select#department_parent_id option').removeAttr('selected');
+        }else{
+            $('select#department_parent_id').removeAttr('disabled');
+        }
     },
     clickPostPageNext: function () {
         $('.submitNext').click(function () {

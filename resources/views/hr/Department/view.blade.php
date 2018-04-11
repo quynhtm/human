@@ -26,14 +26,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-3">
-                            <div id="treeview" class="treeview">
-                                <ul class="list-group">
-                                    {!! $dataCate !!}
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-9">
+                        <div class="col-md-12">
                             @if(sizeof($data) > 0)
                             <table class="table table-bordered not-bg">
                                 <thead>
@@ -42,7 +35,8 @@
                                     <th>Tên đơn vị/ Phòng ban</th>
                                     <th class="text-center">Điện thoại</th>
                                     <th class="text-center">Fax</th>
-                                    <th class="text-center">Phân loại</th>
+                                    <th>Loại đơn vị/ phòng ban</th>
+                                    <th>Đơn vị/ Phòng ban quản lý trực tiếp</th>
                                     <th class="text-center">Cập nhật</th>
                                     <th class="text-center">Chức năng</th>
                                 </tr>
@@ -57,10 +51,13 @@
                                         <td>{{$item->department_phone}}</td>
                                         <td>{{$item->department_fax}}</td>
                                         <td>
-                                            @if(isset($arrDepartmentType[$item['department_type']]))
+                                            @if(isset($arrDepartmentType[$item['department_type']]) && $item['department_type'] != -1)
                                                 {{$arrDepartmentType[$item['department_type']]}}
-                                            @else
-                                                Chưa xác định
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if(isset($arrDepartment[$item['department_parent_id']]) && $item['department_parent_id'] != -1)
+                                                {{$arrDepartment[$item['department_parent_id']]}}
                                             @endif
                                         </td>
                                         <td class="text-center">
