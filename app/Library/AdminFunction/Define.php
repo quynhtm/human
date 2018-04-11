@@ -54,6 +54,7 @@ class Define
     const TABLE_HR_ALLOWANCE = 'hr_allowance';// phụ cấp
     const TABLE_HR_WAGE_STEP_CONFIG = 'hr_wage_step_config';// cấu hình lương theo thang bảng lương , ngạch công chức
     const TABLE_HR_DEPARTMENT_CONFIG = 'hr_department_config';// cấu hình độ tuổi nghỉ hưu cho depart
+    const TABLE_HR_PAYROLL = 'hr_payroll';// bảng tính lương
 
     /***************************************************************************************************************
      * //Memcache
@@ -253,19 +254,16 @@ class Define
     // kiểu phụ cấp
     const phucap_chucvu = 1;
     const phucap_thamnienvuotkhung = 2;
-    const phucap_thamnien = 3;
-    const phucap_trachnhiem = 4;
-    const phucap_kettoan = 5;
-    const phucap_khuvuc = 6;
-    const phucap_hesochenhlech = 7;
+    const phucap_trachnhiem = 3;
+    const phucap_thamnien = 4;
+    const phucap_nghanh = 5;
+
     static $arrOptionPhuCap = array(
         Define::phucap_chucvu => 'Phụ cấp chức vụ',
         Define::phucap_thamnienvuotkhung => 'Phụ cấp thâm niên vượt khung',
-        Define::phucap_thamnien => 'Phụ cấp thâm niên',
         Define::phucap_trachnhiem => 'Phụ cấp trách nhiệm',
-        Define::phucap_kettoan => 'Phụ cấp Kế toán trưởng',
-        Define::phucap_khuvuc => 'Phụ cấp khu vực',
-        Define::phucap_hesochenhlech => 'Hệ số chênh lệch bảo lưu',
+        Define::phucap_thamnien => 'Phụ cấp thâm niên',
+        Define::phucap_nghanh => 'Phụ cấp nghành',
     );
 
     //phuong thuc tra phu cap

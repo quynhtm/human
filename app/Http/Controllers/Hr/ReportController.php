@@ -78,6 +78,7 @@ class ReportController extends BaseAdminController
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
+        $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
         $search['field_get'] = '';
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);
@@ -88,8 +89,10 @@ class ReportController extends BaseAdminController
 
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
 
-        $arrYear = $this->getArrayYearAgo();
-        $optionYear = FunctionLib::getOption($arrYear, $search['reportYear']);
+        $arrMonth = FunctionLib::getListMonth();
+        $arrYears = FunctionLib::getListYears();
+        $optionYear = FunctionLib::getOption($arrYears, $search['reportYear']);
+        $optionMonth = FunctionLib::getOption($arrMonth, $search['reportMonth']);
 
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
@@ -102,6 +105,7 @@ class ReportController extends BaseAdminController
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'optionYear' => $optionYear,
+            'optionMonth' => $optionMonth,
             'optionDepart' => $optionDepart,
             'arrChucVu' => $arrChucVu,
             'arrDepart' => $depart,
@@ -205,15 +209,5 @@ class ReportController extends BaseAdminController
         $objWriter->save('php://output');
 
         die;
-    }
-
-    function getArrayYearAgo(){
-        $yearCurrent = date('Y', time());
-        $yearAgo = $yearCurrent - 100;
-        $arrYear = array();
-        for($i=$yearCurrent; $i>=$yearAgo; $i--){
-            $arrYear[$i] = $i;
-        }
-        return $arrYear;
     }
 }

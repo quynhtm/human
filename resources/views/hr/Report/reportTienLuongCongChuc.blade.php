@@ -28,14 +28,21 @@ use App\Http\Models\Hr\Allowance;
                                 <div class="panel-body">
                                     <form class="form-horizontal" action="" method="get" id="adminFormExportViewTienLuongCongChuc" name="adminFormExportViewTienLuongCongChuc">
                                         <div class="form-group">
-                                            <div class="col-md-5">
+                                            <div class="col-md-4">
                                                 <label>Chọn Đơn vị/ Phòng ban</label>
                                                 <select class="form-control input-sm" name="person_depart_id">
                                                     <option value="">- Đơn vị/ Phòng ban -</option>
                                                    {!! $optionDepart !!}
                                                 </select>
                                             </div>
-                                            <div class="col-md-5">
+                                            <div class="col-md-3">
+                                                <label>Chọn tháng báo cáo</label>
+                                                <select class="required form-control input-sm" name="reportYear">
+                                                    <option value="">- Chọn tháng báo cáo -</option>
+                                                    {!! $optionMonth !!}
+                                                </select>
+                                            </div>
+                                            <div class="col-md-3">
                                                 <label>Chọn năm báo cáo</label>
                                                 <select class="required form-control input-sm" name="reportYear">
                                                     <option value="">- Chọn năm báo cáo -</option>
@@ -60,85 +67,69 @@ use App\Http\Models\Hr\Allowance;
                                     </div>
                                     <div class="row">
                                         <div class="col-md-12">
-                                            <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> thiết bị @endif </div>
+                                            <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
                                             <br>
                                             <table style="width: 100%;" class="table table-bordered table-condensed">
                                                 <tbody>
                                                 <tr class="text-center">
-                                                    <th rowspan="2">TT</th>
-                                                    <th rowspan="2" width="10%">Họ Và tên</th>
-                                                    <th colspan="2" class="text-center">Ngày, tháng năm sinh</th>
-                                                    <th rowspan="2">Chức vụ hoặc chức danh công tác</th>
-                                                    <th rowspan="2">Cơ quan, đơn vị đang làm việc</th>
-                                                    <th rowspan="2">Thời gian giữ ngạch (kể cả ngạch tương đương)</th>
-                                                    <th colspan="2" class="text-center">Mức lương hiện hưởng</th>
-                                                    <th colspan="5" class="text-center">Phụ cấp</th>
-                                                    <th rowspan="2">Ghi chú</th>
+                                                    <th rowspan="4" class="text-center">TT</th>
+                                                    <th rowspan="4" class="text-center" width="15%">Họ và tên</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Mã số ngạch lương</th>
+
+                                                    <th colspan="9" class="text-center">Lương hệ số</th>
+
+                                                    <th rowspan="4" class="text-center" width="5%">Cộng hệ số</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Lương cơ bản hiện hành</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Thành tiền</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Tổng tiền lương và BHXH được hưởng</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Các khoản trừ vào lương (BHXH)</th>
+                                                    <th rowspan="4" class="text-center" width="7%">Tổng tiền lương thực nhận</th>
                                                 </tr>
                                                 <tr class="text-center">
-                                                    <th>Nam</th>
-                                                    <th>Nữ</th>
-                                                    <th>Hệ số lương</th>
-                                                    <th>Mã ngạch</th>
-                                                    <th>Chức vụ</th>
-                                                    <th>Trách nhiệm</th>
-                                                    <th>Khu vực</th>
-                                                    <th>Phụ cấp vượt khung</th>
-                                                    <th>Tổng phụ cấp</th>
+                                                    <th rowspan="3" class="text-center" width="5%">Hệ số lương</th>
+                                                    <th rowspan="3" class="text-center" width="5%">Hệ số phụ cấp chức vụ</th>
+                                                    <th colspan="7" class="text-center">Hệ số phụ cấp khác</th>
                                                 </tr>
-                                                @if(sizeof($data) > 0)
-                                                @foreach($data as $k => $item)
-                                                <tr>
-                                                    <td>{{$stt+$k+1}}</td>
-                                                    <td class="text-nowrap">{{$item->person_name}}</td>
-                                                    <?php
-                                                        $person_birth = (isset($item->person_birth) && $item->person_birth > 0) ? $item->person_birth : 0;
-                                                    ?>
-                                                    <td>{{(isset($item->person_sex) && $item->person_sex == 1 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : ''}}</td>
-                                                    <td>{{(isset($item->person_sex) && $item->person_sex == 0 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : ''}}</td>
-                                                    <td>@if(isset($arrChucVu[$item['person_position_define_id']])){{$arrChucVu[$item['person_position_define_id']]}}@endif</td>
-                                                    <td>@if(isset($arrDepart[$item['person_depart_id']])){{$arrDepart[$item['person_depart_id']]}}@endif</td>
-                                                    <?php
-                                                    $dataSalary = Salary::getSalaryByPersonIdAndYear($item->person_id, $search['reportYear']);
-                                                    $salary_coefficients = isset($dataSalary->salary_coefficients) ? $dataSalary->salary_coefficients : 0;
-                                                    $salary_civil_servants = isset($dataSalary->salary_civil_servants) ? $dataSalary->salary_civil_servants : '';
-
-                                                    $salary_month = isset($dataSalary->salary_month) ? $dataSalary->salary_month : '';
-                                                    $salary_year = isset($dataSalary->salary_year) ? $dataSalary->salary_year : '';
-
-                                                    //phucap
-                                                    $listAllowance = Allowance::getAllowanceByPersonId($item->person_id);
-                                                    $phucap_chucvu = $phucap_trachnhiem = $phucap_khuvuc = $phucap_thamnienvuotkhung = $phucap_total = 0;
-                                                    foreach($listAllowance as $_k => $pc){
-                                                        if($pc->allowance_type == Define::phucap_chucvu && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
-                                                            $phucap_chucvu = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                                                        }
-                                                        if($pc->allowance_type == Define::phucap_trachnhiem && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
-                                                            $phucap_trachnhiem = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                                                        }
-                                                        if($pc->allowance_type == Define::phucap_khuvuc && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
-                                                            $phucap_khuvuc = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                                                        }
-                                                        if($pc->allowance_type == Define::phucap_thamnienvuotkhung && $pc->allowance_year_start <= $search['reportYear'] && $pc->allowance_year_end >= $search['reportYear']){
-                                                            $phucap_thamnienvuotkhung = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                                                        }
-                                                    }
-                                                    $phucap_total = $phucap_chucvu + $phucap_trachnhiem + $phucap_khuvuc + $phucap_thamnienvuotkhung;
-
-                                                    ?>
-                                                    <td>{{$salary_month.'/'.$salary_year}}</td>
-                                                    <td class="text-right">{{$salary_coefficients}}</td>
-                                                    <td>{{$salary_civil_servants}}</td>
-
-                                                    <td class="text-right">{{$phucap_chucvu}}</td>
-                                                    <td class="text-right">{{$phucap_trachnhiem}}</td>
-                                                    <td class="text-right">{{$phucap_khuvuc}}</td>
-                                                    <td class="text-right">{{$phucap_thamnienvuotkhung}}</td>
-                                                    <td class="text-right">{{$phucap_total}}</td>
+                                                <tr class="text-center">
+                                                    <th colspan="2" class="text-center">Phụ cấp thâm niên vượt khung</th>
+                                                    <th rowspan="2" class="text-center">Phụ cấp trách nhiệm</th>
+                                                    <th colspan="2" class="text-center">Phụ cấp thâm niên</th>
+                                                    <th colspan="2" class="text-center">Phụ cấp ngành</th>
+                                                </tr>
+                                                <tr class="text-center">
+                                                    <th class="text-center" width="5%">%</th>
+                                                    <th class="text-center" width="5%">Hệ số</th>
+                                                    <th class="text-center" width="5%">%</th>
+                                                    <th class="text-center" width="5%">Hệ số</th>
+                                                    <th class="text-center" width="5%">%</th>
+                                                    <th class="text-center" width="5%">Hệ số</th>
+                                                </tr>
+                                                <tr class="text-center" style="background-color: #62A8D1">
                                                     <td></td>
+                                                    <td></td>
+                                                    <td></td>
+
+                                                    <td>1</td>
+                                                    <td>2</td>
+                                                    <td>3</td>
+                                                    <td>4=1*3</td>
+                                                    <td>5</td>
+
+                                                    <td>6</td>
+                                                    <td>7=(1+2 +4)*6</td>
+                                                    <td>8</td>
+                                                    <td>9=1*8</td>
+                                                    <td>10=1+2+ 4+5+7+9</td>
+
+                                                    <td>11</td>
+                                                    <td>12=10*11</td>
+                                                    <td>13=12</td>
+                                                    <td>14(*)</td>
+                                                    <td>15=13-14</td>
                                                 </tr>
-                                                @endforeach
-                                                @endif
+                                                <tr class="text-center" style="background-color: #62A8D1">
+                                                    <td colspan="18" class="text-center">(*) 14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)</td>
+                                                </tr>
                                                 </tbody>
                                             </table>
                                         </div>
