@@ -68,7 +68,6 @@ class BonusPersonController extends BaseAdminController
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
 
-
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
@@ -162,6 +161,7 @@ class BonusPersonController extends BaseAdminController
         $data = $_POST;
         $person_id = Request::get('person_id', '');
         $bonus_id = Request::get('bonus_id', '');
+        $id_hiden = Request::get('id_hiden', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         if ($data['bonus_decision'] == '' || $data['bonus_note'] == '') {
@@ -177,6 +177,7 @@ class BonusPersonController extends BaseAdminController
                     'bonus_type' => $data['bonus_type'],
                     'bonus_person_id' => $person_id,
                 );
+                $bonus_id = ($bonus_id > 0) ? $bonus_id : FunctionLib::outputId($id_hiden);;
                 if ($bonus_id > 0) {
                     $dataBonus['bonus_update_user_id'] = $this->user_id;
                     $dataBonus['bonus_update_user_name'] = $this->user_name;

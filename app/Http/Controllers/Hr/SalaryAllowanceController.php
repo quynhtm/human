@@ -184,7 +184,7 @@ class SalaryAllowanceController extends BaseAdminController
         $data = $_POST;
         $person_id = (int)Request::get('person_id', '');
         $salary_id = (int)Request::get('salary_id', '');
-        $id_hiden = (int)Request::get('id_hiden', '');
+        $id_hiden = Request::get('id_hiden', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         if ($data['salary_salaries'] == '') {
@@ -192,7 +192,7 @@ class SalaryAllowanceController extends BaseAdminController
         } else {
             if ($person_id > 0) {
                 $data['salary_person_id'] = $person_id;
-                $salary_id = ($salary_id > 0) ? $salary_id : $id_hiden;
+                $salary_id = ($salary_id > 0) ? $salary_id : FunctionLib::outputId($id_hiden);
                 if ($salary_id > 0) {
                     Salary::updateItem($salary_id, $data);
                 } else {
