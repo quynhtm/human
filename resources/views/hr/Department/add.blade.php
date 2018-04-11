@@ -30,15 +30,7 @@
                 </div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-md-4">
-                            <p class="boxtitle">Chọn đơn vị/ phòng ban quản lý trực tiếp</p>
-                            <div id="treeview" class="treeview">
-                                <ul class="list-group ext">
-                                    {!! $dataCate !!}
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="col-md-8">
+                        <div class="col-md-12">
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm adminFormDepartmentAdd" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
                                 <div class="row">
@@ -62,56 +54,65 @@
                                         </p>
                                         @if(isset($data['department_id']) && $data['department_id'] > 0)
                                         <p>
-                                            <span class="lbl">Chuyển đến Đơn vị/ Phòng ban:</span> <span id="orgname" class="val">Chọn đơn vị cần chuyển đến bên trái</span>
+                                            <span class="lbl">Chuyển đến Đơn vị/ Phòng ban:</span> <span id="orgname" class="val">Chọn đơn vị cần chuyển đến bên phải</span>
                                         </p>
                                         @endif
-                                        <input id="department_parent_id" name="department_parent_id" datatmp="{{FunctionLib::inputId(0)}}" @isset($data['department_parent_id'])value="{{FunctionLib::inputId($data['department_parent_id'])}}" @else value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Loại đơn vị/ phòng ban (<span class="clred">*</span>)</label>
                                             <select class="form-control input-sm"  id="department_type" name="department_type">
+                                                <option value="-1">--Chọn loại đơn vị/ phòng ban--</option>
                                                 {!! $optionDepartmentType !!}
                                             </select>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
-                                            <label>Tên đơn vị/ Phòng ban(<span class="clred">*</span>)</label>
-                                            <input class="form-control input-sm input-required" title="Tên đơn vị/ Phòng ban" id="department_name" name="department_name" @isset($data['department_name'])value="{{$data['department_name']}}"@endif type="text">
+                                            <label>Đơn vị/ Phòng ban quản lý trực tiếp</label>
+                                            <select class="form-control input-sm"  id="department_parent_id" name="department_parent_id">
+                                                <option value="-1">--Chọn đơn vị/ Phòng ban quản lý trực tiếp--</option>
+                                                {!! $optionDepartmentParent !!}
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label>Tên đơn vị/ Phòng ban(<span class="clred">*</span>)</label>
+                                            <input class="form-control input-sm input-required" title="Tên đơn vị/ Phòng ban" id="department_name" name="department_name" @isset($data['department_name'])value="{{$data['department_name']}}"@endif type="text">
+                                        </div>
+                                    </div>
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Họ tên lãnh đạo</label>
                                             <input class="form-control input-sm" id="department_leader" name="department_leader" placeholder="Họ tên lãnh đạo" @isset($data['department_leader'])value="{{$data['department_leader']}}"@endif type="text">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Danh sách số điện thoại</label>
                                             <input class="form-control input-sm" id="department_phone" name="department_phone" placeholder="Nhập danh sách các số điện thoại, cách nhau bởi dấu ','" @isset($data['department_phone'])value="{{$data['department_phone']}}"@endif type="text">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Danh sách email</label>
                                             <input class="form-control input-sm" id="department_email" name="department_email" placeholder="Nhập danh sách các email, cách nhau bởi dấu ','" @isset($data['department_email'])value="{{$data['department_email']}}"@endif type="text">
                                         </div>
                                     </div>
+                                </div>
+                                <div class="row">
                                     <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Danh sách số fax</label>
                                             <input class="form-control input-sm" id="department_fax" name="department_fax" placeholder="Nhập danh sách các số fax, cách nhau bởi dấu ','" @isset($data['department_fax'])value="{{$data['department_fax']}}"@endif type="text">
                                         </div>
                                     </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="form-group">
                                             <label>Danh sách địa điểm bố trí tài sản</label>
                                             <input class="form-control input-sm" id="department_postion" name="department_postion" placeholder="Nhập danh sách địa điểm bố trí tài sản, cách dâu bởi dấu ','" @isset($data['department_postion'])value="{{$data['department_postion']}}"@endif type="text">
