@@ -119,33 +119,6 @@
             </div>
         </form>
 </div>
-<!--Popup Upload File-->
-<div class="modal fade" id="sys_PopupUploadDocumentOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title" id="myModalLabel">Tải tệp đính kèm</h4>
-            </div>
-            <div class="modal-body">
-                <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
-                    <div class="form_group">
-                        <div id="sys_show_button_upload_file">
-                            <div id="sys_mulitplefileuploaderFile" class="btn btn-primary">Tải tệp đính kèm</div>
-                        </div>
-                        <div id="status_file"></div>
-
-                        <div class="clearfix"></div>
-                        <div class="clearfix" style='margin: 5px 10px; width:100%;'>
-                            <div id="div_image_file"></div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-<!--Popup Upload File-->
 
 <script>
     $(document).ready(function(){

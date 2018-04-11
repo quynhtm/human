@@ -292,13 +292,22 @@ class Define
     const mail_type_0 = 0;//Mail khong duoc xem tuong ung voi mail goc cua nguoi gui
     const mail_type_1 = 1;//Mail dc xem tuong ung voi nguoi nhan dc mail
     const mail_user_unset = array(2);
+
     //Folder
     const IMAGE_ERROR = -1000;
     const FOLDER_DEVICE = 'device';
     const FOLDER_PERSONAL = 'personal';
     const FOLDER_DOCUMENT = 'document';
     const FOLDER_SALARY = 'salary';
+    const FOLDER_BONUS = 'bonus';
     const FOLDER_MAIL = 'mail';
+
+    const FILE_TYPE_MAIL = 9;
+    const FILE_TYPE_DOCUMENT = 10;
+    const FILE_TYPE_LUONG = 11;//salary
+    const FILE_TYPE_KHENTHUONG = 12;//khen thuong
+    const FILE_TYPE_DANHHIEU = 13;//danh hieu
+    const FILE_TYPE_KYLUAT = 14;//ky luat
 
     const sizeImage_80 = 80;
     const sizeImage_100 = 100;

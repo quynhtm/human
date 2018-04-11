@@ -19,7 +19,7 @@ class Bonus extends BaseModel
     public $timestamps = false;
 
     protected $fillable = array('bonus_project', 'bonus_person_id', 'bonus_type', 'bonus_define_id', 'bonus_define_name',
-        'bonus_year', 'bonus_note', 'bonus_decision', 'bonus_number');
+        'bonus_year', 'bonus_note', 'bonus_decision', 'bonus_number', 'bonus_file_attack');
 
     public static function getBonusByType($person_id, $type = 0)
     {

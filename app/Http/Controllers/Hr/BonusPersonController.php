@@ -11,6 +11,7 @@ use App\Http\Models\Hr\Bonus;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\Loader;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -61,10 +62,13 @@ class BonusPersonController extends BaseAdminController
     {
         $person_id = FunctionLib::outputId($personId);
         CGlobal::$pageAdminTitle = 'Thông tin hợp đồng lao động';
+
         //Check phan quyen.
         if (!$this->is_root && !in_array($this->personBonusFull, $this->permission) && !in_array($this->personBonusView, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
+
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 

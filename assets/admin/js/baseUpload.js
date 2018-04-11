@@ -196,7 +196,7 @@
     },
     //Upload document
     uploadDocumentAdvanced: function(type) {
-        jQuery('#sys_PopupUploadDocumentOtherPro').modal('show');
+        jQuery('#sys_PopupUploadFileCommon').modal('show');
         jQuery('.ajax-upload-dragdrop').remove();
         var urlAjaxUpload = WEB_ROOT+'/ajax/upload?act=upload_ext';
         var id_hiden = document.getElementById('id_hiden').value;
@@ -230,7 +230,7 @@
                     jQuery("#status_file").html("<span color='green'>Upload is success</span>");
                     setTimeout( "jQuery('.ajax-file-upload-statusbar').hide();",2000 );
                     setTimeout( "jQuery('#status_file').hide();",2000 );
-                    setTimeout( "jQuery('#sys_PopupUploadDocumentOtherPro').modal('hide');",2500 );
+                    setTimeout( "jQuery('#sys_PopupUploadFileCommon').modal('hide');",2500 );
                 }
             },
             onError: function(files,status,errMsg){

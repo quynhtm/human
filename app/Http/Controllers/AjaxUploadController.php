@@ -7,6 +7,7 @@
 */
 namespace App\Http\Controllers;
 
+use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\Device;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDocument;
@@ -340,7 +341,7 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_PERSONAL;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_PERSONAL;
 				break;
-			case 9://File mail
+			case Define::FILE_TYPE_MAIL://File mail
 				$result = HrMail::getItemById($id);
 				if($result != null){
 					$aryImages = unserialize($result->hr_mail_files);
@@ -348,7 +349,7 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_MAIL;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_MAIL;
 				break;
-			case 10://File document
+			case Define::FILE_TYPE_DOCUMENT://File document
 				$result = HrDocument::getItemById($id);
 				if($result != null){
 					$aryImages = unserialize($result->hr_document_files);
@@ -356,13 +357,21 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_DOCUMENT;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_DOCUMENT;
 				break;
-			case 11://File salary
+			case Define::FILE_TYPE_LUONG://File salary
 				$result = Salary::find($id);
 				if($result != null){
 					$aryImages = unserialize($result->salary_file_attach);
 				}
 				$folder_image = 'uploads/'.Define::FOLDER_SALARY;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_SALARY;
+				break;
+			case Define::FILE_TYPE_KHENTHUONG:
+				$result = Bonus::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->bonus_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_BONUS;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_BONUS;
 				break;
 			default:
 				$folder_image = '';
@@ -394,17 +403,21 @@ class AjaxUploadController extends BaseAdminController{
 							$new_row['device_image'] = $aryImages;
 							Device::updateItem($id, $new_row);
 							break;
-						case 9://File mail
+						case Define::FILE_TYPE_MAIL://File mail
 							$new_row['hr_mail_files'] = $aryImages;
 							HrMail::updateItem($id, $new_row);
 							break;
-						case 10://File document
+						case Define::FILE_TYPE_DOCUMENT://File document
 							$new_row['hr_document_files'] = $aryImages;
 							HrDocument::updateItem($id, $new_row);
 							break;
-						case 11://File salary
+						case Define::FILE_TYPE_LUONG:
 							$new_row['salary_file_attach'] = $aryImages;
 							Salary::updateItem($id, $new_row);
+							break;
+						case Define::FILE_TYPE_KHENTHUONG:
+							$new_row['bonus_file_attack'] = $aryImages;
+							Bonus::updateItem($id, $new_row);
 							break;
 						default:
 							$folder_image = '';
@@ -548,14 +561,17 @@ class AjaxUploadController extends BaseAdminController{
 		$aryData['msg'] = "Data not exists!";
 
 		switch( $type ){
-			case 9 ://File Mail
+			case Define::FILE_TYPE_MAIL ://File Mail
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_MAIL, $type);
 				break;
-			case 10 ://File Document
+			case Define::FILE_TYPE_DOCUMENT ://File Document
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_DOCUMENT, $type);
 				break;
-			case 11 ://File attach của Lương
+			case Define::FILE_TYPE_LUONG ://File attach của Lương
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_SALARY, $type);
+				break;
+			case Define::FILE_TYPE_KHENTHUONG ://File 12: khen thương, 13:danh hiệu, 14: kỉ luật
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_BONUS, $type);
 				break;
 			default:
 				break;
@@ -572,19 +588,23 @@ class AjaxUploadController extends BaseAdminController{
 			if($id_hiden == 0){
 
 				switch($type){
-					case 9://File document
+					case Define::FILE_TYPE_MAIL://File document
 						$new_row['hr_mail_created'] = time();
 						$new_row['hr_mail_status'] = Define::IMAGE_ERROR;
 						$item_id = HrMail::createItem($new_row);
 						break;
-					case 10://File document
+					case Define::FILE_TYPE_DOCUMENT://File document
 						$new_row['hr_document_created'] = time();
 						$new_row['hr_document_status'] = Define::IMAGE_ERROR;
 						$item_id = HrDocument::createItem($new_row);
 						break;
-					case 11://File lương
+					case Define::FILE_TYPE_LUONG://File lương
 						$new_row['salary_note'] = '';
 						$item_id = Salary::createItem($new_row);
+						break;
+					case Define::FILE_TYPE_KHENTHUONG:
+						$new_row['bonus_note'] = '';
+						$item_id = Bonus::createItem($new_row);
 						break;
 					default:
 						break;
@@ -604,7 +624,7 @@ class AjaxUploadController extends BaseAdminController{
 					$tmpImg['id_key'] = rand(10000, 99999);
 
 					switch($type){
-						case 9://File Mail
+						case Define::FILE_TYPE_MAIL://File Mail
 							$result = HrMail::getItemById($item_id);
 							if($result != null){
 								$arr_file = ($result->hr_mail_files != '') ? unserialize($result->hr_mail_files) : array();
@@ -620,7 +640,7 @@ class AjaxUploadController extends BaseAdminController{
 								}
 							}
 							break;
-						case 10://File Document
+						case Define::FILE_TYPE_DOCUMENT://File Document
 							$result = HrDocument::getItemById($item_id);
 							if($result != null){
 								$arr_file = ($result->hr_document_files != '') ? unserialize($result->hr_document_files) : array();
@@ -637,13 +657,31 @@ class AjaxUploadController extends BaseAdminController{
 							}
 							break;
 
-						case 11://File lương
+						case Define::FILE_TYPE_LUONG://File lương
 							$result = Salary::find($item_id);
 							if($result != null){
 								$arr_file = ($result->salary_file_attach != '') ? unserialize($result->salary_file_attach) : array();
 								$arr_file[] = $file_name;
 								$new_row['salary_file_attach'] = serialize($arr_file);
                                 Salary::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
+						default:
+
+						case Define::FILE_TYPE_KHENTHUONG:
+							$result = Bonus::find($item_id);
+							if($result != null){
+								$arr_file = ($result->bonus_file_attack != '') ? unserialize($result->bonus_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['bonus_file_attack'] = serialize($arr_file);
+                                Bonus::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
 								foreach($arr_file as $_k=>$_v){
