@@ -97,6 +97,8 @@ class Bonus extends BaseModel
             DB::connection()->getPdo()->beginTransaction();
             $item = Bonus::find($id);
             if ($item) {
+                $checkData = new Bonus();
+                $checkData->removeFile($item);
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
@@ -106,6 +108,18 @@ class Bonus extends BaseModel
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
+        }
+    }
+
+    public function removeFile($data){
+        $aryImages = unserialize($data->bonus_file_attack);
+        if(is_array($aryImages) && count($aryImages) > 0) {
+            $folder_image = 'uploads/'.Define::FOLDER_BONUS;
+            $folder_thumb = 'uploads/thumbs/'.Define::FOLDER_BONUS;
+            foreach ($aryImages as $k => $nameImage) {
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, $data->bonus_id);
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_thumb, true, $data->bonus_id);
+            }
         }
     }
 

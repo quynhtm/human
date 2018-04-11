@@ -7,6 +7,7 @@
 */
 namespace App\Http\Controllers;
 
+use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\Device;
 use App\Http\Models\Hr\Person;
@@ -116,9 +117,9 @@ class AjaxUploadController extends BaseAdminController{
 								$path_image = ($result->device_image != '') ? $result->device_image : '';
 								if($path_image != ''){
 									$folder_image = 'uploads/'.$folder;
-									$this->unlinkFileAndFolder($path_image, $folder_image, 0, 0);
+                                    FunctionLib::unlinkFileAndFolder($path_image, $folder_image, 0, 0);
 									$folder_thumb = 'uploads/thumbs/'.$folder;
-									$this->unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
+                                    FunctionLib::unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
 								}
 
 								$path_image = $file_name;
@@ -145,9 +146,9 @@ class AjaxUploadController extends BaseAdminController{
 								$path_image = ($result->person_avatar != '') ? $result->person_avatar : '';
 								if($path_image != ''){
 									$folder_image = 'uploads/'.$folder;
-									$this->unlinkFileAndFolder($path_image, $folder_image, 0, 0);
+                                    FunctionLib::unlinkFileAndFolder($path_image, $folder_image, 0, 0);
 									$folder_thumb = 'uploads/thumbs/'.$folder;
-									$this->unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
+                                    FunctionLib::unlinkFileAndFolder($path_image, $folder_thumb, 0, 0);
 								}
 
 								$path_image = $file_name;
@@ -285,7 +286,7 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
-			case 9://File mail
+			case Define::FILE_TYPE_MAIL://File mail
 				if($id > 0 && $nameImage != ''){
 					$delete_action = $this->delete_image_item($id, $nameImage, $type);
 					if($delete_action == 1){
@@ -294,7 +295,7 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
-			case 10://File document
+			case Define::FILE_TYPE_DOCUMENT://File document
 				if($id > 0 && $nameImage != ''){
 					$delete_action = $this->delete_image_item($id, $nameImage, $type);
 					if($delete_action == 1){
@@ -303,7 +304,27 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
-			case 11://File salary
+			case Define::FILE_TYPE_LUONG://File salary
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
+			case Define::FILE_TYPE_PHUCAP://File salary
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
+            case Define::FILE_TYPE_KHENTHUONG:
+            case Define::FILE_TYPE_DANHHIEU :
+            case Define::FILE_TYPE_KYLUAT :
 				if($id > 0 && $nameImage != ''){
 					$delete_action = $this->delete_image_item($id, $nameImage, $type);
 					if($delete_action == 1){
@@ -365,6 +386,14 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_SALARY;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_SALARY;
 				break;
+			case Define::FILE_TYPE_PHUCAP://File salary
+				$result = Allowance::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->allowance_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_ALLOWANCE;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_ALLOWANCE;
+				break;
 			case Define::FILE_TYPE_KHENTHUONG:
             case Define::FILE_TYPE_DANHHIEU :
             case Define::FILE_TYPE_KYLUAT :
@@ -385,11 +414,11 @@ class AjaxUploadController extends BaseAdminController{
 			foreach ($aryImages as $k => $v) {
 				if($v === $nameImage){
 					if($type == 1){//Img device
-						$this->unlinkFileAndFolder($nameImage, $folder_image, true, 0);
-						$this->unlinkFileAndFolder($nameImage, $folder_thumb, true, 0);
+                        FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, 0);
+						FunctionLib::unlinkFileAndFolder($nameImage, $folder_thumb, true, 0);
 					}else{
-						$this->unlinkFileAndFolder($nameImage, $folder_image, true, $id);
-						$this->unlinkFileAndFolder($nameImage, $folder_thumb, true, $id);
+                        FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, $id);
+                        FunctionLib::unlinkFileAndFolder($nameImage, $folder_thumb, true, $id);
 					}
 
 					unset($aryImages[$k]);
@@ -417,6 +446,10 @@ class AjaxUploadController extends BaseAdminController{
 							$new_row['salary_file_attach'] = $aryImages;
 							Salary::updateItem($id, $new_row);
 							break;
+						case Define::FILE_TYPE_PHUCAP:
+							$new_row['allowance_file_attack'] = $aryImages;
+							Allowance::updateItem($id, $new_row);
+							break;
 						case Define::FILE_TYPE_KHENTHUONG:
                         case Define::FILE_TYPE_DANHHIEU :
                         case Define::FILE_TYPE_KYLUAT :
@@ -435,75 +468,13 @@ class AjaxUploadController extends BaseAdminController{
 		}
 
 		//xoa khi chua update vao db, anh moi up load
-		if($delete_action == 0){
-			$this->unlinkFileAndFolder($nameImage, $folder_image, true, $id);
+		if($delete_action == 1){
+			FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, $id);
 			$delete_action = 1;
 		}
 		return $delete_action;
 	}
-	function unlinkFileAndFolder($file_name = '', $folder = '', $is_delDir = 0, $id = 0){
 
-		if($file_name != '') {
-			//Remove Img
-			$paths = '';
-			if($folder != ''){
-                if($id >0){
-                    $path = Config::get('config.DIR_ROOT').'/'.$folder.'/'.$id;
-                }else{
-                    $path = Config::get('config.DIR_ROOT').'/'.$folder;
-                }
-			}
-
-			if($file_name != ''){
-				if($path != ''){
-					if(is_file($path.'/'.$file_name)){
-						@unlink($path.'/'.$file_name);
-					}
-				}
-			}
-			//Remove Folder Empty
-			if($is_delDir) {
-				if($path != ''){
-					if(is_dir($path)) {
-						@rmdir($path);
-					}
-				}
-			}
-			//Remove Img thumb
-			$arrSize = Define::$arrSizeImage;
-			foreach($arrSize as $k=>$size){
-				if(!empty($size)){
-					$x = (int)$size['w'];
-					$y = (int)$size['h'];
-				}else{
-					$x = $y = Define::sizeImage_300;
-				}
-
-				$paths = '';
-				if($folder != ''){
-					if($id >0){
-						$path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y.'/'.$id;
-					}else{
-						$path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y;
-					}
-				}
-				if($file_name != ''){
-					if($path != ''){
-						if(is_file($path.'/'.$file_name)){
-							@unlink($path.'/'.$file_name);
-						}
-					}
-				}
-				if($is_delDir) {
-					if($path != ''){
-						if(is_dir($path)) {
-							@rmdir($path);
-						}
-					}
-				}
-			}
-		}
-	}
 
 	//Get Img Content
 	function get_image_insert_content(){
@@ -574,6 +545,9 @@ class AjaxUploadController extends BaseAdminController{
 			case Define::FILE_TYPE_LUONG ://File attach của Lương
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_SALARY, $type);
 				break;
+			case Define::FILE_TYPE_PHUCAP :
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_ALLOWANCE, $type);
+				break;
 			case Define::FILE_TYPE_KHENTHUONG ://File 12: khen thương, 13:danh hiệu, 14: kỉ luật
 			case Define::FILE_TYPE_DANHHIEU :
 			case Define::FILE_TYPE_KYLUAT :
@@ -607,6 +581,10 @@ class AjaxUploadController extends BaseAdminController{
 					case Define::FILE_TYPE_LUONG://File lương
 						$new_row['salary_note'] = '';
 						$item_id = Salary::createItem($new_row);
+						break;
+					case Define::FILE_TYPE_PHUCAP:
+						$new_row['allowance_note'] = '';
+						$item_id = Allowance::createItem($new_row);
 						break;
 					case Define::FILE_TYPE_KHENTHUONG:
                     case Define::FILE_TYPE_DANHHIEU :
@@ -672,6 +650,23 @@ class AjaxUploadController extends BaseAdminController{
 								$arr_file[] = $file_name;
 								$new_row['salary_file_attach'] = serialize($arr_file);
                                 Salary::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
+
+						case Define::FILE_TYPE_PHUCAP://File lương
+							$result = Allowance::find($item_id);
+							if($result != null){
+								$arr_file = ($result->allowance_file_attack != '') ? unserialize($result->allowance_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['allowance_file_attack'] = serialize($arr_file);
+                                Allowance::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
 								foreach($arr_file as $_k=>$_v){

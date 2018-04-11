@@ -99,12 +99,12 @@
                 </div>
                 <div class="col-sm-12">
                     <div class="controls">
-                        <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced(11);">Tải tệp đính kèm</a>
+                        <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_LUONG}});">Tải tệp đính kèm</a>
                         <div id="sys_show_file">
                             @if(isset($data->salary_file_attach) && $data->salary_file_attach !='')
                                 <?php $arrfiles = ($data->salary_file_attach != '') ? unserialize($data->salary_file_attach) : array(); ?>
                                 @foreach($arrfiles as $_key=>$file)
-                                    <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_SALARY.'/'.$salary_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($salary_id)}}', {{$_key}}, '{{$file}}',11)">X</span></div>
+                                    <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_SALARY.'/'.$salary_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($salary_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_LUONG}})">X</span></div>
                                 @endforeach
                             @endif
                         </div>

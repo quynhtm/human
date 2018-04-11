@@ -17,7 +17,7 @@ class Allowance extends BaseModel
     public $timestamps = false;
 
     protected $fillable = array('allowance_project', 'allowance_person_id', 'allowance_type', 'allowance_method_type', 'allowance_method_value', 'allowance_month_start',
-        'allowance_year_start', 'allowance_month_end', 'allowance_year_end');
+        'allowance_year_start', 'allowance_month_end', 'allowance_year_end', 'allowance_note', 'allowance_file_attack');
     public static function getAllowanceByPersonId($person_id)
     {
         if ($person_id > 0) {
@@ -88,6 +88,8 @@ class Allowance extends BaseModel
             DB::connection()->getPdo()->beginTransaction();
             $item = Allowance::find($id);
             if($item){
+                $checkData = new Allowance();
+                $checkData->removeFile($item);
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
@@ -97,6 +99,18 @@ class Allowance extends BaseModel
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
+        }
+    }
+
+    public function removeFile($data){
+        $aryImages = unserialize($data->allowance_file_attack);
+        if(is_array($aryImages) && count($aryImages) > 0) {
+            $folder_image = 'uploads/'.Define::FOLDER_ALLOWANCE;
+            $folder_thumb = 'uploads/thumbs/'.Define::FOLDER_ALLOWANCE;
+            foreach ($aryImages as $k => $nameImage) {
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, $data->allowance_id);
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_thumb, true, $data->allowance_id);
+            }
         }
     }
 

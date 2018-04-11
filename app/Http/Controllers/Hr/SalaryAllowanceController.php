@@ -343,6 +343,7 @@ class SalaryAllowanceController extends BaseAdminController
         $data = $_POST;
         $person_id = Request::get('person_id', '');
         $allowance_id = Request::get('allowance_id', '');
+        $id_hiden = Request::get('id_hiden', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         $allowance_method_type = $data['allowance_method_type'];
@@ -357,9 +358,11 @@ class SalaryAllowanceController extends BaseAdminController
                     'allowance_method_value' => $data['allowance_method_value'],
                     'allowance_month_start' => $data['allowance_month_start'],
                     'allowance_year_start' => $data['allowance_year_start'],
+                    'allowance_note' => $data['allowance_note'],
                     'allowance_month_end' => $data['allowance_month_end'],
                     'allowance_year_end' => $data['allowance_year_end']
                 ];
+                $allowance_id = ($allowance_id > 0) ? $allowance_id : FunctionLib::outputId($id_hiden);
                 if ($allowance_id > 0) {
                     Allowance::updateItem($allowance_id, $dataAllowance);
                 } else {

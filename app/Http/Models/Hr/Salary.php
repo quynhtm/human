@@ -96,6 +96,8 @@ class Salary extends BaseModel
             DB::connection()->getPdo()->beginTransaction();
             $item = Salary::find($id);
             if($item){
+                $checkData = new Salary();
+                $checkData->removeFile($item);
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
@@ -107,7 +109,17 @@ class Salary extends BaseModel
             return false;
         }
     }
-
+    public function removeFile($data){
+        $aryImages = unserialize($data->salary_file_attach);
+        if(is_array($aryImages) && count($aryImages) > 0) {
+            $folder_image = 'uploads/'.Define::FOLDER_SALARY;
+            $folder_thumb = 'uploads/thumbs/'.Define::FOLDER_SALARY;
+            foreach ($aryImages as $k => $nameImage) {
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_image, true, $data->salary_id);
+                FunctionLib::unlinkFileAndFolder($nameImage, $folder_thumb, true, $data->salary_id);
+            }
+        }
+    }
     public static function removeCache($id = 0,$data){
         if($id > 0){
             //Cache::forget(Define::CACHE_CATEGORY_ID.$id);

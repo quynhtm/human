@@ -1283,4 +1283,68 @@ html;
         }
         return $res;
     }
+
+    public static function unlinkFileAndFolder($file_name = '', $folder = '', $is_delDir = 0, $id = 0){
+
+        if($file_name != '') {
+            //Remove Img
+            $paths = '';
+            if($folder != ''){
+                if($id >0){
+                    $path = Config::get('config.DIR_ROOT').'/'.$folder.'/'.$id;
+                }else{
+                    $path = Config::get('config.DIR_ROOT').'/'.$folder;
+                }
+            }
+
+            if($file_name != ''){
+                if($path != ''){
+                    if(is_file($path.'/'.$file_name)){
+                        @unlink($path.'/'.$file_name);
+                    }
+                }
+            }
+            //Remove Folder Empty
+            if($is_delDir) {
+                if($path != ''){
+                    if(is_dir($path)) {
+                        @rmdir($path);
+                    }
+                }
+            }
+            //Remove Img thumb
+            $arrSize = Define::$arrSizeImage;
+            foreach($arrSize as $k=>$size){
+                if(!empty($size)){
+                    $x = (int)$size['w'];
+                    $y = (int)$size['h'];
+                }else{
+                    $x = $y = Define::sizeImage_300;
+                }
+
+                $paths = '';
+                if($folder != ''){
+                    if($id >0){
+                        $path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y.'/'.$id;
+                    }else{
+                        $path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y;
+                    }
+                }
+                if($file_name != ''){
+                    if($path != ''){
+                        if(is_file($path.'/'.$file_name)){
+                            @unlink($path.'/'.$file_name);
+                        }
+                    }
+                }
+                if($is_delDir) {
+                    if($path != ''){
+                        if(is_dir($path)) {
+                            @rmdir($path);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
