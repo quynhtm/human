@@ -17,6 +17,7 @@
             <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
             <input type="hidden" name="bonus_id" id="bonus_id" value="{{$bonus_id}}">
             <input type="hidden" name="bonus_type" id="bonus_type" value="{{$typeAction}}">
+            <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($bonus_id)}}" type="hidden">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="form-group">
@@ -50,9 +51,26 @@
                                value="@if(isset($bonus->bonus_note)){{$bonus->bonus_note}}@endif">
                     </div>
                 </div>
+                <div class="col-sm-12">
+                    <div class="controls">
+                        @if($bonus_id == 0)
+                            <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_DANHHIEU}});">Tải tệp đính kèm</a>
+                        @endif
+                        <div id="sys_show_file">
+                            @if(isset($bonus->bonus_file_attack) && $bonus->bonus_file_attack !='')
+                                <?php $arrfiles = ($bonus->bonus_file_attack != '') ? unserialize($bonus->bonus_file_attack) : array(); ?>
+                                @foreach($arrfiles as $_key=>$file)
+                                    <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_BONUS.'/'.$bonus_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($bonus_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_DANHHIEU}})">X</span></div>
+                                @endforeach
+                            @endif
+                        </div>
+                    </div>
+                </div>
                 {!! csrf_field() !!}
                 <div class="col-sm-6">
-                    <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.submitPopupCommon('form#form_poup_ajax','bonusPerson/postBonus','div_list_danhhieu','submitPopup')" id="submitPopup"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+                    @if($bonus_id == 0)
+                        <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.submitPopupCommon('form#form_poup_ajax','bonusPerson/postBonus','div_list_danhhieu','submitPopup')" id="submitPopup"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+                    @endif
                     <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
                 </div>
             </div>

@@ -366,6 +366,8 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_SALARY;
 				break;
 			case Define::FILE_TYPE_KHENTHUONG:
+            case Define::FILE_TYPE_DANHHIEU :
+            case Define::FILE_TYPE_KYLUAT :
 				$result = Bonus::find($id);
 				if($result != null){
 					$aryImages = unserialize($result->bonus_file_attack);
@@ -416,6 +418,8 @@ class AjaxUploadController extends BaseAdminController{
 							Salary::updateItem($id, $new_row);
 							break;
 						case Define::FILE_TYPE_KHENTHUONG:
+                        case Define::FILE_TYPE_DANHHIEU :
+                        case Define::FILE_TYPE_KYLUAT :
 							$new_row['bonus_file_attack'] = $aryImages;
 							Bonus::updateItem($id, $new_row);
 							break;
@@ -571,6 +575,8 @@ class AjaxUploadController extends BaseAdminController{
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_SALARY, $type);
 				break;
 			case Define::FILE_TYPE_KHENTHUONG ://File 12: khen thương, 13:danh hiệu, 14: kỉ luật
+			case Define::FILE_TYPE_DANHHIEU :
+			case Define::FILE_TYPE_KYLUAT :
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_BONUS, $type);
 				break;
 			default:
@@ -603,6 +609,8 @@ class AjaxUploadController extends BaseAdminController{
 						$item_id = Salary::createItem($new_row);
 						break;
 					case Define::FILE_TYPE_KHENTHUONG:
+                    case Define::FILE_TYPE_DANHHIEU :
+                    case Define::FILE_TYPE_KYLUAT :
 						$new_row['bonus_note'] = '';
 						$item_id = Bonus::createItem($new_row);
 						break;
@@ -676,6 +684,8 @@ class AjaxUploadController extends BaseAdminController{
 						default:
 
 						case Define::FILE_TYPE_KHENTHUONG:
+                        case Define::FILE_TYPE_DANHHIEU :
+                        case Define::FILE_TYPE_KYLUAT :
 							$result = Bonus::find($item_id);
 							if($result != null){
 								$arr_file = ($result->bonus_file_attack != '') ? unserialize($result->bonus_file_attack) : array();
