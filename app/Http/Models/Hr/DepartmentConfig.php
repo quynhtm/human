@@ -138,4 +138,15 @@ class DepartmentConfig extends BaseModel
             throw new PDOException();
         }
     }
+    public static function getItemByDepartmentId($department_id=0){
+        $result = array();
+        if($department_id > 0){
+            $result = DepartmentConfig::where('department_id', $department_id)->first();
+            if($result && Define::CACHE_ON){
+                $id = $result->department_config_id;
+                Cache::put(Define::CACHE_HR_DEPARTMENT_CONFIG_ID.$id, $result, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+            }
+        }
+        return $result;
+    }
 }

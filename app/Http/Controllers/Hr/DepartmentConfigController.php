@@ -145,13 +145,19 @@ class DepartmentConfigController extends BaseAdminController{
 
         if($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
+            $checkDepart = DepartmentConfig::getItemByDepartmentId($data['department_id']);
+            if(sizeof($checkDepart) > 0){
+                $id = $checkDepart->department_config_id;
+            }
             if($id > 0) {
                 if(DepartmentConfig::updateItem($id, $data)) {
-                    return Redirect::route('hr.departmentConfigView');
+                    //return Redirect::route('hr.departmentConfigView');
+                    return Redirect::route('hr.departmentView');
                 }
             }else{
                 if(DepartmentConfig::createItem($data)) {
-                    return Redirect::route('hr.departmentConfigView');
+                    //return Redirect::route('hr.departmentConfigView');
+                    return Redirect::route('hr.departmentView');
                 }
             }
         }

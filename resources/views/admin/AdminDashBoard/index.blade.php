@@ -16,7 +16,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <div class="box-header">
-                    <h3 class="box-title" style="text-align: center;">{{CGlobal::web_name}} </h3>
+                    <h3 class="box-title" style="text-align: center; color:#438eb9">{{CGlobal::web_title_dashboard}} </h3>
                 </div>
                 @if(isset($error) && !empty($error))
                     <div class="alert alert-danger" role="alert">

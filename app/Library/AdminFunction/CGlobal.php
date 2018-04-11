@@ -25,6 +25,7 @@ class CGlobal
     const project_name = 'manager_hr';
     const code_shop_share = 'PM QL HCTH';
     const web_name = 'Quản lý hành chính tổng hợp';
+    const web_title_dashboard = 'CHÀO MỪNG BẠN ĐẾN VỚI HỆ THỐNG QUẢN LÝ HÀNH CHÍNH TỔNG HỢP';
     const web_keywords = 'Quản lý hành chính tổng hợp';
     const web_description = 'Quản lý hành chính tổng hợp';
     public static $pageTitle = 'Quản lý hành chính tổng hợp';

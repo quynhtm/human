@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\DepartmentConfig;
 use App\Http\Models\Hr\HrDefine;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
@@ -75,11 +76,7 @@ class HrDepartmentController extends BaseAdminController
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
         //Get data cate left
-        $totalCat = 0;
-        $strCate = '';
-        $dataSearchCatDepartment['department_status'] = -1;
-        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
-        $this->showCategories($dataDepartmentCateSearch, 0, '', $strCate);
+        $this->arrDepartment =  Department::getDepartmentAll();
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['department_status']);
@@ -87,13 +84,13 @@ class HrDepartmentController extends BaseAdminController
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.view',array_merge([
             'data'=>$data,
-            'dataCate'=>$strCate,
             'search'=>$dataSearch,
             'total'=>$total,
             'stt'=>($pageNo - 1) * $limit,
             'paging'=>$paging,
             'optionStatus'=>$optionStatus,
             'arrDepartmentType'=>$this->arrDepartmentType,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function getItem($ids) {
@@ -108,22 +105,19 @@ class HrDepartmentController extends BaseAdminController
         }
 
         $this->getDataDefault();
-        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
-        $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
-
-        //Get data cate left
-        $totalCat = 0;
-        $strCate = '';
-        $dataSearchCatDepartment['department_status'] = -1;
-        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
-        $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
 
         $this->arrDepartment =  Department::getDepartmentAll();
+        if(in_array($id, array_keys($this->arrDepartment))){
+            unset($this->arrDepartment[$id]);
+        }
+        $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
+        $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
+        $optionDepartmentParent = FunctionLib::getOption($this->arrDepartment, isset($data['department_parent_id'])? $data['department_parent_id']: 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
-            'dataCate'=>$strCate,
+            'optionDepartmentParent'=>$optionDepartmentParent,
             'id'=>$id,
             'optionStatus'=>$optionStatus,
             'optionDepartmentType'=>$optionDepartmentType,
@@ -140,10 +134,14 @@ class HrDepartmentController extends BaseAdminController
 
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
-
-        $data['department_parent_id'] = (int)FunctionLib::outputId($data['department_parent_id']);
+        if(isset($data['department_parent_id'])) {
+            $data['department_parent_id'] = (int)$data['department_parent_id'];
+        }
         if(isset($data['department_type'])) {
             $data['department_type'] = (int)$data['department_type'];
+        }
+        if($data['department_type'] == 43){
+            $data['department_parent_id'] = -1;
         }
         $data['department_order'] = (int)($data['department_order']);
         $data['department_status'] = (int)($data['department_status']);
@@ -158,7 +156,15 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_user_name_update'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
                 if(Department::updateItem($id, $data)) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        //return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                        $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        if($departConfigId == 0){
+                            $this->createItemDepart($id);
+                            $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                            $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        }
+                        return Redirect::route('hr.departmentConfigEdit', array('id'=>FunctionLib::inputId($departConfigId)));
                     }else{
                         return Redirect::route('hr.departmentView');
                     }
@@ -167,32 +173,31 @@ class HrDepartmentController extends BaseAdminController
                 $data['department_creater_time'] = time();
                 $data['department_user_id_creater'] = isset($this->user['user_id']) ? $this->user['user_id'] : 0;
                 $data['department_user_name_creater'] = isset($this->user['user_name']) ? $this->user['user_name'] : 0;
-
-                if(Department::createItem($data)) {
+                $id = Department::createItem($data);
+                if($id) {
                     if(isset($data['clickPostPageNext'])){
-                        return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        //return Redirect::route('hr.departmentEdit', array('id'=>FunctionLib::inputId(0)));
+                        $this->createItemDepart($id);
+                        $checkDepart = DepartmentConfig::getItemByDepartmentId($id);
+                        $departConfigId = isset($checkDepart->department_config_id) ? $checkDepart->department_config_id : 0;
+                        return Redirect::route('hr.departmentConfigEdit', array('id'=>FunctionLib::inputId($departConfigId)));
                     }else{
                         return Redirect::route('hr.departmentView');
                     }
                 }
             }
         }
-        $this->arrDepartment =  Department::getDepartmentAll();
         $this->getDataDefault();
+
+        $this->arrDepartment =  Department::getDepartmentAll();
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
-
-        //Get data cate left
-        $totalCat = 0;
-        $strCate = '';
-        $dataSearchCatDepartment['department_status'] = -1;
-        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
-        $this->showCategoriesView($dataDepartmentCateSearch, 0, '', $strCate);
+        $optionDepartmentParent = FunctionLib::getOption($this->arrDepartment, isset($data['department_parent_id'])? $data['department_parent_id']: 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Department.add',array_merge([
             'data'=>$data,
-            'dataCate'=>$strCate,
+            'optionDepartmentParent'=>$optionDepartmentParent,
             'id'=>$id,
             'error'=>$this->error,
             'optionStatus'=>$optionStatus,
@@ -252,5 +257,17 @@ class HrDepartmentController extends BaseAdminController
                 self::showCategoriesView($categories, $item['department_id'], $char.'<span class="indent"></span>', $str);
             }
         }
+    }
+    public function createItemDepart($id){
+        $dataDepart = array(
+            'department_id'=>$id,
+            'department_retired_age_min_girl'=>55,
+            'department_retired_age_max_girl'=>60,
+            'department_retired_age_min_boy'=>55,
+            'department_retired_age_max_boy'=>65,
+            'month_regular_wage_increases'=>36,
+            'month_raise_the_salary_ahead_of_time'=>24,
+        );
+        DepartmentConfig::createItem($dataDepart);
     }
 }

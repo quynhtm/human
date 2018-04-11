@@ -11,7 +11,6 @@ table th {
     border-radius: 5px;
 }
 .table > thead > tr > th {
-    padding: 8px;
     border-bottom: 1px solid #eaeff0;
     color:#222;
 }

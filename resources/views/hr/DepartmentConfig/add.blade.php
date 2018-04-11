@@ -33,27 +33,31 @@
                         <div class="col-md-12">
                             <p>(<span class="clred">*</span>) Là trường bắt buộc phải nhập</p>
                             <form id="adminForm" name="adminForm" method="post" enctype="multipart/form-data" action="" novalidate="novalidate">
-                                <div class="row">
-                                    <div class="col-md-3">
-                                        <div class="form-group">
-                                            <label>Đơn vị/phòng ban</label>
-                                            <select class="form-control input-sm" name="department_id" id="department_id">
-                                                {!! $optionDepartment !!}
-                                            </select>
+                                @if(isset($data->department_id) && $data->department_id > 0)
+                                    <input class="form-control input-sm input-required" title="Đơn vị/phòng ban" id="department_id" name="department_id" @isset($data['department_id'])value="{{$data['department_id']}}"@endif type="hidden">
+                                @else
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Đơn vị/phòng ban</label>
+                                                <select class="form-control input-sm" name="department_id" id="department_id">
+                                                    {!! $optionDepartment !!}
+                                                </select>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
+                                @endif
                                 <div class="row">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Tuổi tối thiểu về hưu với nữ <span class="clred">(*)</span></label>
-                                            <input class="form-control input-sm input-required" title="Tuổi tối thiểu về hưu với nữ" id="department_retired_age_min_girl" name="department_retired_age_min_girl" @isset($data['department_retired_age_min_girl'])value="{{$data['department_retired_age_min_girl']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Tuổi tối thiểu về hưu với nữ" id="department_retired_age_min_girl" name="department_retired_age_min_girl" @isset($data['department_retired_age_min_girl'])value="{{$data['department_retired_age_min_girl']}}" @else value="55" @endif type="text">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Tuổi tối đa về hưu với nữ <span class="clred">(*)</span></label>
-                                            <input class="form-control input-sm input-required" title="Tuổi tối đa về hưu với nữ" id="department_retired_age_max_girl" name="department_retired_age_max_girl" @isset($data['department_retired_age_max_girl'])value="{{$data['department_retired_age_max_girl']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Tuổi tối đa về hưu với nữ" id="department_retired_age_max_girl" name="department_retired_age_max_girl" @isset($data['department_retired_age_max_girl'])value="{{$data['department_retired_age_max_girl']}}" @else value="60" @endif type="text">
                                         </div>
                                     </div>
                                 </div>
@@ -61,13 +65,13 @@
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Tuổi tối thiểu về hưu với nam <span class="clred">(*)</span></label>
-                                            <input class="form-control input-sm input-required" title="Tuổi tối thiểu về hưu với nam" id="department_retired_age_min_boy" name="department_retired_age_min_boy" @isset($data['department_retired_age_min_boy'])value="{{$data['department_retired_age_min_boy']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Tuổi tối thiểu về hưu với nam" id="department_retired_age_min_boy" name="department_retired_age_min_boy" @isset($data['department_retired_age_min_boy'])value="{{$data['department_retired_age_min_boy']}}" @else value="55" @endif type="text">
                                         </div>
                                     </div>
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Tuổi tối đa về hưu với nam <span class="clred">(*)</span></label>
-                                            <input class="form-control input-sm input-required" title="Tuổi tối đa về hưu với nam" id="department_retired_age_max_boy" name="department_retired_age_max_boy" @isset($data['department_retired_age_max_boy'])value="{{$data['department_retired_age_max_boy']}}"@endif type="text">
+                                            <input class="form-control input-sm input-required" title="Tuổi tối đa về hưu với nam" id="department_retired_age_max_boy" name="department_retired_age_max_boy" @isset($data['department_retired_age_max_boy'])value="{{$data['department_retired_age_max_boy']}}" @else value="65" @endif type="text">
                                         </div>
                                     </div>
                                 </div>
