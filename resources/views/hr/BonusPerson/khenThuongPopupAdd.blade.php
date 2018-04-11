@@ -62,7 +62,9 @@
 
         <div class="col-sm-12">
             <div class="controls">
+                @if($bonus_id == 0)
                 <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_KHENTHUONG}});">Tải tệp đính kèm</a>
+                @endif
                 <div id="sys_show_file">
                     @if(isset($bonus->bonus_file_attack) && $bonus->bonus_file_attack !='')
                         <?php $arrfiles = ($bonus->bonus_file_attack != '') ? unserialize($bonus->bonus_file_attack) : array(); ?>
@@ -76,7 +78,9 @@
 
         {!! csrf_field() !!}
         <div class="col-sm-6">
+            @if($bonus_id == 0)
             <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.submitPopupCommon('form#form_poup_ajax','bonusPerson/postBonus','div_list_khenthuong','submitPopup')" id="submitPopup"><i class="fa fa-floppy-o"></i> Lưu lại</a>
+            @endif
             <button type="button" class="btn btn-warning" data-dismiss="modal" aria-hidden="true"><i class="fa fa-reply"></i> Thoát</button>
         </div>
     </div>
