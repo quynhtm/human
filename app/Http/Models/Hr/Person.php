@@ -82,13 +82,19 @@ class Person extends BaseModel
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
                 $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
-
+            //sinh nhật
             if (isset($dataSearch['start_birth']) && $dataSearch['start_birth'] > 0) {
                 $query->where('person_birth', '>=', $dataSearch['start_birth']);
             }
-
             if (isset($dataSearch['end_birth']) && $dataSearch['end_birth'] > 0) {
                 $query->where('person_birth', '<=', $dataSearch['end_birth']);
+            }
+            //đến hạn tăng lương
+            if (isset($dataSearch['start_dealine_salary']) && $dataSearch['start_dealine_salary'] > 0) {
+                $query->where('person_date_salary_increase', '>=', $dataSearch['start_dealine_salary']);
+            }
+            if (isset($dataSearch['end_dealine_salary']) && $dataSearch['end_dealine_salary'] > 0) {
+                $query->where('person_date_salary_increase', '<=', $dataSearch['end_dealine_salary']);
             }
 
             if (isset($dataSearch['person_status']) && is_array($dataSearch['person_status'])) {
