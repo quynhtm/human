@@ -260,6 +260,7 @@ class HrWageStepConfigController extends BaseAdminController{
         $data = $_POST;
         unset($data['id']);
         $data['wage_step_config_order'] = (int)($data['wage_step_config_order']);
+        $data['wage_step_config_month_salary_increase'] = (int)($data['wage_step_config_month_salary_increase']);
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             $data['wage_step_config_type'] = Define::type_ma_ngach;

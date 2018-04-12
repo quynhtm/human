@@ -24,6 +24,10 @@
                 </select>
             </div>
             <div class="form-group">
+                <label for="define_name">Số tháng để tăng lương</label>
+                <input type="text" name="wage_step_config_month_salary_increase" title="Số tháng để tăng lương" class="form-control input-required" id="wage_step_config_month_salary_increase" @if(isset($data['wage_step_config_month_salary_increase']))value="{{$data['wage_step_config_month_salary_increase']}}"@endif>
+            </div>
+            <div class="form-group">
                 <label for="define_order">Thứ tự hiển thị</label>
                 <input type="text" name="wage_step_config_order" title="Thứ tự hiển thị" class="form-control" id="wage_step_config_order" @if(isset($data['wage_step_config_order']))value="{{$data['wage_step_config_order']}}"@endif>
             </div>

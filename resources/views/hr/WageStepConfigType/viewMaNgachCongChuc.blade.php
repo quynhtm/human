@@ -45,6 +45,7 @@
                                     <tr>
                                         <th class="text-center w10">STT</th>
                                         <th>Mã ngạch công chức</th>
+                                        <th>Số tháng để tăng lương</th>
                                         <th class="text-center">Thứ tự</th>
                                         <th class="text-center">Trạng thái</th>
                                         <th class="text-center">Chức năng</th>
@@ -55,6 +56,7 @@
                                         <tr>
                                             <td>{{ $stt + $key+1 }}</td>
                                             <td>{{$item->wage_step_config_name}}</td>
+                                            <td>{{$item->wage_step_config_month_salary_increase}}</td>
                                             <td class="text-center">
                                                 {{$item->wage_step_config_order}}
                                             </td>
@@ -97,6 +99,10 @@
                                         <option value="-1">--Chọn ngạch công chức--</option>
                                         {!! $optionParent !!}
                                     </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="define_name">Số tháng để tăng lương</label>
+                                    <input type="text" name="wage_step_config_month_salary_increase" title="Số tháng để tăng lương" class="form-control input-required" id="wage_step_config_month_salary_increase">
                                 </div>
                                 <div class="form-group">
                                     <label for="define_order">Thứ tự hiển thị</label>
