@@ -18,7 +18,7 @@ class HrWageStepConfig extends BaseModel{
     public $timestamps = false;
 
     protected $fillable = array('wage_step_config_project', 'wage_step_config_parent_id', 'wage_step_config_name', 'wage_step_config_value', 'wage_step_config_type',
-        'wage_step_config_order', 'wage_step_config_status');
+        'wage_step_config_order', 'wage_step_config_status', 'wage_step_config_month_salary_increase');
 
     public static function createItem($data){
         try {
