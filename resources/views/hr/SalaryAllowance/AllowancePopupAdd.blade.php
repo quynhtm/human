@@ -18,7 +18,7 @@
         <input type="hidden" name="allowance_id" id="allowance_id" value="{{$allowance_id}}">
         <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($allowance_id)}}" type="hidden">
         <div class="row">
-            <div class="col-sm-4">
+            <div class="col-sm-6">
                 <div class="form-group">
                     <label for="name" class="control-label">Chọn loại phụ cấp</label>
                     <select name="allowance_type" id="allowance_type"  class="form-control input-sm input-required">
@@ -26,7 +26,7 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="form-group">
                     <label for="name" class="control-label">Từ tháng</label>
                     <select name="allowance_month_start" id="allowance_month_start"  class="form-control input-sm input-required">
@@ -34,15 +34,15 @@
                     </select>
                 </div>
             </div>
-            <div class="col-sm-2">
+            <div class="col-sm-3">
                 <div class="form-group">
-                    <label for="name" class="control-label">Năm hưởng</label>
+                    <label for="name" class="control-label">năm</label>
                     <select name="allowance_year_start" id="allowance_year_start" class="form-control input-sm input-required">
                         {!! $optionYears2 !!}
                     </select>
                 </div>
             </div>
-            <div class="col-sm-2">
+            {{--<div class="col-sm-2">
                 <div class="form-group">
                     <label for="name" class="control-label">Đến tháng</label>
                     <select name="allowance_month_end" id="allowance_month_end"  class="form-control input-sm input-required">
@@ -57,7 +57,7 @@
                         {!! $optionYears3 !!}
                     </select>
                 </div>
-            </div>
+            </div>--}}
 
             <div class="col-sm-12">
                 <div class="form-group">

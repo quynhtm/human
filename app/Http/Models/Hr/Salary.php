@@ -18,6 +18,12 @@ class Salary extends BaseModel
 
     protected $fillable = array('salary_project', 'salary_person_id', 'salary_month', 'salary_year', 'salary_percent',
         'salary_salaries', 'salary_wage_table', 'salary_civil_servants','salary_tariffs', 'salary_wage', 'salary_coefficients', 'salary_note', 'salary_file_attach');
+
+    public static function getLastItem(){
+        $salary = Salary::where('salary_id','>', 0)->orderBy('salary_id', 'DESC')->first();
+        return $salary;
+    }
+
     public static function getSalaryByPersonId($person_id){
         if ($person_id > 0) {
             $result = Salary::where('salary_person_id', $person_id)
@@ -26,6 +32,7 @@ class Salary extends BaseModel
         }
         return array();
     }
+
     public static function getSalaryByPersonIdAndYear($person_id=0, $year=0){
         if ($person_id > 0 && $year > 0) {
             $result = Salary::where('salary_person_id', $person_id)
@@ -35,6 +42,7 @@ class Salary extends BaseModel
         }
         return array();
     }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();

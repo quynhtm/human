@@ -26,6 +26,31 @@ class Person extends BaseModel
         'person_creater_time','person_creater_user_id','person_creater_user_name',
         'person_update_time','person_update_user_id','person_update_user_name');
 
+    public static function putDataInfoPerson($request){
+        //tính ngày tăng lương
+        if(isset($request['person_id']) && isset($request['salary_id'])&& isset($request['person_date_salary_increase']) && $request['person_date_salary_increase'] == Define::STATUS_SHOW){
+            $salary_id = (int)$request['salary_id'];
+            $person_id = (int)$request['person_id'];
+            $infoSalary = Salary::getLastItem();
+            if(isset($infoSalary->salary_id)){
+                if($infoSalary->salary_id == $salary_id){
+                    $infoSalary->salary_month;
+                    $infoSalary->salary_year;
+                    $monthTemp = ($infoSalary->salary_month < 10)? '0'.$infoSalary->salary_month: $infoSalary->salary_month;
+                    $dateApdungLuong = '01-'.$monthTemp.'-'.$infoSalary->salary_year;
+
+                    //get ngày tăng lương theo mã ngach
+                    $infoSalary->salary_tariffs;//mã ngạch
+                    $infoMaNgach = HrWageStepConfig::find($infoSalary->salary_tariffs);
+                    $numberThang = (isset($infoMaNgach->wage_step_config_month_salary_increase) && $infoMaNgach->wage_step_config_month_salary_increase > 0)? $infoMaNgach->wage_step_config_month_salary_increase: 12;
+                    $dataUpdatePerson['person_date_salary_increase'] = strtotime ( '+'.$numberThang.' month' , strtotime ( $dateApdungLuong ) ) ;
+                    Person::updateItem($person_id,$dataUpdatePerson);
+                }
+                return false;
+            }
+        }
+    }
+
     public static function getPersonById($person_id){
         if((int)$person_id > 0){
             $data = Cache::get(Define::CACHE_PERSON.$person_id);

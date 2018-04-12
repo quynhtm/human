@@ -19,7 +19,7 @@
                 <td>@if(isset($arrOptionPhuCap[$item2['allowance_type']])){{ $arrOptionPhuCap[$item2['allowance_type']] }}@endif</td>
                 <td>@if(isset($arrMethodPhuCap[$item2['allowance_method_type']])){{ $arrMethodPhuCap[$item2['allowance_method_type']] }}@endif</td>
                 <td class="text-center middle"> {{ $item2['allowance_method_value'] }}</td>
-                <td class="text-center middle">{{$item2['allowance_month_start']}}/{{$item2['allowance_year_start']}} - {{$item2['allowance_month_end']}}/{{$item2['allowance_year_end']}}</td>
+                <td class="text-center middle">{{$item2['allowance_month_start']}}/{{$item2['allowance_year_start']}}</td>
                 <td class="text-center middle">
                     @if($is_root== 1 || $salaryAllowanceFull== 1 || $salaryAllowanceCreate == 1)
                         <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item2['allowance_person_id'])}}','{{FunctionLib::inputId($item2['allowance_id'])}}','salaryAllowance/editAllowance',0)"title="Sửa"><i class="fa fa-edit fa-2x"></i></a>

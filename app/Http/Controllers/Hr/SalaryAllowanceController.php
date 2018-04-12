@@ -187,7 +187,7 @@ class SalaryAllowanceController extends BaseAdminController
         $id_hiden = Request::get('id_hiden', '');
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
-        if ($data['salary_salaries'] == '') {
+        if ($data['salary_salaries'] == '' || $data['salary_coefficients'] == '' || $data['salary_wage_table'] == 0 || $data['salary_civil_servants'] == 0 || $data['salary_tariffs'] == 0 || $data['salary_wage'] == 0) {
             $arrData = ['intReturn' => 0, 'msg' => 'Dữ liệu nhập không đủ'];
         } else {
             if ($person_id > 0) {
@@ -196,8 +196,13 @@ class SalaryAllowanceController extends BaseAdminController
                 if ($salary_id > 0) {
                     Salary::updateItem($salary_id, $data);
                 } else {
-                    Salary::createItem($data);
+                    $salary_id = Salary::createItem($data);
                 }
+
+                //cap nhat dong bo thong tin nguoi dung
+                $request = array('person_id'=>$person_id, 'salary_id'=>$salary_id, 'person_date_salary_increase'=>Define::STATUS_SHOW);
+                Person::putDataInfoPerson($request);
+
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
 
                 //thông tin lương
