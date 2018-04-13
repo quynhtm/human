@@ -33,10 +33,18 @@ class Payroll extends BaseModel
         'tong_tien_baohiem',            //14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)
         'tong_luong_thuc_nhan'          //15=13-14
     );
+
     public static function getPayrollByPersonId($payroll_person_id)
     {
-        $data = Payroll::where('payroll_person_id', $payroll_person_id)->first();
-        return $data;
+        return Payroll::where('payroll_person_id', $payroll_person_id)->first();
+    }
+
+    public static function getPayrollByInfoSalary($payroll_person_id, $payroll_month, $payroll_year)
+    {
+        return Payroll::where('payroll_person_id', $payroll_person_id)
+            ->where('payroll_month', $payroll_month)
+            ->where('payroll_year', $payroll_year)
+            ->get();
     }
 
     public static function createItem($data){

@@ -34,8 +34,6 @@ class Person extends BaseModel
             $infoSalary = Salary::getLastItem();
             if(isset($infoSalary->salary_id)){
                 if($infoSalary->salary_id == $salary_id){
-                    $infoSalary->salary_month;
-                    $infoSalary->salary_year;
                     $monthTemp = ($infoSalary->salary_month < 10)? '0'.$infoSalary->salary_month: $infoSalary->salary_month;
                     $dateApdungLuong = '01-'.$monthTemp.'-'.$infoSalary->salary_year;
 
@@ -46,7 +44,12 @@ class Person extends BaseModel
                     $dataUpdatePerson['person_date_salary_increase'] = strtotime ( '+'.$numberThang.' month' , strtotime ( $dateApdungLuong ) ) ;
                     Person::updateItem($person_id,$dataUpdatePerson);
                 }
-                return false;
+
+                //luong cua nhan sự theo thông tin mới
+                $thongTinLuongNS = Payroll::getPayrollByInfoSalary($person_id,$infoSalary->salary_month,$infoSalary->salary_year);
+                if(isset($thongTinLuongNS->payroll_id)){
+
+                }
             }
         }
     }
