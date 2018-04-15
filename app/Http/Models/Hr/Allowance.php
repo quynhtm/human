@@ -27,6 +27,15 @@ class Allowance extends BaseModel
         }
         return array();
     }
+
+    public static function getAllowanceByInfoSalary($allowance_person_id, $allowance_month_start, $allowance_year_start)
+    {
+        return Allowance::where('allowance_person_id', $allowance_person_id)
+            ->where('allowance_month_start', $allowance_month_start)
+            ->where('allowance_year_start', $allowance_year_start)
+            ->get();
+    }
+
     public static function createItem($data){
         try {
             DB::connection()->getPdo()->beginTransaction();

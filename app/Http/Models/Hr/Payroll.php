@@ -2,7 +2,9 @@
 /**
  * QuynhTM
  */
+
 namespace App\Http\Models\Hr;
+
 use App\Http\Models\BaseModel;
 
 use Illuminate\Support\Facades\Cache;
@@ -16,8 +18,11 @@ class Payroll extends BaseModel
     protected $primaryKey = 'payroll_id';
     public $timestamps = false;
 
-    protected $fillable = array('payroll_project', 'payroll_person_id', 'payroll_month', 'payroll_year',
-        'he_so_luong',                  //1
+    protected $fillable = array('payroll_project',
+        'payroll_person_id',
+        'payroll_month',
+        'payroll_year',
+        'he_so_luong',                  //1 luong
         'phu_cap_chuc_vu',              //2
         'phu_cap_tham_nien_vuot',       //3
         'phu_cap_tham_nien_vuot_heso',  //4=1*3
@@ -27,7 +32,7 @@ class Payroll extends BaseModel
         'phu_cap_nghanh',               //8
         'phu_cap_nghanh_heso',          //9=1*8
         'tong_he_so',                   //10=1+2+4+5+7+9
-        'luong_co_so',                  //11
+        'luong_co_so',                  //11 luong
         'tong_tien',                    //12=10*11
         'tong_tien_luong',              //13=12
         'tong_tien_baohiem',            //14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)
@@ -44,10 +49,11 @@ class Payroll extends BaseModel
         return Payroll::where('payroll_person_id', $payroll_person_id)
             ->where('payroll_month', $payroll_month)
             ->where('payroll_year', $payroll_year)
-            ->get();
+            ->first();
     }
 
-    public static function createItem($data){
+    public static function createItem($data)
+    {
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new Payroll();
@@ -59,9 +65,9 @@ class Payroll extends BaseModel
                 }
             }
             $item->save();
-
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->payroll_id,$item);
+            Payroll::checkingValuePayroll($item);
+            self::removeCache($item->payroll_id, $item);
             return $item->payroll_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -69,7 +75,9 @@ class Payroll extends BaseModel
         }
     }
 
-    public static function updateItem($id,$data){
+
+    public static function updateItem($id, $data)
+    {
         try {
             DB::connection()->getPdo()->beginTransaction();
             $checkData = new Payroll();
@@ -80,8 +88,9 @@ class Payroll extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->payroll_id,$item);
-            return true;
+            //Payroll::checkingValuePayroll($item);
+            self::removeCache($item->payroll_id, $item);
+            return $item->payroll_id;
         } catch (PDOException $e) {
             //var_dump($e->getMessage());
             DB::connection()->getPdo()->rollBack();
@@ -89,12 +98,43 @@ class Payroll extends BaseModel
         }
     }
 
-    public function checkField($dataInput) {
+    public static function checkingValuePayroll($payroll, $payroll_id = 0)
+    {
+        $payroll = ($payroll_id > 0)? Payroll::find($payroll_id) : $payroll;
+        $phu_cap_tham_nien_vuot_heso = round(($payroll->he_so_luong * $payroll->phu_cap_tham_nien_vuot)/100,4);
+        $phu_cap_tham_nien_heso = round((($payroll->he_so_luong + $payroll->phu_cap_chuc_vu + $phu_cap_tham_nien_vuot_heso) * $payroll->phu_cap_tham_nien)/100,4);
+        $phu_cap_nghanh_heso = round(($payroll->he_so_luong * $payroll->phu_cap_nghanh)/100,4);
+        $tong_he_so = round(($payroll->he_so_luong + $payroll->phu_cap_chuc_vu + $phu_cap_tham_nien_vuot_heso + $payroll->phu_cap_trach_nhiem + $phu_cap_tham_nien_heso + $phu_cap_nghanh_heso),4);
+        $tong_tien = $tong_he_so * $payroll->luong_co_so;
+        $tong_tien_baohiem = round(($payroll->he_so_luong + $payroll->phu_cap_chuc_vu + $phu_cap_tham_nien_vuot_heso + $payroll->phu_cap_trach_nhiem + $phu_cap_tham_nien_heso) * $payroll->luong_co_so * 0.105,4);
+        $arrCheck = array(
+            'he_so_luong' => $payroll->he_so_luong,                       //1 luong
+            'phu_cap_chuc_vu' => $payroll->phu_cap_chuc_vu,              //2
+            'phu_cap_tham_nien_vuot' => $payroll->phu_cap_tham_nien_vuot,       //3
+            'phu_cap_tham_nien_vuot_heso' => $phu_cap_tham_nien_vuot_heso,  //4=1*3
+            'phu_cap_trach_nhiem' => $payroll->phu_cap_trach_nhiem,          //5
+            'phu_cap_tham_nien' => $payroll->phu_cap_tham_nien,            //6
+            'phu_cap_tham_nien_heso' => $phu_cap_tham_nien_heso,       //7=(1+2+4)*6
+            'phu_cap_nghanh' => $payroll->phu_cap_nghanh,               //8
+            'phu_cap_nghanh_heso' => $phu_cap_nghanh_heso,          //9=1*8
+            'tong_he_so' => $tong_he_so,                   //10=1+2+4+5+7+9
+            'luong_co_so' => $payroll->luong_co_so,                  //11 luong
+            'tong_tien' => $tong_tien,                    //12=10*11
+            'tong_tien_luong' => $tong_tien,              //13=12
+            'tong_tien_baohiem' => $tong_tien_baohiem,            //14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)
+            'tong_luong_thuc_nhan' => $tong_tien - $tong_tien_baohiem        //15=13-14
+        );
+        Payroll::updateItem($payroll->payroll_id,$arrCheck);
+    }
+
+
+    public function checkField($dataInput)
+    {
         $fields = $this->fillable;
         $dataDB = array();
-        if(!empty($fields)) {
-            foreach($fields as $field) {
-                if(isset($dataInput[$field])) {
+        if (!empty($fields)) {
+            foreach ($fields as $field) {
+                if (isset($dataInput[$field])) {
                     $dataDB[$field] = $dataInput[$field];
                 }
             }
@@ -102,16 +142,17 @@ class Payroll extends BaseModel
         return $dataDB;
     }
 
-    public static function deleteItem($id){
-        if($id <= 0) return false;
+    public static function deleteItem($id)
+    {
+        if ($id <= 0) return false;
         try {
             DB::connection()->getPdo()->beginTransaction();
             $item = Payroll::find($id);
-            if($item){
+            if ($item) {
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->payroll_id,$item);
+            self::removeCache($item->payroll_id, $item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -120,31 +161,33 @@ class Payroll extends BaseModel
         }
     }
 
-    public static function removeCache($id = 0,$data){
-        if($id > 0){
+    public static function removeCache($id = 0, $data)
+    {
+        if ($id > 0) {
             //Cache::forget(Define::CACHE_CATEGORY_ID.$id);
         }
     }
 
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
-        try{
-            $query = Payroll::where('payroll_id','>',0);
+    public static function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
+    {
+        try {
+            $query = Payroll::where('payroll_id', '>', 0);
             if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name','LIKE', '%' . $dataSearch['menu_name'] . '%');
+                $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
             }
             $total = $query->count();
             $query->orderBy('payroll_id', 'desc');
 
             //get field can lay du lieu
-            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',',trim($dataSearch['field_get'])): array();
-            if(!empty($fields)){
+            $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
+            if (!empty($fields)) {
                 $result = $query->take($limit)->skip($offset)->get($fields);
-            }else{
+            } else {
                 $result = $query->take($limit)->skip($offset)->get();
             }
             return $result;
 
-        }catch (PDOException $e){
+        } catch (PDOException $e) {
             throw new PDOException();
         }
     }

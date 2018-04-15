@@ -5,8 +5,8 @@
     <tr class="">
         <th width="5%" class="text-center">STT</th>
         <th width="30%">Loại phụ cấp</th>
-        <th width="10%" class="text-center">Phụ cấp trả theo hình thức</th>
-        <th width="20%" class="text-center">Hệ số, giá trị</th>
+        <th width="20%">Phụ cấp trả theo hình thức</th>
+        <th width="10%" class="text-center">Hệ số, giá trị</th>
         <th width="10%" class="text-center">Tháng năm</th>
         <th width="10%" class="text-center">Thao tác</th>
     </tr>

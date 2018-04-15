@@ -26,7 +26,7 @@ class Person extends BaseModel
         'person_creater_time','person_creater_user_id','person_creater_user_name',
         'person_update_time','person_update_user_id','person_update_user_name');
 
-    public static function putDataInfoPerson($request){
+    public static function putDataSalaryPerson($request){
         //tính ngày tăng lương
         if(isset($request['person_id']) && isset($request['salary_id'])&& isset($request['person_date_salary_increase']) && $request['person_date_salary_increase'] == Define::STATUS_SHOW){
             $salary_id = (int)$request['salary_id'];
@@ -47,11 +47,75 @@ class Person extends BaseModel
 
                 //luong cua nhan sự theo thông tin mới
                 $thongTinLuongNS = Payroll::getPayrollByInfoSalary($person_id,$infoSalary->salary_month,$infoSalary->salary_year);
-                if(isset($thongTinLuongNS->payroll_id)){
-
+                if($thongTinLuongNS){//nếu có, thì cập nhật
+                    $dataNewPay['he_so_luong'] = $infoSalary->salary_coefficients;//hệ số lương
+                    $dataNewPay['luong_co_so'] = $infoSalary->salary_salaries;//lương cơ sở
+                    $payroll_id = Payroll::updateItem($thongTinLuongNS->payroll_id,$dataNewPay);
+                    Payroll::checkingValuePayroll(false,$payroll_id);
+                }
+                else{//thêm mới
+                    $dataNewPay['payroll_person_id'] = $person_id;
+                    $dataNewPay['payroll_month'] = $infoSalary->salary_month;
+                    $dataNewPay['payroll_year'] = $infoSalary->salary_year;
+                    $dataNewPay['he_so_luong'] = $infoSalary->salary_coefficients;//hệ số lương
+                    $dataNewPay['luong_co_so'] = $infoSalary->salary_salaries;//lương cơ sở
+                    $payroll_id = Payroll::createItem($dataNewPay);
                 }
             }
         }
+    }
+
+    public static function putDataAllowancePerson($request){
+        //tính ngày tăng lương
+        if(isset($request['person_id']) && isset($request['allowance_id'])){
+            $person_id = (int)$request['person_id'];
+            $allowance_id = (int)$request['allowance_id'];
+            $allowance_type = (int)$request['allowance_type'];
+            $allowance_method_value = $request['allowance_method_value'];
+            $month = (int)$request['allowance_month_start'];
+            $year = (int)$request['allowance_year_start'];
+            if($allowance_id > 0){
+                //luong cua nhan sự theo thông tin mới
+                $thongTinLuongNS = Payroll::getPayrollByInfoSalary($person_id,$month,$year);
+                if($thongTinLuongNS){//nếu có, thì cập nhật
+                    $dataNewPay = Person::pushInfoAllowance($allowance_type,$allowance_method_value);
+                    if(!empty($dataNewPay)){
+                        $payroll_id = Payroll::updateItem($thongTinLuongNS->payroll_id,$dataNewPay);
+                        Payroll::checkingValuePayroll(false,$payroll_id);
+                    }
+                }
+                else{//thêm mới
+                    $dataNewPay = Person::pushInfoAllowance($allowance_type,$allowance_method_value);
+                    if(!empty($dataNewPay)){
+                        Payroll::createItem($dataNewPay);
+                    }
+                }
+            }
+        }
+    }
+    public static function pushInfoAllowance($type,$value){
+        $dataNewPay = array();
+        switch ($type){
+            case Define::phucap_chucvu:
+                $dataNewPay['phu_cap_chuc_vu'] = $value;
+                break;
+            case Define::phucap_thamnienvuotkhung:
+                $dataNewPay['phu_cap_tham_nien_vuot'] = $value;
+                break;
+            case Define::phucap_trachnhiem:
+                $dataNewPay['phu_cap_trach_nhiem'] = $value;
+                break;
+            case Define::phucap_thamnien:
+                $dataNewPay['phu_cap_tham_nien'] = $value;
+                break;
+            case Define::phucap_nghanh:
+                $dataNewPay['phu_cap_nghanh'] = $value;
+                break;
+            default:
+                $dataNewPay = array();
+                break;
+        }
+        return $dataNewPay;
     }
 
     public static function getPersonById($person_id){

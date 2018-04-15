@@ -201,7 +201,7 @@ class SalaryAllowanceController extends BaseAdminController
 
                 //cap nhat dong bo thong tin nguoi dung
                 $request = array('person_id'=>$person_id, 'salary_id'=>$salary_id, 'person_date_salary_increase'=>Define::STATUS_SHOW);
-                Person::putDataInfoPerson($request);
+                Person::putDataSalaryPerson($request);
 
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
 
@@ -364,16 +364,27 @@ class SalaryAllowanceController extends BaseAdminController
                     'allowance_month_start' => $data['allowance_month_start'],
                     'allowance_year_start' => $data['allowance_year_start'],
                     'allowance_note' => $data['allowance_note'],
-                    'allowance_month_end' => $data['allowance_month_end'],
-                    'allowance_year_end' => $data['allowance_year_end']
+                    ///'allowance_month_end' => $data['allowance_month_end'],
+                    //'allowance_year_end' => $data['allowance_year_end']
                 ];
                 $allowance_id = ($allowance_id > 0) ? $allowance_id : FunctionLib::outputId($id_hiden);
                 if ($allowance_id > 0) {
                     Allowance::updateItem($allowance_id, $dataAllowance);
                 } else {
-                    Allowance::createItem($dataAllowance);
+                    $allowance_id = Allowance::createItem($dataAllowance);
                 }
                 $arrData = ['intReturn' => 1, 'msg' => 'Cập nhật thành công'];
+
+                //cap nhat dong bo phụ cấp NS
+                $request = array(
+                    'person_id'=>$person_id,
+                    'allowance_id'=>$allowance_id,
+                    'allowance_type'=>$data['allowance_type'],
+                    'allowance_method_value'=>$data['allowance_method_value'],
+                    'allowance_month_start'=>$data['allowance_month_start'],
+                    'allowance_year_start'=>$data['allowance_year_start']
+                );
+                Person::putDataAllowancePerson($request);
 
                 //thông tin phu cap
                 $phucap = Allowance::getAllowanceByPersonId($person_id);
