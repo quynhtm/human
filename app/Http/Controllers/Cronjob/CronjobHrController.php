@@ -231,4 +231,26 @@ class CronjobHrController extends BaseCronjobController{
         }
         return $this->returnResultError($dataRetirement);
     }
+
+    //Tính lương cho tháng hiện tại của NS
+    public function runCronjobPayroll(){
+        $dataSearch['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU);
+        $dataSearch['field_get'] = 'person_id';
+        $dataPerson = Person::searchByCondition($dataSearch, $this->limit, $this->offset, $this->total);
+        $arrPersonId = array();
+        if(count($dataPerson) > 0){
+            foreach ($dataPerson as $va){
+                $arrPersonId [$va->person_id] = $va->person_id;
+            }
+
+            $month_now = date('m',time());
+            $month_first = date('m',strtotime ( '-1 month' , time() ) );
+        }else{
+            $data['name_job'] = 'Không có thông tin nhân sự 2';
+            $data['person_id'] = $arrPersonId;
+            $data['date'] = date('d-m-Y H:i:s', time());
+            return $this->returnResultSuccess($data);
+        }
+        return $this->returnResultError(array());
+    }
 }
