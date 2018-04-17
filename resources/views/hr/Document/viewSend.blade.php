@@ -195,6 +195,7 @@
                                                                         <div class="ite">
                                                                             <p class="media-heading text-capitalize">{{$file}}</p>
                                                                             <span class="medium">{{$_key+1}}.</span> <a target="_blank" class="btn-link" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_DOCUMENT.'/'.$item->hr_document_id.'/'.$file}}">Tải về</a>
+                                                                            &nbsp; &nbsp; &nbsp;<a target="_blank" class="btn-link" href="https://docs.google.com/viewer?url={{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_DOCUMENT.'/'.$item->hr_document_id.'/'.$file}}&embedded=true">Xem</a>
                                                                         </div>
                                                                     @endforeach
                                                                 </div>
