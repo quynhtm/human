@@ -9,8 +9,10 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\User;
+use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Hr\HrDocument;
+use App\Http\Models\Hr\Person;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -28,6 +30,7 @@ class HrDocumentController extends BaseAdminController{
     private $permission_create = 'hr_document_create';
     private $permission_edit = 'hr_document_edit';
     private $arrStatus = array();
+    private $arrDepartment = array();
     private $error = array();
     private $arrPersion = array();
     private $viewPermission = array();
@@ -45,6 +48,7 @@ class HrDocumentController extends BaseAdminController{
         $this->arrPromulgate = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::co_quan_ban_hanh);
         $this->arrType = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::loai_van_ban);
         $this->arrField = array(-1 => '-- Chọn --') + HrDefine::getArrayByType(Define::linh_vuc);
+        $this->arrDepartment =  Department::getDepartmentAll();
     }
     public function getPermissionPage(){
         return $this->viewPermission = [
@@ -326,6 +330,7 @@ class HrDocumentController extends BaseAdminController{
             'arrType'=>$this->arrType,
             'arrField'=>$this->arrField,
             'optionField'=>$optionField,
+            'arrDepartment'=>$this->arrDepartment,
 
         ],$this->viewPermission));
     }
@@ -375,6 +380,7 @@ class HrDocumentController extends BaseAdminController{
             'optionType'=>$optionType,
             'optionField'=>$optionField,
             'arrUser'=>$arrUser,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
@@ -424,8 +430,32 @@ class HrDocumentController extends BaseAdminController{
 
                 $data['hr_document_status'] = -1;
                 unset($data['hr_document_person_send']);
-                $data['hr_document_person_recive_list'] = (isset($data['hr_document_person_recive_list']) &&  sizeof($data['hr_document_person_recive_list']) > 0 ) ? implode(',', $data['hr_document_person_recive_list']) : '';
-                $data['hr_document_send_cc'] = (isset($data['hr_document_send_cc']) &&  sizeof($data['hr_document_send_cc']) > 0 ) ? implode(',', $data['hr_document_send_cc']) : '';
+
+                $hr_document_department_recive_list = (isset($data['hr_document_department_recive_list']) && sizeof($data['hr_document_department_recive_list']) > 0) ? $data['hr_document_department_recive_list'] : array();
+                $hr_document_department_cc_list = (isset($data['hr_document_department_cc_list']) && sizeof($data['hr_document_department_cc_list']) > 0) ? $data['hr_document_department_cc_list'] : array();
+
+                $data['hr_document_department_recive_list'] = (isset($data['hr_document_department_recive_list']) && sizeof($data['hr_document_department_recive_list']) > 0) ? implode(',', $data['hr_document_department_recive_list']) : '';
+                $data['hr_document_department_cc_list'] = (isset($data['hr_document_department_cc_list']) && sizeof($data['hr_document_department_cc_list']) > 0) ? implode(',', $data['hr_document_department_cc_list']) : '';
+
+                $data_recive = array();
+                if(sizeof($hr_document_department_recive_list) > 0){
+                    foreach($hr_document_department_recive_list as $depart_id){
+                        $arrUsers = Person::getPersonInDepart($depart_id);
+                        $data_recive += $arrUsers;
+                    }
+                    $data_recive = User::getUserIdInArrPersonnelId($data_recive);
+                }
+                $data['hr_document_person_recive_list'] = (isset($data_recive) && sizeof($data_recive) > 0) ? implode(',', $data_recive) : '';
+
+                $data_cc = array();
+                if(sizeof($hr_document_department_cc_list) > 0){
+                    foreach($hr_document_department_cc_list as $depart_id){
+                        $arrCC = Person::getPersonInDepart($depart_id);
+                        $data_cc += $arrCC;
+                    }
+                    $data_cc = User::getUserIdInArrPersonnelId($data_cc);
+                }
+                $data['hr_document_send_cc'] = (isset($data_cc) && sizeof($data_cc) > 0) ? implode(',', $data_cc) : '';
 
                 if(isset($data['submitDocumentDraft'])){
                     $data['hr_document_status'] = Define::mail_nhap;
@@ -465,8 +495,31 @@ class HrDocumentController extends BaseAdminController{
                     $data['hr_document_date_send'] = time();
                 }
 
-                $data['hr_document_person_recive_list'] = (isset($data['hr_document_person_recive_list']) && sizeof($data['hr_document_person_recive_list']) > 0) ? implode(',', $data['hr_document_person_recive_list']) : '';
-                $data['hr_document_send_cc'] = (isset($data['hr_document_send_cc']) && sizeof($data['hr_document_send_cc']) > 0) ? implode(',', $data['hr_document_send_cc']) : '';
+                $hr_document_department_recive_list = (isset($data['hr_document_department_recive_list']) && sizeof($data['hr_document_department_recive_list']) > 0) ? $data['hr_document_department_recive_list'] : array();
+                $hr_document_department_cc_list = (isset($data['hr_document_department_cc_list']) && sizeof($data['hr_document_department_cc_list']) > 0) ? $data['hr_document_department_cc_list'] : array();
+
+                $data['hr_document_department_recive_list'] = (isset($data['hr_document_department_recive_list']) && sizeof($data['hr_document_department_recive_list']) > 0) ? implode(',', $data['hr_document_department_recive_list']) : '';
+                $data['hr_document_department_cc_list'] = (isset($data['hr_document_department_cc_list']) && sizeof($data['hr_document_department_cc_list']) > 0) ? implode(',', $data['hr_document_department_cc_list']) : '';
+
+                $data_recive = array();
+                if(sizeof($hr_document_department_recive_list) > 0){
+                    foreach($hr_document_department_recive_list as $depart_id){
+                        $arrUsers = Person::getPersonInDepart($depart_id);
+                        $data_recive += $arrUsers;
+                    }
+                    $data_recive = User::getUserIdInArrPersonnelId($data_recive);
+                }
+                $data['hr_document_person_recive_list'] = (isset($data_recive) && sizeof($data_recive) > 0) ? implode(',', $data_recive) : '';
+
+                $data_cc = array();
+                if(sizeof($hr_document_department_cc_list) > 0){
+                    foreach($hr_document_department_cc_list as $depart_id){
+                        $arrCC = Person::getPersonInDepart($depart_id);
+                        $data_cc += $arrCC;
+                    }
+                    $data_cc = User::getUserIdInArrPersonnelId($data_cc);
+                }
+                $data['hr_document_send_cc'] = (isset($data_cc) && sizeof($data_cc) > 0) ? implode(',', $data_cc) : '';
 
                 $documentId = HrDocument::createItem($data);
 
@@ -567,6 +620,8 @@ class HrDocumentController extends BaseAdminController{
             $dataAdd['hr_document_status'] = Define::mail_nhap;
             $dataAdd['hr_document_type_view'] = -1;
             $dataAdd['hr_document_created'] = time();
+            $dataAdd['hr_document_department_recive_list'] = $data->hr_document_department_recive_list;
+            $dataAdd['hr_document_department_cc_list'] = $data->hr_document_department_cc_list;
 
             $idNew = HrDocument::createItem($dataAdd);
             if($data->hr_document_files != '') {
@@ -601,6 +656,7 @@ class HrDocumentController extends BaseAdminController{
             'data'=>$dataNew,
             'id'=>$idNew,
             'arrUser'=>$arrUser,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function ajaxItemReply() {
@@ -634,6 +690,8 @@ class HrDocumentController extends BaseAdminController{
             $dataAdd['hr_document_status'] = Define::mail_nhap;
             $dataAdd['hr_document_type_view'] = -1;
             $dataAdd['hr_document_created'] = time();
+            $dataAdd['hr_document_department_recive_list'] = $data->hr_document_department_recive_list;
+            $dataAdd['hr_document_department_cc_list'] = $data->hr_document_department_cc_list;
 
             $idNew = HrDocument::createItem($dataAdd);
 
@@ -669,16 +727,16 @@ class HrDocumentController extends BaseAdminController{
             'data'=>$dataNew,
             'id'=>$idNew,
             'arrUser'=>$arrUser,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     private function valid($data=array()) {
         if(!empty($data)) {
-            if(isset($data['hr_document_type']) && trim($data['hr_document_type']) == '') {
-                $this->error[] = 'Loại văn bản không được rỗng';
+            if(!isset($data['hr_document_department_recive_list']) && !isset($data['hr_document_department_cc_list'])){
+                $this->error[] = 'Người nhận hoặc CC không được trống.';
             }
-            if(isset($data['hr_document_name']) && trim($data['hr_document_name']) == '') {
-                $this->error[] = 'Tên văn bản không được rỗng';
-            }
+        }else{
+            $this->error[] = 'Dữ liệu không được trống.';
         }
         return true;
     }
@@ -725,6 +783,10 @@ class HrDocumentController extends BaseAdminController{
                 $dataRecive['hr_document_files'] = $getItem->hr_document_files;
                 $dataRecive['hr_document_type_view'] = Define::mail_type_1;
                 $dataRecive['hr_document_status'] = Define::mail_chua_doc;
+
+                $dataRecive['hr_document_department_recive_list'] = $getItem->hr_document_department_recive_list;
+                $dataRecive['hr_document_department_cc_list'] = $getItem->hr_document_department_cc_list;
+
                 $idDocumentOther = HrDocument::createItem($dataRecive);
 
                 if($getItem->hr_document_files != '') {

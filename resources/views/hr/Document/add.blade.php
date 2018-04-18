@@ -41,7 +41,7 @@ use App\Library\AdminFunction\Define;
                                         <div class="form-group">
                                             <label>Người nhận</label>
                                             <div class="multipleSelectRecive" multiple style="display: none">
-                                                @foreach($arrUser as $k=>$val)
+                                                @foreach($arrDepartment as $k=>$val)
                                                     <option value="{{$k}}">{{$val}}</option>
                                                 @endforeach
                                             </div>
@@ -51,7 +51,7 @@ use App\Library\AdminFunction\Define;
                                                     searchPlaceholder: 'Tìm kiếm',
                                                     noResultsText: 'Không có kết quả',
                                                     userOptionPrefix: 'Thêm ',
-                                                    nameElement:'hr_document_person_recive_list'
+                                                    nameElement:'hr_document_department_recive_list'
                                                 });
                                             </script>
                                         </div>
@@ -62,7 +62,7 @@ use App\Library\AdminFunction\Define;
                                         <div class="form-group">
                                             <label>CC</label>
                                             <div class="multipleSelectCC" multiple style="display: none">
-                                                @foreach($arrUser as $k=>$val)
+                                                @foreach($arrDepartment as $k=>$val)
                                                     <option value="{{$k}}">{{$val}}</option>
                                                 @endforeach
                                             </div>
@@ -73,7 +73,7 @@ use App\Library\AdminFunction\Define;
                                                 searchPlaceholder: 'Tìm kiếm',
                                                 noResultsText: 'Không có kết quả',
                                                 userOptionPrefix: 'Thêm ',
-                                                nameElement:'hr_document_send_cc'
+                                                nameElement:'hr_document_department_cc_list'
                                             });
                                         </script>
                                     </div>

@@ -397,4 +397,17 @@ class User extends BaseModel
         //return (trim($str_sql) != '') ? DB::statement(trim($str_sql)): array();
         return (trim($str_sql) != '') ? DB::select(trim($str_sql)) : array();
     }
+
+    public static function getUserIdInArrPersonnelId($arrUserObjectId = array()){
+        $person = array();
+        if(sizeof($arrUserObjectId) > 0){
+            $result = User::whereIn('user_object_id',  $arrUserObjectId)->get();
+            if(sizeof($result) > 0){
+                foreach($result as $item){
+                    $person[] = $item->user_id;
+                }
+            }
+        }
+        return $person;
+    }
 }

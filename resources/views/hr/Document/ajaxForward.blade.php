@@ -14,12 +14,18 @@ use App\Library\AdminFunction\Define;
                                     <div class="form-group">
                                         <label>Người nhận</label>
                                         <div class="multipleSelectRecive" multiple style="display: none">
-                                            @foreach($arrUser as $k=>$val)
+                                            @foreach($arrDepartment as $k=>$val)
                                                 <option value="{{$k}}">{{$val}}</option>
                                             @endforeach
                                         </div>
                                         <script>
-
+                                            $('.multipleSelectRecive').fastselect({
+                                                placeholder: 'Chọn người nhận',
+                                                searchPlaceholder: 'Tìm kiếm',
+                                                noResultsText: 'Không có kết quả',
+                                                userOptionPrefix: 'Thêm ',
+                                                nameElement:'hr_document_department_recive_list'
+                                            });
                                         </script>
                                     </div>
                                 </div>
@@ -29,13 +35,19 @@ use App\Library\AdminFunction\Define;
                                     <div class="form-group">
                                         <label>CC</label>
                                         <div class="multipleSelectCC" multiple style="display: none">
-                                            @foreach($arrUser as $k=>$val)
+                                            @foreach($arrDepartment as $k=>$val)
                                                 <option value="{{$k}}">{{$val}}</option>
                                             @endforeach
                                         </div>
                                     </div>
                                     <script>
-
+                                        $('.multipleSelectCC').fastselect({
+                                            placeholder: 'Chọn người nhận',
+                                            searchPlaceholder: 'Tìm kiếm',
+                                            noResultsText: 'Không có kết quả',
+                                            userOptionPrefix: 'Thêm ',
+                                            nameElement:'hr_document_department_cc_list'
+                                        });
                                     </script>
                                 </div>
                             </div>
@@ -76,7 +88,7 @@ use App\Library\AdminFunction\Define;
                             <div class="row">
                                 <div class="col-md-12">
                                     {!! csrf_field() !!}
-                                    <button type="submit" class="btn btn-success btn-sm submitDocumentSend"><i class="fa fa-save"></i>&nbsp;Gửi</button>
+                                    <button type="submit" class="btn btn-success btn-sm submitDocumentSend"><i class="fa fa-save"></i>&nbsp;Lưu hoàn thành</button>
                                     <button type="submit" class="btn btn-success btn-sm submitDocumentDraft"><i class="fa fa-save"></i>&nbsp;Lưu nháp</button>
                                     <input id="id_hiden" name="id_hiden" @isset($data['hr_document_id'])rel="{{$data['hr_document_id']}}" value="{{FunctionLib::inputId($data['hr_document_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                                 </div>

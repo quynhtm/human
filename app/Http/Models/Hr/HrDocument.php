@@ -24,6 +24,7 @@ class HrDocument extends BaseModel{
         'hr_document_created', 'hr_document_update', 'hr_document_files',
         'hr_document_person_send', 'hr_document_person_recive', 'hr_document_person_recive_list', 'hr_document_send_cc',
         'hr_document_date_send', 'hr_document_type_view', 'hr_document_status',
+        'hr_document_department_recive_list', 'hr_document_department_cc_list'
         );
         //note: Default value 0 ===> hr_document_type_view:0 = mail khong duoc xem tuong ung voi mail goc cua nguoi gui, 1= mail dc xem tuong ung voi nguoi nhan dc mail
         //note: Default value 1 ===> hr_document_status: 1.Chưa đọc, 2. Đã đọc, 3.Thư nháp
