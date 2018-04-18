@@ -42,10 +42,10 @@ use App\Library\AdminFunction\Define;
                                             <label>Người nhận</label>
                                             <div class="multipleSelectRecive" multiple style="display: none">
                                                 <?php
-                                                $hr_mail_person_recive_list = isset($data['hr_mail_person_recive_list']) ? explode(',', $data['hr_mail_person_recive_list']) : array();
+                                                $hr_mail_department_recive_list = isset($data['hr_mail_department_recive_list']) ? explode(',', $data['hr_mail_department_recive_list']) : array();
                                                 ?>
-                                                @foreach($arrUser as $k=>$val)
-                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_person_recive_list)) selected="selected" @endif>{{$val}}</option>
+                                                @foreach($arrDepartment as $k=>$val)
+                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_department_recive_list)) selected="selected" @endif>{{$val}}</option>
                                                 @endforeach
                                             </div>
                                             <script>
@@ -54,7 +54,7 @@ use App\Library\AdminFunction\Define;
                                                     searchPlaceholder: 'Tìm kiếm',
                                                     noResultsText: 'Không có kết quả',
                                                     userOptionPrefix: 'Thêm ',
-                                                    nameElement:'hr_mail_person_recive_list'
+                                                    nameElement:'hr_mail_department_recive_list'
                                                 });
                                             </script>
                                         </div>
@@ -66,10 +66,10 @@ use App\Library\AdminFunction\Define;
                                             <label>CC</label>
                                             <div class="multipleSelectCC" multiple style="display: none">
                                                 <?php
-                                                $hr_mail_send_cc = isset($data['hr_mail_send_cc']) ? explode(',', $data['hr_mail_send_cc']) : array();
+                                                $hr_mail_department_cc_list = isset($data['hr_mail_department_cc_list']) ? explode(',', $data['hr_mail_department_cc_list']) : array();
                                                 ?>
-                                                @foreach($arrUser as $k=>$val)
-                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_send_cc)) selected="selected" @endif>{{$val}}</option>
+                                                @foreach($arrDepartment as $k=>$val)
+                                                    <option value="{{$k}}" @if(in_array($k, $hr_mail_department_cc_list)) selected="selected" @endif>{{$val}}</option>
                                                 @endforeach
                                             </div>
                                             <script>
@@ -78,7 +78,7 @@ use App\Library\AdminFunction\Define;
                                                     searchPlaceholder: 'Tìm kiếm',
                                                     noResultsText: 'Không có kết quả',
                                                     userOptionPrefix: 'Thêm ',
-                                                    nameElement:'hr_mail_send_cc'
+                                                    nameElement:'hr_mail_department_cc_list'
                                                 });
                                             </script>
                                         </div>

@@ -9,7 +9,10 @@ namespace App\Http\Controllers\Hr;
 
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\User;
+use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\DepartmentConfig;
 use App\Http\Models\Hr\HrMail;
+use App\Http\Models\Hr\Person;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -27,6 +30,7 @@ class HrMailController extends BaseAdminController{
     private $permission_create = 'hr_mail_create';
     private $permission_edit = 'hr_mail_edit';
     private $arrStatus = array();
+    private $arrDepartment = array();
     private $error = array();
     private $arrPersion = array();
     private $viewPermission = array();
@@ -41,6 +45,7 @@ class HrMailController extends BaseAdminController{
             CGlobal::status_show => FunctionLib::controLanguage('status_show',$this->languageSite),
             CGlobal::status_hide => FunctionLib::controLanguage('status_hidden',$this->languageSite)
         );
+        $this->arrDepartment =  Department::getDepartmentAll();
     }
     public function getPermissionPage(){
         return $this->viewPermission = [
@@ -260,6 +265,7 @@ class HrMailController extends BaseAdminController{
             'data'=>$data,
             'id'=>$id,
             'arrUser'=>$arrUser,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function getItem($ids) {
@@ -297,6 +303,7 @@ class HrMailController extends BaseAdminController{
             'data'=>$data,
             'id'=>$id,
             'arrUser'=>$arrUser,
+            'arrDepartment'=>$this->arrDepartment,
         ],$this->viewPermission));
     }
     public function postItem($ids) {
@@ -320,14 +327,38 @@ class HrMailController extends BaseAdminController{
         if(isset($data['submitMailSend']) && $data['submitMailSend'] == 'submitMailSend'){
             $this->valid($data);
         }
-
         if(sizeof($this->error) == 0) {
             $id = ($id == 0) ? $id_hiden : $id;
             if($id > 0) {
                 $data['hr_mail_status'] = -1;
                 unset($data['hr_mail_person_send']);
-                $data['hr_mail_person_recive_list'] = (isset($data['hr_mail_person_recive_list']) &&  sizeof($data['hr_mail_person_recive_list']) > 0 ) ? implode(',', $data['hr_mail_person_recive_list']) : '';
-                $data['hr_mail_send_cc'] = (isset($data['hr_mail_send_cc']) &&  sizeof($data['hr_mail_send_cc']) > 0 ) ? implode(',', $data['hr_mail_send_cc']) : '';
+
+                $hr_mail_department_recive_list = (isset($data['hr_mail_department_recive_list']) && sizeof($data['hr_mail_department_recive_list']) > 0) ? $data['hr_mail_department_recive_list'] : '';
+                $hr_mail_department_cc_list = (isset($data['hr_mail_department_cc_list']) && sizeof($data['hr_mail_department_cc_list']) > 0) ? $data['hr_mail_department_cc_list'] : '';
+
+                $data['hr_mail_department_recive_list'] = (isset($data['hr_mail_department_recive_list']) && sizeof($data['hr_mail_department_recive_list']) > 0) ? implode(',', $data['hr_mail_department_recive_list']) : '';
+                $data['hr_mail_department_cc_list'] = (isset($data['hr_mail_department_cc_list']) && sizeof($data['hr_mail_department_cc_list']) > 0) ? implode(',', $data['hr_mail_department_cc_list']) : '';
+
+                $data_recive = array();
+
+                if(sizeof($hr_mail_department_recive_list) > 0){
+                    foreach($hr_mail_department_recive_list as $depart_id){
+                        $arrUsers = Person::getPersonInDepart($depart_id);
+                        $data_recive += $arrUsers;
+                    }
+                }
+                $data['hr_mail_person_recive_list'] = (isset($data_recive) && sizeof($data_recive) > 0) ? implode(',', $data_recive) : '';
+
+                $data_cc = array();
+                if(sizeof($hr_mail_department_cc_list) > 0){
+                    foreach($hr_mail_department_cc_list as $depart_id){
+                        $arrCC = Person::getPersonInDepart($depart_id);
+                        $data_cc += $arrCC;
+                    }
+                }
+                $data['hr_mail_send_cc'] = (isset($data_cc) && sizeof($data_cc) > 0) ? implode(',', $data_cc) : '';
+
+
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
                     $data['hr_mail_type'] = -1;
@@ -367,8 +398,29 @@ class HrMailController extends BaseAdminController{
                     $data['hr_mail_date_send'] = time();
                 }
 
-                $data['hr_mail_person_recive_list'] = (isset($data['hr_mail_person_recive_list']) && sizeof($data['hr_mail_person_recive_list']) > 0) ? implode(',', $data['hr_mail_person_recive_list']) : '';
-                $data['hr_mail_send_cc'] = (isset($data['hr_mail_send_cc']) && sizeof($data['hr_mail_send_cc']) > 0) ? implode(',', $data['hr_mail_send_cc']) : '';
+                $hr_mail_department_recive_list = (isset($data['hr_mail_department_recive_list']) && sizeof($data['hr_mail_department_recive_list']) > 0) ? $data['hr_mail_department_recive_list'] : '';
+                $hr_mail_department_cc_list = (isset($data['hr_mail_department_cc_list']) && sizeof($data['hr_mail_department_cc_list']) > 0) ? $data['hr_mail_department_cc_list'] : '';
+
+                $data['hr_mail_department_recive_list'] = (isset($data['hr_mail_department_recive_list']) && sizeof($data['hr_mail_department_recive_list']) > 0) ? implode(',', $data['hr_mail_department_recive_list']) : '';
+                $data['hr_mail_department_cc_list'] = (isset($data['hr_mail_department_cc_list']) && sizeof($data['hr_mail_department_cc_list']) > 0) ? implode(',', $data['hr_mail_department_cc_list']) : '';
+
+                $data_recive = array();
+                if(sizeof($hr_mail_department_recive_list) > 0){
+                    foreach($hr_mail_department_recive_list as $depart_id){
+                        $arrUsers = Person::getPersonInDepart($depart_id);
+                        $data_recive += $arrUsers;
+                    }
+                }
+                $data['hr_mail_person_recive_list'] = (isset($data_recive) && sizeof($data_recive) > 0) ? implode(',', $data_recive) : '';
+
+                $data_cc = array();
+                if(sizeof($hr_mail_department_cc_list) > 0){
+                    foreach($hr_mail_department_cc_list as $depart_id){
+                        $arrCC = Person::getPersonInDepart($depart_id);
+                        $data_cc += $arrCC;
+                    }
+                }
+                $data['hr_mail_send_cc'] = (isset($data_cc) && sizeof($data_cc) > 0) ? implode(',', $data_cc) : '';
 
                 $mailId = HrMail::createItem($data);
 
@@ -403,6 +455,7 @@ class HrMailController extends BaseAdminController{
             'id'=>$id,
             'error'=>$this->error,
             'optionStatus'=>$optionStatus,
+            'arrDepartment'=>$this->arrDepartment,
             'arrUser'=>$arrUser,
 
         ],$this->viewPermission));
@@ -550,12 +603,12 @@ class HrMailController extends BaseAdminController{
 
     private function valid($data=array()) {
         if(!empty($data)) {
-            if(!isset($data['hr_mail_person_recive_list'])) {
+            if(!isset($data['hr_mail_department_recive_list'])) {
                 $this->error[] = 'Người nhận không được trống.';
-            }elseif(isset($data['hr_mail_send_cc']) && sizeof($data['hr_mail_send_cc']) == 0){
-                    $this->error[] = 'CC không được trống.';
+            }elseif(isset($data['hr_mail_department_cc_list']) && sizeof($data['hr_mail_department_cc_list']) == 0){
+                $this->error[] = 'CC không được trống.';
             }else{
-                if(sizeof($data['hr_mail_person_recive_list']) == 0){
+                if(sizeof($data['hr_mail_department_recive_list']) == 0){
                     $this->error[] = 'Người nhận không được trống.';
                 }
             }

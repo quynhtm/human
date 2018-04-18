@@ -297,7 +297,18 @@ class Person extends BaseModel
             return $person;
         }
     }
-
+    public static function getPersonInDepart($person_depart_id = 0){
+        $person = array();
+        if($person_depart_id > 0){
+            $result = Person::where('person_depart_id',  $person_depart_id)->get();
+            if(sizeof($result) > 0){
+                foreach($result as $item){
+                    $person[] = $item->person_id;
+                }
+            }
+        }
+        return $person;
+    }
     public function contracts()
     {
         return $this->hasOne('App\Http\Models\Hr\HrContracts', 'contracts_person_id','person_id');
