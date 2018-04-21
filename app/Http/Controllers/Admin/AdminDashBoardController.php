@@ -7,6 +7,7 @@
  */
 namespace App\Http\Controllers\Admin;
 
+use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\BaseAdminController;
 use Illuminate\Support\Facades\Session;
@@ -22,11 +23,12 @@ class AdminDashBoardController extends BaseAdminController{
     public function dashboard(){
         $total = 0;
         $data = array();
-
+        $listLink = CGlobal::$arrLinkListDash;
         return view('admin.AdminDashBoard.index',[
             'user'=>$this->user,
             'menu'=>$this->menuSystem,
             'data'=>$data,
+            'listLink'=>$listLink,
             'lang'=>$this->languageSite,
             'is_root'=>$this->is_root]);
     }

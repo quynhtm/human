@@ -74,4 +74,14 @@ class CGlobal
           13 => ['icons' => 'fa fa-user', 'name_url' => 'Tạo tài khoản sử dụng hệ thống', 'link_url' => '/manager/personnel/editAccount/','blank'=>1],
           14 => ['icons' => 'fa fa-trash', 'name_url' => 'Xoá nhân sự này', 'link_url' => '/manager/personnel/personStatusDelete/','blank'=>0]
     ];
+
+    public static $arrLinkListDash = [
+          1 => ['name_url' => 'Danh sách nhân sự sắp đến ngày sinh nhật', 'link_url' => '/manager/personList/viewBirthday','blank'=>1],
+          2 => ['name_url' => 'Danh sách nhân sự buộc thôi việc', 'link_url' => '/manager/personList/viewQuitJob','blank'=>1],
+          3 => ['name_url' => 'Danh sách nhân sự nghỉ việc, chuyển công tác', 'link_url' => '/manager/personList/viewMoveJob','blank'=>1],
+          4 => ['name_url' => 'Danh sách nhân sự đã nghỉ hưu', 'link_url' => '/manager/personList/viewRetired','blank'=>1],
+          5 => ['name_url' => 'Danh sách nhân sự sắp nghỉ hưu', 'link_url' => '/manager/personList/viewPreparingRetirement','blank'=>1],
+          6 => ['name_url' => 'Danh sách nhân sự sắp hết hợp đồng', 'link_url' => '/manager/personList/viewDealineContract','blank'=>1],
+          7 => ['name_url' => 'Danh sách nhân sự sắp đến ngày tăng lương', 'link_url' => '/manager/personList/viewDealineSalary','blank'=>1],
+    ];
 }
