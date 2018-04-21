@@ -258,3 +258,15 @@ span.lbl {
     width: 100%;
     overflow-x: scroll;
 }
+.link-dash{
+    list-style: none;
+    font-size: 18px;
+    padding: 20px 0;
+}
+.link-dash li{
+    width: 45%;
+    display: inline-block
+}
+.link-dash li a:hover{
+    text-decoration: underline;
+}

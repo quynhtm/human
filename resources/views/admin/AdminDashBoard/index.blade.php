@@ -58,13 +58,15 @@
             </div>
             @if(count($listLink)>0)
             <div class="clear"></div>
-            <hr style="border-top: 1px solid #ccc; width: 90%; height: 1px; margin: auto"/>
-            <div class="col-xs-12">
-                <ul style="list-style: none; font-size: 18px; padding: 20px 0;">
-                    @foreach($listLink as $kl=>$val)
-                        <li style="width: 45%; display: inline-block"><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}</a></li>
-                    @endforeach
-                </ul>
+                <hr style="border-top: 1px solid #ccc; width: 96%; height: 1px; margin: auto"/>
+            <div class="row">
+                <div class="col-xs-12">
+                    <ul class="link-dash">
+                        @foreach($listLink as $kl=>$val)
+                            <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}</a></li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
             @endif
         </div>

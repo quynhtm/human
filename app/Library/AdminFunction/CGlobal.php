@@ -83,5 +83,6 @@ class CGlobal
           5 => ['name_url' => 'Danh sách nhân sự sắp nghỉ hưu', 'link_url' => '/manager/personList/viewPreparingRetirement','blank'=>1],
           6 => ['name_url' => 'Danh sách nhân sự sắp hết hợp đồng', 'link_url' => '/manager/personList/viewDealineContract','blank'=>1],
           7 => ['name_url' => 'Danh sách nhân sự sắp đến ngày tăng lương', 'link_url' => '/manager/personList/viewDealineSalary','blank'=>1],
+          8 => ['name_url' => 'Chi tiết bảng lương', 'link_url' => '/manager/report/viewLuongDetailPerson','blank'=>1],
     ];
 }
