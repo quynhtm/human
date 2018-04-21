@@ -177,6 +177,9 @@ class Payroll extends BaseModel
             if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
                 $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
             }
+            if(isset($dataSearch['arrPerson']) && sizeof($dataSearch['arrPerson']) > 0){
+                $query->whereIn('payroll_person_id',  $dataSearch['arrPerson']);
+            }
             $total = $query->count();
             $query->orderBy('payroll_id', 'desc');
 

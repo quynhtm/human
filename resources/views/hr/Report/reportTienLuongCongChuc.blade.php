@@ -135,14 +135,12 @@ use App\Http\Models\Hr\Person;
                                                 @foreach($data as $k=>$item)
                                                 <tr>
                                                     <td>{{$stt+$k+1}}</td>
-                                                    <?php $dataUser = Person::getInfoPerson($item->payroll_person_id);?>
                                                     <td>
-                                                    @if(sizeof($dataUser) > 0)
-                                                        {{$dataUser->person_name}}
-                                                    @endif
+                                                        @if(isset($arrPerson) && $arrPerson[$item->payroll_person_id])
+                                                            {{isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : ''}}
+                                                        @endif
                                                     </td>
-                                                    <td></td>
-
+                                                    <td>{{$item->ma_ngach}}</td>
                                                     <td>{{$item->he_so_luong}}</td>
                                                     <td>{{$item->phu_cap_chuc_vu}}</td>
                                                     <td>{{$item->phu_cap_tham_nien_vuot}}</td>

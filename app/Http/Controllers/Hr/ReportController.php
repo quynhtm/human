@@ -79,13 +79,24 @@ class ReportController extends BaseAdminController
         $paging = '';
 
         //lấy mảng id NS có
-
+        $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $totalPerson = 0;
+        $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
+        $arrPerson = array();
+        foreach($dataPerson as $_user){
+            $arrPerson[$_user->person_id] = array(
+                'person_name'=>$_user->person_name,
+                'person_depart_id'=>$_user->person_depart_id,
+                'person_depart_name'=>$_user->person_depart_name,
+            );
+        }
         //lấy mảng all của mã nghạch
-
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
         $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
+        $search['arrPerson'] = array_keys($arrPerson);
         $search['field_get'] = '';
 
         $data = Payroll::searchByCondition($search, $limit, $offset, $total);
@@ -117,6 +128,7 @@ class ReportController extends BaseAdminController
             'arrChucVu' => $arrChucVu,
             'arrDepart' => $depart,
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
+            'arrPerson' => $arrPerson,
         ], $this->viewPermission));
     }
     public function exportTienLuongCongChuc(){
