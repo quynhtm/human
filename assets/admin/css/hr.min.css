@@ -254,3 +254,6 @@ span.lbl {
 .detailPerson td{
     padding: 8px 10px!important;
 }
+.listPayroll {
+    width: 120%;
+}

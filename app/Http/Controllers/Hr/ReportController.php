@@ -74,6 +74,7 @@ class ReportController extends BaseAdminController
 
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
         $totalPerson = 0;
         $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
@@ -105,8 +106,8 @@ class ReportController extends BaseAdminController
         $paging = '';
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
-        $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
-        $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
+        $search['reportYear'] = (int)Request::get('reportYear', 0);
+        $search['reportMonth'] = (int)Request::get('reportMonth', 0);
         $search['arrPerson'] = array_keys($arrPerson);
         $search['field_get'] = '';
 
@@ -152,7 +153,7 @@ class ReportController extends BaseAdminController
 
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
-        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name,person_code,person_position_define_id';
         $totalPerson = 0;
         $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
         $arrPerson = array();
@@ -161,6 +162,101 @@ class ReportController extends BaseAdminController
                 'person_name'=>$_user->person_name,
                 'person_code'=>$_user->person_code,
                 'person_position_define_id'=>$_user->person_position_define_id,
+                'person_depart_id'=>$_user->person_depart_id,
+            );
+        }
+        //lấy mảng all của mã nghạch
+        $searchWage['wage_step_config_status'] = Define::STATUS_SHOW;
+        $searchWage['wage_step_config_type'] = Define::type_ma_ngach;
+        $searchWage['field_get'] = 'wage_step_config_id,wage_step_config_name';
+        $totalWage = 0;
+        $dataWage = HrWageStepConfig::searchByCondition($searchWage, 0, 0, $totalWage);
+        $arrWage = array();
+        foreach($dataWage as $_wage){
+            $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
+        }
+        //chucvu
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+
+        //PayRoll
+        $search = $data = array();
+        $total = 0;
+
+        $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
+        $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
+        $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
+        $search['arrPerson'] = array_keys($arrPerson);
+        $search['field_get'] = '';
+
+        $data = Payroll::searchByCondition($search, 1000, 0, $total);
+
+        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
+        $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportTienLuongCongChuc.xls");
+        $generatedDate = date("d-m-Y");
+        $yearExport = $search['reportYear'];
+        $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . $yearExport;
+
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $titleReport);
+
+        $i=10;
+        $stt = 0;
+        if($data){
+            foreach ($data as $item){
+                $i++;
+                $stt++;
+                $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($i)->setRowHeight(15);
+
+                $objPHPExcel->setActiveSheetIndex(0)
+                    ->setCellValue('A'.$i, $stt)
+                    ->setCellValue('B'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
+                    ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
+                    ->setCellValue('D'.$i, isset($arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']]) ? $arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']] : '')
+
+                    ->setCellValue('E'.$i, isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : '')
+                    ->setCellValue('F'.$i, $item->he_so_luong)
+                    ->setCellValue('G'.$i, $item->phu_cap_chuc_vu)
+                    ->setCellValue('H'.$i, $item->phu_cap_tham_nien_vuot)
+                    ->setCellValue('I'.$i, $item->phu_cap_tham_nien_vuot_heso)
+                    ->setCellValue('J'.$i, $item->phu_cap_trach_nhiem)
+                    ->setCellValue('K'.$i, $item->phu_cap_tham_nien)
+                    ->setCellValue('L'.$i, $item->phu_cap_tham_nien_heso)
+                    ->setCellValue('M'.$i, $item->phu_cap_nghanh)
+                    ->setCellValue('N'.$i, $item->phu_cap_nghanh_heso)
+                    ->setCellValue('O'.$i, $item->tong_he_so)
+
+                    ->setCellValue('P'.$i, FunctionLib::numberFormat($item->luong_co_so))
+                    ->setCellValue('Q'.$i, FunctionLib::numberFormat($item->tong_tien))
+                    ->setCellValue('R'.$i, FunctionLib::numberFormat($item->tong_tien_luong))
+                    ->setCellValue('S'.$i, FunctionLib::numberFormat($item->tong_tien_baohiem))
+                    ->setCellValue('T'.$i, FunctionLib::numberFormat($item->tong_luong_thuc_nhan));
+            }
+        }
+        $filename = 'reportTienLuongCongChuc';
+        header('Content-type: application/vnd.ms-excel');
+        header('Content-Disposition: attachment; filename="'.$filename.'_'.$generatedDate.'.xls"');
+        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
+        $objWriter->save('php://output');
+
+        die;
+    }
+    public function viewLuongDetailPerson(){
+        CGlobal::$pageAdminTitle = 'Chi tiết lương';
+
+        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+
+        //lấy mảng id NS có
+        $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+        $search['person_id'] = $this->user_object_id;
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $totalPerson = 0;
+        $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
+        $arrPerson = array();
+        foreach($dataPerson as $_user){
+            $arrPerson[$_user->person_id] = array(
+                'person_name'=>$_user->person_name,
                 'person_depart_id'=>$_user->person_depart_id,
                 'person_depart_name'=>$_user->person_depart_name,
             );
@@ -177,67 +273,50 @@ class ReportController extends BaseAdminController
         }
 
         //PayRoll
+        $page_no = (int)Request::get('page_no', 1);
+        $limit = CGlobal::number_show_40;
+        $offset = ($page_no - 1) * $limit;
         $search = $data = array();
         $total = 0;
+        $paging = '';
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
-        $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
-        $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
-        $search['arrPerson'] = array_keys($arrPerson);
+        $search['reportYear'] = (int)Request::get('reportYear', 0);
+        $search['reportMonth'] = (int)Request::get('reportMonth', 0);
+        $search['payroll_person_id'] = $this->user_object_id;
         $search['field_get'] = '';
 
-        $data = Payroll::searchByCondition($search, 0, 0, $total);
+        $data = Payroll::searchByCondition($search, $limit, $offset, $total);
 
-        $objReader = \PHPExcel_IOFactory::createReader('Excel5');
-        $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportTienLuongCongChuc.xls");
-        $generatedDate = date("d-m-Y");
-        $yearExport = $search['reportYear'];
-        $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . $yearExport;
+        $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $titleReport);
+        $this->getDataDefault();
 
-        $i=6;
-        $stt = 0;
-        if($data){
-            foreach ($data as $item){
-                $i++;
-                $stt++;
-                $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($i)->setRowHeight(15);
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
 
-                $person_birth = (isset($item->person_birth) && $item->person_birth > 0) ? $item->person_birth : 0;
-                $person_sex_1 = (isset($item->person_sex) && $item->person_sex == 1 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : '';
-                $person_sex_0 = (isset($item->person_sex) && $item->person_sex == 0 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : '';
+        $arrMonth = FunctionLib::getListMonth();
+        $arrYears = FunctionLib::getListYears();
+        $optionYear = FunctionLib::getOption($arrYears, isset($search['reportYear'])? $search['reportYear']: date('Y',time()));
+        $optionMonth = FunctionLib::getOption($arrMonth, isset($search['reportMonth'])? $search['reportMonth']: date('m',time()));
 
-                if($person_sex_1 != ''){
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$i, $person_sex_1);
-                }
-                if($person_sex_0 != ''){
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $person_sex_0);
-                }
+        $depart = Department::getDepartmentAll();
+        $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
 
-                $objPHPExcel->setActiveSheetIndex(0)
-                    ->setCellValue('A'.$i, $stt)
-                    ->setCellValue('B'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
-                    ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
-                    ->setCellValue('E'.$i, isset($arrPerson[$item->payroll_person_id]['person_position_define_id']) ? $arrPerson[$item->payroll_person_id]['person_position_define_id'] : '')
-                    ->setCellValue('F'.$i, isset($arrDepart[$item->person_depart_id]) ? $arrDepart[$item->person_depart_id] : '')
-                    ->setCellValue('G'.$i, '')
-                    ->setCellValue('H'.$i, '')
-                    ->setCellValue('I'.$i, '')
-                    ->setCellValue('J'.$i, '')
-                    ->setCellValue('K'.$i, '')
-                    ->setCellValue('L'.$i, '')
-                    ->setCellValue('M'.$i, '')
-                    ->setCellValue('N'.$i, '')
-                    ->setCellValue('O'.$i, '');
-            }
-        }
-        $filename = 'reportTienLuongCongChuc';
-        header('Content-type: application/vnd.ms-excel');
-        header('Content-Disposition: attachment; filename="'.$filename.'_'.$generatedDate.'.xls"');
-        $objWriter = \PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel5');
-        $objWriter->save('php://output');
-
-        die;
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Report.reportLuongDetailPerson', array_merge([
+            'data' => $data,
+            'search' => $search,
+            'total' => $total,
+            'stt' => ($page_no - 1) * $limit,
+            'paging' => $paging,
+            'optionYear' => $optionYear,
+            'optionMonth' => $optionMonth,
+            'optionDepart' => $optionDepart,
+            'arrChucVu' => $arrChucVu,
+            'arrDepart' => $depart,
+            'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
+            'arrPerson' => $arrPerson,
+            'arrWage' => $arrWage,
+        ], $this->viewPermission));
     }
 }
