@@ -71,12 +71,6 @@ class ReportController extends BaseAdminController
         if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
-        $page_no = (int)Request::get('page_no', 1);
-        $limit = CGlobal::number_show_40;
-        $offset = ($page_no - 1) * $limit;
-        $search = $data = array();
-        $total = 0;
-        $paging = '';
 
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
@@ -92,6 +86,23 @@ class ReportController extends BaseAdminController
             );
         }
         //lấy mảng all của mã nghạch
+        $searchWage['wage_step_config_status'] = Define::STATUS_SHOW;
+        $searchWage['wage_step_config_type'] = Define::type_ma_ngach;
+        $searchWage['field_get'] = 'wage_step_config_id,wage_step_config_name';
+        $totalWage = 0;
+        $dataWage = HrWageStepConfig::searchByCondition($searchWage, 0, 0, $totalWage);
+        $arrWage = array();
+        foreach($dataWage as $_wage){
+            $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
+        }
+
+        //PayRoll
+        $page_no = (int)Request::get('page_no', 1);
+        $limit = CGlobal::number_show_40;
+        $offset = ($page_no - 1) * $limit;
+        $search = $data = array();
+        $total = 0;
+        $paging = '';
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
@@ -129,6 +140,7 @@ class ReportController extends BaseAdminController
             'arrDepart' => $depart,
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
             'arrPerson' => $arrPerson,
+            'arrWage' => $arrWage,
         ], $this->viewPermission));
     }
     public function exportTienLuongCongChuc(){
@@ -138,16 +150,43 @@ class ReportController extends BaseAdminController
         }
         ini_set('max_execution_time', 0);
 
-        $limit = 0;
-        $offset = 0;
+        //lấy mảng id NS có
+        $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $totalPerson = 0;
+        $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
+        $arrPerson = array();
+        foreach($dataPerson as $_user){
+            $arrPerson[$_user->person_id] = array(
+                'person_name'=>$_user->person_name,
+                'person_code'=>$_user->person_code,
+                'person_position_define_id'=>$_user->person_position_define_id,
+                'person_depart_id'=>$_user->person_depart_id,
+                'person_depart_name'=>$_user->person_depart_name,
+            );
+        }
+        //lấy mảng all của mã nghạch
+        $searchWage['wage_step_config_status'] = Define::STATUS_SHOW;
+        $searchWage['wage_step_config_type'] = Define::type_ma_ngach;
+        $searchWage['field_get'] = 'wage_step_config_id,wage_step_config_name';
+        $totalWage = 0;
+        $dataWage = HrWageStepConfig::searchByCondition($searchWage, 0, 0, $totalWage);
+        $arrWage = array();
+        foreach($dataWage as $_wage){
+            $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
+        }
+
+        //PayRoll
         $search = $data = array();
         $total = 0;
 
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
+        $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
+        $search['arrPerson'] = array_keys($arrPerson);
         $search['field_get'] = '';
 
-        $data = Person::searchByCondition($search, $limit, $offset, $total);
+        $data = Payroll::searchByCondition($search, 0, 0, $total);
 
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportTienLuongCongChuc.xls");
@@ -160,9 +199,6 @@ class ReportController extends BaseAdminController
         $i=6;
         $stt = 0;
         if($data){
-            $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
-            $arrDepart = Department::getDepartmentAll();
-
             foreach ($data as $item){
                 $i++;
                 $stt++;
@@ -179,45 +215,20 @@ class ReportController extends BaseAdminController
                     $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $person_sex_0);
                 }
 
-                $dataSalary = Salary::getSalaryByPersonIdAndYear($item->person_id, $yearExport);
-                $salary_coefficients = isset($dataSalary->salary_coefficients) ? $dataSalary->salary_coefficients : 0;
-                $salary_civil_servants = isset($dataSalary->salary_civil_servants) ? $dataSalary->salary_civil_servants : '';
-
-                $salary_month = isset($dataSalary->salary_month) ? $dataSalary->salary_month : '';
-                $salary_year = isset($dataSalary->salary_year) ? $dataSalary->salary_year : '';
-
-                //phucap
-                $listAllowance = Allowance::getAllowanceByPersonId($item->person_id);
-                $phucap_chucvu = $phucap_trachnhiem = $phucap_khuvuc = $phucap_thamnienvuotkhung = $phucap_total = 0;
-                foreach($listAllowance as $_k => $pc){
-                    if($pc->allowance_type == Define::phucap_chucvu && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
-                        $phucap_chucvu = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                    }
-                    if($pc->allowance_type == Define::phucap_trachnhiem && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
-                        $phucap_trachnhiem = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                    }
-                    if($pc->allowance_type == Define::phucap_khuvuc && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
-                        $phucap_khuvuc = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                    }
-                    if($pc->allowance_type == Define::phucap_thamnienvuotkhung && $pc->allowance_year_start <= $yearExport && $pc->allowance_year_end >= $yearExport){
-                        $phucap_thamnienvuotkhung = isset($pc->allowance_method_value) ? $pc->allowance_method_value : 0;
-                    }
-                }
-                $phucap_total = $phucap_chucvu + $phucap_trachnhiem + $phucap_khuvuc + $phucap_thamnienvuotkhung;
-
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A'.$i, $stt)
-                    ->setCellValue('B'.$i, $item->person_name)
-                    ->setCellValue('E'.$i, isset($arrChucVu[$item->person_position_define_id]) ? $arrChucVu[$item->person_position_define_id] : '')
+                    ->setCellValue('B'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
+                    ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
+                    ->setCellValue('E'.$i, isset($arrPerson[$item->payroll_person_id]['person_position_define_id']) ? $arrPerson[$item->payroll_person_id]['person_position_define_id'] : '')
                     ->setCellValue('F'.$i, isset($arrDepart[$item->person_depart_id]) ? $arrDepart[$item->person_depart_id] : '')
-                    ->setCellValue('G'.$i, $salary_month.'/'.$salary_year)
-                    ->setCellValue('H'.$i, $salary_coefficients)
-                    ->setCellValue('I'.$i, $salary_civil_servants)
-                    ->setCellValue('J'.$i, $phucap_chucvu)
-                    ->setCellValue('K'.$i, $phucap_trachnhiem)
-                    ->setCellValue('L'.$i, $phucap_khuvuc)
-                    ->setCellValue('M'.$i, $phucap_thamnienvuotkhung)
-                    ->setCellValue('N'.$i, $phucap_total)
+                    ->setCellValue('G'.$i, '')
+                    ->setCellValue('H'.$i, '')
+                    ->setCellValue('I'.$i, '')
+                    ->setCellValue('J'.$i, '')
+                    ->setCellValue('K'.$i, '')
+                    ->setCellValue('L'.$i, '')
+                    ->setCellValue('M'.$i, '')
+                    ->setCellValue('N'.$i, '')
                     ->setCellValue('O'.$i, '');
             }
         }

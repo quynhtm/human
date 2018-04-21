@@ -136,11 +136,9 @@ use App\Http\Models\Hr\Person;
                                                 <tr>
                                                     <td>{{$stt+$k+1}}</td>
                                                     <td>
-                                                        @if(isset($arrPerson) && $arrPerson[$item->payroll_person_id])
-                                                            {{isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : ''}}
-                                                        @endif
+                                                        {{isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : ''}}
                                                     </td>
-                                                    <td>{{$item->ma_ngach}}</td>
+                                                    <td>{{isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : ''}}</td>
                                                     <td>{{$item->he_so_luong}}</td>
                                                     <td>{{$item->phu_cap_chuc_vu}}</td>
                                                     <td>{{$item->phu_cap_tham_nien_vuot}}</td>
