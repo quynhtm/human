@@ -1,5 +1,6 @@
 <?php use App\Library\AdminFunction\FunctionLib; ?>
 <?php use App\Library\AdminFunction\Define; ?>
+<?php use App\Library\PHPThumb\ThumbImg; ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
     <div class="main-content-inner">
@@ -34,9 +35,16 @@
                                 </div>
                                 <div class="panel-body">
                                     <div class="line">
-                                        <table class="table table-bordered table-condensed">
+                                        <table class="table table-bordered table-condensed detailPerson">
                                             <tbody>
                                             <tr>
+                                                <td rowspan="9" width="10%">
+                                                    @if(isset($infoPerson['person_avatar']) && $infoPerson['person_avatar'] !='')
+                                                        <img width="100%" src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $infoPerson['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
+                                                    @else
+                                                        <img width="100%" src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/no-profile-image.gif"/>
+                                                    @endif
+                                                </td>
                                                 <td><span class="lbl text-nowrap">Phòng ban/ Đơn vị</span></td>
                                                 <td><span class="val">@if(isset($arrDepart[$infoPerson['person_depart_id']])){{$arrDepart[$infoPerson['person_depart_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Số hiệu cán bộ, công chức</span></td>
@@ -64,121 +72,121 @@
                                                 <td><span class="lbl text-nowrap">Chức vụ (Vị trí việc làm)</span></td>
                                                 <td><span class="val">@if(isset($arrChucVu[$infoPerson['person_position_define_id']])){{$arrChucVu[$infoPerson['person_position_define_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Chức danh</span></td>
-                                                <td><span class="val">@if(isset($arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']])){{$arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']]}}@endif</span></td>
+                                                <td colspan="2"><span class="val">@if(isset($arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']])){{$arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']]}}@endif</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chức danh KHCN</span></td>
                                                 <td><span class="val">---------</span></td>
                                                 <td><span class="lbl text-nowrap">Cấp ủy hiện tại, cấp ủy kiêm</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi sinh</span></td>
                                                 <td><span class="val">{{$infoPerson['person_address_place_of_birth']}}</span></td>
                                                 <td><span class="lbl text-nowrap">Quê quán</span></td>
-                                                <td><span class="val">{{$infoPerson['person_address_home_town']}}</span></td>
+                                                <td colspan="2"><span class="val">{{$infoPerson['person_address_home_town']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi ở hiện nay</span></td>
                                                 <td><span class="val">{{$infoPerson['person_address_current']}}</span></td>
                                                 <td><span class="lbl text-nowrap">Dân tộc</span></td>
-                                                <td><span class="val">@if(isset($arrDanToc[$infoPerson['person_nation_define_id']])){{$arrDanToc[$infoPerson['person_nation_define_id']]}}@endif</span></td>
+                                                <td  colspan="2"><span class="val">@if(isset($arrDanToc[$infoPerson['person_nation_define_id']])){{$arrDanToc[$infoPerson['person_nation_define_id']]}}@endif</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Tôn giáo</span></td>
                                                 <td><span class="val">@if(isset($arrTonGiao[$infoPerson['person_respect']])){{$arrTonGiao[$infoPerson['person_respect']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
-                                                <td><span class="val">------</span></td>
+                                                <td colspan="2"><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nghề nghiệp bản thân trước khi được tuyển dụng</span></td>
                                                 <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
-                                                <td><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
+                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Vào cơ quan nào, ở đâu</span></td>
                                                 <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào cơ quan đang công tác</span></td>
-                                                <td><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
+                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia cách mạng</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào Đảng</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td colspan="2"><span class="val">-----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia các tổ chức chính trị, xã hội</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày nhập ngũ</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày xuất ngũ</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Quân hàm, Chức vụ cao nhất (năm)</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td colspan="2"><span class="val">-----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ học vấn: GDPT</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Học hàm</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Học vị</span></td>
                                                 <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Lý luận chính trị</span></td>
-                                                <td><span class="val">------</span></td>
+                                                <td colspan="2"><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ ngoại ngữ</span></td>
                                                 <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Danh hiệu được phong</span></td>
-                                                <td><span class="val">------</span></td>
+                                                <td colspan="2"><span class="val">------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Khen thưởng</span></td>
                                                 <td><span class="val">-------<span></td>
                                                 <td><span class="lbl text-nowrap">Công tác chính đang làm</span></td>
-                                                <td><span class="val">-------</span></td>
+                                                <td colspan="2"><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Sở trường công tác</span></td>
                                                 <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Công việc làm lâu nhất</span></td>
-                                                <td><span class="val">-------</span></td>
+                                                <td colspan="2"><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Kỷ luật</span></td>
                                                 <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Tình trạng sức khỏe</span></td>
-                                                <td><span class="val">-------</span></td>
+                                                <td colspan="2"><span class="val">-------</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chiều cao</span></td>
                                                 <td><span class="val">{{$infoPerson->person_height}}</span></td>
                                                 <td><span class="lbl text-nowrap">Cân nặng</span></td>
-                                                <td><span class="val">{{$infoPerson->person_weight}}</span></td>
+                                                <td colspan="2"><span class="val">{{$infoPerson->person_weight}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nhóm máu</span></td>
                                                 <td><span class="val">@if(isset($arrNhomMau[$infoPerson['person_blood_group_define_id']])){{$arrNhomMau[$infoPerson['person_blood_group_define_id']]}}@endif</span></td>
                                                 <td><span class="lbl text-nowrap">Số chứng minh thư</span></td>
-                                                <td><span class="val">{{$infoPerson['person_chung_minh_thu']}}</span></td>
+                                                <td colspan="2"><span class="val">{{$infoPerson['person_chung_minh_thu']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày cấp</span></td>
                                                 <td><span class="val">{{($infoPerson['person_date_range_cmt']  > 0) ? date('d/m/Y', $infoPerson['person_date_range_cmt']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Nơi cấp</span></td>
-                                                <td><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
+                                                <td colspan="2"><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Thương binh hạng</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Gia đình chính sách</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">----</span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu phổ thông</span></td>
@@ -187,13 +195,13 @@
                                                     <span class="val">----</span> <span class="lbl"> - Đến ngày:</span><span class="val ">----</span>
                                                 </td>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu công vụ</span></td>
-                                                <td>-----</td>
+                                                <td colspan="2">-----</td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Mã số thuế cá nhân</span></td>
                                                 <td><span class="val">-----</span></td>
                                                 <td><span class="lbl text-nowrap">Tài khoản ngân hàng</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">----</span></td>
                                             </tr>
                                             </tbody>
                                         </table>

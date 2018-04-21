@@ -3,6 +3,7 @@ use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Define;
 use App\Http\Models\Hr\Salary;
 use App\Http\Models\Hr\Allowance;
+use App\Http\Models\Hr\Person;
 ?>
 
 @extends('admin.AdminLayouts.index')
@@ -127,6 +128,38 @@ use App\Http\Models\Hr\Allowance;
                                                     <td>14(*)</td>
                                                     <td>15=13-14</td>
                                                 </tr>
+                                                @if(sizeof($data) > 0)
+                                                @foreach($data as $k=>$item)
+                                                <tr>
+                                                    <td>{{$stt+$k+1}}</td>
+                                                    <?php $dataUser = Person::getInfoPerson($item->payroll_person_id);?>
+                                                    <td>
+                                                    @if(sizeof($dataUser) > 0)
+                                                        {{$dataUser->person_name}}
+                                                    @endif
+                                                    </td>
+                                                    <td></td>
+
+                                                    <td>{{$item->he_so_luong}}</td>
+                                                    <td>{{$item->phu_cap_chuc_vu}}</td>
+                                                    <td>{{$item->phu_cap_tham_nien_vuot}}</td>
+                                                    <td>{{$item->phu_cap_tham_nien_vuot_heso}}</td>
+                                                    <td>{{$item->phu_cap_trach_nhiem}}</td>
+
+                                                    <td>{{$item->phu_cap_tham_nien}}</td>
+                                                    <td>{{$item->phu_cap_tham_nien_heso}}</td>
+                                                    <td>{{$item->phu_cap_nghanh}}</td>
+                                                    <td>{{$item->phu_cap_nghanh_heso}}</td>
+                                                    <td>{{$item->tong_he_so}}</td>
+
+                                                    <td>{{FunctionLib::numberFormat($item->luong_co_so)}}</td>
+                                                    <td>{{FunctionLib::numberFormat($item->tong_tien)}}</td>
+                                                    <td>{{FunctionLib::numberFormat($item->tong_tien_luong)}}</td>
+                                                    <td>{{FunctionLib::numberFormat($item->tong_tien_baohiem)}}</td>
+                                                    <td>{{FunctionLib::numberFormat($item->tong_luong_thuc_nhan)}}</td>
+                                                </tr>
+                                                @endforeach
+                                                @endif
                                                 <tr class="text-center" style="background-color: #62A8D1">
                                                     <td colspan="18" class="text-center">(*) 14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)</td>
                                                 </tr>

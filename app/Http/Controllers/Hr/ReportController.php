@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hr;
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\Payroll;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
 use App\Http\Models\Admin\Role;
@@ -81,7 +82,9 @@ class ReportController extends BaseAdminController
         $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
         $search['field_get'] = '';
 
-        $data = Person::searchByCondition($search, $limit, $offset, $total);
+
+        $data = Payroll::searchByCondition($search, $limit, $offset, $total);
+
 
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
