@@ -31,6 +31,7 @@ class BaseAdminController extends Controller
     protected $is_root = false;
     protected $is_boss = false;
     protected $user_id = 0;
+    protected $user_depart_id = 0;
     protected $user_name = '';
     protected $role_type = Define::ROLE_TYPE_CUSTOMER;
     protected $languageSite = Define::VIETNAM_LANGUAGE;
@@ -51,6 +52,9 @@ class BaseAdminController extends Controller
                 }
                 if (isset($this->user['role_type']) && trim($this->user['role_type'])) {
                     $this->role_type = $this->user['role_type'];
+                }
+                if (isset($this->user['user_depart_id']) && trim($this->user['user_depart_id'])) {
+                    $this->user_depart_id = $this->user['user_depart_id'];
                 }
                 if (isset($this->user['user_id']) && trim($this->user['user_id'])) {
                     $this->user_id = $this->user['user_id'];
@@ -111,6 +115,7 @@ class BaseAdminController extends Controller
             View::share('is_boss', $this->is_boss);
             View::share('role_type', $this->role_type);
             View::share('user_id', $this->user_id);
+            View::share('user_depart_id', $this->user_depart_id);
             View::share('user_name', $this->user_name);
             View::share('user', $this->user);
 

@@ -94,7 +94,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['start_birth'] = time();
         $search['end_birth'] = strtotime(time() . " +1 month");
@@ -149,7 +149,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_NGHIVIEC;
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -200,7 +200,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_CHUYENCONGTAC;
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -251,7 +251,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_NGHIHUU;
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -303,7 +303,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_SAPNGHIHUU;
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -368,7 +368,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['list_person_id'] = $arrPersonId;
 
@@ -418,7 +418,7 @@ class PersonListController extends BaseAdminController
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['start_dealine_salary'] = time();
         $search['end_dealine_salary'] = strtotime(time() . " +1 month");

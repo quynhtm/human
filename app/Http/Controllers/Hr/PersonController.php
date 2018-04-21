@@ -104,14 +104,14 @@ class PersonController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
-        $search['person_depart_id'] = (int)Request::get('person_depart_id', Define::STATUS_HIDE);
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
-        if($sbmValue == 2){
-            $this->exportData($data,'Danh sách nhân sự đang làm việc');
+        if ($sbmValue == 2) {
+            $this->exportData($data, 'Danh sách nhân sự đang làm việc');
         }
         //FunctionLib::debug($data);
         $this->getDataDefault();
@@ -136,7 +136,8 @@ class PersonController extends BaseAdminController
         ], $this->viewPermission));
     }
 
-    public function getItem($ids){
+    public function getItem($ids)
+    {
         Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
         Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
@@ -179,12 +180,12 @@ class PersonController extends BaseAdminController
         $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
 
         $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
-        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current );
+        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current);
         $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
-        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0 );
+        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0);
         $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
         $arrWards = Wards::getWardsByDistrictId($person_districts_current);
-        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0 );
+        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
@@ -223,12 +224,12 @@ class PersonController extends BaseAdminController
         }
         $id_hiden = (int)Request::get('id_hiden', 0);
         $data = $_POST;
-        $data['ordering'] = (isset($data['person_birth']) && $data['person_birth'] != '')? strtotime($data['person_birth']): 0;
-        $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '')? strtotime($data['person_date_trial_work']): 0;
-        $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '')? strtotime($data['person_date_start_work']): 0;
-        $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '')? strtotime($data['person_date_range_cmt']): 0;
-        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '')? strtotime($data['person_birth']): 0;
-        $data['person_avatar'] = (isset($data['img']) && $data['img'] != '')? trim($data['img']): '';
+        $data['ordering'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
+        $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '') ? strtotime($data['person_date_trial_work']) : 0;
+        $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '') ? strtotime($data['person_date_start_work']) : 0;
+        $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '') ? strtotime($data['person_date_range_cmt']) : 0;
+        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
+        $data['person_avatar'] = (isset($data['img']) && $data['img'] != '') ? trim($data['img']) : '';
         $data['person_status'] = Define::STATUS_SHOW;
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
@@ -270,12 +271,12 @@ class PersonController extends BaseAdminController
         $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
 
         $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
-        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current );
+        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current);
         $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
-        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0 );
+        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0);
         $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
         $arrWards = Wards::getWardsByDistrictId($person_districts_current);
-        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0 );
+        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
@@ -299,7 +300,8 @@ class PersonController extends BaseAdminController
         ], $this->viewPermission));
     }
 
-    public function getDetail($personId){
+    public function getDetail($personId)
+    {
         $person_id = FunctionLib::outputId($personId);
         CGlobal::$pageAdminTitle = 'Thông tin chi tiết nhân sự';
         //Check phan quyen.
@@ -328,15 +330,15 @@ class PersonController extends BaseAdminController
         $arrTonGiao = $this->arrTonGiao;
         $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
 
-        $arrCurriculumVitaeMain = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_DAO_TAO);
+        $arrCurriculumVitaeMain = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_DAO_TAO);
         $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
         $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
         $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
 
-        $arrCurriculumVitaeOther = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
-        $arrQuaTrinhCongTac = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_CONG_TAC);
+        $arrCurriculumVitaeOther = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
+        $arrQuaTrinhCongTac = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CONG_TAC);
 
-        $arrHoatDongDang = CurriculumVitae::getCurriculumVitaeByType($person_id,Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+        $arrHoatDongDang = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_HOAT_DONG_DANG);
         $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
         $quanHeGiaDinh = Relationship::getRelationshipByPersonId($person_id);
@@ -405,7 +407,7 @@ class PersonController extends BaseAdminController
                     $data['address_register'] = $personInfo['person_address_current'];
                     $data['user_status'] = CGlobal::status_show;
                 }
-            }else{
+            } else {
                 $this->error[] = 'Tài khoản này đã được tạo.';
             }
         }
@@ -415,7 +417,7 @@ class PersonController extends BaseAdminController
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex']) ? $data['user_sex'] : CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type']) ? $data['role_type'] : Define::ROLE_TYPE_CUSTOMER);
         $arrDepart = Department::getDepartmentAll();
-        $optionDepart= FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
+        $optionDepart = FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
         return view('hr.Person.addAccount', [
             'data' => $data,
             'person_id' => $person_id,
@@ -505,7 +507,7 @@ class PersonController extends BaseAdminController
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex']) ? $data['user_sex'] : CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type']) ? $data['role_type'] : Define::ROLE_TYPE_CUSTOMER);
         $arrDepart = Department::getDepartmentAll();
-        $optionDepart= FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
+        $optionDepart = FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
         return view('hr.Person.addAccount', [
             'data' => $data,
             'person_id' => $person_id,
@@ -577,7 +579,7 @@ class PersonController extends BaseAdminController
         $person_id = FunctionLib::outputId($personId);
 
         $dataUpdate['person_status'] = Define::PERSON_STATUS_DAXOA;
-        if (Person::updateItem($person_id,$dataUpdate)) {
+        if (Person::updateItem($person_id, $dataUpdate)) {
             return Redirect::route('hr.personnelView');
         } else {
             return Redirect::route('hr.personnelView');
@@ -618,8 +620,9 @@ class PersonController extends BaseAdminController
         return true;
     }
 
-    public function exportData($data,$title ='') {
-        if(empty($data)){
+    public function exportData($data, $title = '')
+    {
+        if (empty($data)) {
             return;
         }
         //FunctionLib::debug($data);
@@ -638,7 +641,7 @@ class PersonController extends BaseAdminController
         $sheet->getDefaultStyle()->getFont()->setName('Arial')->setSize(10);
         $sheet->getStyle('A1')->getFont()->setSize(16)->setBold(true)->getColor()->setRGB('000000');
         $sheet->mergeCells('A1:H1');
-        $sheet->setCellValue("A1", $title );
+        $sheet->setCellValue("A1", $title);
         $sheet->getRowDimension("1")->setRowHeight(32);
         $sheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
             ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
@@ -646,22 +649,27 @@ class PersonController extends BaseAdminController
         // setting header
         $position_hearder = 3;
         $sheet->getRowDimension($position_hearder)->setRowHeight(30);
-        $val10 = 5; $val18 = 18; $val35 = 35;$val45 = 60; $val25 = 25;$val55 = 55;
+        $val10 = 5;
+        $val18 = 18;
+        $val35 = 35;
+        $val45 = 60;
+        $val25 = 25;
+        $val55 = 55;
         $ary_cell = array(
-            'A'=>array('w'=>$val10,'val'=>'STT','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'B'=>array('w'=>$val35,'val'=>'Họ tên','align'=>PHPExcel_Style_Alignment::HORIZONTAL_LEFT),
-            'C'=>array('w'=>$val10,'val'=>'Giới tính','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'D'=>array('w'=>$val18,'val'=>'Ngày sinh','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'E'=>array('w'=>$val18,'val'=>'Ngày làm việc','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'F'=>array('w'=>$val35,'val'=>'Đơn vị bộ phận','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'G'=>array('w'=>$val35,'val'=>'Chức danh nghề nghiệp','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
-            'H'=>array('w'=>$val35,'val'=>'Chức vụ','align'=>PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'A' => array('w' => $val10, 'val' => 'STT', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'B' => array('w' => $val35, 'val' => 'Họ tên', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT),
+            'C' => array('w' => $val10, 'val' => 'Giới tính', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'D' => array('w' => $val18, 'val' => 'Ngày sinh', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'E' => array('w' => $val18, 'val' => 'Ngày làm việc', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'F' => array('w' => $val35, 'val' => 'Đơn vị bộ phận', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'G' => array('w' => $val35, 'val' => 'Chức danh nghề nghiệp', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
+            'H' => array('w' => $val35, 'val' => 'Chức vụ', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
         );
 
         //build header title
-        foreach($ary_cell as $col => $attr){
+        foreach ($ary_cell as $col => $attr) {
             $sheet->getColumnDimension($col)->setWidth($attr['w']);
-            $sheet->setCellValue("$col{$position_hearder}",$attr['val']);
+            $sheet->setCellValue("$col{$position_hearder}", $attr['val']);
             $sheet->getStyle($col)->getAlignment()->setWrapText(true);
             $sheet->getStyle($col . $position_hearder)->applyFromArray(
                 array(
@@ -670,11 +678,11 @@ class PersonController extends BaseAdminController
                         'color' => array('rgb' => '05729C'),
                         'style' => array('font-weight' => 'bold')
                     ),
-                    'font'  => array(
-                        'bold'  => true,
+                    'font' => array(
+                        'bold' => true,
                         'color' => array('rgb' => 'FFFFFF'),
-                        'size'  => 10,
-                        'name'  => 'Verdana'
+                        'size' => 10,
+                        'name' => 'Verdana'
                     ),
                     'borders' => array(
                         'allborders' => array(
@@ -689,9 +697,9 @@ class PersonController extends BaseAdminController
             );
         }
         //hien thị dũ liệu
-        $rowCount = $position_hearder+1; // hang bat dau xuat du lieu
+        $rowCount = $position_hearder + 1; // hang bat dau xuat du lieu
         $i = 1;
-        $break="\r";
+        $break = "\r";
         foreach ($data as $k => $v) {
             $sheet->getRowDimension($rowCount)->setRowHeight(30);//chiều cao của row
 
@@ -703,22 +711,22 @@ class PersonController extends BaseAdminController
             $sheet->SetCellValue('B' . $rowCount, $v['person_name']);
 
             $sheet->getStyle('C' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('C' . $rowCount, isset($this->arrSex[$v['person_sex']])? $this->arrSex[$v['person_sex']]: '' );
+            $sheet->SetCellValue('C' . $rowCount, isset($this->arrSex[$v['person_sex']]) ? $this->arrSex[$v['person_sex']] : '');
 
             $sheet->getStyle('D' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('D' . $rowCount, date('d-m-Y',$v['person_birth']));
+            $sheet->SetCellValue('D' . $rowCount, date('d-m-Y', $v['person_birth']));
 
             $sheet->getStyle('E' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('E' . $rowCount, date('d-m-Y',$v['person_date_start_work']));
+            $sheet->SetCellValue('E' . $rowCount, date('d-m-Y', $v['person_date_start_work']));
 
             $sheet->getStyle('F' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('F' . $rowCount, isset($this->depart[$v['person_depart_id']])? $this->depart[$v['person_depart_id']]: '');
+            $sheet->SetCellValue('F' . $rowCount, isset($this->depart[$v['person_depart_id']]) ? $this->depart[$v['person_depart_id']] : '');
 
             $sheet->getStyle('G' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('G' . $rowCount, isset($this->arrChucDanhNgheNghiep[$v['person_career_define_id']])? $this->arrChucDanhNgheNghiep[$v['person_career_define_id']]: '');
+            $sheet->SetCellValue('G' . $rowCount, isset($this->arrChucDanhNgheNghiep[$v['person_career_define_id']]) ? $this->arrChucDanhNgheNghiep[$v['person_career_define_id']] : '');
 
             $sheet->getStyle('H' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-            $sheet->SetCellValue('H' . $rowCount, isset($this->arrChucVu[$v['person_position_define_id']])? $this->arrChucVu[$v['person_position_define_id']]: '');
+            $sheet->SetCellValue('H' . $rowCount, isset($this->arrChucVu[$v['person_position_define_id']]) ? $this->arrChucVu[$v['person_position_define_id']] : '');
 
             $rowCount++;
             $i++;
