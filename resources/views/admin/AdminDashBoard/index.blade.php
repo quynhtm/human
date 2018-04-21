@@ -62,7 +62,7 @@
             <div class="col-xs-12">
                 <ul style="list-style: none; font-size: 18px; padding: 20px 0;">
                     @foreach($listLink as $kl=>$val)
-                        <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}</a></li>
+                        <li style="width: 45%; display: inline-block"><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}</a></li>
                     @endforeach
                 </ul>
             </div>
