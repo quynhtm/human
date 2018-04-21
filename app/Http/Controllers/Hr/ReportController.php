@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Hr;
 use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Department;
+use App\Http\Models\Hr\HrWageStepConfig;
 use App\Http\Models\Hr\Payroll;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
@@ -77,14 +78,17 @@ class ReportController extends BaseAdminController
         $total = 0;
         $paging = '';
 
+        //lấy mảng id NS có
+
+        //lấy mảng all của mã nghạch
+
+
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', date('Y', time()));
         $search['reportMonth'] = (int)Request::get('reportMonth', date('m', time()));
         $search['field_get'] = '';
 
-
         $data = Payroll::searchByCondition($search, $limit, $offset, $total);
-
 
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
@@ -94,8 +98,8 @@ class ReportController extends BaseAdminController
 
         $arrMonth = FunctionLib::getListMonth();
         $arrYears = FunctionLib::getListYears();
-        $optionYear = FunctionLib::getOption($arrYears, $search['reportYear']);
-        $optionMonth = FunctionLib::getOption($arrMonth, $search['reportMonth']);
+        $optionYear = FunctionLib::getOption($arrYears, isset($search['reportYear'])? $search['reportYear']: date('Y',time()));
+        $optionMonth = FunctionLib::getOption($arrMonth, isset($search['reportMonth'])? $search['reportMonth']: date('m',time()));
 
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);

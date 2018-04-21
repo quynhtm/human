@@ -128,6 +128,9 @@ use App\Http\Models\Hr\Person;
                                                     <td>14(*)</td>
                                                     <td>15=13-14</td>
                                                 </tr>
+                                                <tr class="text-center" style="background-color: #62A8D1">
+                                                    <td colspan="18" class="text-center">(*) 14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)</td>
+                                                </tr>
                                                 @if(sizeof($data) > 0)
                                                 @foreach($data as $k=>$item)
                                                 <tr>
@@ -160,9 +163,7 @@ use App\Http\Models\Hr\Person;
                                                 </tr>
                                                 @endforeach
                                                 @endif
-                                                <tr class="text-center" style="background-color: #62A8D1">
-                                                    <td colspan="18" class="text-center">(*) 14= (1+2+4+5+7)*11*0.105 (10.5% BHXH + BHYT + BHTN)</td>
-                                                </tr>
+
                                                 </tbody>
                                             </table>
                                         </div>
