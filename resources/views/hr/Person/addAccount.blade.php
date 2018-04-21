@@ -55,7 +55,7 @@
                             <input type="text" placeholder="Mã nhân sự" id="number_code" name="number_code"  class="form-control input-sm" value="@if(isset($data['number_code'])){{$data['number_code']}}@endif">
                         </div>
                     </div>
-                    <div class="col-sm-6">
+                    <div class="col-sm-12">
                         <div class="form-group">
                             <label for="name" class="control-label">Thuộc phòng ban<span class="red"> (*) </span></label>
                             <select name="user_depart_id" id="user_depart_id" class="form-control input-sm">
