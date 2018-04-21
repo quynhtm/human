@@ -71,25 +71,25 @@ use App\Http\Models\Hr\Person;
                                             <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
                                             <br>
                                             <div class="listPayroll">
-                                                <table style="width: 100%;" class="table table-bordered table-responsive">
+                                                <table style="width: 100%;" class="table table-bordered table-condensed">
                                                     <tbody>
                                                     <tr class="text-center">
                                                         <th rowspan="4" class="text-center">TT</th>
-                                                        <th rowspan="4" class="text-center" width="35%">Họ và tên</th>
-                                                        <th rowspan="4" class="text-center" >Mã số ngạch lương</th>
+                                                        <th rowspan="4" class="text-center" width="15%">Họ và tên</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Mã số ngạch lương</th>
 
                                                         <th colspan="9" class="text-center">Lương hệ số</th>
 
-                                                        <th rowspan="4" class="text-center">Cộng hệ số</th>
-                                                        <th rowspan="4" class="text-center" >Lương cơ bản hiện hành</th>
-                                                        <th rowspan="4" class="text-center">Thành tiền</th>
-                                                        <th rowspan="4" class="text-center">Tổng tiền lương và BHXH được hưởng</th>
-                                                        <th rowspan="4" class="text-center" >Các khoản trừ vào lương (BHXH)</th>
-                                                        <th rowspan="4" class="text-center">Tổng tiền lương thực nhận</th>
+                                                        <th rowspan="4" class="text-center" width="5%">Cộng hệ số</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Lương cơ bản hiện hành</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Thành tiền</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Tổng tiền lương và BHXH được hưởng</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Các khoản trừ vào lương (BHXH)</th>
+                                                        <th rowspan="4" class="text-center" width="7%">Tổng tiền lương thực nhận</th>
                                                     </tr>
                                                     <tr class="text-center">
-                                                        <th rowspan="3" class="text-center">Hệ số lương</th>
-                                                        <th rowspan="3" class="text-center">Hệ số phụ cấp chức vụ</th>
+                                                        <th rowspan="3" class="text-center" width="5%">Hệ số lương</th>
+                                                        <th rowspan="3" class="text-center" width="5%">Hệ số phụ cấp chức vụ</th>
                                                         <th colspan="7" class="text-center">Hệ số phụ cấp khác</th>
                                                     </tr>
                                                     <tr class="text-center">
@@ -99,12 +99,12 @@ use App\Http\Models\Hr\Person;
                                                         <th colspan="2" class="text-center">Phụ cấp ngành</th>
                                                     </tr>
                                                     <tr class="text-center">
-                                                        <th class="text-center">%</th>
-                                                        <th class="text-center">Hệ số</th>
-                                                        <th class="text-center">%</th>
-                                                        <th class="text-center">Hệ số</th>
-                                                        <th class="text-center">%</th>
-                                                        <th class="text-center">Hệ số</th>
+                                                        <th class="text-center" width="5%">%</th>
+                                                        <th class="text-center" width="5%">Hệ số</th>
+                                                        <th class="text-center" width="5%">%</th>
+                                                        <th class="text-center" width="5%">Hệ số</th>
+                                                        <th class="text-center" width="5%">%</th>
+                                                        <th class="text-center" width="5%">Hệ số</th>
                                                     </tr>
                                                     <tr class="text-center" style="background-color: #62A8D1">
                                                         <td></td>

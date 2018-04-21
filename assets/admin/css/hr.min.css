@@ -255,5 +255,6 @@ span.lbl {
     padding: 8px 10px!important;
 }
 .listPayroll {
-    width: 120%;
+    width: 100%;
+    overflow-x: scroll;
 }
