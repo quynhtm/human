@@ -180,6 +180,25 @@ class Payroll extends BaseModel
             if(isset($dataSearch['arrPerson']) && sizeof($dataSearch['arrPerson']) > 0){
                 $query->whereIn('payroll_person_id',  $dataSearch['arrPerson']);
             }
+            if(isset($dataSearch['payroll_person_id']) && $dataSearch['payroll_person_id'] > 0){
+                $query->where('payroll_person_id',  $dataSearch['payroll_person_id']);
+            }
+
+            if (isset($dataSearch['reportMonth']) && $dataSearch['reportMonth'] > 0) {
+                $query->where('payroll_month', $dataSearch['reportMonth']);
+            }
+            if (isset($dataSearch['reportYear']) && $dataSearch['reportYear'] > 0) {
+                if(!isset($dataSearch['reportMonth'])){
+                    $timeCurrentLast = date('d', time()).'-'.date('m', time()).'-'.$dataSearch['reportYear'].' '.date('H', time()).':'.date('i', time()) ;
+                    $timeCurrentLast = strtotime($timeCurrentLast);
+                    $timeCurrentFirst = '01-01-'.$dataSearch['reportYear'].' 00:00';
+                    $timeCurrentFirst = strtotime($timeCurrentFirst);
+                    $query->whereBetween('payroll_year', array($timeCurrentFirst, $timeCurrentLast));
+                }else{
+                    $query->where('payroll_year', $dataSearch['reportYear']);
+                }
+            }
+
             $total = $query->count();
             $query->orderBy('payroll_id', 'desc');
 

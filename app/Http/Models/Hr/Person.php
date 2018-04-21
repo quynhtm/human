@@ -148,6 +148,9 @@ class Person extends BaseModel
                 $query->where('person_code','LIKE', '%' . $dataSearch['person_code'] . '%');
             }
 
+            if (isset($dataSearch['person_id']) && $dataSearch['person_id'] >0) {
+                $query->where('person_id', $dataSearch['person_id'] );
+            }
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
                 $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
@@ -175,14 +178,6 @@ class Person extends BaseModel
 
             if (isset($dataSearch['list_person_id']) && is_array($dataSearch['list_person_id']) && count($dataSearch['list_person_id']) > 0) {
                 $query->where('person_id',  $dataSearch['list_person_id']);
-            }
-
-            if (isset($dataSearch['reportYear']) && $dataSearch['reportYear'] > 0) {
-                $timeCurrentLast = date('d', time()).'-'.date('m', time()).'-'.$dataSearch['reportYear'].' '.date('H', time()).':'.date('i', time()) ;
-                $timeCurrentLast = strtotime($timeCurrentLast);
-                $timeCurrentFirst = '01-01-'.$dataSearch['reportYear'].' 00:00';
-                $timeCurrentFirst = strtotime($timeCurrentFirst);
-                $query->whereBetween('person_creater_time', array($timeCurrentFirst, $timeCurrentLast));
             }
 
             $total = $query->count();

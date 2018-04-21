@@ -31,6 +31,7 @@ class BaseAdminController extends Controller
     protected $is_root = false;
     protected $is_boss = false;
     protected $user_id = 0;
+    protected $user_object_id = 0;
     protected $user_depart_id = 0;
     protected $user_name = '';
     protected $role_type = Define::ROLE_TYPE_CUSTOMER;
@@ -59,6 +60,7 @@ class BaseAdminController extends Controller
                 if (isset($this->user['user_id']) && trim($this->user['user_id'])) {
                     $this->user_id = $this->user['user_id'];
                     $this->user_name = $this->user['user_name'];
+                    $this->user_object_id = $this->user['user_object_id'];
                 }
             }
             if (in_array('is_boss', $this->permission) || $this->user['user_view'] == CGlobal::status_hide) {
@@ -116,6 +118,7 @@ class BaseAdminController extends Controller
             View::share('role_type', $this->role_type);
             View::share('user_id', $this->user_id);
             View::share('user_depart_id', $this->user_depart_id);
+            View::share('user_object_id', $this->user_object_id);
             View::share('user_name', $this->user_name);
             View::share('user', $this->user);
 

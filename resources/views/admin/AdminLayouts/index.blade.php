@@ -90,7 +90,7 @@
 <body class="no-skin" @if($languageSite == \App\Library\AdminFunction\Define::VIETNAM_LANGUAGE) lang="vi"
       @else lang="en" @endif>
 <div id="navbar" class="navbar navbar-default navbar-fixed-top">
-    <div class="navbar-container" id="navbar-container">
+    <a class="navbar-container" id="navbar-container">
         <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
             <span class="sr-only">Toggle sidebar</span>
             <span class="icon-bar"></span>
@@ -105,7 +105,7 @@
                 </small>
             </a>
         </div>
-        <div class="navbar-buttons navbar-header pull-right" role="navigation">
+        <li class="navbar-buttons navbar-header pull-right" role="navigation">
             <ul class="nav ace-nav">
                 <li class="light-blue">
                     <a class="dropdown-toggle" href="{{URL::route('hr.HrMailViewGet')}}">
@@ -165,6 +165,15 @@
                             </a>
                         </li>
                         <li class="divider"></li>
+                        @if(isset($user['user_object_id']) && $user['user_object_id'] > 0)
+                        <li>
+                            <a href="{{URL::route('hr.viewLuongDetailPerson')}}">
+                                <i class="ace-icon fa fa-usd"></i>
+                                Chi tiết lương
+                            </a>
+                        </li>
+                        <li class="divider"></li>
+                        @endif
                         <li>
                             <a href="{{URL::route('admin.logout')}}">
                                 <i class="ace-icon fa fa-power-off"></i>

@@ -144,6 +144,7 @@ Route::get('document/deleteHrDocument', array('as' => 'hr.deleteHrDocument','use
 
 //Report
 Route::match(['GET','POST'],'report/viewTienLuongCongChuc', array('as' => 'hr.viewTienLuongCongChuc','uses' => HResources.'\ReportController@viewTienLuongCongChuc'));
+Route::match(['GET','POST'],'report/viewLuongDetailPerson', array('as' => 'hr.viewLuongDetailPerson','uses' => HResources.'\ReportController@viewLuongDetailPerson'));
 Route::match(['GET','POST'],'report/exportTienLuongCongChuc', array('as' => 'hr.exportTienLuongCongChuc','uses' => HResources.'\ReportController@exportTienLuongCongChuc'));
 
 
