@@ -410,9 +410,12 @@ class PersonController extends BaseAdminController
             }
         }
         $this->getDataDefault();
+
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['user_status']) ? $data['user_status'] : CGlobal::status_show);
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex']) ? $data['user_sex'] : CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type']) ? $data['role_type'] : Define::ROLE_TYPE_CUSTOMER);
+        $arrDepart = Department::getDepartmentAll();
+        $optionDepart= FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
         return view('hr.Person.addAccount', [
             'data' => $data,
             'person_id' => $person_id,
@@ -421,6 +424,7 @@ class PersonController extends BaseAdminController
             'optionStatus' => $optionStatus,
             'optionSex' => $optionSex,
             'optionRoleType' => $optionRoleType,
+            'optionDepart' => $optionDepart,
             'error' => $this->error,
         ]);
     }
@@ -444,6 +448,7 @@ class PersonController extends BaseAdminController
         $data['address_register'] = Request::get('address_register', '');
         $data['number_code'] = Request::get('number_code', '');
         $data['role_type'] = Request::get('role_type', 0);
+        $data['user_depart_id'] = Request::get('user_depart_id', 0);
         $id = Request::get('user_id', 0);
 
         $this->validUser($id, $data);
@@ -460,6 +465,7 @@ class PersonController extends BaseAdminController
         if (empty($this->error)) {
             $groupRole = Role::getOptionRole();
             //Insert dữ liệu
+            $dataInsert['user_depart_id'] = $data['user_depart_id'];
             $dataInsert['user_name'] = $data['user_name'];
             $dataInsert['user_email'] = $data['user_email'];
             $dataInsert['user_phone'] = $data['user_phone'];
@@ -498,6 +504,8 @@ class PersonController extends BaseAdminController
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['user_status']) ? $data['user_status'] : CGlobal::status_show);
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['user_sex']) ? $data['user_sex'] : CGlobal::status_show);
         $optionRoleType = FunctionLib::getOption($this->arrRoleType, isset($data['role_type']) ? $data['role_type'] : Define::ROLE_TYPE_CUSTOMER);
+        $arrDepart = Department::getDepartmentAll();
+        $optionDepart= FunctionLib::getOption($arrDepart, isset($data['user_depart_id']) ? $data['user_depart_id'] : 0);
         return view('hr.Person.addAccount', [
             'data' => $data,
             'person_id' => $person_id,
@@ -507,6 +515,7 @@ class PersonController extends BaseAdminController
             'optionStatus' => $optionStatus,
             'optionSex' => $optionSex,
             'optionRoleType' => $optionRoleType,
+            'optionDepart' => $optionDepart,
             'error' => $this->error,
         ]);
     }

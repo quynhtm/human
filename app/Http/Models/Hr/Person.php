@@ -48,6 +48,7 @@ class Person extends BaseModel
                 //luong cua nhan sự theo thông tin mới
                 $thongTinLuongNS = Payroll::getPayrollByInfoSalary($person_id,$infoSalary->salary_month,$infoSalary->salary_year);
                 if($thongTinLuongNS){//nếu có, thì cập nhật
+                    $dataNewPay['ma_ngach'] = $infoSalary->salary_tariffs;//mã nghạch
                     $dataNewPay['he_so_luong'] = $infoSalary->salary_coefficients;//hệ số lương
                     $dataNewPay['luong_co_so'] = $infoSalary->salary_salaries;//lương cơ sở
                     $payroll_id = Payroll::updateItem($thongTinLuongNS->payroll_id,$dataNewPay);
