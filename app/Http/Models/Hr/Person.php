@@ -55,6 +55,7 @@ class Person extends BaseModel
                 }
                 else{//thêm mới
                     $dataNewPay['payroll_person_id'] = $person_id;
+                    $dataNewPay['ma_ngach'] = $infoSalary->salary_tariffs;//mã nghạch
                     $dataNewPay['payroll_month'] = $infoSalary->salary_month;
                     $dataNewPay['payroll_year'] = $infoSalary->salary_year;
                     $dataNewPay['he_so_luong'] = $infoSalary->salary_coefficients;//hệ số lương

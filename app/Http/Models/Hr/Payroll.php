@@ -22,6 +22,7 @@ class Payroll extends BaseModel
         'payroll_person_id',
         'payroll_month',
         'payroll_year',
+        'ma_ngach',                     //ma nghạch theo bảng lương
         'he_so_luong',                  //1 luong
         'phu_cap_chuc_vu',              //2
         'phu_cap_tham_nien_vuot',       //3
@@ -108,6 +109,7 @@ class Payroll extends BaseModel
         $tong_tien = $tong_he_so * $payroll->luong_co_so;
         $tong_tien_baohiem = round(($payroll->he_so_luong + $payroll->phu_cap_chuc_vu + $phu_cap_tham_nien_vuot_heso + $payroll->phu_cap_trach_nhiem + $phu_cap_tham_nien_heso) * $payroll->luong_co_so * 0.105,4);
         $arrCheck = array(
+            'ma_ngach' => $payroll->ma_ngach,                       //1 mã nghạch
             'he_so_luong' => $payroll->he_so_luong,                       //1 luong
             'phu_cap_chuc_vu' => $payroll->phu_cap_chuc_vu,              //2
             'phu_cap_tham_nien_vuot' => $payroll->phu_cap_tham_nien_vuot,       //3
