@@ -38,7 +38,7 @@
                                         <table class="table table-bordered table-condensed detailPerson">
                                             <tbody>
                                             <tr>
-                                                <td rowspan="9" width="10%">
+                                                <td rowspan="6" width="10%">
                                                     @if(isset($infoPerson['person_avatar']) && $infoPerson['person_avatar'] !='')
                                                         <img width="100%" src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $infoPerson['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
                                                     @else
@@ -74,12 +74,14 @@
                                                 <td><span class="lbl text-nowrap">Chức danh</span></td>
                                                 <td colspan="2"><span class="val">@if(isset($arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']])){{$arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']]}}@endif</span></td>
                                             </tr>
+                                            <!--
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chức danh KHCN</span></td>
                                                 <td><span class="val">---------</span></td>
                                                 <td><span class="lbl text-nowrap">Cấp ủy hiện tại, cấp ủy kiêm</span></td>
                                                 <td colspan="2"><span class="val">----</span></td>
                                             </tr>
+                                            -->
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi sinh</span></td>
                                                 <td><span class="val">{{$infoPerson['person_address_place_of_birth']}}</span></td>
@@ -98,18 +100,22 @@
                                                 <td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
                                                 <td colspan="2"><span class="val">------</span></td>
                                             </tr>
+                                            <!--
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nghề nghiệp bản thân trước khi được tuyển dụng</span></td>
                                                 <td><span class="val">-----</span></td>
-                                                <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
-                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
-                                            </tr>
-                                            <tr>
                                                 <td><span class="lbl text-nowrap">Vào cơ quan nào, ở đâu</span></td>
                                                 <td><span class="val">-----</span></td>
+                                            </tr>
+                                            -->
+                                            <tr>
+
+                                                <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
+                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào cơ quan đang công tác</span></td>
                                                 <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
+                                            <!--
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia cách mạng</span></td>
                                                 <td><span class="val">----</span></td>
@@ -164,6 +170,7 @@
                                                 <td><span class="lbl text-nowrap">Tình trạng sức khỏe</span></td>
                                                 <td colspan="2"><span class="val">-------</span></td>
                                             </tr>
+                                            -->
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chiều cao</span></td>
                                                 <td><span class="val">{{$infoPerson->person_height}}</span></td>
@@ -182,12 +189,14 @@
                                                 <td><span class="lbl text-nowrap">Nơi cấp</span></td>
                                                 <td colspan="2"><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
                                             </tr>
+                                            <!--
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Thương binh hạng</span></td>
                                                 <td><span class="val">----</span></td>
                                                 <td><span class="lbl text-nowrap">Gia đình chính sách</span></td>
                                                 <td colspan="2"><span class="val">----</span></td>
                                             </tr>
+                                             -->
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu phổ thông</span></td>
                                                 <td>
@@ -197,6 +206,7 @@
                                                 <td><span class="lbl text-nowrap">Hộ chiếu công vụ</span></td>
                                                 <td colspan="2">-----</td>
                                             </tr>
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Mã số thuế cá nhân</span></td>
                                                 <td><span class="val">-----</span></td>
