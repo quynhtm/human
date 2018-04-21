@@ -152,7 +152,7 @@ class ReportController extends BaseAdminController
 
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
-        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name,person_code,person_position_define_id';
         $totalPerson = 0;
         $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
         $arrPerson = array();
@@ -162,7 +162,6 @@ class ReportController extends BaseAdminController
                 'person_code'=>$_user->person_code,
                 'person_position_define_id'=>$_user->person_position_define_id,
                 'person_depart_id'=>$_user->person_depart_id,
-                'person_depart_name'=>$_user->person_depart_name,
             );
         }
         //lấy mảng all của mã nghạch
@@ -175,6 +174,8 @@ class ReportController extends BaseAdminController
         foreach($dataWage as $_wage){
             $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
         }
+        //chucvu
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
 
         //PayRoll
         $search = $data = array();
@@ -196,7 +197,7 @@ class ReportController extends BaseAdminController
 
         $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $titleReport);
 
-        $i=6;
+        $i=10;
         $stt = 0;
         if($data){
             foreach ($data as $item){
@@ -204,32 +205,29 @@ class ReportController extends BaseAdminController
                 $stt++;
                 $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($i)->setRowHeight(15);
 
-                $person_birth = (isset($item->person_birth) && $item->person_birth > 0) ? $item->person_birth : 0;
-                $person_sex_1 = (isset($item->person_sex) && $item->person_sex == 1 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : '';
-                $person_sex_0 = (isset($item->person_sex) && $item->person_sex == 0 && $person_birth > 0) ? date('d/m/Y', $person_birth)  : '';
-
-                if($person_sex_1 != ''){
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('C'.$i, $person_sex_1);
-                }
-                if($person_sex_0 != ''){
-                    $objPHPExcel->setActiveSheetIndex(0)->setCellValue('D'.$i, $person_sex_0);
-                }
-
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A'.$i, $stt)
                     ->setCellValue('B'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
                     ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
-                    ->setCellValue('E'.$i, isset($arrPerson[$item->payroll_person_id]['person_position_define_id']) ? $arrPerson[$item->payroll_person_id]['person_position_define_id'] : '')
-                    ->setCellValue('F'.$i, isset($arrDepart[$item->person_depart_id]) ? $arrDepart[$item->person_depart_id] : '')
-                    ->setCellValue('G'.$i, '')
-                    ->setCellValue('H'.$i, '')
-                    ->setCellValue('I'.$i, '')
-                    ->setCellValue('J'.$i, '')
-                    ->setCellValue('K'.$i, '')
-                    ->setCellValue('L'.$i, '')
-                    ->setCellValue('M'.$i, '')
-                    ->setCellValue('N'.$i, '')
-                    ->setCellValue('O'.$i, '');
+                    ->setCellValue('D'.$i, isset($arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']]) ? $arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']] : '')
+
+                    ->setCellValue('E'.$i, isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : '')
+                    ->setCellValue('F'.$i, $item->he_so_luong)
+                    ->setCellValue('G'.$i, $item->phu_cap_chuc_vu)
+                    ->setCellValue('H'.$i, $item->phu_cap_tham_nien_vuot)
+                    ->setCellValue('I'.$i, $item->phu_cap_tham_nien_vuot_heso)
+                    ->setCellValue('J'.$i, $item->phu_cap_trach_nhiem)
+                    ->setCellValue('K'.$i, $item->phu_cap_tham_nien)
+                    ->setCellValue('L'.$i, $item->phu_cap_tham_nien_heso)
+                    ->setCellValue('M'.$i, $item->phu_cap_nghanh)
+                    ->setCellValue('N'.$i, $item->phu_cap_nghanh_heso)
+                    ->setCellValue('O'.$i, $item->tong_he_so)
+
+                    ->setCellValue('P'.$i, FunctionLib::numberFormat($item->luong_co_so))
+                    ->setCellValue('Q'.$i, FunctionLib::numberFormat($item->tong_tien))
+                    ->setCellValue('R'.$i, FunctionLib::numberFormat($item->tong_tien_luong))
+                    ->setCellValue('S'.$i, FunctionLib::numberFormat($item->tong_tien_baohiem))
+                    ->setCellValue('T'.$i, FunctionLib::numberFormat($item->tong_luong_thuc_nhan));
             }
         }
         $filename = 'reportTienLuongCongChuc';
