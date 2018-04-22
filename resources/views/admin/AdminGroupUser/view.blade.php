@@ -66,6 +66,7 @@
                                     {{ $item['group_user_name'] }}
                                 </td>
                                 <td>
+                                    <div style=" height: 100px; overflow-y: auto">
                                     @if(!empty($item['permissions']))
                                         @foreach($item['permissions'] as $permission)
                                             <div class="checkbox disabled">
@@ -76,6 +77,7 @@
                                             </div>
                                         @endforeach
                                     @endif
+                                    </div>
                                 </td>
                                 <td class="text-center text-middle">
                                     @if($item['group_user_view'] == 1)

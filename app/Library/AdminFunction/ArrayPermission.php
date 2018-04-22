@@ -102,11 +102,6 @@ class ArrayPermission{
         'hr_mail_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền thư gửi'),
         'hr_mail_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền thư gửi'),
 
-        'hr_staff_full' => array('name_permit'=>'Full','group_permit'=>'Quyền report lương'),
-        'hr_staff_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền report lương'),
-        'hr_staff_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền report lương'),
-        'hr_staff_create' => array('name_permit'=>'Tạo','group_permit'=>'Quyền report lương'),
-
         'wagestepconfig_full' => array('name_permit'=>'Full','group_permit'=>'Quyền thang bảng lương'),
         'wagestepconfig_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền thang bảng lương'),
         'wagestepconfig_delete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền thang bảng lương'),
