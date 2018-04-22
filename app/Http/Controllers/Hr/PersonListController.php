@@ -460,6 +460,61 @@ class PersonListController extends BaseAdminController
         ], $this->viewPermission));
     }
 
+    /******************************************************************************************************************
+     * NS Đã bị xóa tạm thời
+     ******************************************************************************************************************/
+    public function viewDeletePerson()
+    {
+        CGlobal::$pageAdminTitle = 'NS đã bị xóa';
+        //Check phan quyen.
+        if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        $page_no = (int)Request::get('page_no', 1);
+        $sbmValue = Request::get('submit', 1);
+        $limit = CGlobal::number_show_20;
+        $offset = ($page_no - 1) * $limit;
+        $search = $data = array();
+        $total = 0;
+
+        $search['person_name'] = addslashes(Request::get('person_name', ''));
+        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+        $search['person_code'] = addslashes(Request::get('person_code', ''));
+        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+        $search['person_status'] = Define::PERSON_STATUS_DAXOA;
+        $search['start_dealine_salary'] = time();
+        $search['end_dealine_salary'] = strtotime(time() . " +1 month");
+        $search['orderBy'] = 'person_date_salary_increase';
+        $search['sortOrder'] = 'asc';
+        //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+
+        $data = Person::searchByCondition($search, $limit, $offset, $total);
+        $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
+
+        if($sbmValue == 2){
+            $this->exportData($data,'Danh sách '.CGlobal::$pageAdminTitle);
+        }
+        //FunctionLib::debug($data);
+        $this->getDataDefault();
+        $optionDepart = FunctionLib::getOption($this->depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.PersonList.viewCommon', array_merge([
+            'data' => $data,
+            'search' => $search,
+            'total' => $total,
+            'action_person' => $this->action_person,
+            'stt' => ($page_no - 1) * $limit,
+            'paging' => $paging,
+            'titlePage' => CGlobal::$pageAdminTitle,
+            'arrSex' => $this->arrSex,
+            'arrDepart' => $this->depart,
+            'arrChucVu' => $this->arrChucVu,
+            'arrChucDanhNgheNghiep' => $this->arrChucDanhNgheNghiep,
+            'optionDepart' => $optionDepart,
+            'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
+        ], $this->viewPermission));
+    }
+
     public function exportData($data,$title ='') {
         if(empty($data)){
             return;
