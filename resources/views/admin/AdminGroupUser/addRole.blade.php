@@ -81,7 +81,7 @@
                 <div class="clearfix"></div>
                 <hr/>
                 <div class="clearfix"></div>
-                <div style="float: left; width: 100%;min-height: 300px;max-height:300px;overflow-x: hidden;">
+                <div style="float: left; width: 100%;min-height: 175px;max-height:175px;overflow-x: hidden;">
                     @foreach($arrGroupUser as $key => $val)
                         <div class="col-sm-2">
                             <div class="checkbox">
