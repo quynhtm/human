@@ -20,11 +20,6 @@
                 <div class="panel panel-info">
                     {{ Form::open(array('method' => 'GET', 'role'=>'form')) }}
                     <div class="panel-body">
-                        <div class="form-group col-lg-3">
-                            <label for="banner_name">Tên role</label>
-                            <input type="text" class="form-control input-sm" id="role_name" name="role_name" placeholder="Tiêu đề banner" @if(isset($search['role_name']) && $search['role_name'] != '')value="{{$search['role_name']}}"@endif>
-                        </div>
-
                         <div class="form-group col-lg-12 text-right">
                             @if($is_root || $permission_full ==1 || $permission_create == 1)
                                 <a class="btn btn-danger btn-sm" href="{{URL::route('admin.editRole',array('id' => FunctionLib::inputId(0)))}}">
@@ -47,8 +42,10 @@
                         <tr class="">
                             <th width="2%" class="text-center">TT</th>
                             <th width="10%" class="text-center">Role name</th>
+                            @if($is_boss == 1)
                             <th width="30%" class="text-center">View menu id</th>
                             <th width="20%" class="text-center">List quyền</th>
+                            @endif
                             <th width="10%" class="text-center">Status</th>
                             <th width="8%" class="text-center">Action</th>
                         </tr>
@@ -58,8 +55,10 @@
                             <tr @if($item['parent_id'] == 0)style="background-color:#d6f6f6"@endif>
                                 <td class="text-center text-middle">{!! $stt + $key+1 !!}</td>
                                 <td class="text-center text-middle">{!! $item['role_name'] !!}</td>
+                                @if($is_boss == 1)
                                 <td class="text-center text-middle">{!! $item['role_group_menu_id'] !!}</td>
                                 <td class="text-center text-middle">{!! $item['role_group_permission'] !!}</td>
+                                @endif
                                 <td class="text-center text-middle">
                                     @if($item['role_status'] == 1)
                                         <a href="javascript:void(0);" title="Hiện"><i class="fa fa-check fa-2x"></i></a>

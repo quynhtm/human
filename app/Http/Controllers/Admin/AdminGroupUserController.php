@@ -358,15 +358,15 @@ class AdminGroupUserController extends BaseAdminController{
         $data['role_status'] = (int)Request::get('role_status',CGlobal::status_show);
         $data['role_id'] = (int)Request::get('role_id',0);
         $data['role_name'] = isset($arrRoleType[$data['role_id']])? $arrRoleType[$data['role_id']]: 'no name';
-
+        $data['role_group_permission'] = $data['role_group_menu_id'] = '';
         //lay nhóm quyền
         $groupUser = $data['user_group'] = Request::get('user_group', array());
-        if ($groupUser) {
+        if (!empty($groupUser)) {
             $strGroupUser = implode(',', $groupUser);
             $data['role_group_permission'] = $strGroupUser;
         }
         $groupUserMenu = $data['user_group_menu'] = Request::get('user_group_menu', array());
-        if ($groupUserMenu) {
+        if (!empty($groupUserMenu)) {
             $strGroupUserMenu = implode(',', $groupUserMenu);
             $data['role_group_menu_id'] = $strGroupUserMenu;
         }
@@ -411,6 +411,7 @@ class AdminGroupUserController extends BaseAdminController{
     public function getPermissionPage(){
         return $this->viewPermission = [
             'is_root'=> $this->is_root ? 1:0,
+            'is_boss'=> $this->is_boss ? 1:0,
             'permission_edit'=>in_array($this->permission_role_edit, $this->permission) ? 1 : 0,
             'permission_create'=>in_array($this->permission_role_create, $this->permission) ? 1 : 0,
             'permission_full'=>in_array($this->permission_role_view, $this->permission) ? 1 : 0,

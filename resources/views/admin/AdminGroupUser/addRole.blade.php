@@ -50,7 +50,7 @@
                     <div id="show_category_sub_campaign" class="body">
                         <label for="name" class="control-label">Menu hiển thị</label>
                         @if(isset($menuAdmin) && !empty($menuAdmin))
-                            <div style="float: left; width: 100%;min-height: 250px;max-height:405px;overflow-x: hidden;">
+                            <div style="float: left; width: 100%;min-height: 150px;max-height:200px;overflow-x: hidden;">
                                 <table class="table table-bordered table-hover">
                                     @foreach ($menuAdmin as $menu_id => $menu_name)
                                         <tr>
