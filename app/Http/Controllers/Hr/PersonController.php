@@ -670,6 +670,106 @@ class PersonController extends BaseAdminController
         return true;
     }
 
+    public function viewInfoPersonal()
+    {
+
+        $person_id = $this->user_object_id;
+
+        CGlobal::$pageAdminTitle = 'Thông tin chi tiết cá nhân';
+        //Check phan quyen.
+        if ($person_id <= 0) {
+            return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
+        }
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
+
+        //Thông tin khen thưởng
+        $khenthuong = Bonus::getBonusByType($person_id, Define::BONUS_KHEN_THUONG);
+        $arrTypeKhenthuong = HrDefine::getArrayByType(Define::khen_thuong);
+        //Thông tin danh hieu
+        $danhhieu = Bonus::getBonusByType($person_id, Define::BONUS_DANH_HIEU);
+        $arrTypeDanhhieu = HrDefine::getArrayByType(Define::danh_hieu);
+
+        //Thông tin kỷ luật
+        $kyluat = Bonus::getBonusByType($person_id, Define::BONUS_KY_LUAT);
+        $arrTypeKyluat = HrDefine::getArrayByType(Define::ky_luat);
+        $this->getDataDefault();
+
+        $arrDepart = Department::getDepartmentAll();
+        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
+        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
+        $arrTonGiao = $this->arrTonGiao;
+        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
+
+        $arrCurriculumVitaeMain = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_DAO_TAO);
+        $arrVanBangChungChi = HrDefine::getArrayByType(Define::van_bang_chung_chi);
+        $arrHinhThucHoc = HrDefine::getArrayByType(Define::hinh_thuc_hoc);
+        $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
+
+        $arrCurriculumVitaeOther = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CHUNG_CHI_KHAC);
+        $arrQuaTrinhCongTac = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_CONG_TAC);
+
+        $arrHoatDongDang = CurriculumVitae::getCurriculumVitaeByType($person_id, Define::CURRICULUMVITAE_HOAT_DONG_DANG);
+        $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
+
+        $quanHeGiaDinh = Relationship::getRelationshipByPersonId($person_id);
+        $arrQuanHeGiaDinh = HrDefine::getArrayByType(Define::quan_he_gia_dinh);
+
+        $contractsPerson = HrContracts::getListContractsByPersonId($person_id);
+        $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
+        $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
+
+        $dbType = Define::CURRICULUMVITAE_QUANHE_DACDIEM_BANTHAN;
+        $dataQuanHeDacDiemBanThan = CurriculumVitae::checkCurriculumVitaeByType($person_id, $dbType);
+
+        //thông tin lương
+        $luong = Salary::getSalaryByPersonId($person_id);
+        $arrNgachBac = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+        //thông tin phu cap
+        $phucap = Allowance::getAllowanceByPersonId($person_id);
+
+        $infoPassPort = Person::getInfoPersonPassport($person_id);
+
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Person.detail', array_merge([
+            'person_id' => $person_id,
+            'khenthuong' => $khenthuong,
+            'danhhieu' => $danhhieu,
+            'kyluat' => $kyluat,
+            'arrTypeKhenthuong' => $arrTypeKhenthuong,
+            'arrTypeDanhhieu' => $arrTypeDanhhieu,
+            'arrTypeKyluat' => $arrTypeKyluat,
+            'infoPerson' => $infoPerson,
+            'arrDepart' => $arrDepart,
+            'arrChucVu' => $arrChucVu,
+            'arrChucDanhNgheNghiep' => $arrChucDanhNgheNghiep,
+            'arrDanToc' => $arrDanToc,
+            'arrTonGiao' => $arrTonGiao,
+            'arrNhomMau' => $arrNhomMau,
+            'arrVanBangChungChi' => $arrVanBangChungChi,
+            'arrCurriculumVitaeMain' => $arrCurriculumVitaeMain,
+            'arrHinhThucHoc' => $arrHinhThucHoc,
+            'arrChuyenNghanhDaoTao' => $arrChuyenNghanhDaoTao,
+            'arrCurriculumVitaeOther' => $arrCurriculumVitaeOther,
+            'arrQuaTrinhCongTac' => $arrQuaTrinhCongTac,
+            'arrHoatDongDang' => $arrHoatDongDang,
+            'arrChucVuDang' => $arrChucVuDang,
+            'quanHeGiaDinh' => $quanHeGiaDinh,
+            'arrQuanHeGiaDinh' => $arrQuanHeGiaDinh,
+            'contractsPerson' => $contractsPerson,
+            'arrLoaihopdong' => $arrLoaihopdong,
+            'arrChedothanhtoan' => $arrChedothanhtoan,
+            'dataQuanHeDacDiemBanThan' => $dataQuanHeDacDiemBanThan,
+            'luong' => $luong,
+            'phucap' => $phucap,
+            'arrNgachBac' => $arrNgachBac,
+            'arrOptionPhuCap' => Define::$arrOptionPhuCap,
+            'arrMethodPhuCap' => Define::$arrMethodPhuCap,
+            'infoPassPort' => $infoPassPort,
+        ], $this->viewPermission));
+    }
+
     public function exportData($data, $title = '')
     {
         if (empty($data)) {

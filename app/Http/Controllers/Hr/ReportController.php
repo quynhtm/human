@@ -248,33 +248,10 @@ class ReportController extends BaseAdminController
         if (!$this->is_root && !in_array($this->personViewTienLuongCongChuc, $this->permission) && !in_array($this->personExportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
+        $infoPerson = ($this->user_object_id > 0) ? Person::getPersonById($this->user_object_id): array();
 
-        //lấy mảng id NS có
-        $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
-        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_id'] = $this->user_object_id;
-        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
-        $totalPerson = 0;
-        $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
-        $arrPerson = array();
-        foreach($dataPerson as $_user){
-            $arrPerson[$_user->person_id] = array(
-                'person_name'=>$_user->person_name,
-                'person_depart_id'=>$_user->person_depart_id,
-                'person_depart_name'=>$_user->person_depart_name,
-            );
-        }
         //lấy mảng all của mã nghạch
-        $searchWage['wage_step_config_status'] = Define::STATUS_SHOW;
-        $searchWage['wage_step_config_type'] = Define::type_ma_ngach;
-        $searchWage['field_get'] = 'wage_step_config_id,wage_step_config_name';
-        $totalWage = 0;
-        $dataWage = HrWageStepConfig::searchByCondition($searchWage, 0, 0, $totalWage);
-        $arrWage = array();
-        foreach($dataWage as $_wage){
-            $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
-        }
-
+        $arrWage = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
         //PayRoll
         $page_no = (int)Request::get('page_no', 1);
         $limit = CGlobal::number_show_40;
@@ -286,17 +263,15 @@ class ReportController extends BaseAdminController
         $search['person_depart_id'] = (int)Request::get('person_depart_id', -1);
         $search['reportYear'] = (int)Request::get('reportYear', 0);
         $search['reportMonth'] = (int)Request::get('reportMonth', 0);
-        $search['payroll_person_id'] = $this->user_object_id;
+        $search['payroll_person_id'] = ($this->user_object_id == 0) ? -1: $this->user_object_id;
         $search['field_get'] = '';
 
         $data = Payroll::searchByCondition($search, $limit, $offset, $total);
-
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
         $this->getDataDefault();
 
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
-
         $arrMonth = FunctionLib::getListMonth();
         $arrYears = FunctionLib::getListYears();
         $optionYear = FunctionLib::getOption($arrYears, isset($search['reportYear'])? $search['reportYear']: date('Y',time()));
@@ -317,8 +292,8 @@ class ReportController extends BaseAdminController
             'optionDepart' => $optionDepart,
             'arrChucVu' => $arrChucVu,
             'arrDepart' => $depart,
+            'infoPerson' => $infoPerson,
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
-            'arrPerson' => $arrPerson,
             'arrWage' => $arrWage,
         ], $this->viewPermission));
     }

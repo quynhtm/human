@@ -182,7 +182,7 @@ class Payroll extends BaseModel
 
             if(isset($dataSearch['payroll_person_id']) && is_array($dataSearch['payroll_person_id'])){
                 $query->whereIn('payroll_person_id',  $dataSearch['payroll_person_id']);
-            }elseif(isset($dataSearch['payroll_person_id']) && $dataSearch['payroll_person_id'] > 0){
+            }elseif(isset($dataSearch['payroll_person_id']) && $dataSearch['payroll_person_id'] > -2){
                 $query->where('payroll_person_id',  $dataSearch['payroll_person_id']);
             }
 
@@ -203,6 +203,7 @@ class Payroll extends BaseModel
 
             $total = $query->count();
             $query->orderBy('payroll_id', 'desc');
+            //return $query->toSql();
 
             //get field can lay du lieu
             $fields = (isset($dataSearch['field_get']) && trim($dataSearch['field_get']) != '') ? explode(',', trim($dataSearch['field_get'])) : array();
