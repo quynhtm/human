@@ -294,6 +294,13 @@ class Person extends BaseModel
             return $person;
         }
     }
+    public static function getInfoPersonPassport($person_id){
+        if($person_id > 0){
+            $person = Person::find($person_id);
+            $person->passport;
+            return $person;
+        }
+    }
     public static function getPersonInDepart($person_depart_id = 0){
         $person = array();
         if($person_depart_id > 0){
