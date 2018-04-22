@@ -89,15 +89,7 @@ class ReportController extends BaseAdminController
             );
         }
         //lấy mảng all của mã nghạch
-        $searchWage['wage_step_config_status'] = Define::STATUS_SHOW;
-        $searchWage['wage_step_config_type'] = Define::type_ma_ngach;
-        $searchWage['field_get'] = 'wage_step_config_id,wage_step_config_name';
-        $totalWage = 0;
-        $dataWage = HrWageStepConfig::searchByCondition($searchWage, 0, 0, $totalWage);
-        $arrWage = array();
-        foreach($dataWage as $_wage){
-            $arrWage[$_wage->wage_step_config_id] = $_wage->wage_step_config_name;
-        }
+        $arrWage = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
 
         //PayRoll
         $page_no = (int)Request::get('page_no', 1);
