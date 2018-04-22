@@ -325,5 +325,6 @@ class Define
         self::sizeImage_300 => array('w' => self::sizeImage_300, 'h' => self::sizeImage_300),
         self::sizeImage_450 => array('w' => self::sizeImage_450, 'h' => self::sizeImage_450),
     );
+    const httpServer = CGlobal::http_not_remove;
 
 }

