@@ -82,6 +82,7 @@ Route::post('curriculumVitaePerson/deleteFamily', array('as' => 'hr.deleteFamily
 Route::get('curriculumVitaePerson/editStudy', array('as' => 'hr.editStudy','uses' => HResources.'\CurriculumVitaePersonController@editStudy'));
 Route::post('curriculumVitaePerson/postStudy', array('as' => 'hr.postStudy','uses' => HResources.'\CurriculumVitaePersonController@postStudy'));
 Route::post('curriculumVitaePerson/deleteStudy', array('as' => 'hr.deleteStudy','uses' => HResources.'\CurriculumVitaePersonController@deleteStudy'));
+Route::post('curriculumVitaePerson/changeValueViewCurriculumVitae', array('as' => 'hr.changeValueViewCurriculumVitae','uses' => HResources.'\CurriculumVitaePersonController@changeValueViewCurriculumVitae'));
 
 
 Route::get('infoPerson/viewInfoPersonOther/{person_id?}', array('as' => 'hr.viewInfoPersonOther','uses' => HResources.'\InfoPersonController@viewInfoPersonOther'));

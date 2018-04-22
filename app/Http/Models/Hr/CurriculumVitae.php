@@ -142,4 +142,13 @@ class CurriculumVitae extends BaseModel
             throw new PDOException();
         }
     }
+    public static function checkCurriculumVitaeByType($person_id, $type = 0){
+        if ($person_id > 0 && $type > 0) {
+            $result = CurriculumVitae::where('curriculum_type', $type)
+                ->where('curriculum_person_id', $person_id)
+                ->orderBy('curriculum_id', 'ASC')->first();
+            return $result;
+        }
+        return array();
+    }
 }

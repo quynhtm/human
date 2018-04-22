@@ -90,6 +90,10 @@ class CurriculumVitaePersonController extends BaseAdminController
         $arrChuyenNghanhDaoTao = HrDefine::getArrayByType(Define::chuyen_nghanh_dao_tao);
         $arrChucVuDang = HrDefine::getArrayByType(Define::chuc_vu_doan_dang);
 
+        //Quan hệ nước ngoài, đặc điểm bản thân
+        $dbType = Define::CURRICULUMVITAE_QUANHE_DACDIEM_BANTHAN;
+        $dataQuanHeDacDiemBanThan = CurriculumVitae::checkCurriculumVitaeByType($person_id, $dbType);
+
         $this->getDataDefault();
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.CurriculumVitaePerson.CurriculumVitaeView', array_merge([
@@ -107,6 +111,7 @@ class CurriculumVitaePersonController extends BaseAdminController
 
             'quanhegiadinh' => $quanhegiadinh,
             'arrQuanHeGiaDinh' => $arrQuanHeGiaDinh,
+            'dataQuanHeDacDiemBanThan' => $dataQuanHeDacDiemBanThan,
         ], $this->viewPermission));
     }
 
@@ -429,6 +434,65 @@ class CurriculumVitaePersonController extends BaseAdminController
         }
         return Response::json($arrData);
     }
-
-
+    public function changeValueViewCurriculumVitae(){
+        $curriculum_person_id = Request::get('uid', '');
+        $nameField = Request::get('nameField', '');
+        $dataField = Request::get('dataField', '');
+        $type = Request::get('type', 0);
+        $dbType = Define::CURRICULUMVITAE_QUANHE_DACDIEM_BANTHAN;
+        if($curriculum_person_id != ''){
+            $curriculum_person_id = FunctionLib::outputId($curriculum_person_id);
+            if($curriculum_person_id > 0){
+                //curriculum_desc_history1
+                if($type == 1 && $nameField == 'curriculum_desc_history1'){
+                    $checkDb = CurriculumVitae::checkCurriculumVitaeByType($curriculum_person_id, $dbType);
+                    if(sizeof($checkDb) == 0){
+                        $data['curriculum_desc_history1'] = $dataField;
+                        $data['curriculum_person_id'] = $curriculum_person_id;
+                        $data['curriculum_type'] = $dbType;
+                        CurriculumVitae::createItem($data);
+                    }else{
+                        $data['curriculum_desc_history1'] = $dataField;
+                        CurriculumVitae::updateItem($checkDb->curriculum_id, $data);
+                    }
+                }elseif($type == 2 && $nameField == 'curriculum_desc_history2'){
+                    $checkDb = CurriculumVitae::checkCurriculumVitaeByType($curriculum_person_id, $dbType);
+                    if(sizeof($checkDb) == 0){
+                        $data['curriculum_desc_history2'] = $dataField;
+                        $data['curriculum_person_id'] = $curriculum_person_id;
+                        $data['curriculum_type'] = $dbType;
+                        CurriculumVitae::createItem($data);
+                    }else{
+                        $data['curriculum_desc_history2'] = $dataField;
+                        CurriculumVitae::updateItem($checkDb->curriculum_id, $data);
+                    }
+                }elseif($type == 3 && $nameField == 'curriculum_foreign_relations1'){
+                    $checkDb = CurriculumVitae::checkCurriculumVitaeByType($curriculum_person_id, $dbType);
+                    if(sizeof($checkDb) == 0){
+                        $data['curriculum_foreign_relations1'] = $dataField;
+                        $data['curriculum_person_id'] = $curriculum_person_id;
+                        $data['curriculum_type'] = $dbType;
+                        CurriculumVitae::createItem($data);
+                    }else{
+                        $data['curriculum_foreign_relations1'] = $dataField;
+                        CurriculumVitae::updateItem($checkDb->curriculum_id, $data);
+                    }
+                }elseif($type == 4 && $nameField == 'curriculum_foreign_relations2'){
+                    $checkDb = CurriculumVitae::checkCurriculumVitaeByType($curriculum_person_id, $dbType);
+                    if(sizeof($checkDb) == 0){
+                        $data['curriculum_foreign_relations2'] = $dataField;
+                        $data['curriculum_person_id'] = $curriculum_person_id;
+                        $data['curriculum_type'] = $dbType;
+                        CurriculumVitae::createItem($data);
+                    }else{
+                        $data['curriculum_foreign_relations2'] = $dataField;
+                        CurriculumVitae::updateItem($checkDb->curriculum_id, $data);
+                    }
+                }else{
+                    echo 'error';die;
+                }
+            }
+        }
+        echo 'ok';die;
+    }
 }
