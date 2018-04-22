@@ -6,9 +6,11 @@ use App\Http\Controllers\BaseAdminController;
 use App\Http\Models\Admin\Districts;
 use App\Http\Models\Admin\Province;
 use App\Http\Models\Admin\Wards;
+use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\CurriculumVitae;
 use App\Http\Models\Hr\Department;
 use App\Http\Models\Hr\HrContracts;
+use App\Http\Models\Hr\HrWageStepConfig;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\HrDefine;
@@ -18,6 +20,7 @@ use App\Http\Models\Admin\Role;
 use App\Http\Models\Admin\RoleMenu;
 
 use App\Http\Models\Hr\Relationship;
+use App\Http\Models\Hr\Salary;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -348,6 +351,15 @@ class PersonController extends BaseAdminController
         $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
         $arrChedothanhtoan = HrDefine::getArrayByType(Define::che_do_thanh_toan);
 
+        $dbType = Define::CURRICULUMVITAE_QUANHE_DACDIEM_BANTHAN;
+        $dataQuanHeDacDiemBanThan = CurriculumVitae::checkCurriculumVitaeByType($person_id, $dbType);
+
+        //thông tin lương
+        $luong = Salary::getSalaryByPersonId($person_id);
+        $arrNgachBac = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+        //thông tin phu cap
+        $phucap = Allowance::getAllowanceByPersonId($person_id);
+
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
@@ -378,7 +390,12 @@ class PersonController extends BaseAdminController
             'contractsPerson' => $contractsPerson,
             'arrLoaihopdong' => $arrLoaihopdong,
             'arrChedothanhtoan' => $arrChedothanhtoan,
-
+            'dataQuanHeDacDiemBanThan' => $dataQuanHeDacDiemBanThan,
+            'luong' => $luong,
+            'phucap' => $phucap,
+            'arrNgachBac' => $arrNgachBac,
+            'arrOptionPhuCap' => Define::$arrOptionPhuCap,
+            'arrMethodPhuCap' => Define::$arrMethodPhuCap,
         ], $this->viewPermission));
     }
 
