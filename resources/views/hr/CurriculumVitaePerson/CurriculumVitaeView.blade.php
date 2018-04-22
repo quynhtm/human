@@ -205,12 +205,12 @@
                         <div class="block_title">ĐẶC ĐIỂM LỊCH SỬ BẢN THÂN</div>
                         <div id="div_lich_su_ban_than">
                             <div class="form-group">
-                                <label for="device_name" class="control-label"><i>Khai rõ: Bị bắt, bị tù (từ ngày, tháng, năm nào đến ngày, tháng, năm nào, ở đâu), đã khai báo cho ai, những vấn đề gì</i></label>
-                                <textarea class="form-control input-sm" id="device_name" name="device_name" rows="5">Chua co gi</textarea>
+                                <label for="curriculum_desc_history1" class="control-label"><i>Khai rõ: Bị bắt, bị tù (từ ngày, tháng, năm nào đến ngày, tháng, năm nào, ở đâu), đã khai báo cho ai, những vấn đề gì</i></label>
+                                <textarea class="form-control input-sm" dataPerson="{{FunctionLib::inputId($person_id)}}" id="curriculum_desc_history1" name="curriculum_desc_history1" rows="5">{{isset($dataQuanHeDacDiemBanThan->curriculum_desc_history1) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_desc_history1) : ''}}</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="device_name" class="control-label"><i>Bản thân có làm việc trong chế độ cũ (Cơ quan, đơn vị nào, địa điểm, chức danh, chức vụ, thời gian làm việc)</i></label>
-                                <textarea class="form-control input-sm" id="device_name" name="device_name" rows="5">Chua co gi</textarea>
+                                <label for="curriculum_desc_history2" class="control-label"><i>Bản thân có làm việc trong chế độ cũ (Cơ quan, đơn vị nào, địa điểm, chức danh, chức vụ, thời gian làm việc)</i></label>
+                                <textarea class="form-control input-sm" dataPerson="{{FunctionLib::inputId($person_id)}}" id="curriculum_desc_history2" name="curriculum_desc_history2" rows="5">{{isset($dataQuanHeDacDiemBanThan->curriculum_desc_history2) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_desc_history2) : ''}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -220,12 +220,12 @@
                         <div class="block_title">QUAN HỆ VỚI NƯỚC NGOÀI</div>
                         <div id="div_quan_he_nuoc_ngoai">
                             <div class="form-group">
-                                <label for="device_name" class="control-label"><i>Tham gia hoặc có quan hệ với các tổ chức chính trị, kinh tế, xã hội nào ở nước ngoài (làm gì, tổ chức nào, đặt trụ sở ở đâu)</i></label>
-                                <textarea class="form-control input-sm" id="device_name" name="device_name" rows="5">Chua co gi</textarea>
+                                <label for="curriculum_foreign_relations1" class="control-label"><i>Tham gia hoặc có quan hệ với các tổ chức chính trị, kinh tế, xã hội nào ở nước ngoài (làm gì, tổ chức nào, đặt trụ sở ở đâu)</i></label>
+                                <textarea class="form-control input-sm" dataPerson="{{FunctionLib::inputId($person_id)}}" id="curriculum_foreign_relations1" name="curriculum_foreign_relations1" rows="5">{{isset($dataQuanHeDacDiemBanThan->curriculum_foreign_relations1) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_foreign_relations1) : ''}}</textarea>
                             </div>
                             <div class="form-group">
-                                <label for="device_name" class="control-label"><i>Có thân nhân (bố mẹ, vợ chồng, con, anh chị em ruột) ở nước ngoài (làm gì, địa chỉ)...</i></label>
-                                <textarea class="form-control input-sm" id="device_name" name="device_name" rows="5">Chua co gi</textarea>
+                                <label for="curriculum_foreign_relations2" class="control-label"><i>Có thân nhân (bố mẹ, vợ chồng, con, anh chị em ruột) ở nước ngoài (làm gì, địa chỉ)...</i></label>
+                                <textarea class="form-control input-sm" dataPerson="{{FunctionLib::inputId($person_id)}}" id="curriculum_foreign_relations2" name="curriculum_foreign_relations2" rows="5">{{isset($dataQuanHeDacDiemBanThan->curriculum_foreign_relations2) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_foreign_relations2) : ''}}</textarea>
                             </div>
                         </div>
                     </div>

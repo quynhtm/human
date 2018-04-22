@@ -415,7 +415,7 @@
                                             <div class="form-group">
                                                 <label>Khai rõ: Bị bắt, bị tù (từ ngày, tháng, năm nào đến ngày, tháng, năm nào, ở đâu), đã khai báo cho ai, những vấn đề gì</label>
                                                 <div class="mgt-15 lh22">
-
+                                                    {{isset($dataQuanHeDacDiemBanThan->curriculum_desc_history1) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_desc_history1) : ''}}
                                                 </div>
                                             </div>
                                         </div>
@@ -425,6 +425,7 @@
                                             <div class="form-group">
                                                 <label>Bản thân có làm việc trong chế độ cũ (Cơ quan, đơn vị nào, địa điểm, chức danh, chức vụ, thời gian làm việc)</label>
                                                 <div class="mgt-15 lh22">
+                                                    {{isset($dataQuanHeDacDiemBanThan->curriculum_desc_history2) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_desc_history2) : ''}}
                                                 </div>
                                             </div>
                                         </div>
@@ -435,7 +436,7 @@
                                             <div class="form-group">
                                                 <label>Tham gia hoặc có quan hệ với các tổ chức chính trị, kinh tế, xã hội nào ở nước ngoài (làm gì, tổ chức nào, đặt trụ sở ở đâu)</label>
                                                 <div class="mgt-15 lh22">
-
+                                                    {{isset($dataQuanHeDacDiemBanThan->curriculum_foreign_relations1) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_foreign_relations1) : ''}}
                                                 </div>
                                             </div>
                                         </div>
@@ -445,16 +446,8 @@
                                             <div class="form-group">
                                                 <label>Có thân nhân (bố mẹ, vợ chồng, con, anh chị em ruột) ở nước ngoài (làm gì, địa chỉ)...</label>
                                                 <div class="mgt-15 lh22">
-
+                                                    {{isset($dataQuanHeDacDiemBanThan->curriculum_foreign_relations2) ? stripcslashes($dataQuanHeDacDiemBanThan->curriculum_foreign_relations2) : ''}}
                                                 </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="marginTop20 row">
-                                        <div class="col-md-12">
-                                            <div class="tit">ĐI NƯỚC NGOÀI</div>
-                                            <div class="mgt-15 lh22">
-
                                             </div>
                                         </div>
                                     </div>
@@ -485,45 +478,70 @@
                                     <div class="marginTop20 row">
                                         <div class="col-md-12  table-responsive">
                                             <div class="tit mgt-20">LỊCH SỬ LƯƠNG</div>
-                                            <table class="table table-bordered" id="tblDiploma">
-                                                <tbody><tr>
-                                                    <td><strong>Tháng năm</strong></td>
-                                                    <td>01/02/2017</td>
-                                                    <td>01/02/2015</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Ngạch/ Bậc</strong></td>
-                                                    <td>01.003 - Bậc 2 - Chuyên viên</td>
-                                                    <td>01.003 - Bậc 1 - Chuyên viên</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Hệ số lương</strong></td>
-                                                    <td>2.67</td>
-                                                    <td>2.34</td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Phụ cấp</strong></td>
-                                                    <td>
-                                                    </td>
-                                                    <td>
-                                                        <div class="mgb-5">
-                                                            <span>- Phụ cấp chức vụ - 0.4 - Ngày hưởng: 01/03/2015</span>
-                                                        </div>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <td><strong>Lương thực nhận</strong></td>
-                                                    <td>100 (%)</td>
-                                                    <td>100 (%)</td>
-                                                </tr>
-                                                </tbody></table>
+                                            <div id="div_list_lương">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead class="thin-border-bottom">
+                                                    <tr class="">
+                                                        <th width="5%" class="text-center">STT</th>
+                                                        <th width="30%">Nghạch /Bậc</th>
+                                                        <th width="10%" class="text-center">Hệ số lương</th>
+                                                        <th width="20%" class="text-center">Lương thực nhận</th>
+                                                        <th width="10%" class="text-center">Tháng năm</th>
+                                                    </tr>
+                                                    </thead>
+                                                    @if(sizeof($luong) > 0)
+                                                        <tbody>
+                                                        @foreach ($luong as $key => $item)
+                                                            <tr>
+                                                                <td class="text-center middle">{{ $key+1 }}</td>
+                                                                <td>@if(isset($arrNgachBac[$item['salary_civil_servants']])){{ $arrNgachBac[$item['salary_civil_servants']] }}@endif</td>
+                                                                <td class="text-center middle"> {{ $item['salary_coefficients'] }}%</td>
+                                                                <td class="text-center middle">{{number_format($item['salary_salaries'])}}</td>
+                                                                <td class="text-center middle">{{$item['salary_month']}}/{{$item['salary_year']}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="5">Chưa có dữ liệu</td>
+                                                        </tr>
+                                                    @endif
+                                                </table>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="marginTop20 row">
-                                        <div class="col-md-12">
-                                            <div class="tit">KINH TẾ BẢN THÂN</div>
-                                            <div class="mgt-15 lh22">
-
+                                        <div class="col-md-12  table-responsive">
+                                            <div class="tit mgt-20">LỊCH SỬ PHỤ CẤP</div>
+                                            <div id="div_list_lương">
+                                                <table class="table table-bordered table-hover">
+                                                    <thead class="thin-border-bottom">
+                                                    <tr class="">
+                                                        <th width="5%" class="text-center">STT</th>
+                                                        <th width="30%">Loại phụ cấp</th>
+                                                        <th width="20%">Phụ cấp trả theo hình thức</th>
+                                                        <th width="10%" class="text-center">Hệ số, giá trị</th>
+                                                        <th width="10%" class="text-center">Tháng năm</th>
+                                                    </tr>
+                                                    </thead>
+                                                    @if(sizeof($phucap) > 0)
+                                                        <tbody>
+                                                        @foreach ($phucap as $key => $item2)
+                                                            <tr>
+                                                                <td class="text-center middle">{{ $key+1 }}</td>
+                                                                <td>@if(isset($arrOptionPhuCap[$item2['allowance_type']])){{ $arrOptionPhuCap[$item2['allowance_type']] }}@endif</td>
+                                                                <td>@if(isset($arrMethodPhuCap[$item2['allowance_method_type']])){{ $arrMethodPhuCap[$item2['allowance_method_type']] }}@endif</td>
+                                                                <td class="text-center middle"> {{ $item2['allowance_method_value'] }}</td>
+                                                                <td class="text-center middle">{{$item2['allowance_month_start']}}/{{$item2['allowance_year_start']}}</td>
+                                                            </tr>
+                                                        @endforeach
+                                                        </tbody>
+                                                    @else
+                                                        <tr>
+                                                            <td colspan="5">Chưa có dữ liệu</td>
+                                                        </tr>
+                                                    @endif
+                                                </table>
                                             </div>
                                         </div>
                                     </div>

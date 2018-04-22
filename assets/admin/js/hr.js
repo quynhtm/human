@@ -16,6 +16,11 @@ $(document).ready(function () {
 
     HR.exportDevice();
     HR.exportViewTienLuongCongChuc();
+
+    HR.changeValueViewCurriculumVitae('curriculum_desc_history1', 1);
+    HR.changeValueViewCurriculumVitae('curriculum_desc_history2', 2);
+    HR.changeValueViewCurriculumVitae('curriculum_foreign_relations1', 3);
+    HR.changeValueViewCurriculumVitae('curriculum_foreign_relations2', 4);
 });
 HR = {
     editItem: function (id, $url) {
@@ -559,6 +564,24 @@ HR = {
                 return false;
             }
             return false;
+        });
+    },
+
+    changeValueViewCurriculumVitae:function(nameField, type){
+        $('#' + nameField).change(function(){
+            var data = $(this).val();
+            var uid = $(this).attr('dataPerson');
+            if(data != ''){
+                $.ajax({
+                    type: "POST",
+                    url: WEB_ROOT + '/manager/curriculumVitaePerson/changeValueViewCurriculumVitae',
+                    data: {uid: uid, nameField: nameField, dataField: data, type: type},
+                    dataType: 'json',
+                    success: function (res) {
+                        return false;
+                    }
+                });
+            }
         });
     }
 }
