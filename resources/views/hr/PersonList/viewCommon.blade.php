@@ -58,7 +58,9 @@
                         <thead class="thin-border-bottom">
                         <tr class="">
                             <th width="3%" class="text-center">STT</th>
+                            @if(isset($action_person) && $action_person == 1)
                             <th width="8%">Chức năng</th>
+                            @endif
                             <th width="20%">Họ tên</th>
                             <th width="5%" class="text-center">Giới tính</th>
                             <th width="10%" class="text-center">Ngày làm việc</th>
@@ -71,6 +73,7 @@
                         @foreach ($data as $key => $item)
                             <tr class="middle">
                                 <td class="text-center middle">{{ $stt+$key+1 }}</td>
+                                @if(isset($action_person) && $action_person == 1)
                                 <td>
                                     <div class="dropdown">
                                         <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -84,6 +87,7 @@
                                         </ul>
                                     </div>
                                 </td>
+                                @endif
                                 <td>
                                     <a href="{{URL::route('hr.personnelDetail',array('id' => FunctionLib::inputId($item['person_id'])))}}" title="Chi tiết nhân sự" target="_blank">
                                         {{ $item['person_name'] }}

@@ -39,6 +39,7 @@ class PersonListController extends BaseAdminController
     private $arrChucVu = array();
     private $arrChucDanhNgheNghiep = array();
     private $viewPermission = array();//check quyen
+    private $action_person = 1;
 
     public function __construct()
     {
@@ -95,7 +96,7 @@ class PersonListController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
+        $search['person_status'] = Define::$arrStatusPersonAction;
         $search['start_birth'] = time();
         $search['end_birth'] = strtotime(time() . " +1 month");
         $search['orderBy'] = 'person_birth';
@@ -116,6 +117,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' => $this->action_person,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
@@ -167,6 +169,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' =>0,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
@@ -218,6 +221,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' => 0,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
@@ -270,6 +274,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' => 0,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
@@ -322,6 +327,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' => $this->action_person,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
@@ -369,7 +375,7 @@ class PersonListController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
+        $search['person_status'] = Define::$arrStatusPersonAction;
         $search['list_person_id'] = $arrPersonId;
 
         $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
@@ -388,6 +394,7 @@ class PersonListController extends BaseAdminController
             'total' => $total,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
+            'action_person' => $this->action_person,
             'titlePage' => CGlobal::$pageAdminTitle,
             'arrSex' => $this->arrSex,
             'arrDepart' => $this->depart,
@@ -419,7 +426,7 @@ class PersonListController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
+        $search['person_status'] = Define::$arrStatusPersonAction;
         $search['start_dealine_salary'] = time();
         $search['end_dealine_salary'] = strtotime(time() . " +1 month");
         $search['orderBy'] = 'person_date_salary_increase';
@@ -440,6 +447,7 @@ class PersonListController extends BaseAdminController
             'data' => $data,
             'search' => $search,
             'total' => $total,
+            'action_person' => $this->action_person,
             'stt' => ($page_no - 1) * $limit,
             'paging' => $paging,
             'titlePage' => CGlobal::$pageAdminTitle,
