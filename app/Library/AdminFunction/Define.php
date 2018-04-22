@@ -326,4 +326,5 @@ class Define
         self::sizeImage_450 => array('w' => self::sizeImage_450, 'h' => self::sizeImage_450),
     );
 
+    public static $arrStatusPersonAction = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU);
 }

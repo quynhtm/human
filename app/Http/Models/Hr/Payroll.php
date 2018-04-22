@@ -129,7 +129,6 @@ class Payroll extends BaseModel
         Payroll::updateItem($payroll->payroll_id,$arrCheck);
     }
 
-
     public function checkField($dataInput)
     {
         $fields = $this->fillable;
@@ -180,7 +179,10 @@ class Payroll extends BaseModel
             if(isset($dataSearch['arrPerson']) && sizeof($dataSearch['arrPerson']) > 0){
                 $query->whereIn('payroll_person_id',  $dataSearch['arrPerson']);
             }
-            if(isset($dataSearch['payroll_person_id']) && $dataSearch['payroll_person_id'] > 0){
+
+            if(isset($dataSearch['payroll_person_id']) && is_array($dataSearch['payroll_person_id'])){
+                $query->whereIn('payroll_person_id',  $dataSearch['payroll_person_id']);
+            }elseif(isset($dataSearch['payroll_person_id']) && $dataSearch['payroll_person_id'] > 0){
                 $query->where('payroll_person_id',  $dataSearch['payroll_person_id']);
             }
 

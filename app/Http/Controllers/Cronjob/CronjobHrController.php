@@ -8,6 +8,7 @@ namespace App\Http\Controllers\Cronjob;
 use App\Http\Controllers\BaseCronjobController;
 use App\Http\Models\Admin\Cronjob;
 
+use App\Http\Models\Hr\Payroll;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\QuitJob;
 
@@ -235,7 +236,7 @@ class CronjobHrController extends BaseCronjobController{
 
     //Tính lương cho tháng hiện tại của NS
     public function runCronjobPayroll(){
-        $dataSearch['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU);
+        $dataSearch['person_status'] = Define::$arrStatusPersonAction;
         $dataSearch['field_get'] = 'person_id';
         $dataPerson = Person::searchByCondition($dataSearch, $this->limit, $this->offset, $this->total);
         $arrPersonId = array();
@@ -244,8 +245,82 @@ class CronjobHrController extends BaseCronjobController{
                 $arrPersonId [$va->person_id] = $va->person_id;
             }
 
+            if(empty($arrPersonId)){
+                $data['name_job'] = 'Không có thông tin dữ';
+                $data['person_id'] = $arrPersonId;
+                $data['date'] = date('d-m-Y H:i:s', time());
+                return $this->returnResultError(array());
+            }
+            $infoPayrollNow = array();
+            $infoPayrollFirst = array();
             $month_now = date('m',time());
-            $month_first = date('m',strtotime ( '-1 month' , time() ) );
+            $year_now = date('Y',time());
+            $month_first = ((int)$month_now == 1) ? 12 :date('m',strtotime ( '-1 month' , time() ) );
+            $year_first = ((int)$month_now == 1) ? $year_now -1 :date('Y',strtotime ( '-1 year' , time() ) );
+
+            //data month first
+            $dataSearch1['reportMonth'] = $month_now;
+            $dataSearch1['reportYear'] = $year_now;
+            $dataSearch1['payroll_person_id'] = $arrPersonId;
+            $data1 = Payroll::searchByCondition($dataSearch1, count($arrPersonId), $this->offset, $total1);
+            if($total1 > 0){
+                foreach ($data1 as $v1){
+                    $infoPayrollNow[$v1->payroll_person_id] = $v1->payroll_person_id;
+                }
+            }
+
+            //data month firth
+            $dataSearch2['reportMonth'] = $month_first;
+            $dataSearch2['reportYear'] = $year_first;
+            $dataSearch2['payroll_person_id'] = $arrPersonId;
+            $data2 = Payroll::searchByCondition($dataSearch2, count($arrPersonId), $this->offset, $total2);
+            if($total2 > 0){
+                foreach ($data2 as $v2){
+                    $infoPayrollFirst[$v2->payroll_person_id] = array(
+                        'payroll_project'=>$v2->payroll_project,
+                        'payroll_person_id'=>$v2->payroll_person_id,
+                        'payroll_month'=>$v2->payroll_month,
+                        'payroll_year'=>$v2->payroll_year,
+                        'ma_ngach'=>$v2->ma_ngach,
+                        'he_so_luong'=>$v2->he_so_luong,
+                        'phu_cap_chuc_vu'=>$v2->phu_cap_chuc_vu,
+                        'phu_cap_tham_nien_vuot'=>$v2->phu_cap_tham_nien_vuot,
+                        'phu_cap_tham_nien_vuot_heso'=>$v2->phu_cap_tham_nien_vuot_heso,
+                        'phu_cap_trach_nhiem'=>$v2->phu_cap_trach_nhiem,
+                        'phu_cap_tham_nien'=>$v2->phu_cap_tham_nien,
+                        'phu_cap_tham_nien_heso'=>$v2->phu_cap_tham_nien_heso,
+                        'phu_cap_nghanh'=>$v2->phu_cap_nghanh,
+                        'phu_cap_nghanh_heso'=>$v2->phu_cap_nghanh_heso,
+                        'tong_he_so'=>$v2->tong_he_so,
+                        'luong_co_so'=>$v2->luong_co_so,
+                        'tong_tien'=>$v2->tong_tien,
+                        'tong_tien_luong'=>$v2->tong_tien_luong,
+                        'tong_tien_baohiem'=>$v2->tong_tien_baohiem,
+                        'tong_luong_thuc_nhan'=>$v2->tong_luong_thuc_nhan,
+                    );
+                }
+            }
+
+            //action creater
+            $count = 0;
+            if(!empty($infoPayrollFirst)){
+                foreach ($infoPayrollFirst as $personId => $val){
+                    if(!isset($infoPayrollNow[$personId])){
+                        $dataCreater = $val;
+                        $dataCreater['payroll_month'] = ($val['payroll_month'] == 12)? 1: $val['payroll_month']+1;
+                        $dataCreater['payroll_year'] = ($val['payroll_month'] == 12)? $val['payroll_year']+1: $val['payroll_year'];
+                        $p = Payroll::createItem($dataCreater);
+                        if($p > 0){
+                            $count ++;
+                        }
+                    }
+                }
+            }
+
+            $data['name_job'] = 'Them luong cho payroll';
+            $data['number_action'] = $count;
+            $data['date'] = date('d-m-Y H:i:s', time());
+            return $this->returnResultSuccess($data);
         }else{
             $data['name_job'] = 'Không có thông tin nhân sự 2';
             $data['person_id'] = $arrPersonId;
