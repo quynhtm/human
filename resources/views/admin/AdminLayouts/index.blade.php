@@ -221,19 +221,17 @@
                             <ul class="submenu">
                                 @if(isset($item['sub']) && !empty($item['sub']))
                                     @foreach($item['sub'] as $sub)
-                                        @if($is_boss || (!empty($aryPermissionMenu) && in_array($sub['menu_id'],$aryPermissionMenu)))
-                                            <li class="@if(strcmp(Route::currentRouteName(),$sub['RouteName']) == 0) active @endif">
-                                                <a href="{{URL::route($sub['RouteName'])}}">
-                                                    <i class="menu-icon fa fa-caret-right"></i>
-                                                    @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
-                                                        {{ $sub['name'] }}
-                                                    @else
-                                                        {{ $sub['name_en'] }}
-                                                    @endif
-                                                </a>
-                                                <b class="arrow"></b>
-                                            </li>
-                                        @endif
+                                        <li class="@if(strcmp(Route::currentRouteName(),$sub['RouteName']) == 0) active @endif">
+                                            <a href="{{URL::route($sub['RouteName'])}}">
+                                                <i class="menu-icon fa fa-caret-right"></i>
+                                                @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                                    {{ $sub['name'] }}
+                                                @else
+                                                    {{ $sub['name_en'] }}
+                                                @endif
+                                            </a>
+                                            <b class="arrow"></b>
+                                        </li>
                                     @endforeach
                                 @endif
                             </ul>
