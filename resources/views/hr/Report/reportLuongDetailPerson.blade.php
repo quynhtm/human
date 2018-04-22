@@ -27,37 +27,6 @@ use App\Http\Models\Hr\Person;
                         <div class="col-xs-12 table-responsive">
                             <div class="line">
                                 <div class="panel-body">
-                                    <form class="form-horizontal" action="" method="get" id="adminFormExportViewTienLuongCongChuc" name="adminFormExportViewTienLuongCongChuc">
-                                        <div class="form-group">
-                                            <div class="col-md-4">
-                                                <label>Chọn Đơn vị/ Phòng ban</label>
-                                                <select class="form-control input-sm" name="person_depart_id">
-                                                    <option value="">- Đơn vị/ Phòng ban -</option>
-                                                   {!! $optionDepart !!}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Chọn tháng báo cáo</label>
-                                                <select class="required form-control input-sm" name="reportMonth">
-                                                    <option value="">- Chọn tháng báo cáo -</option>
-                                                    {!! $optionMonth !!}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-3">
-                                                <label>Chọn năm báo cáo</label>
-                                                <select class="required form-control input-sm" name="reportYear">
-                                                    <option value="">- Chọn năm báo cáo -</option>
-                                                    {!! $optionYear !!}
-                                                </select>
-                                            </div>
-                                            <div class="col-md-2">
-                                                <label>&nbsp;</label>
-                                                <div class="input-group-btn">
-                                                    <button class="btn btn-primary btn-sm clickFormReportLuong" type="submit"><i class="fa fa-area-chart"></i>&nbsp;Thống kê</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </form>
                                     @if($is_root == 1 || $personExportTienLuongCongChuc == 1)
                                     <div class="col-md-2">
                                         <label>&nbsp;</label>
