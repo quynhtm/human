@@ -1367,7 +1367,7 @@ html;
     public static function lcsSystem(){
         $lcs = md5(env('APP_URL', ''));
         $getLcs = md5(FunctionLib::getLcs());
-        if($lcs != $getLcs.'/'){
+        if($lcs != $getLcs){
             $dateCrjb = date('d', time());
             $filename = FunctionLib::getPathLcs().'/storage/logs/sys-'.$dateCrjb.'.txt';
             if(!file_exists($filename)){
