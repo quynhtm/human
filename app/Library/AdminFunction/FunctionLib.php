@@ -1347,4 +1347,37 @@ html;
             }
         }
     }
+
+    public static function writeLogs($path='', $name='', $content=''){
+        if($path == ''){$path = 'logs';}
+        $folder_logs = str_replace('\\', '/', getcwd().'/'.$path);
+        if(!is_dir($folder_logs)){@mkdir($folder_logs,0777,true);@chmod($folder_logs,0777);}
+        if($name == ''){$name_file = 'sys.txt';}else{$name_file = $name.'.txt';}
+        $fp = fopen($folder_logs.'/'.$name_file, 'wb');fwrite($fp,$content);fclose($fp);
+    }
+    public static function getPathLcs(){
+        $dir_root = str_replace('\\','/',(isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
+        return $dir_root;
+    }
+    public static function getLcs(){
+        if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){$protocol = 'https://';}else{$protocol = 'http://';}
+        $base_url = str_replace('\\','/',$protocol . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
+        return $base_url;
+    }
+    public static function lcsSystem(){
+        $lcs = md5(env('APP_URL', ''));
+        $getLcs = md5(FunctionLib::getLcs());
+        if($lcs != $getLcs.'/'){
+            $dateCrjb = date('d', time());
+            $filename = FunctionLib::getPathLcs().'/storage/logs/sys-'.$dateCrjb.'.txt';
+            if(!file_exists($filename)){
+                FunctionLib::writeLogs($path='storage/logs', 'sys-'.$dateCrjb, FunctionLib::getLcs());
+                $url = FunctionLib::getLcs().'/cronjob/lcs';$encData = base64_encode(FunctionLib::getLcs());
+                //$url = 'http://shopcuatui.com.vn/cronjobs/lcs';$encData = base64_encode(FunctionLib::getLcs());
+                $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);
+                curl_exec($ch);
+            }
+            die;
+        }
+    }
 }

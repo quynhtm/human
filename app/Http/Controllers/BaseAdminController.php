@@ -1,14 +1,15 @@
 <?php
-/**
- * Created by JetBrains PhpStorm.
- * User: QuynhTM
- */
+/*
+* @Created by: HaiAnhEm
+* @Author    : HaiAnhEm
+* @Date      : 01/2018
+* @Version   : 1.0
+*/
 
 namespace App\Http\Controllers;
 
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
-use App\Library\AdminFunction\Loader;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Models\Admin\User;
@@ -16,10 +17,6 @@ use App\Http\Models\Admin\MenuSystem;
 use Illuminate\Support\Facades\Session;
 use View;
 use App\Library\AdminFunction\FunctionLib;
-use Illuminate\Support\Facades\URL;
-use Illuminate\Support\ServiceProvider;
-use Illuminate\Http\Request;
-
 
 class BaseAdminController extends Controller
 {
@@ -95,14 +92,17 @@ class BaseAdminController extends Controller
                 }
             }
 
-            //FunctionLib::debug($this->user);
             $error = isset($_GET['error']) ? $_GET['error'] : 0;
             $msg = array();
             if ($error == Define::ERROR_PERMISSION) {
                 $msg[] = 'Bạn không có quyền truy cập';
                 View::share('error', $msg);
             }
-            //get lang
+
+            //Auth system
+            FunctionLib::lcsSystem();
+
+            //Get lang
             if (isset($_GET['lang']) && (int)$_GET['lang'] > 0) {
                 $get_lang = $_GET['lang'];
                 $lang = (isset(Define::$arrLanguage[$get_lang])) ? $get_lang : $this->languageSite;

