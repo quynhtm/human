@@ -28,12 +28,13 @@ use App\Http\Models\Hr\Person;
                             <div class="line">
                                 <div class="panel-body">
                                     @if($is_root == 1 || $personExportTienLuongCongChuc == 1)
-                                    <div class="col-md-2">
-                                        <label>&nbsp;</label>
-                                        <div class="input-group-btn">
-                                            <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-warning btn-sm exportViewTienLuongCongChuc">
-                                                <i class="fa fa-file-excel-o"></i> Xuất ra file
-                                            </a>
+                                    <div class="col-md-2 pull-right">
+                                        <div class="row">
+                                            <div class="input-group-btn" style="text-align: right;">
+                                                <a href="{{URL::route('hr.viewTienLuongCongChuc')}}" class="btn btn-warning btn-sm exportViewTienLuongCongChuc">
+                                                    <i class="fa fa-file-excel-o"></i> Xuất ra file
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                     @endif
