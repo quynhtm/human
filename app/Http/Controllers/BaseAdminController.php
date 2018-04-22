@@ -99,9 +99,6 @@ class BaseAdminController extends Controller
                 View::share('error', $msg);
             }
 
-            //Auth system
-            FunctionLib::lcsSystem();
-
             //Get lang
             if (isset($_GET['lang']) && (int)$_GET['lang'] > 0) {
                 $get_lang = $_GET['lang'];
