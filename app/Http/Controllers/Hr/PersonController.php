@@ -580,6 +580,11 @@ class PersonController extends BaseAdminController
 
         $dataUpdate['person_status'] = Define::PERSON_STATUS_DAXOA;
         if (Person::updateItem($person_id, $dataUpdate)) {
+            $account = User::getUserByObjectId($person_id);
+            if(isset($account->user_id)){
+                $dataUpd['user_status'] = Define::STATUS_BLOCK;
+                User::updateUser($account->user_id,$dataUpd);
+            }
             return Redirect::route('hr.personnelView');
         } else {
             return Redirect::route('hr.personnelView');

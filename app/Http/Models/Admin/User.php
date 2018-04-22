@@ -30,13 +30,17 @@ class User extends BaseModel
      */
     public static function getUserByPersonId($person_id)
     {
-        $admin = User::where('user_object_id', $person_id)->first();
-        return $admin;
+        return User::where('user_object_id', $person_id)->first();
     }
+
     public static function getUserByName($name)
     {
-        $admin = User::where('user_name', $name)->first();
-        return $admin;
+        return User::where('user_name', $name)->first();
+    }
+
+    public static function getUserByObjectId($object_id)
+    {
+        return User::where('user_object_id', $object_id)->first();
     }
 
     public static function updateUserPermissionWithRole($role)
