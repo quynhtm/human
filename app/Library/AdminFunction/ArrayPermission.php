@@ -42,12 +42,6 @@ class ArrayPermission{
         'adminCronjob_create' => array('name_permit'=>'Tạo cronjob','group_permit'=>'Quyền cronjob'),
         'adminCronjob_edit' => array('name_permit'=>'Sửa cronjob','group_permit'=>'Quyền cronjob'),
 
-        'role_full' => array('name_permit'=>'Full Role','group_permit'=>'Quyền Role'),
-        'role_view' => array('name_permit'=>'Xem Role','group_permit'=>'Quyền Role'),
-        'role_delete' => array('name_permit'=>'Xóa Role','group_permit'=>'Quyền Role'),
-        'role_create' => array('name_permit'=>'Tạo Role','group_permit'=>'Quyền Role'),
-        'role_edit' => array('name_permit'=>'Sửa Role','group_permit'=>'Quyền Role'),
-
         'menu_full' => array('name_permit'=>'Full menu','group_permit'=>'Quyền menu'),
         'menu_view' => array('name_permit'=>'Xem menu','group_permit'=>'Quyền menu'),
         'menu_delete' => array('name_permit'=>'Xóa menu','group_permit'=>'Quyền menu'),
@@ -56,6 +50,15 @@ class ArrayPermission{
 
 
 
+        'role_full' => array('name_permit'=>'Full Role','group_permit'=>'Quyền Role'),
+        'role_view' => array('name_permit'=>'Xem Role','group_permit'=>'Quyền Role'),
+        'role_delete' => array('name_permit'=>'Xóa Role','group_permit'=>'Quyền Role'),
+        'role_create' => array('name_permit'=>'Tạo Role','group_permit'=>'Quyền Role'),
+        'role_edit' => array('name_permit'=>'Sửa Role','group_permit'=>'Quyền Role'),
+
+        'role_permission_view' => array('name_permit'=>'Full','group_permit'=>'Phân quyền role'),
+        'role_permission_create' => array('name_permit'=>'Tạo','group_permit'=>'Phân quyền role'),
+        'role_permission_edit' => array('name_permit'=>'Sửa','group_permit'=>'Phân quyền role'),
 
         'hr_document_full' => array('name_permit'=>'Full văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_view' => array('name_permit'=>'Xem văn bản','group_permit'=>'Quyền văn bản'),
@@ -153,6 +156,7 @@ class ArrayPermission{
         'salaryAllowanceView' => array('name_permit'=>'Xem','group_permit'=>'Quyền Lương, phụ cấp'),
         'salaryAllowanceDelete' => array('name_permit'=>'Xóa','group_permit'=>'Quyền Lương, phụ cấp'),
         'salaryAllowanceCreate' => array('name_permit'=>'Tạo','group_permit'=>'Quyền Lương, phụ cấp'),
+
 
         /**
          * private $salaryAllowanceFull = 'salaryAllowanceFull';

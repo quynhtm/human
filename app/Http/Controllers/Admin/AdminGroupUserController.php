@@ -21,6 +21,11 @@ class AdminGroupUserController extends BaseAdminController{
     private $permission_view = 'group_user_view';
     private $permission_create = 'group_user_create';
     private $permission_edit = 'group_user_edit';
+
+    private $permission_role_view = 'role_permission_view';
+    private $permission_role_create = 'role_permission_create';
+    private $permission_role_edit = 'role_permission_edit';
+
     private $arrStatus = array(CGlobal::status_hide=> 'Ẩn', CGlobal::status_show => 'Hoạt động');
     private $viewPermission = array();//check quyen
     private $error = array();
@@ -275,7 +280,7 @@ class AdminGroupUserController extends BaseAdminController{
     /**********************************************Role menu*********************************************************************/
     public function viewRole() {
         //Check phan quyen.
-        if(!$this->is_root && !in_array($this->permission_view,$this->permission)){
+        if(!$this->is_root && !in_array($this->permission_role_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
         $pageNo = (int) Request::get('page_no',1);
@@ -312,7 +317,7 @@ class AdminGroupUserController extends BaseAdminController{
     public function getRole($ids) {
         $id = FunctionLib::outputId($ids);
 
-        if(!$this->is_root && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+        if(!$this->is_root && !in_array($this->permission_role_view,$this->permission) && !in_array($this->permission_role_edit,$this->permission) && !in_array($this->permission_role_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
 
@@ -344,7 +349,7 @@ class AdminGroupUserController extends BaseAdminController{
 
     public function postRole($ids) {
         $id = FunctionLib::outputId($ids);
-        if(!$this->is_root && !in_array($this->permission_edit,$this->permission) && !in_array($this->permission_create,$this->permission)){
+        if(!$this->is_root && !in_array($this->permission_role_view,$this->permission) && !in_array($this->permission_role_edit,$this->permission) && !in_array($this->permission_role_create,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
         $arrRoleType = Role::getOptionRole();
@@ -406,9 +411,9 @@ class AdminGroupUserController extends BaseAdminController{
     public function getPermissionPage(){
         return $this->viewPermission = [
             'is_root'=> $this->is_root ? 1:0,
-            'permission_edit'=>in_array($this->permission_edit, $this->permission) ? 1 : 0,
-            'permission_create'=>in_array($this->permission_create, $this->permission) ? 1 : 0,
-            'permission_full'=>in_array($this->permission_view, $this->permission) ? 1 : 0,
+            'permission_edit'=>in_array($this->permission_role_edit, $this->permission) ? 1 : 0,
+            'permission_create'=>in_array($this->permission_role_create, $this->permission) ? 1 : 0,
+            'permission_full'=>in_array($this->permission_role_view, $this->permission) ? 1 : 0,
         ];
     }
 }
