@@ -360,6 +360,7 @@ class PersonController extends BaseAdminController
         //thông tin phu cap
         $phucap = Allowance::getAllowanceByPersonId($person_id);
 
+        $infoPassPort = Person::getInfoPersonPassport($person_id);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
@@ -396,6 +397,7 @@ class PersonController extends BaseAdminController
             'arrNgachBac' => $arrNgachBac,
             'arrOptionPhuCap' => Define::$arrOptionPhuCap,
             'arrMethodPhuCap' => Define::$arrMethodPhuCap,
+            'infoPassPort' => $infoPassPort,
         ], $this->viewPermission));
     }
 
