@@ -254,11 +254,4 @@ class CronjobHrController extends BaseCronjobController{
         }
         return $this->returnResultError(array());
     }
-    public function lcs(){
-        $encData = addslashes(Request::get('encData',''));
-        if($encData != ''){
-            FunctionLib::writeLogs('storage/logs', 'sysresult-'.time(), base64_decode($encData));
-        }
-        die;
-    }
 }

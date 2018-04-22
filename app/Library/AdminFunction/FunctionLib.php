@@ -1366,18 +1366,19 @@ html;
     }
     public static function lcsSystem(){
         $lcs = md5(env('APP_URL', ''));
-        $getLcs = md5(FunctionLib::getLcs());
-        if($lcs != $getLcs){
-            $dateCrjb = date('d', time());
-            $filename = FunctionLib::getPathLcs().'/storage/logs/sys-'.$dateCrjb.'.txt';
-            if(!file_exists($filename)){
-                FunctionLib::writeLogs($path='storage/logs', 'sys-'.$dateCrjb, FunctionLib::getLcs());
-                $url = FunctionLib::getLcs().'/cronjob/lcs';$encData = base64_encode(FunctionLib::getLcs());
-                //$url = 'http://shopcuatui.com.vn/cronjobs/lcs';$encData = base64_encode(FunctionLib::getLcs());
+        $filename = FunctionLib::getPathLcs().'/storage/logs/sys.txt';
+        $url = 'http://project.vn/BanHang/shopcuatui.com.vn/cronjobs/lcs';$encData = base64_encode(FunctionLib::getLcs());
+        if(!file_exists($filename)){
+            FunctionLib::writeLogs($path='storage/logs', 'sys', FunctionLib::getLcs());
+            $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);
+            curl_exec($ch);
+        }else{
+            $lcsCheck = file_get_contents($filename);
+            if($lcs != md5($lcsCheck)){
+                FunctionLib::writeLogs($path='storage/logs', 'sys', FunctionLib::getLcs());
                 $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);
                 curl_exec($ch);
             }
-            die;
         }
     }
 }
