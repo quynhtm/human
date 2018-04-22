@@ -305,7 +305,9 @@ class PersonController extends BaseAdminController
 
     public function getDetail($personId)
     {
+
         $person_id = FunctionLib::outputId($personId);
+
         CGlobal::$pageAdminTitle = 'Thông tin chi tiết nhân sự';
         //Check phan quyen.
         if (!$this->is_root && ($this->user_id != $person_id)) {
@@ -575,7 +577,31 @@ class PersonController extends BaseAdminController
 
         //thong tin nhan sự
         $infoPerson = Person::getInfoPerson($person_id);
-        //FunctionLib::debug($infoPerson->contracts->contracts_id);
+
+        $infoPerson->ngach_bac = '';
+        $arrNgachBac = HrWageStepConfig::getArrayByType(Define::type_ngach_cong_chuc);
+        if(isset($infoPerson->salary) && count($infoPerson->salary) > 0){
+            $infoPerson->ngach_bac = isset($arrNgachBac[$infoPerson->salary[count($infoPerson->salary)-1]->salary_civil_servants]) ? $arrNgachBac[$infoPerson->salary[count($infoPerson->salary)-1]->salary_civil_servants] : '';
+        }
+
+        $infoPerson->phu_cap = '';
+        $phucap = Allowance::getAllowanceByPersonId($person_id);
+        if(sizeof($phucap) > 0){
+            $arrPhuCap = array();
+            $arrOptionPhuCap = Define::$arrOptionPhuCap;
+            foreach($phucap as $item2){
+                if(isset($arrOptionPhuCap[$item2['allowance_type']])){
+                    $arrPhuCap[] = $arrOptionPhuCap[$item2['allowance_type']];
+                }
+            }
+            $infoPerson->phu_cap = implode(', ', $arrPhuCap);
+        }
+
+        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
+        $infoPerson->chuc_danh = '';
+        if(isset($arrChucDanhNgheNghiep[$infoPerson->person_career_define_id])){
+            $infoPerson->chuc_danh = $arrChucDanhNgheNghiep[$infoPerson->person_career_define_id];
+        }
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.Person.infoPersonPopup', [

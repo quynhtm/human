@@ -291,6 +291,8 @@ class Person extends BaseModel
         if($person_id > 0){
             $person = Person::find($person_id);
             $person->contracts;
+            $person->passport;
+            $person->salary;
             return $person;
         }
     }
@@ -320,7 +322,7 @@ class Person extends BaseModel
 
     public function salary()
     {
-        return $this->hasOne('App\Http\Models\Hr\Salary', 'salary_person_id','person_id');
+        return $this->hasMany('App\Http\Models\Hr\Salary', 'salary_person_id','person_id');
     }
     public function allowance()
     {
