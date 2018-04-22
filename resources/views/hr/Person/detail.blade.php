@@ -38,7 +38,7 @@
                                         <table class="table table-bordered table-condensed detailPerson">
                                             <tbody>
                                             <tr>
-                                                <td rowspan="6" width="10%">
+                                                <td rowspan="7" width="10%">
                                                     @if(isset($infoPerson['person_avatar']) && $infoPerson['person_avatar'] !='')
                                                         <img width="100%" src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $infoPerson['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
                                                     @else
@@ -89,16 +89,16 @@
                                                 <td colspan="2"><span class="val">{{$infoPerson['person_address_home_town']}}</span></td>
                                             </tr>
                                             <tr>
-                                                <td><span class="lbl text-nowrap">Nơi ở hiện nay</span></td>
-                                                <td><span class="val">{{$infoPerson['person_address_current']}}</span></td>
                                                 <td><span class="lbl text-nowrap">Dân tộc</span></td>
-                                                <td  colspan="2"><span class="val">@if(isset($arrDanToc[$infoPerson['person_nation_define_id']])){{$arrDanToc[$infoPerson['person_nation_define_id']]}}@endif</span></td>
+                                                <td><span class="val">@if(isset($arrDanToc[$infoPerson['person_nation_define_id']])){{$arrDanToc[$infoPerson['person_nation_define_id']]}}@endif</span></td>
+                                                <td><span class="lbl text-nowrap">Tôn giáo</span></td>
+                                                <td  colspan="2"><span class="val">@if(isset($arrTonGiao[$infoPerson['person_respect']])){{$arrTonGiao[$infoPerson['person_respect']]}}@endif</span></td>
                                             </tr>
                                             <tr>
-                                                <td><span class="lbl text-nowrap">Tôn giáo</span></td>
-                                                <td><span class="val">@if(isset($arrTonGiao[$infoPerson['person_respect']])){{$arrTonGiao[$infoPerson['person_respect']]}}@endif</span></td>
-                                                <td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
-                                                <td colspan="2"><span class="val">------</span></td>
+                                                <td><span class="lbl text-nowrap">Nơi ở hiện nay</span></td>
+                                                <td><span class="val" colspan="3">{{$infoPerson['person_address_current']}}</span></td>
+                                                <!--<td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
+                                                <td colspan="2"><span class="val">------</span></td>-->
                                             </tr>
                                             <!--
                                             <tr>
@@ -200,18 +200,29 @@
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu phổ thông</span></td>
                                                 <td>
-                                                    <span class="val">---</span><span class="lbl"> - Cấp từ ngày: </span>
-                                                    <span class="val">----</span> <span class="lbl"> - Đến ngày:</span><span class="val ">----</span>
+                                                    <span class="val">{{isset($infoPassPort->passport->passport_common) ? $infoPassPort->passport->passport_common : ''}}</span>
+
+                                                    <span class="lbl"> - Cấp từ ngày: </span>
+                                                    <span class="val">{{isset($infoPassPort->passport->passport_common_date_range) ? date('d/m/Y', $infoPassPort->passport->passport_common_date_range) : ''}}</span>
+                                                    <span class="lbl"> - Đến ngày:</span>
+                                                    <span class="val ">{{isset($infoPassPort->passport->passport_common_date_expiration) ? date('d/m/Y', $infoPassPort->passport->passport_common_date_expiration) : ''}}</span>
                                                 </td>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu công vụ</span></td>
-                                                <td colspan="2">-----</td>
+                                                <td colspan="2">
+                                                    <span class="val">{{isset($infoPassPort->passport->passport_equitment) ? $infoPassPort->passport->passport_equitment : ''}}</span>
+
+                                                    <span class="lbl"> - Cấp từ ngày: </span>
+                                                    <span class="val">{{isset($infoPassPort->passport->passport_equitment_date_range) ? date('d/m/Y', $infoPassPort->passport->passport_equitment_date_range) : ''}}</span>
+                                                    <span class="lbl"> - Đến ngày:</span>
+                                                    <span class="val ">{{isset($infoPassPort->passport->passport_equitment_date_expiration) ? date('d/m/Y', $infoPassPort->passport->passport_equitment_date_expiration) : ''}}</span>
+                                                </td>
                                             </tr>
 
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Mã số thuế cá nhân</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td><span class="val">{{isset($infoPassPort->passport->passport_personal_code) ? $infoPassPort->passport->passport_personal_code : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Tài khoản ngân hàng</span></td>
-                                                <td colspan="2"><span class="val">----</span></td>
+                                                <td colspan="2"><span class="val">{{isset($infoPassPort->passport->passport_bank_account_number) ? $infoPassPort->passport->passport_bank_account_number : ''}}</span></td>
                                             </tr>
                                             </tbody>
                                         </table>
