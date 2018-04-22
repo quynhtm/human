@@ -30,25 +30,23 @@
                         @foreach($menu as $item)
                             @if(isset($item['sub']) && !empty($item['sub']))
                                 @foreach($item['sub'] as $sub)
-                                    @if($is_boss || (!empty($aryPermissionMenu) && in_array($sub['menu_id'],$aryPermissionMenu) && $sub['show_menu'] == 1))
-                                        @if(isset($sub['showcontent']) && $sub['showcontent'] == 1)
-                                            <div class="col-sm-6 col-md-3">
-                                                <a class="quick-btn a_control"  href="{{ URL::route($sub['RouteName']) }}">
-                                                    <div class="thumbnail text-center">
-                                                        <i class="{{ $sub['icon'] }} fa-5x"></i>
-                                                        <br>
-                                                        @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
-                                                            {{ $sub['name'] }}
-                                                        @else
-                                                            {{ $sub['name_en'] }}
-                                                        @endif
-                                                    </div>
-                                                </a>
-                                            </div>
-                                        @endif
-                                        @if(isset($sub['clear']) && $sub['clear'] == 1)
-                                            <div class="clear"></div>
-                                        @endif
+                                    @if(isset($sub['showcontent']) && $sub['showcontent'] == 1)
+                                        <div class="col-sm-6 col-md-3">
+                                            <a class="quick-btn a_control"  href="{{ URL::route($sub['RouteName']) }}">
+                                                <div class="thumbnail text-center">
+                                                    <i class="{{ $sub['icon'] }} fa-5x"></i>
+                                                    <br>
+                                                    @if(isset($languageSite) && $languageSite == Define::VIETNAM_LANGUAGE)
+                                                        {{ $sub['name'] }}
+                                                    @else
+                                                        {{ $sub['name_en'] }}
+                                                    @endif
+                                                </div>
+                                            </a>
+                                        </div>
+                                    @endif
+                                    @if(isset($sub['clear']) && $sub['clear'] == 1)
+                                        <div class="clear"></div>
                                     @endif
                                 @endforeach
                             @endif
