@@ -54,9 +54,9 @@ class ArrayPermission{
         'menu_create' => array('name_permit'=>'Tạo menu','group_permit'=>'Quyền menu'),
         'menu_edit' => array('name_permit'=>'Sửa menu','group_permit'=>'Quyền menu'),
 
-        /********************************************************************************************************
-         * Quyền HR
-         * ******************************************************************************************************/
+
+
+
         'hr_document_full' => array('name_permit'=>'Full văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_view' => array('name_permit'=>'Xem văn bản','group_permit'=>'Quyền văn bản'),
         'hr_document_delete' => array('name_permit'=>'Xóa văn bản','group_permit'=>'Quyền văn bản'),
@@ -140,6 +140,9 @@ class ArrayPermission{
 
         'viewTienLuongCongChuc' => array('name_permit'=>'Full','group_permit'=>'Quyền Báo cáo danh sách và tiền lương công chức'),
         'exportTienLuongCongChuc' => array('name_permit'=>'Export','group_permit'=>'Quyền Báo cáo danh sách và tiền lương công chức'),
+
+        'personViewTienLuongCongChuc' => array('name_permit'=>'Full','group_permit'=>'NS xem tiền lương công chức'),
+        'personExportTienLuongCongChuc' => array('name_permit'=>'Export','group_permit'=>'NS xem tiền lương công chức'),
 
         'retirement_full' => array('name_permit'=>'Full','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),
         'retirement_view' => array('name_permit'=>'Xem','group_permit'=>'Quyền Thiết lập ngày nghỉ hưu'),

@@ -23,8 +23,10 @@ class ReportController extends BaseAdminController
 {
     private $viewTienLuongCongChuc = 'viewTienLuongCongChuc';
     private $exportTienLuongCongChuc = 'exportTienLuongCongChuc';
+
+    private $personViewTienLuongCongChuc = 'personViewTienLuongCongChuc';
+    private $personExportTienLuongCongChuc = 'personExportTienLuongCongChuc';
     private $arrStatus = array();
-    private $error = array();
     private $arrMenuParent = array();
     private $arrRoleType = array();
     private $arrSex = array();
@@ -59,12 +61,12 @@ class ReportController extends BaseAdminController
             'is_root' => $this->is_root ? 1 : 0,
             'viewTienLuongCongChuc' => in_array($this->viewTienLuongCongChuc, $this->permission) ? 1 : 0,
             'exportTienLuongCongChuc' => in_array($this->exportTienLuongCongChuc, $this->permission) ? 1 : 0,
+
+            'personViewTienLuongCongChuc' => in_array($this->personViewTienLuongCongChuc, $this->permission) ? 1 : 0,
+            'personExportTienLuongCongChuc' => in_array($this->personExportTienLuongCongChuc, $this->permission) ? 1 : 0,
         ];
     }
 
-    /*************************************************************************************************************************************
-     * Báo cáo Tiền lương công chức
-     ************************************************************************************************************************************/
     public function viewTienLuongCongChuc(){
         CGlobal::$pageAdminTitle = 'Báo cáo danh sách và tiền lương công chức';
 
@@ -112,7 +114,6 @@ class ReportController extends BaseAdminController
         $search['field_get'] = '';
 
         $data = Payroll::searchByCondition($search, $limit, $offset, $total);
-
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
         $this->getDataDefault();
@@ -146,7 +147,8 @@ class ReportController extends BaseAdminController
     }
     public function exportTienLuongCongChuc(){
 
-        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
+        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)
+            && !in_array($this->personViewTienLuongCongChuc, $this->permission)&& !in_array($this->personExportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
         ini_set('max_execution_time', 0);
@@ -239,10 +241,11 @@ class ReportController extends BaseAdminController
 
         die;
     }
+
     public function viewLuongDetailPerson(){
         CGlobal::$pageAdminTitle = 'Chi tiết lương';
 
-        if (!$this->is_root && !in_array($this->viewTienLuongCongChuc, $this->permission) && !in_array($this->exportTienLuongCongChuc, $this->permission)) {
+        if (!$this->is_root && !in_array($this->personViewTienLuongCongChuc, $this->permission) && !in_array($this->personExportTienLuongCongChuc, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
 

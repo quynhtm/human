@@ -58,6 +58,7 @@ use App\Http\Models\Hr\Person;
                                             </div>
                                         </div>
                                     </form>
+                                    @if($is_root == 1 || $personExportTienLuongCongChuc == 1)
                                     <div class="col-md-2">
                                         <label>&nbsp;</label>
                                         <div class="input-group-btn">
@@ -66,6 +67,7 @@ use App\Http\Models\Hr\Person;
                                             </a>
                                         </div>
                                     </div>
+                                    @endif
                                     <div class="row">
                                         <div class="col-md-12">
                                             <div class="span clearfix"> @if($total >0) Có tổng số <b>{{$total}}</b> nhân sự @endif </div>
