@@ -64,7 +64,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày sinh</span></td>
-                                                <td><span class="val">{{($infoPerson['person_birth'] > 0) ? date('d/m/Y', $infoPerson['person_birth']) : ''}}</span></td>
+                                                <td><span class="val">{{($infoPerson['person_birth'] != 0) ? date('d/m/Y', $infoPerson['person_birth']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Giới tính</span></td>
                                                 <td><span class="val">{{(isset($item->person_sex) && $item->person_sex == 1) ? 'Nam' : 'Nữ'}}</span></td>
                                             </tr>
@@ -111,9 +111,9 @@
                                             <tr>
 
                                                 <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
-                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
+                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  != 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào cơ quan đang công tác</span></td>
-                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  > 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
+                                                <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  != 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
                                             <!--
                                             <tr>
@@ -185,7 +185,7 @@
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày cấp</span></td>
-                                                <td><span class="val">{{($infoPerson['person_date_range_cmt']  > 0) ? date('d/m/Y', $infoPerson['person_date_range_cmt']) : ''}}</span></td>
+                                                <td><span class="val">{{($infoPerson['person_date_range_cmt']  != 0) ? date('d/m/Y', $infoPerson['person_date_range_cmt']) : ''}}</span></td>
                                                 <td><span class="lbl text-nowrap">Nơi cấp</span></td>
                                                 <td colspan="2"><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
                                             </tr>

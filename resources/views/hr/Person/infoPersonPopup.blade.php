@@ -36,7 +36,7 @@ use App\Library\AdminFunction\CGlobal;
                 Số CMT: <span class="color_msg">{{ $infoPerson->person_chung_minh_thu }}</span>
             </div>
             <div class="form-group">
-                Ngày cấp: <span class="color_msg">{{ ($infoPerson->person_date_range_cmt > 0) ? (date('d/m/Y', $infoPerson->person_date_range_cmt)) : '' }}</span>
+                Ngày cấp: <span class="color_msg">{{ ($infoPerson->person_date_range_cmt != 0) ? (date('d/m/Y', $infoPerson->person_date_range_cmt)) : '' }}</span>
             </div>
             <div class="form-group">
                 Nơi cấp: <span class="color_msg">{{ $infoPerson->person_issued_cmt }}</span>
@@ -45,7 +45,7 @@ use App\Library\AdminFunction\CGlobal;
 
         <div class="float_left col-sm-3">
             <div class="form-group">
-            Ngày nâng lương: <span class="color_msg">{{ ($infoPerson->person_date_salary_increase > 0) ? (date('d/m/Y', $infoPerson->person_date_salary_increase)) : '' }}</span>
+            Ngày nâng lương: <span class="color_msg">{{ ($infoPerson->person_date_salary_increase != 0) ? (date('d/m/Y', $infoPerson->person_date_salary_increase)) : '' }}</span>
             </div>
             @if(isset($infoPerson->salary) && count($infoPerson->salary) > 0)
                 <div class="form-group">
@@ -71,7 +71,7 @@ use App\Library\AdminFunction\CGlobal;
                 Hộ chiếu phổ thông: <span class="color_msg">{{ isset($infoPerson->passport->passport_common) ? $infoPerson->passport->passport_common : '' }}</span>
             </div>
             <div class="form-group">
-                Ngày hết hạn: <span class="color_msg">{{ (isset($infoPerson->passport->passport_common_date_expiration) && $infoPerson->passport->passport_common_date_expiration > 0) ? date('d/m/Y', $infoPerson->passport->passport_common_date_expiration) : '' }}</span>
+                Ngày hết hạn: <span class="color_msg">{{ (isset($infoPerson->passport->passport_common_date_expiration) && $infoPerson->passport->passport_common_date_expiration != 0) ? date('d/m/Y', $infoPerson->passport->passport_common_date_expiration) : '' }}</span>
             </div>
             <div class="form-group">
                 Mã số thuế: <span class="color_msg">{{ isset($infoPerson->passport->passport_personal_code) ? $infoPerson->passport->passport_personal_code : '' }}</span>
