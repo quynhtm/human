@@ -88,6 +88,7 @@ class ReportController extends BaseAdminController
                 'person_depart_name'=>$_user->person_depart_name,
             );
         }
+
         //lấy mảng all của mã nghạch
         $arrWage = HrWageStepConfig::getArrayByType(Define::type_ma_ngach);
 

@@ -71,6 +71,7 @@
                                     @endforeach
                                     </tbody>
                                 </table>
+                                <div class="paging">{!! $paging !!}</div>
                             @else
                                 <div class="alert line">
                                     {{FunctionLib::viewLanguage('no_data')}}

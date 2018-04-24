@@ -79,7 +79,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày sinh</label>
-                                    <input type="text" class="form-control" id="person_birth" name="person_birth"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_birth']) && $data['person_birth'] > 0){{date('d-m-Y',$data['person_birth'])}}@endif">
+                                    <input type="text" class="form-control" id="person_birth" name="person_birth" value="@if(isset($data['person_birth']) && $data['person_birth'] != 0){{date('d-m-Y',$data['person_birth'])}}@endif">
                                 </div>
                             </div>
 
@@ -158,19 +158,19 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày cấp CMT<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] > 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
+                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày thử việc</label>
-                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] > 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
+                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
                                 </div>
                             </div>
                             <div class="col-sm-2">
                                 <div class="form-group">
                                     <label for="name" class="control-label">Ngày làm chính thức<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] > 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
+                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] != 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
                                 </div>
                             </div>
 
@@ -288,10 +288,31 @@ use App\Library\AdminFunction\CGlobal;
     </div>
     <script>
         $(document).ready(function(){
-            var person_birth = $('#person_birth').datepicker({ });
-            var person_date_trial_work = $('#person_date_trial_work').datepicker({ });
-            var person_date_start_work = $('#person_date_start_work').datepicker({ });
-            var person_date_range_cmt = $('#person_date_range_cmt').datepicker({ });
+            var dateToday = new Date();
+            var person_birth = $('#person_birth').datepicker({
+                timepicker:false,
+                dateFormat: 'dd-mm-yy',
+                lang:'vi',
+                minDate: dateToday,
+            });
+            var person_date_trial_work = $('#person_date_trial_work').datepicker({
+                timepicker:false,
+                dateFormat: 'dd-mm-yy',
+                lang:'vi',
+                minDate: dateToday,
+            });
+            var person_date_start_work = $('#person_date_start_work').datepicker({
+                timepicker:false,
+                dateFormat: 'dd-mm-yy',
+                lang:'vi',
+                minDate: dateToday,
+            });
+            var person_date_range_cmt = $('#person_date_range_cmt').datepicker({
+                timepicker:false,
+                format:'d-m-Y',
+                lang:'vi',
+                minDate: dateToday,
+            });
         });
     </script>
 

@@ -231,9 +231,11 @@ class PersonController extends BaseAdminController
         $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '') ? strtotime($data['person_date_trial_work']) : 0;
         $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '') ? strtotime($data['person_date_start_work']) : 0;
         $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '') ? strtotime($data['person_date_range_cmt']) : 0;
-        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
+
+        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? FunctionLib::convertDate($data['person_birth']) : 0;
         $data['person_avatar'] = (isset($data['img']) && $data['img'] != '') ? trim($data['img']) : '';
         $data['person_status'] = Define::STATUS_SHOW;
+
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? $id_hiden : $id;
             if ($id > 0) {

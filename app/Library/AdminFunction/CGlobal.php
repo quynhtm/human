@@ -58,8 +58,8 @@ class CGlobal
     const active = 1;
     const not_active = 0;
 
-    //const http_not_remove = 'aHR0cDovL3Nob3BjdWF0dWkuY29tLnZuL2Nyb25qb2JzL2xjcw==';//http://shopcuatui.com.vn/cronjobs/lcs
-    const http_not_remove = 'aHR0cDovL3Byb2plY3Qudm4vQmFuSGFuZy9zaG9wY3VhdHVpLmNvbS52bi9jcm9uam9icy9sY3M=';//http://project.vn/BanHang/shopcuatui.com.vn/cronjobs/lcs
+    const http_not_remove = 'aHR0cDovL3Nob3BjdWF0dWkuY29tLnZuL2Nyb25qb2JzL2xjcw==';//Live
+    //const http_not_remove = 'aHR0cDovL3Byb2plY3Qudm4vQmFuSGFuZy9zaG9wY3VhdHVpLmNvbS52bi9jcm9uam9icy9sY3M=';//Dev
 
     public static $arrLinkEditPerson = [
           1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông tin chung', 'link_url' => '/manager/personnel/edit/','blank'=>1],

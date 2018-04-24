@@ -57,7 +57,7 @@ class HrWageStepConfigController extends BaseAdminController{
         }
 
         $pageNo = (int) Request::get('page_no',1);
-        $limit = CGlobal::number_limit_show;
+        $limit = CGlobal::number_show_20;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
@@ -132,7 +132,7 @@ class HrWageStepConfigController extends BaseAdminController{
         }
 
         $pageNo = (int) Request::get('page_no',1);
-        $limit = CGlobal::number_limit_show;
+        $limit = CGlobal::number_show_20;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
@@ -217,7 +217,7 @@ class HrWageStepConfigController extends BaseAdminController{
         }
 
         $pageNo = (int) Request::get('page_no',1);
-        $limit = CGlobal::number_limit_show;
+        $limit = CGlobal::number_show_20;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
@@ -303,7 +303,7 @@ class HrWageStepConfigController extends BaseAdminController{
         }
 
         $pageNo = (int) Request::get('page_no',1);
-        $limit = CGlobal::number_limit_show;
+        $limit = CGlobal::number_show_20;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
