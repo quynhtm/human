@@ -583,5 +583,11 @@ HR = {
                 });
             }
         });
+    },
+    onclickActionDeletePerson: function (msg,url) {
+        var a = confirm(msg);
+        if (a) {
+            window.location.href = url;
+        }
     }
 }
