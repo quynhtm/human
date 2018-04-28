@@ -86,12 +86,20 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
+        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
         $dataSearch['device_status'] = (int)Request::get('device_status', -1);
         $dataSearch['field_get'] = '';
 
         $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        //Get data department
+        $totalCat = 0;
+        $strDeparment = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategoriesOption($dataDepartmentCateSearch, 0, '', $strDeparment, $dataSearch['device_depart_id']);
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
@@ -108,6 +116,7 @@ class DeviceController extends BaseAdminController{
             'arrDeviceType'=>$this->arrDeviceType,
             'optionDeviceType'=>$optionDeviceType,
             'arrPersion'=>$this->arrPersion,
+            'optionDepartment'=>$strDeparment,
         ],$this->viewPermission));
     }
     public function viewDeviceUse(){
@@ -123,6 +132,7 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
+        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
         $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 1);
 
@@ -132,9 +142,18 @@ class DeviceController extends BaseAdminController{
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
+        //Get data department
+        $totalCat = 0;
+        $strDeparment = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategoriesOption($dataDepartmentCateSearch, 0, '', $strDeparment, $dataSearch['device_depart_id']);
+
+
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
         $optionDeviceType = FunctionLib::getOption($this->arrDeviceType, isset($data['device_type'])? $data['device_type']: CGlobal::status_show);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Device.view',array_merge([
             'data'=>$data,
@@ -147,6 +166,7 @@ class DeviceController extends BaseAdminController{
             'arrDeviceType'=>$this->arrDeviceType,
             'optionDeviceType'=>$optionDeviceType,
             'arrPersion'=>$this->arrPersion,
+            'optionDepartment'=>$strDeparment,
         ],$this->viewPermission));
     }
     public function viewDeviceNotUse(){
@@ -162,6 +182,7 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
+        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
         $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 0);
 
@@ -170,6 +191,13 @@ class DeviceController extends BaseAdminController{
         $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
+
+        //Get data department
+        $totalCat = 0;
+        $strDeparment = '';
+        $dataSearchCatDepartment['department_status'] = -1;
+        $dataDepartmentCateSearch = Department::searchByCondition($dataSearchCatDepartment, 2000, 0, $totalCat);
+        $this->showCategoriesOption($dataDepartmentCateSearch, 0, '', $strDeparment, $dataSearch['device_depart_id']);
 
         $this->getDataDefault();
         $optionStatus = FunctionLib::getOption($this->arrStatus, $dataSearch['device_status']);
@@ -186,6 +214,7 @@ class DeviceController extends BaseAdminController{
             'arrDeviceType'=>$this->arrDeviceType,
             'optionDeviceType'=>$optionDeviceType,
             'arrPersion'=>$this->arrPersion,
+            'optionDepartment'=>$strDeparment,
         ],$this->viewPermission));
     }
     public function getItem($ids) {
@@ -364,6 +393,7 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = Request::get('device_name', '');
         $dataSearch['device_type'] = Request::get('device_type', -1);
+        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
         $dataSearch['device_status'] = Request::get('device_status', -2);
         $dataSearch['order_sort_device_id'] = 'asc';
 
