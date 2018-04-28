@@ -17,6 +17,7 @@
             <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
             <input type="hidden" name="salary_id" id="salary_id" value="{{$salary_id}}">
             <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($salary_id)}}" type="hidden">
+            <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
             <div class="row">
                 <div class="col-sm-3">
                     <div class="form-group">

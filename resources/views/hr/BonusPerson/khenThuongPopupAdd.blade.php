@@ -18,6 +18,7 @@
         <input type="hidden" name="bonus_id" id="bonus_id" value="{{$bonus_id}}">
         <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($bonus_id)}}" type="hidden">
         <input type="hidden" name="bonus_type" id="bonus_type" value="{{$typeAction}}">
+        <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
         <div class="row">
         <div class="col-sm-6">
             <div class="form-group">

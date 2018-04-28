@@ -16,6 +16,8 @@
     <form method="POST" action="" role="form" id="form_contracts">
         <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
         <input type="hidden" name="contracts_id" id="contracts_id" value="{{$contracts_id}}">
+        <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($contracts_id)}}" type="hidden">
+        <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
         <div class="row">
         <div class="col-sm-6">
             <div class="form-group">
@@ -76,6 +78,20 @@
                        value="@if(isset($contracts->contracts_describe)){{$contracts->contracts_describe}}@endif">
             </div>
         </div>
+        <div class="col-sm-12">
+            <div class="controls">
+                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_CONTRACTS}});">Tải tệp đính kèm</a>
+                <div id="sys_show_file">
+                    @if(isset($data->contracts_file_attack) && $data->contracts_file_attack !='')
+                        <?php $arrfiles = ($data->contracts_file_attack != '') ? unserialize($data->contracts_file_attack) : array(); ?>
+                        @foreach($arrfiles as $_key=>$file)
+                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_CONTRACTS.'/'.$quit_job_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($quit_job_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_CONTRACTS}})">X</span></div>
+                        @endforeach
+                    @endif
+                </div>
+            </div>
+        </div>
+
         {!! csrf_field() !!}
         <div class="col-sm-6">
             <a class="btn btn-primary" href="javascript:void(0);" onclick="HR.contractsSubmit('form#form_contracts','submitContracts')" id="submitContracts"><i class="fa fa-floppy-o"></i> Lưu lại</a>

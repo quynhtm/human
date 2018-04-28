@@ -164,9 +164,10 @@ class InfoPersonController extends BaseAdminController
         }
         $data = $_POST;
         $person_id = Request::get('person_id', '');
-        $contracts_id = Request::get('contracts_id', '');
+        //$contracts_id = Request::get('contracts_id', '');
+        $id_hiden = Request::get('id_hiden', '');
         //$person_id = FunctionLib::outputId($personId);
-        //$contracts_id = FunctionLib::outputId($contractsId);
+        $contracts_id = FunctionLib::outputId($id_hiden);
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         if($data['contracts_sign_day'] == '' || $data['contracts_effective_date'] == ''|| $data['contracts_dealine_date'] == ''){
