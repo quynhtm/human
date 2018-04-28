@@ -203,6 +203,8 @@ class Payroll extends BaseModel
 
             $total = $query->count();
             $query->orderBy('payroll_id', 'desc');
+            $query->orderBy('payroll_month', 'asc');
+            $query->orderBy('payroll_year', 'asc');
             //return $query->toSql();
 
             //get field can lay du lieu

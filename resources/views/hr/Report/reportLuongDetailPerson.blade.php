@@ -47,7 +47,7 @@ use App\Http\Models\Hr\Person;
                                                     <tbody>
                                                     <tr class="text-center">
                                                         <th rowspan="4" class="text-center">TT</th>
-                                                        <th rowspan="4" class="text-center" width="15%">Họ và tên</th>
+                                                        <th rowspan="4" class="text-center" width="35%">Họ và tên <br/>/Lương tháng</th>
                                                         <th rowspan="4" class="text-center" width="7%">Mã số ngạch lương</th>
 
                                                         <th colspan="9" class="text-center">Lương hệ số</th>
@@ -110,6 +110,8 @@ use App\Http\Models\Hr\Person;
                                                                 <td>{{$stt+$k+1}}</td>
                                                                 <td class="text-left">
                                                                     {{isset($infoPerson->person_name) ? $infoPerson->person_name : ''}}
+                                                                    <br/>
+                                                                    {{$item->payroll_month}}/{{$item->payroll_year}}
                                                                 </td>
                                                                 <td>{{isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : ''}}</td>
                                                                 <td>{{$item->he_so_luong}}</td>
