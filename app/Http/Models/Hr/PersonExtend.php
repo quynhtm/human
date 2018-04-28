@@ -84,6 +84,7 @@ class PersonExtend extends BaseModel
         if (isset($personExtend->person_extend_person_id) && $personExtend->person_extend_person_id > 0) {
             $person = Person::find((int)$personExtend->person_extend_person_id);
             if (isset($person->person_id)) {
+                $dataUpdate['person_extend_trinhdo_hocvan'] = $personExtend->person_extend_trinhdo_hocvan;
                 $dataUpdate['person_is_dangvien'] = $personExtend->person_extend_is_dangvien;
                 $dataUpdate['person_ngayvao_dang'] = ($personExtend->person_extend_is_dangvien == 1) ? $personExtend->person_extend_ngayvaodang : 0;
                 Person::updateItem($person->person_id, $dataUpdate);

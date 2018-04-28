@@ -65,6 +65,17 @@ class Retirement extends BaseModel
         }
     }
 
+    public function dataSynPerson($retirement)
+    {
+        if (isset($retirement->retirement_person_id) && $retirement->retirement_person_id > 0) {
+            $person = Person::find((int)$retirement->retirement_person_id);
+            if (isset($person->person_id)) {
+                $dataUpdate['retirement_date'] = $retirement->retirement_date;
+                Person::updateItem($person->person_id, $dataUpdate);
+            }
+        }
+    }
+
     public function checkField($dataInput) {
         $fields = $this->fillable;
         $dataDB = array();

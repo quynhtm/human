@@ -83,6 +83,7 @@ class HrContracts extends BaseModel
         if (isset($contracts->contracts_person_id) && $contracts->contracts_person_id > 0) {
             $person = Person::find((int)$contracts->contracts_person_id);
             if (isset($person->person_id)) {
+                $dataUpdate['contracts_dealine_date'] = $contracts->contracts_dealine_date;
                 $dataUpdate['person_type_contracts'] = $contracts->contracts_type_define_id;
                 Person::updateItem($person->person_id, $dataUpdate);
             }
