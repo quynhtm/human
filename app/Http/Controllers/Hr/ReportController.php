@@ -173,6 +173,9 @@ class ReportController extends BaseAdminController
         //chucvu
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
 
+        //Deparmement
+        $depart = Department::getDepartmentAll();
+
         //PayRoll
         $search = $data = array();
         $total = 0;
@@ -188,42 +191,54 @@ class ReportController extends BaseAdminController
         $objReader = \PHPExcel_IOFactory::createReader('Excel5');
         $objPHPExcel = $objReader->load(Config::get('config.DIR_ROOT') ."app/Http/Controllers/Hr/report/reportTienLuongCongChuc.xls");
         $generatedDate = date("d-m-Y");
+
         $yearExport = $search['reportYear'];
-        $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . $yearExport;
+        if($yearExport > 0){
+            $titleReport = 'BÁO CÁO DANH SÁCH VÀ TIỀN LƯƠNG CÔNG CHỨC NĂM ' . $yearExport;
+        }else{
+            $titleReport = 'BÁO CÁO THỐNG KÊ LƯƠNG';
+        }
 
-        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A2', $titleReport);
+        $objPHPExcel->setActiveSheetIndex(0)->setCellValue('A1', $titleReport);
 
-        $i=10;
+        $i=8;
         $stt = 0;
         if($data){
             foreach ($data as $item){
                 $i++;
                 $stt++;
                 $objPHPExcel->setActiveSheetIndex(0)->getRowDimension($i)->setRowHeight(15);
+                $_time = '';
+                if(isset($item->payroll_month) && isset($item->payroll_year) && $item->payroll_month > 0 && $item->payroll_year > 0){
+                    $_time = $item->payroll_month .'/'. $item->payroll_year;
+                }
+
+                $depart_name = isset($depart[$arrPerson[$item->payroll_person_id]['person_depart_id']]) ? $depart[$arrPerson[$item->payroll_person_id]['person_depart_id']] : '';
 
                 $objPHPExcel->setActiveSheetIndex(0)
                     ->setCellValue('A'.$i, $stt)
-                    ->setCellValue('B'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
-                    ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
-                    ->setCellValue('D'.$i, isset($arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']]) ? $arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']] : '')
+                    ->setCellValue('B'.$i, $_time)
+                    ->setCellValue('C'.$i, isset($arrPerson[$item->payroll_person_id]['person_code']) ? $arrPerson[$item->payroll_person_id]['person_code'] : '')
+                    ->setCellValue('D'.$i, isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : '')
+                    ->setCellValue('E'.$i, $depart_name)
+                    ->setCellValue('F'.$i, isset($arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']]) ? $arrChucVu[$arrPerson[$item->payroll_person_id]['person_position_define_id']] : '')
+                    ->setCellValue('G'.$i, isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : '')
+                    ->setCellValue('H'.$i, $item->he_so_luong)
+                    ->setCellValue('I'.$i, $item->phu_cap_chuc_vu)
+                    ->setCellValue('J'.$i, $item->phu_cap_tham_nien_vuot)
+                    ->setCellValue('K'.$i, $item->phu_cap_tham_nien_vuot_heso)
+                    ->setCellValue('L'.$i, $item->phu_cap_trach_nhiem)
+                    ->setCellValue('M'.$i, $item->phu_cap_tham_nien)
+                    ->setCellValue('N'.$i, $item->phu_cap_tham_nien_heso)
+                    ->setCellValue('O'.$i, $item->phu_cap_nghanh)
+                    ->setCellValue('P'.$i, $item->phu_cap_nghanh_heso)
+                    ->setCellValue('Q'.$i, $item->tong_he_so)
 
-                    ->setCellValue('E'.$i, isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : '')
-                    ->setCellValue('F'.$i, $item->he_so_luong)
-                    ->setCellValue('G'.$i, $item->phu_cap_chuc_vu)
-                    ->setCellValue('H'.$i, $item->phu_cap_tham_nien_vuot)
-                    ->setCellValue('I'.$i, $item->phu_cap_tham_nien_vuot_heso)
-                    ->setCellValue('J'.$i, $item->phu_cap_trach_nhiem)
-                    ->setCellValue('K'.$i, $item->phu_cap_tham_nien)
-                    ->setCellValue('L'.$i, $item->phu_cap_tham_nien_heso)
-                    ->setCellValue('M'.$i, $item->phu_cap_nghanh)
-                    ->setCellValue('N'.$i, $item->phu_cap_nghanh_heso)
-                    ->setCellValue('O'.$i, $item->tong_he_so)
-
-                    ->setCellValue('P'.$i, FunctionLib::numberFormat($item->luong_co_so))
-                    ->setCellValue('Q'.$i, FunctionLib::numberFormat($item->tong_tien))
-                    ->setCellValue('R'.$i, FunctionLib::numberFormat($item->tong_tien_luong))
-                    ->setCellValue('S'.$i, FunctionLib::numberFormat($item->tong_tien_baohiem))
-                    ->setCellValue('T'.$i, FunctionLib::numberFormat($item->tong_luong_thuc_nhan));
+                    ->setCellValue('R'.$i, FunctionLib::numberFormat($item->luong_co_so))
+                    ->setCellValue('S'.$i, FunctionLib::numberFormat($item->tong_tien))
+                    ->setCellValue('T'.$i, FunctionLib::numberFormat($item->tong_tien_luong))
+                    ->setCellValue('U'.$i, FunctionLib::numberFormat($item->tong_tien_baohiem))
+                    ->setCellValue('V'.$i, FunctionLib::numberFormat($item->tong_luong_thuc_nhan));
             }
         }
         $filename = 'reportTienLuongCongChuc';

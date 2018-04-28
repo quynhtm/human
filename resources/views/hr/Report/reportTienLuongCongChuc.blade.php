@@ -39,14 +39,14 @@ use App\Http\Models\Hr\Person;
                                             <div class="col-md-3">
                                                 <label>Chọn tháng báo cáo</label>
                                                 <select class="required form-control input-sm" name="reportMonth">
-                                                    <option value="">- Chọn tháng báo cáo -</option>
                                                     {!! $optionMonth !!}
                                                 </select>
                                             </div>
                                             <div class="col-md-3">
                                                 <label>Chọn năm báo cáo</label>
                                                 <select class="required form-control input-sm" name="reportYear">
-                                                    <option value="">- Chọn năm báo cáo -</option>
+                                                    <option value="">---Chọn năm
+                                                        ---</option>
                                                     {!! $optionYear !!}
                                                 </select>
                                             </div>
@@ -141,7 +141,9 @@ use App\Http\Models\Hr\Person;
                                                                 <td class="text-left">
                                                                     {{isset($arrPerson[$item->payroll_person_id]['person_name']) ? $arrPerson[$item->payroll_person_id]['person_name'] : ''}}
                                                                     <br/>
-                                                                    {{$item->payroll_month}}/{{$item->payroll_year}}
+                                                                    @if($item->payroll_month > 0 && $item->payroll_year > 0)
+                                                                        {{$item->payroll_month}}/{{$item->payroll_year}}
+                                                                    @endif
                                                                 </td>
                                                                 <td>{{isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : ''}}</td>
                                                                 <td>{{$item->he_so_luong}}</td>

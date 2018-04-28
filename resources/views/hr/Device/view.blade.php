@@ -32,6 +32,13 @@
                                 </select>
                             </div>
                             <div class="form-group col-lg-3">
+                                <label for="user_group"><i>Thuộc phòng ban</i></label>
+                                <select name="device_depart_id" id="device_depart_id" class="form-control input-sm" tabindex="12" data-placeholder="Thuộc phòng ban">
+                                    <option value="-1">--- Chọn thuộc phòng ban ---</option>
+                                    {!! $optionDepartment !!}
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
                                 <label for="user_group"><i>Trạng thái</i></label>
                                 <select name="device_status" id="device_status" class="form-control input-sm" tabindex="12" data-placeholder="Trạng thái">
                                     {!! $optionStatus !!}
