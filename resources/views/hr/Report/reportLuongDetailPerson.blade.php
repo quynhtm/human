@@ -111,7 +111,9 @@ use App\Http\Models\Hr\Person;
                                                                 <td class="text-left">
                                                                     {{isset($infoPerson->person_name) ? $infoPerson->person_name : ''}}
                                                                     <br/>
-                                                                    {{$item->payroll_month}}/{{$item->payroll_year}}
+                                                                    @if($item->payroll_month > 0 && $item->payroll_year > 0)
+                                                                        {{$item->payroll_month}}/{{$item->payroll_year}}
+                                                                    @endif
                                                                 </td>
                                                                 <td>{{isset($arrWage[$item->ma_ngach]) ? $arrWage[$item->ma_ngach] : ''}}</td>
                                                                 <td>{{$item->he_so_luong}}</td>
