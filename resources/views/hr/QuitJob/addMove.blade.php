@@ -48,7 +48,21 @@
                                 </div>
                             </div>
                         </div>
-
+                        <div class="col-sm-12">
+                            <div class="controls">
+                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_QUITJOB}});">Tải tệp đính kèm</a>
+                                <div id="sys_show_file">
+                                    @if(isset($data->quit_job_file_attack) && $data->quit_job_file_attack !='')
+                                        <?php $arrfiles = ($data->quit_job_file_attack != '') ? unserialize($data->quit_job_file_attack) : array(); ?>
+                                        @foreach($arrfiles as $_key=>$file)
+                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_QUITJOB.'/'.$quit_job_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($quit_job_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_QUITJOB}})">X</span></div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($quit_job_id)}}" type="hidden">
+                        <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}

@@ -23,7 +23,7 @@
                 <td class="text-center middle">{{$item2['bonus_note']}}</td>
                 <td class="text-center middle">
                     @if($is_root== 1 || $personBonusFull== 1 || $personBonusView == 1)
-                        <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item['bonus_person_id'])}}','{{FunctionLib::inputId($item['bonus_id'])}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"title="Sửa"><i class="fa fa-eye fa-2x"></i></a>
+                        <a href="#" onclick="HR.getAjaxCommonInfoPopup('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/editBonus',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"title="Sửa"><i class="fa fa-eye fa-2x"></i></a>
                     @endif
                     @if($is_root== 1 || $personBonusFull== 1 || $personBonusView == 1)
                         <a class="deleteItem" title="Xóa" onclick="HR.deleteAjaxCommon('{{FunctionLib::inputId($item2['bonus_person_id'])}}','{{FunctionLib::inputId($item2['bonus_id'])}}','bonusPerson/deleteBonus','div_list_danhhieu',{{\App\Library\AdminFunction\Define::BONUS_DANH_HIEU}})"><i class="fa fa-trash fa-2x"></i></a>
