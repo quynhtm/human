@@ -36,6 +36,7 @@ class Define
     const TABLE_GROUP_USER_PERMISSION = 'hr_group_user_permission';
     const TABLE_HR_CATEGORY = 'hr_category';
     const TABLE_HR_PERSON = 'hr_personnel';
+    const TABLE_HR_PERSON_EXTEND = 'hr_personnel_extend';
     const TABLE_HR_DEFINE = 'hr_define';
     const TABLE_HR_DEPARTMENT = 'hr_department';
     const TABLE_HR_DEVICE = 'hr_device';

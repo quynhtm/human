@@ -16,7 +16,7 @@ use App\Http\Models\Hr\Person;
                     <i class="ace-icon fa fa-home home-icon"></i>
                     <a href="{{URL::route('admin.dashboard')}}">{{FunctionLib::viewLanguage('home')}}</a>
                 </li>
-                <li class="active">Báo cáo danh sách và tiền lương công chức {{isset($search['reportYear']) ? $search['reportYear'] : ''}}</li>
+                <li class="active">Báo cáo danh sách và tiền lương công chức {{(isset($search['reportYear']) && $search['reportYear'] > 0) ? $search['reportYear'] : ''}}</li>
             </ul>
         </div>
         <div class="page-content">

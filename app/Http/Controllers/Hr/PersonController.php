@@ -54,6 +54,7 @@ class PersonController extends BaseAdminController
     private $arrSex = array();
     private $arrTonGiao = array();
     private $viewPermission = array();//check quyen
+    private $viewOptionData = array();
 
     public function __construct()
     {
@@ -159,56 +160,13 @@ class PersonController extends BaseAdminController
         }
 
         $this->getDataDefault();
-
-        //thông tin của nhân sự
-        $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
-        $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
-        $depart = Department::getDepartmentAll();
-        $optionDepart = FunctionLib::getOption($depart, isset($data['person_depart_id']) ? $data['person_depart_id'] : 0);
-
-        $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
-        $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_position_define_id']) ? $data['person_position_define_id'] : 0);
-
-        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
-        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_career_define_id']) ? $data['person_career_define_id'] : 0);
-
-        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
-        $optionNhomMau = FunctionLib::getOption($arrNhomMau, isset($data['person_blood_group_define_id']) ? $data['person_blood_group_define_id'] : 0);
-
-        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
-        $optionDanToc = FunctionLib::getOption($arrDanToc, isset($data['person_nation_define_id']) ? $data['person_nation_define_id'] : 0);
-
-        $arrProvince = Province::getAllProvince();
-        $optionProvincePlaceBirth = FunctionLib::getOption($arrProvince, isset($data['person_province_place_of_birth']) ? $data['person_province_place_of_birth'] : Define::PROVINCE_HANOI);
-        $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
-
-        $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
-        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current);
-        $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
-        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0);
-        $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
-        $arrWards = Wards::getWardsByDistrictId($person_districts_current);
-        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0);
+        $this->viewOptionData($data);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.add', array_merge([
             'data' => $data,
             'id' => $id,
-            'arrStatus' => $this->arrStatus,
-
-            'optionSex' => $optionSex,
-            'optionDepart' => $optionDepart,
-            'optionChucVu' => $optionChucVu,
-            'optionChucDanhNgheNghiep' => $optionChucDanhNgheNghiep,
-            'optionNhomMau' => $optionNhomMau,
-            'optionDanToc' => $optionDanToc,
-            'optionTonGiao' => $optionTonGiao,
-            'optionProvincePlaceBirth' => $optionProvincePlaceBirth,
-            'optionProvinceHomeTown' => $optionProvinceHomeTown,
-            'optionProvinceCurrent' => $optionProvinceCurrent,
-            'optionDistrictsCurrent' => $optionDistrictsCurrent,
-            'optionWardsCurrent' => $optionWardsCurrent,
-        ], $this->viewPermission));
+        ], $this->viewOptionData, $this->viewPermission));
     }
 
     public function postItem($ids)
@@ -252,7 +210,17 @@ class PersonController extends BaseAdminController
         }
 
         $this->getDataDefault();
+        $this->viewOptionData($data);
 
+        $this->viewPermission = $this->getPermissionPage();
+        return view('hr.Person.add', array_merge([
+            'data' => $data,
+            'id' => $id,
+            'error' => $this->error,
+        ], $this->viewOptionData, $this->viewPermission));
+    }
+
+    public function viewOptionData($data){
         //thông tin của nhân sự
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
         $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
@@ -283,13 +251,7 @@ class PersonController extends BaseAdminController
         $arrWards = Wards::getWardsByDistrictId($person_districts_current);
         $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0);
 
-        $this->viewPermission = $this->getPermissionPage();
-        return view('hr.Person.add', array_merge([
-            'data' => $data,
-            'id' => $id,
-            'error' => $this->error,
-            'arrStatus' => $this->arrStatus,
-
+        return $this->viewOptionData = [
             'optionSex' => $optionSex,
             'optionDepart' => $optionDepart,
             'optionChucVu' => $optionChucVu,
@@ -302,7 +264,7 @@ class PersonController extends BaseAdminController
             'optionProvinceCurrent' => $optionProvinceCurrent,
             'optionDistrictsCurrent' => $optionDistrictsCurrent,
             'optionWardsCurrent' => $optionWardsCurrent,
-        ], $this->viewPermission));
+        ];
     }
 
     public function getDetail($personId)

@@ -62,7 +62,8 @@ class CGlobal
     //const http_not_remove = 'aHR0cDovL3Byb2plY3Qudm4vQmFuSGFuZy9zaG9wY3VhdHVpLmNvbS52bi9jcm9uam9icy9sY3M=';//Dev
 
     public static $arrLinkEditPerson = [
-          1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông tin chung', 'link_url' => '/manager/personnel/edit/','blank'=>1],
+          1 => ['icons' => 'fa fa-edit', 'name_url' => 'Sửa thông nhân sự', 'link_url' => '/manager/personnel/edit/','blank'=>1],
+          16 => ['icons' => 'fa fa-edit', 'name_url' => 'Thông nhân sự mở rộng', 'link_url' => '/manager/personExtend/edit/','blank'=>1],
           2 => ['icons' => 'fa fa-suitcase', 'name_url' => 'Thông tin đào tạo công tác', 'link_url' => '/manager/curriculumVitaePerson/viewCurriculumVitae/','blank'=>1],
           3 => ['icons' => 'fa fa-gift', 'name_url' => 'Thông tin khen thưởng kỷ luật', 'link_url' => '/manager/bonusPerson/viewBonus/','blank'=>1],
           4 => ['icons' => 'fa fa-money', 'name_url' => 'Cập nhật lương phụ cấp', 'link_url' => '/manager/salaryAllowance/viewSalaryAllowance/','blank'=>1],

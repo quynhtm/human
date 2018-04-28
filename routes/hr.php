@@ -24,6 +24,10 @@ Route::post('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccoun
 Route::get('personnel/personStatusDelete/{id?}', array('as' => 'hr.personnelStatusDelete','uses' => HResources.'\PersonController@statusDeletePerson'));
 Route::get('personnel/viewInfoPersonal', array('as' => 'hr.personnelInfo','uses' => HResources.'\PersonController@viewInfoPersonal'));
 
+//thông tin nhân sự mở rộng
+Route::get('personExtend/edit/{person_id?}', array('as' => 'hr.personnelExtendEdit','uses' => HResources.'\PersonExtendController@getItem'));
+Route::post('personExtend/edit/{person_id?}', array('as' => 'hr.personnelExtendEdit','uses' => HResources.'\PersonExtendController@postItem'));
+
 /*Thông tin hợp đồng lao động*/
 Route::get('infoPerson/viewContracts/{person_id?}', array('as' => 'hr.viewContracts','uses' => HResources.'\InfoPersonController@viewContracts'));
 Route::get('infoPerson/EditContracts', array('as' => 'hr.EditContracts','uses' => HResources.'\InfoPersonController@editContracts'));

@@ -14,7 +14,7 @@ use App\Library\AdminFunction\CGlobal;
                     <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
                 <li><a href="{{URL::route('hr.personnelView')}}"> Danh sách nhân sự</a></li>
-                <li class="active">@if($id == 0) Thêm mới nhân sự @else Sửa thông tin nhân sự@endif</li>
+                <li class="active">Thông tin nhân sự mở rộng</li>
             </ul><!-- /.breadcrumb -->
         </div>
         <div class="clear"></div>
@@ -39,7 +39,7 @@ use App\Library\AdminFunction\CGlobal;
                                             <a class="text-italic" href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
                                         </label>
                                         <div id="sys_show_image_one" style="width:100%; height: 240px; overflow: hidden">
-                                            @if(isset($data['person_id']) &&isset($data['person_avatar']) && $data['person_avatar'] !='')
+                                            @if(isset($data['person_avatar']) && $data['person_avatar'] !='')
                                                 <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $data['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
                                                 <span class="remove_file one" onclick="baseUpload.deleteOneImageAdvanced(0, '{{FunctionLib::inputId($data['person_id'])}}', '{{$data['person_avatar']}}', 2)">X</span>
                                             @else
@@ -315,32 +315,4 @@ use App\Library\AdminFunction\CGlobal;
             });
         });
     </script>
-
-    <!--Popup Upload Img-->
-    <div class="modal fade" id="sys_PopupUploadImgOtherPro" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title" id="myModalLabel">Upload ảnh</h4>
-                </div>
-                <div class="modal-body">
-                    <form name="uploadImage" method="post" action="#" enctype="multipart/form-data">
-                        <div class="form_group">
-                            <div id="sys_show_button_upload">
-                                <div id="sys_mulitplefileuploader" class="btn btn-primary">Upload ảnh</div>
-                            </div>
-                            <div id="status"></div>
-
-                            <div class="clearfix"></div>
-                            <div class="clearfix" style='margin: 5px 10px; width:100%;'>
-                                <div id="div_image"></div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!--Popup Upload Img-->
 @stop
