@@ -140,20 +140,27 @@ class SalaryAllowanceController extends BaseAdminController
         $this->getDataDefault();
 
         //thang bang luong
+        $salary_wage_table = isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0;
         $arrThangbangluong = !empty($this->arrThangbangluong) ? array(0 => 'Chọn thang bảng lương') + $this->arrThangbangluong : array(0 => 'Chọn thang bảng lương');
-        $optionThangbangluong = FunctionLib::getOption($arrThangbangluong, isset($data['salary_wage_table']) ? $data['salary_wage_table'] : 0);
+        $optionThangbangluong = FunctionLib::getOption($arrThangbangluong,$salary_wage_table );
 
         //Nghạch công chức
-        $arrNghachcongchuc = !empty($this->arrNghachcongchuc) ? array(0 => 'Chọn ngạch công chức') + $this->arrNghachcongchuc : array(0 => 'Chọn ngạch công chức');
-        $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc, isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0);
+        $salary_civil_servants = isset($data['salary_civil_servants']) ? $data['salary_civil_servants'] : 0;
+        $arrNghachcongchuc = HrWageStepConfig::getDataOption($salary_wage_table,Define::type_ngach_cong_chuc);
+        $arrNghachcongchuc = !empty($arrNghachcongchuc) ? (Define::$arrCheckDefault + $arrNghachcongchuc) : Define::$arrCheckDefault;
+        $optionNghachcongchuc = FunctionLib::getOption($arrNghachcongchuc,$salary_civil_servants );
 
         //mã Nghạch
-        $arrMaNgach = !empty($this->arrMaNgach) ? array(0 => 'Chọn mã ngạch') + $this->arrMaNgach : array(0 => 'Chọn mã ngạch');
-        $optionMaNgach = FunctionLib::getOption($arrMaNgach, isset($data['salary_tariffs']) ? $data['salary_tariffs'] : 0);
+        $salary_tariffs = isset($data['salary_tariffs']) ? $data['salary_tariffs'] : 0;
+        $arrMaNgach = HrWageStepConfig::getDataOption($salary_civil_servants,Define::type_ma_ngach);
+        $arrMaNgach = !empty($arrMaNgach) ? (Define::$arrCheckDefault + $arrMaNgach) : Define::$arrCheckDefault;
+        $optionMaNgach = FunctionLib::getOption($arrMaNgach, $salary_tariffs);
 
         //bac luong
-        $arrBacluong = !empty($this->arrBacluong) ? array(0 => 'Chọn bậc lương') + $this->arrBacluong : array(0 => 'Chọn bậc lương');
-        $optionBacluong = FunctionLib::getOption($arrBacluong, isset($data['salary_wage']) ? $data['salary_wage'] : 0);
+        $salary_wage = isset($data['salary_wage']) ? $data['salary_wage'] : 0;
+        $arrBacluong = HrWageStepConfig::getDataOption($salary_tariffs,Define::type_bac_luong);
+        $arrBacluong = !empty($arrBacluong) ? (Define::$arrCheckDefault + $arrBacluong) : Define::$arrCheckDefault;
+        $optionBacluong = FunctionLib::getOption($arrBacluong, $salary_wage);
 
         $this->viewPermission = $this->getPermissionPage();
         $html = view('hr.SalaryAllowance.SalaryPopupAdd', [

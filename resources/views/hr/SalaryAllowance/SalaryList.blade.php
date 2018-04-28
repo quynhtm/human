@@ -6,7 +6,7 @@
         <th width="5%" class="text-center">STT</th>
         <th width="30%">Nghạch /Bậc</th>
         <th width="10%" class="text-center">Hệ số lương</th>
-        <th width="20%" class="text-center">Lương thực nhận</th>
+        <th width="20%" class="text-center">Lương cơ sở</th>
         <th width="10%" class="text-center">Tháng năm</th>
         <th width="10%" class="text-center">Thao tác</th>
     </tr>
@@ -17,7 +17,7 @@
             <tr>
                 <td class="text-center middle">{{ $key+1 }}</td>
                 <td>@if(isset($arrNgachBac[$item['salary_civil_servants']])){{ $arrNgachBac[$item['salary_civil_servants']] }}@endif</td>
-                <td class="text-center middle"> {{ $item['salary_coefficients'] }}%</td>
+                <td class="text-center middle"> {{ $item['salary_coefficients'] }}</td>
                 <td class="text-center middle">{{number_format($item['salary_salaries'])}}</td>
                 <td class="text-center middle">{{$item['salary_month']}}/{{$item['salary_year']}}</td>
                 <td class="text-center middle">
