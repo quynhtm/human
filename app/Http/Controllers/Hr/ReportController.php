@@ -54,7 +54,6 @@ class ReportController extends BaseAdminController
             CGlobal::status_hide => 'Không',
             CGlobal::status_show => 'Có');
     }
-
     public function getPermissionPage()
     {
         return $this->viewPermission = [
@@ -66,7 +65,6 @@ class ReportController extends BaseAdminController
             'personExportTienLuongCongChuc' => in_array($this->personExportTienLuongCongChuc, $this->permission) ? 1 : 0,
         ];
     }
-
     public function viewTienLuongCongChuc(){
         CGlobal::$pageAdminTitle = 'Báo cáo danh sách và tiền lương công chức';
 
@@ -248,7 +246,6 @@ class ReportController extends BaseAdminController
 
         die;
     }
-
     public function viewLuongDetailPerson(){
         CGlobal::$pageAdminTitle = 'Chi tiết lương';
 
