@@ -7,12 +7,16 @@
 */
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Hr\RetirementController;
 use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\Device;
+use App\Http\Models\Hr\HrContracts;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDocument;
 use App\Http\Models\Hr\HrMail;
+use App\Http\Models\Hr\QuitJob;
+use App\Http\Models\Hr\Retirement;
 use App\Http\Models\Hr\Salary;
 use App\Library\AdminFunction\Define;
 use App\Library\AdminFunction\FunctionLib;
@@ -333,6 +337,33 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
+			case Define::FILE_TYPE_RETIREMENT:
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
+			case Define::FILE_TYPE_QUITJOB:
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
+			case Define::FILE_TYPE_CONTRACTS:
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
 			default:
 				$folder_image = '';
 				break;
@@ -404,6 +435,30 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_BONUS;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_BONUS;
 				break;
+			case Define::FILE_TYPE_RETIREMENT :
+				$result = Retirement::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->retirement_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_RETIREMENT;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_RETIREMENT;
+				break;
+			case Define::FILE_TYPE_QUITJOB :
+				$result = QuitJob::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->quit_job_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_QUITJOB;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_QUITJOB;
+				break;
+			case Define::FILE_TYPE_CONTRACTS :
+				$result = HrContracts::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->contracts_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_CONTRACTS;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_CONTRACTS;
+				break;
 			default:
 				$folder_image = '';
 				$folder_thumb = '';
@@ -455,6 +510,18 @@ class AjaxUploadController extends BaseAdminController{
                         case Define::FILE_TYPE_KYLUAT :
 							$new_row['bonus_file_attack'] = $aryImages;
 							Bonus::updateItem($id, $new_row);
+							break;
+						case Define::FILE_TYPE_RETIREMENT :
+							$new_row['retirement_file_attack'] = $aryImages;
+							Retirement::updateItem($id, $new_row);
+							break;
+						case Define::FILE_TYPE_QUITJOB :
+							$new_row['quit_job_file_attack'] = $aryImages;
+							QuitJob::updateItem($id, $new_row);
+							break;
+						case Define::FILE_TYPE_CONTRACTS :
+							$new_row['contracts_file_attack'] = $aryImages;
+							HrContracts::updateItem($id, $new_row);
 							break;
 						default:
 							$folder_image = '';
@@ -529,6 +596,10 @@ class AjaxUploadController extends BaseAdminController{
 	function upload_ext() {
 		$id_hiden =  Request::get('id', 0);
 		$id_hiden = FunctionLib::outputId($id_hiden);
+
+		$id_hiden_person =  Request::get('id_hiden_person', 0);
+		$id_hiden_person = FunctionLib::outputId($id_hiden_person);
+
 		$type = Request::get('type', 1);
 		$dataFile = $_FILES["multipleFile"];
 		$aryData = array();
@@ -553,13 +624,22 @@ class AjaxUploadController extends BaseAdminController{
 			case Define::FILE_TYPE_KYLUAT :
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_BONUS, $type);
 				break;
+			case Define::FILE_TYPE_RETIREMENT:
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_RETIREMENT, $type, $id_hiden_person);
+				break;
+			case Define::FILE_TYPE_QUITJOB:
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_QUITJOB, $type, $id_hiden_person);
+				break;
+			case Define::FILE_TYPE_CONTRACTS:
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_CONTRACTS, $type, $id_hiden_person);
+				break;
 			default:
 				break;
 		}
 		echo json_encode($aryData);
 		exit();
 	}
-	function uploadDocumentToFolder($dataImg, $id_hiden, $folder, $type){
+	function uploadDocumentToFolder($dataImg, $id_hiden, $folder, $type, $id_hiden_person=0){
 		$aryData = array();
 		$aryData['intIsOK'] = -1;
 		$aryData['msg'] = "Upload file!";
@@ -580,10 +660,12 @@ class AjaxUploadController extends BaseAdminController{
 						break;
 					case Define::FILE_TYPE_LUONG://File lương
 						$new_row['salary_note'] = '';
+						$new_row['salary_person_id'] = $id_hiden_person;
 						$item_id = Salary::createItem($new_row);
 						break;
 					case Define::FILE_TYPE_PHUCAP:
 						$new_row['allowance_note'] = '';
+						$new_row['allowance_person_id'] = $id_hiden_person;
 						$item_id = Allowance::createItem($new_row);
 						break;
 					case Define::FILE_TYPE_KHENTHUONG:
@@ -592,12 +674,30 @@ class AjaxUploadController extends BaseAdminController{
 						$new_row['bonus_note'] = '';
 						$item_id = Bonus::createItem($new_row);
 						break;
+					case Define::FILE_TYPE_RETIREMENT:
+						$new_row['retirement_note'] = '';
+						$new_row['retirement_person_id'] = $id_hiden_person;
+						$item_id = Retirement::createItem($new_row);
+						break;
+					case Define::FILE_TYPE_QUITJOB:
+						$new_row['quit_job_note'] = '';
+						$new_row['quit_job_person_id'] = $id_hiden_person;
+						$new_row['quit_job_type'] = Define::QUITJOB_CHUYEN_CONGTAC;
+						$item_id = QuitJob::createItem($new_row);
+						break;
+					case Define::FILE_TYPE_CONTRACTS:
+						$new_row['contracts_creater_time'] = time();
+						$new_row['contracts_person_id'] = $id_hiden_person;
+						$item_id = HrContracts::createItem($new_row);
+						break;
+
 					default:
 						break;
 				}
 			}elseif($id_hiden > 0){
 				$item_id = $id_hiden;
 			}
+
 			if($item_id > 0){
 				$aryError = $tmpImg = array();
 				$file_name = Upload::uploadFile('multipleFile',
@@ -649,6 +749,7 @@ class AjaxUploadController extends BaseAdminController{
 								$arr_file = ($result->salary_file_attach != '') ? unserialize($result->salary_file_attach) : array();
 								$arr_file[] = $file_name;
 								$new_row['salary_file_attach'] = serialize($arr_file);
+								$new_row['salary_person_id'] = $id_hiden_person;
                                 Salary::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
@@ -666,6 +767,7 @@ class AjaxUploadController extends BaseAdminController{
 								$arr_file = ($result->allowance_file_attack != '') ? unserialize($result->allowance_file_attack) : array();
 								$arr_file[] = $file_name;
 								$new_row['allowance_file_attack'] = serialize($arr_file);
+								$new_row['allowance_person_id'] = $id_hiden_person;
                                 Allowance::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
@@ -692,6 +794,61 @@ class AjaxUploadController extends BaseAdminController{
 								foreach($arr_file as $_k=>$_v){
 									if($_v == $file_name){
 										$tmpImg['name_key'] = $_k;;
+									}
+								}
+							}
+							break;
+
+						case Define::FILE_TYPE_RETIREMENT:
+							$result = Retirement::find($item_id);
+							if($result != null){
+								$arr_file = ($result->retirement_file_attack != '') ? unserialize($result->retirement_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['retirement_file_attack'] = serialize($arr_file);
+								$new_row['retirement_person_id'] = $id_hiden_person;
+
+								Retirement::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;
+									}
+								}
+							}
+							break;
+						case Define::FILE_TYPE_QUITJOB:
+							$result = QuitJob::find($item_id);
+							if($result != null){
+								$arr_file = ($result->quit_job_file_attack != '') ? unserialize($result->quit_job_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['quit_job_file_attack'] = serialize($arr_file);
+								$new_row['quit_job_person_id'] = $id_hiden_person;
+								$new_row['quit_job_type'] = Define::QUITJOB_CHUYEN_CONGTAC;
+								QuitJob::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;
+									}
+								}
+							}
+							break;
+						case Define::FILE_TYPE_CONTRACTS:
+							$result = HrContracts::find($item_id);
+							if($result != null){
+								$arr_file = ($result->contracts_file_attack != '') ? unserialize($result->contracts_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['contracts_file_attack'] = serialize($arr_file);
+								$new_row['contracts_person_id'] = $id_hiden_person;
+
+								HrContracts::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;
 									}
 								}
 							}

@@ -200,13 +200,14 @@
         jQuery('.ajax-upload-dragdrop').remove();
         var urlAjaxUpload = WEB_ROOT+'/ajax/upload?act=upload_ext';
         var id_hiden = document.getElementById('id_hiden').value;
+        var id_hiden_person = document.getElementById('id_hiden_person').value;
         var _token = $('meta[name="csrf-token"]').val();
         var settings = {
             url: urlAjaxUpload,
             method: "POST",
             allowedTypes:"jpg,jpeg,png,gif,txt,ppt,pptx,xls,xlsx,doc,docx,pdf,rar,zip,tar,mp4,flv,avi,3gp,mov",
             fileName: "multipleFile",
-            formData: {id:id_hiden,type:type, _token:_token},
+            formData: {id:id_hiden,type:type, _token:_token, id_hiden_person:id_hiden_person},
             multiple: false,
             onSubmit:function(){
                 jQuery( "#sys_show_button_upload_file").hide();

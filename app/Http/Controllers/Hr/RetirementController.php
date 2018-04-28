@@ -10,6 +10,7 @@ use App\Http\Models\Hr\HrDefine;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
+use App\Library\AdminFunction\Loader;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Request;
 use Illuminate\Support\Facades\Response;
@@ -53,8 +54,14 @@ class RetirementController extends BaseAdminController
         ];
     }
 
-    public function getItem($person_ids)
-    {
+    public function getItem($person_ids){
+
+        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
+        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
+        Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
+        Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
+
         CGlobal::$pageAdminTitle = 'Thiết lập ngày nghỉ hưu';
         $person_id = FunctionLib::outputId($person_ids);
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
@@ -64,6 +71,12 @@ class RetirementController extends BaseAdminController
         if ($person_id > 0) {
             $data = Retirement::getRetirementByPersonId($person_id);
         }
+
+        $retirement_id = 0;
+        if(sizeof($data) > 0){
+            $retirement_id = $data->retirement_id;
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
         $this->getDataDefault();
@@ -72,6 +85,7 @@ class RetirementController extends BaseAdminController
             'data' => $data,
             'infoPerson' => $infoPerson,
             'person_id' => $person_id,
+            'retirement_id' => $retirement_id,
         ], $this->viewPermission));
     }
     public function postItem($person_ids)
@@ -103,6 +117,15 @@ class RetirementController extends BaseAdminController
                 }
             }
         }
+
+        $retirement_id = 0;
+        if($person_id > 0){
+            $dataRetirement = Retirement::getRetirementByPersonId($person_id);
+            if(sizeof($dataRetirement) > 0){
+                $retirement_id = $dataRetirement->retirement_id;
+            }
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
         $this->getDataDefault();
@@ -111,6 +134,7 @@ class RetirementController extends BaseAdminController
             'data' => $data,
             'person_id' => $person_id,
             'infoPerson' => $infoPerson,
+            'retirement_id' => $retirement_id,
             'error' => $this->error,
         ], $this->viewPermission));
     }
