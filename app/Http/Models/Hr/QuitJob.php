@@ -16,7 +16,7 @@ class QuitJob extends BaseModel
     protected $primaryKey = 'quit_job_id';
     public $timestamps = false;
 
-    protected $fillable = array('quit_job_project', 'quit_job_person_id', 'quit_job_type', 'quit_job_date_creater', 'quit_job_note','quit_job_depart_id');
+    protected $fillable = array('quit_job_project', 'quit_job_person_id','quit_job_file_attack', 'quit_job_type', 'quit_job_date_creater', 'quit_job_note','quit_job_depart_id');
     public static function getQuitJobByPersonId($quit_job_person_id,$quit_job_type)
     {
         $data = QuitJob::where('quit_job_person_id', $quit_job_person_id)

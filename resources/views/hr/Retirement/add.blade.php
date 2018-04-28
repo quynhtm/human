@@ -11,7 +11,7 @@
                     <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
                 <li><a href="{{URL::route('hr.personnelView')}}"> Danh sách nhân sự</a></li>
-                <li class="active">Thông tin hộ chiếu - mã số thuế</li>
+                <li class="active">Thiết lập ngày nghỉ hưu</li>
             </ul><!-- /.breadcrumb -->
         </div>
 

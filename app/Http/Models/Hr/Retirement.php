@@ -16,7 +16,7 @@ class Retirement extends BaseModel
     protected $primaryKey = 'retirement_id';
     public $timestamps = false;
 
-    protected $fillable = array('retirement_project', 'retirement_person_id', 'retirement_date_creater', 'retirement_date_notification', 'retirement_date',
+    protected $fillable = array('retirement_project', 'retirement_person_id','retirement_file_attack', 'retirement_date_creater', 'retirement_date_notification', 'retirement_date',
         'retirement_note', 'retirement_position_define_id');
     public static function getRetirementByPersonId($retirement_person_id)
     {

@@ -18,7 +18,7 @@ class HrContracts extends BaseModel
     protected $primaryKey = 'contracts_id';
     public $timestamps = false;
 
-    protected $fillable = array('contracts_project', 'contracts_code', 'contracts_person_id', 'contracts_type_define_id', 'contracts_type_define_name',
+    protected $fillable = array('contracts_project', 'contracts_code','contracts_file_attack', 'contracts_person_id', 'contracts_type_define_id', 'contracts_type_define_name',
         'contracts_payment_define_id', 'contracts_payment_define_name', 'contracts_sign_day', 'contracts_effective_date','contracts_dealine_date', 'contracts_describe', 'contracts_money',
         'contracts_creater_time', 'contracts_creater_user_id', 'contracts_creater_user_name',
         'contracts_update_time', 'contracts_update_user_id', 'contracts_update_user_name');

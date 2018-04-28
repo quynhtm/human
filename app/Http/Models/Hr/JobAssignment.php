@@ -16,7 +16,7 @@ class JobAssignment extends BaseModel
     protected $primaryKey = 'job_assignment_id';
     public $timestamps = false;
 
-    protected $fillable = array('job_assignment_project', 'job_assignment_person_id', 'job_assignment_define_id_new', 'job_assignment_define_id_old', 'job_assignment_date_creater',
+    protected $fillable = array('job_assignment_project', 'job_assignment_person_id', 'job_assignment_file_attack', 'job_assignment_define_id_new', 'job_assignment_define_id_old', 'job_assignment_date_creater',
         'job_assignment_date_start', 'job_assignment_date_end','job_assignment_code','job_assignment_note','job_assignment_status');
 
     public static function getJobAssignmentByPersonId($person_id)
