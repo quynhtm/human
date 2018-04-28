@@ -82,7 +82,16 @@
                                         </button>
                                         <ul class="dropdown-menu">
                                             @foreach($arrLinkEditPerson as $kl=>$val)
-                                                <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" @if($val['blank']==1) target="_blank"@endif><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                                @if(isset($val['javascript']) && $val['javascript'] >0)
+                                                    @if($val['javascript'] == 1)
+                                                        <?php $msg = 'Bạn có chắc muốn xóa thông tin Nhân sự này?';?>
+                                                    @else
+                                                        <?php $msg = 'Bạn có chắc muốn khôi phục thông tin Nhân sự này?';?>
+                                                    @endif
+                                                    <li><a title="{{$val['name_url']}}" href="javascript:void(0);" onclick="HR.onclickActionDeletePerson('{{$msg}}','{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}');"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                                @else
+                                                    <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" @if($val['blank']==1) target="_blank"@endif><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
+                                                @endif
                                             @endforeach
                                         </ul>
                                     </div>
