@@ -16,12 +16,12 @@ class Person extends BaseModel
     protected $primaryKey = 'person_id';
     public $timestamps = false;
 
-    protected $fillable = array('person_project', 'person_depart_id', 'person_depart_name', 'person_date_trial_work', 'person_date_start_work',
-        'person_name', 'person_name_other','person_chung_minh_thu','person_date_range_cmt','person_issued_cmt',
-        'person_birth','person_sex','person_mail','person_code','person_phone','person_telephone','person_position_define_id','person_position_define_name',
-        'person_career_define_id','person_career_define_name','person_address_place_of_birth','person_province_place_of_birth','person_address_home_town','person_province_home_town',
+    protected $fillable = array('person_project', 'person_depart_id', 'person_is_dangvien', 'person_ngayvao_dang', 'person_date_trial_work', 'person_date_start_work',
+        'person_name', 'person_name_other','person_chung_minh_thu','person_date_range_cmt','person_issued_cmt','person_type_contracts',
+        'person_birth','person_sex','person_mail','person_code','person_phone','person_telephone','person_position_define_id',
+        'person_career_define_id','person_address_place_of_birth','person_province_place_of_birth','person_address_home_town','person_province_home_town',
         'person_address_current','person_province_current','person_wards_current','person_districts_current',
-        'person_nation_define_id','person_nation_define_name','person_respect','person_height','person_weight',
+        'person_nation_define_id','person_respect','person_height','person_weight',
         'person_blood_group_define_id','person_date_salary_increase','person_status','person_avatar',
         'person_creater_time','person_creater_user_id','person_creater_user_name',
         'person_update_time','person_update_user_id','person_update_user_name');

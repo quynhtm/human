@@ -130,17 +130,25 @@ use App\Library\AdminFunction\CGlobal;
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-5">
+                        <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="name" class="control-label">Sở trường công tác</label>
                                 <input type="text" id="person_extend_sotruong_congtac" name="person_extend_sotruong_congtac"  class="form-control input-sm" value="@if(isset($data['person_extend_sotruong_congtac'])){{$data['person_extend_sotruong_congtac']}}@endif">
                             </div>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-2">
                             <div class="form-group">
-                                <label for="name" class="control-label">Công việc làm lâu nhất</label>
-                                <select name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" class="form-control input-sm">
-                                    {!! $optionCongviec_launhat !!}
+                                <label for="name" class="control-label">Trình độ quản lý nhà nước</label>
+                                <select name="person_extend_trinhdo_quanly_nhanuoc" id="person_extend_trinhdo_quanly_nhanuoc" class="form-control input-sm">
+                                    {!! $optionQL_nha_nuoc !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_qlnn" id="person_extend_namdat_qlnn" class="form-control input-sm">
+                                    {!! $optionYears_namdat_qlnn !!}
                                 </select>
                             </div>
                         </div>
@@ -153,7 +161,14 @@ use App\Library\AdminFunction\CGlobal;
                                 <input type="text" class="form-control" id="person_extend_ngaythamgia_cachmang" name="person_extend_ngaythamgia_cachmang" value="@if(isset($data['person_extend_ngaythamgia_cachmang']) && $data['person_extend_ngaythamgia_cachmang'] != 0){{date('d-m-Y',$data['person_extend_ngaythamgia_cachmang'])}}@endif">
                             </div>
                         </div>
-
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Đảng viên</label>
+                                <select name="person_extend_is_dangvien" id="person_extend_is_dangvien" class="form-control input-sm">
+                                    {!! $optionDangVien !!}
+                                </select>
+                            </div>
+                        </div>
                         <div class="col-sm-2">
                             <div class="form-group">
                                 <label for="name" class="control-label">Ngày vào Đảng</label>
@@ -173,22 +188,15 @@ use App\Library\AdminFunction\CGlobal;
                                 <input type="text" class="form-control" id="person_extend_ngaythamgia_tochuc" name="person_extend_ngaythamgia_tochuc" value="@if(isset($data['person_extend_ngaythamgia_tochuc']) && $data['person_extend_ngaythamgia_tochuc'] != 0){{date('d-m-Y',$data['person_extend_ngaythamgia_tochuc'])}}@endif">
                             </div>
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-3">
                             <div class="form-group">
-                                <label for="name" class="control-label">Trình độ quản lý nhà nước</label>
-                                <select name="person_extend_trinhdo_quanly_nhanuoc" id="person_extend_trinhdo_quanly_nhanuoc" class="form-control input-sm">
-                                    {!! $optionQL_nha_nuoc !!}
+                                <label for="name" class="control-label">Công việc làm lâu nhất</label>
+                                <select name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" class="form-control input-sm">
+                                    {!! $optionCongviec_launhat !!}
                                 </select>
                             </div>
                         </div>
-                        <div class="col-sm-2">
-                            <div class="form-group">
-                                <label for="name" class="control-label">Năm đạt</label>
-                                <select name="person_extend_namdat_qlnn" id="person_extend_namdat_qlnn" class="form-control input-sm">
-                                    {!! $optionYears_namdat_qlnn !!}
-                                </select>
-                            </div>
-                        </div>
+
 
 
 

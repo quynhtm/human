@@ -18,7 +18,7 @@ use App\Library\AdminFunction\Pagging;
 
 class CurriculumVitaePersonController extends BaseAdminController
 {
-    //contracts
+    //lý lịch 2C
     private $personCurriculumVitaeView = 'personCurriculumVitaeView';
     private $personCurriculumVitaeFull = 'personCurriculumVitaeFull';
     private $personCurriculumVitaeDelete = 'personCurriculumVitaeDelete';

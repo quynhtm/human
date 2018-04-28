@@ -47,8 +47,8 @@ class HrContracts extends BaseModel
                 }
             }
             $item->save();
-
             DB::connection()->getPdo()->commit();
+            $checkData->dataSynPerson($item);
             self::removeCache($item->contracts_id, $item);
             return $item->contracts_id;
         } catch (PDOException $e) {
@@ -69,6 +69,7 @@ class HrContracts extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
+            $checkData->dataSynPerson($item);
             self::removeCache($item->contracts_id, $item);
             return true;
         } catch (PDOException $e) {
@@ -77,7 +78,16 @@ class HrContracts extends BaseModel
             throw new PDOException();
         }
     }
-
+    public function dataSynPerson($contracts)
+    {
+        if (isset($contracts->contracts_person_id) && $contracts->contracts_person_id > 0) {
+            $person = Person::find((int)$contracts->contracts_person_id);
+            if (isset($person->person_id)) {
+                $dataUpdate['person_type_contracts'] = $contracts->contracts_type_define_id;
+                Person::updateItem($person->person_id, $dataUpdate);
+            }
+        }
+    }
     public function checkField($dataInput)
     {
         $fields = $this->fillable;

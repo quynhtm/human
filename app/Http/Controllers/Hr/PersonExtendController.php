@@ -30,7 +30,7 @@ class PersonExtendController extends BaseAdminController
     private $arrMenuParent = array();
     private $arrRoleType = array();
     private $arrSex = array();
-    private $arrTonGiao = array();
+    private $arrTrueFasle = array();
     private $viewPermission = array();//check quyen
     private $viewOptionData = array();
 
@@ -51,7 +51,7 @@ class PersonExtendController extends BaseAdminController
             CGlobal::status_hide => FunctionLib::controLanguage('sex_girl', $this->languageSite),
             CGlobal::status_show => FunctionLib::controLanguage('sex_boy', $this->languageSite));
 
-        $this->arrTonGiao = array(
+        $this->arrTrueFasle = array(
             CGlobal::status_hide => 'Không',
             CGlobal::status_show => 'Có');
     }
@@ -226,6 +226,8 @@ class PersonExtendController extends BaseAdminController
         $optionTrinhdoNgoaiNgu_3 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_3']) ? $data['person_extend_trinhdo_3'] : 0);
         $optionTrinhdoNgoaiNgu_4 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_4']) ? $data['person_extend_trinhdo_4'] : 0);
 
+        $optionDangVien = FunctionLib::getOption($this->arrTrueFasle, isset($data['person_extend_is_dangvien']) ? $data['person_extend_is_dangvien'] : 0);
+
         return $this->viewOptionData = [
             'optionYears_namdat_qlnn' => $optionYears_namdat_qlnn,
             'optionYears_namdat_tinhoc' => $optionYears_namdat_tinhoc,
@@ -255,6 +257,7 @@ class PersonExtendController extends BaseAdminController
             'optionTrinhdoNgoaiNgu_2' => $optionTrinhdoNgoaiNgu_2,
             'optionTrinhdoNgoaiNgu_3' => $optionTrinhdoNgoaiNgu_3,
             'optionTrinhdoNgoaiNgu_4' => $optionTrinhdoNgoaiNgu_4,
+            'optionDangVien' => $optionDangVien,
         ];
     }
 
