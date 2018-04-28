@@ -93,8 +93,8 @@ class Define
     const CACHE_CRONJOB_ID_ = 'cache_cronjob_id_';
     const CACHE_ALL_CRONJOB = 'cache_all_cronjob';
 
-    const CACHE_DISTRICT_WITH_PROVINCE_ID    = 'cache_district_with_province_id_';
-    const CACHE_WARDS_WITH_DISTRICT_ID    = 'cache_wards_with_district_id_';
+    const CACHE_DISTRICT_WITH_PROVINCE_ID = 'cache_district_with_province_id_';
+    const CACHE_WARDS_WITH_DISTRICT_ID = 'cache_wards_with_district_id_';
 
     //Hr nhân sự
     const CACHE_PERSON = 'cache_info_person_id_';
@@ -184,8 +184,8 @@ class Define
     const trinh_do_hoc_van = 15;
     const ly_luan_chinh_tri = 16;
     const ngoai_ngu = 17;
-    const thang_bang_luong = 18;
-    const ngach_cong_chuc = 19;
+    const cong_tac_chinh = 18;
+    const trinh_do_ql_nhanuoc = 19;
     const bac_luong = 20;
     const danh_hieu = 21;
     const khen_thuong = 22;
@@ -209,6 +209,7 @@ class Define
     const co_quan_ban_hanh = 39;
     const loai_van_ban = 40;
     const linh_vuc = 41;
+    const trinh_do_ngoai_ngu = 42;
 
     static $arrOptionDefine = array(
         Define::chuc_vu => 'Chức vụ',
@@ -217,6 +218,10 @@ class Define
         Define::nghach_bac => 'Ngạch bậc',
         Define::trinh_do_ql_nghe_nghiep => 'Trình độ quản lý nghề nghiệp',
         Define::trinh_do_ly_luan => 'Trình độ lý luận',
+        Define::trinh_do_ql_nhanuoc=> 'Trình độ quản lý nhà nước',
+        Define::trinh_do_hoc_van => 'Trình độ học vấn',
+        Define::trinh_do_tin_hoc => 'Trình độ tin học',
+        Define::trinh_do_ngoai_ngu => 'Trình độ ngoại ngữ',
         Define::loai_phong_ban => 'Loại phòng ban',
         Define::chuc_danh_nghe_nghiep => 'Chức danh nghề nghiệp',
         Define::chuc_danh_khoa_hoc_cong_nghe => 'Chức danh khoa học công nghệ',
@@ -225,11 +230,10 @@ class Define
         Define::ton_giao => 'Tôn giáo',
         Define::thanh_phan_gia_dinh => 'Thành phần gia đình',
         Define::quan_ham => 'Quân hàm',
-        Define::trinh_do_hoc_van => 'Trình độ học vấn',
+
         Define::ly_luan_chinh_tri => 'Lý luận chính trị',
         Define::ngoai_ngu => 'Ngoại ngữ',
-        //Define::thang_bang_luong => 'Thang bảng lương',
-        //Define::ngach_cong_chuc => 'Ngạch công chức',
+        Define::cong_tac_chinh => 'Chức vụ công tác',
         //Define::bac_luong => 'Bậc lương',
         Define::danh_hieu => 'Danh hiệu',
         Define::khen_thuong => 'Khen thưởng',
@@ -237,7 +241,7 @@ class Define
         Define::tinh_trang_suc_khoe => 'Tình trang sức khỏe',
         Define::nhom_mau => 'Nhóm máu',
         Define::hang_thuong_binh => 'Hạng thương binh',
-        Define::trinh_do_tin_hoc => 'Trình độ tin học',
+
         Define::loai_hop_dong => 'Loại hợp đồng',
         Define::loai_dao_tao => 'Loại đào tạo',
         Define::van_bang_chung_chi => 'Văn bằng chứng chỉ',
@@ -279,6 +283,7 @@ class Define
         Define::allowance_method_type_3 => 'Phụ cấp theo hệ số',
     );
 
+    static $arrCheckDefault = array(0 => '--- Chọn ---');
     //Phan loai: 1.thang bang luong, 2.ngach cong chuc, 3.ma ngach, 4.bac luong-he so
     const type_thang_bang_luong = 1;
     const type_ngach_cong_chuc = 2;

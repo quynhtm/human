@@ -1250,7 +1250,7 @@ html;
 
     public static function getListMonth()
     {
-        $arrMonth = [];
+        $arrMonth[0] = '---Chọn tháng---';
         for ($m = 1; $m <= 12; $m++) {
             $arrMonth[$m] = $m;
         }
@@ -1266,6 +1266,7 @@ html;
             $arrYear[$year] = $year;
         }
         krsort($arrYear);
+        $arrYear[0] = '---Chọn năm---';
         return $arrYear;
     }
 

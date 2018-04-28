@@ -293,7 +293,6 @@ use App\Library\AdminFunction\CGlobal;
                 timepicker:false,
                 dateFormat: 'dd-mm-yy',
                 lang:'vi',
-                minDate: dateToday,
             });
             var person_date_trial_work = $('#person_date_trial_work').datepicker({
                 timepicker:false,
@@ -311,7 +310,6 @@ use App\Library\AdminFunction\CGlobal;
                 timepicker:false,
                 format:'d-m-Y',
                 lang:'vi',
-                minDate: dateToday,
             });
         });
     </script>

@@ -70,7 +70,7 @@ class PersonExtendController extends BaseAdminController
 
     public function getItem($personId)
     {
-        CGlobal::$pageAdminTitle = 'Thông tin nhân sự mở rộng';
+        CGlobal::$pageAdminTitle = 'Bổ xung thêm thông tin nhân sự';
         $person_id = FunctionLib::outputId($personId);
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
@@ -95,28 +95,33 @@ class PersonExtendController extends BaseAdminController
 
     public function postItem($personId)
     {
-        CGlobal::$pageAdminTitle = 'Thông tin nhân sự mở rộng';
+        CGlobal::$pageAdminTitle = 'Bổ xung thêm thông tin nhân sự';
         $person_id = FunctionLib::outputId($personId);
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
-        $id_hiden = (int)Request::get('id_hiden', 0);
+        if ($person_id <= 0) {
+            return Redirect::route('hr.personnelView');
+        }
+        $id_hiden = Request::get('id_hiden', '');
         $data = $_POST;
-        $data['ordering'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
-        $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '') ? strtotime($data['person_date_trial_work']) : 0;
-        $data['person_date_start_work'] = (isset($data['person_date_start_work']) && $data['person_date_start_work'] != '') ? strtotime($data['person_date_start_work']) : 0;
-        $data['person_date_range_cmt'] = (isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != '') ? strtotime($data['person_date_range_cmt']) : 0;
 
-        $data['person_birth'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
-        $data['person_avatar'] = (isset($data['img']) && $data['img'] != '') ? trim($data['img']) : '';
-        $data['person_status'] = Define::STATUS_SHOW;
+        $data['person_extend_ngaytuyendung'] = (isset($data['person_extend_ngaytuyendung']) && $data['person_extend_ngaytuyendung'] != '') ? strtotime($data['person_extend_ngaytuyendung']) : 0;
+        $data['person_extend_ngaylamviec'] = (isset($data['person_extend_ngaylamviec']) && $data['person_extend_ngaylamviec'] != '') ? strtotime($data['person_extend_ngaylamviec']) : 0;
+        $data['person_extend_ngaythamgia_cachmang'] = (isset($data['person_extend_ngaythamgia_cachmang']) && $data['person_extend_ngaythamgia_cachmang'] != '') ? strtotime($data['person_extend_ngaythamgia_cachmang']) : 0;
+        $data['person_extend_ngayvaodang'] = (isset($data['person_extend_ngayvaodang']) && $data['person_extend_ngayvaodang'] != '') ? strtotime($data['person_extend_ngayvaodang']) : 0;
+        $data['person_extend_ngayvaodang_chinhthuc'] = (isset($data['person_extend_ngayvaodang_chinhthuc']) && $data['person_extend_ngayvaodang_chinhthuc'] != '') ? strtotime($data['person_extend_ngayvaodang_chinhthuc']) : 0;
+        $data['person_extend_ngaythamgia_tochuc'] = (isset($data['person_extend_ngaythamgia_tochuc']) && $data['person_extend_ngaythamgia_tochuc'] != '') ? strtotime($data['person_extend_ngaythamgia_tochuc']) : 0;
+        $data['person_extend_ngaynhapngu'] = (isset($data['person_extend_ngaynhapngu']) && $data['person_extend_ngaynhapngu'] != '') ? strtotime($data['person_extend_ngaynhapngu']) : 0;
+        $data['person_extend_ngayxuatngu'] = (isset($data['person_extend_ngayxuatngu']) && $data['person_extend_ngayxuatngu'] != '') ? strtotime($data['person_extend_ngayxuatngu']) : 0;
+        $data['person_extend_person_id'] = $person_id;
 
         if ($this->valid($data) && empty($this->error)) {
-            $id = ($person_id == 0) ? $id_hiden : $person_id;
+            $person_id = ($person_id == 0) ? FunctionLib::outputId($id_hiden) : $person_id;
             $person_extend_id = 0;
-            if ($id > 0) {
-                $data = PersonExtend::getPersonExtendByPersonId($person_id);
-                $person_extend_id = (isset($data->person_extend_id) && $data->person_extend_id > 0) ? $data->person_extend_id : $person_extend_id;
+            if ($person_id > 0) {
+                $dataPersonExtend = PersonExtend::getPersonExtendByPersonId($person_id);
+                $person_extend_id = (isset($dataPersonExtend->person_extend_id) && $dataPersonExtend->person_extend_id > 0) ? $dataPersonExtend->person_extend_id : $person_extend_id;
             }
             if ($person_extend_id > 0) {
                 //cap nhat
@@ -145,50 +150,111 @@ class PersonExtendController extends BaseAdminController
         ], $this->viewOptionData, $this->viewPermission));
     }
 
-    public function viewOptionData($data){
-        //thông tin của nhân sự
-        $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
-        $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
+    public function viewOptionData($data)
+    {
+        $arrYears = FunctionLib::getListYears();
+        $optionYears_namdat_qlnn = FunctionLib::getOption($arrYears, isset($data['person_extend_namdat_qlnn']) ? $data['person_extend_namdat_qlnn'] : 0);
+        $optionYears_namdat_tinhoc = FunctionLib::getOption($arrYears, isset($data['person_extend_namdat_tinhoc']) ? $data['person_extend_namdat_tinhoc'] : 0);
+        $optionYears_namdat_hoc_ham = FunctionLib::getOption($arrYears, isset($data['person_extend_namdat_hoc_ham']) ? $data['person_extend_namdat_hoc_ham'] : 0);
+        $optionYears_namdat_hoc_vi = FunctionLib::getOption($arrYears, isset($data['person_extend_namdat_hoc_vi']) ? $data['person_extend_namdat_hoc_vi'] : 0);
+        $optionYears_namdat_lyluan_chinhtri = FunctionLib::getOption($arrYears, isset($data['person_extend_namdat_lyluan_chinhtri']) ? $data['person_extend_namdat_lyluan_chinhtri'] : 0);
+
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($data['person_depart_id']) ? $data['person_depart_id'] : 0);
 
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
-        $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_position_define_id']) ? $data['person_position_define_id'] : 0);
+        $arrChucVu = !empty($arrChucVu) ? (Define::$arrCheckDefault + $arrChucVu) : Define::$arrCheckDefault;
+        $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_extend_chucvu_hiennay']) ? $data['person_extend_chucvu_hiennay'] : 0);
 
         $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
-        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_career_define_id']) ? $data['person_career_define_id'] : 0);
+        $arrChucDanhNgheNghiep = !empty($arrChucDanhNgheNghiep) ? (Define::$arrCheckDefault + $arrChucDanhNgheNghiep) : Define::$arrCheckDefault;
+        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_extend_chucdanh_khcn']) ? $data['person_extend_chucdanh_khcn'] : 0);
 
-        $arrNhomMau = HrDefine::getArrayByType(Define::nhom_mau);
-        $optionNhomMau = FunctionLib::getOption($arrNhomMau, isset($data['person_blood_group_define_id']) ? $data['person_blood_group_define_id'] : 0);
+        $arrCapUy = HrDefine::getArrayByType(Define::cap_uy);
+        $arrCapUy = !empty($arrCapUy) ? (Define::$arrCheckDefault + $arrCapUy) : Define::$arrCheckDefault;
+        $optionCapUy_hiennay = FunctionLib::getOption($arrCapUy, isset($data['person_extend_capuy_hiennay']) ? $data['person_extend_capuy_hiennay'] : 0);
+        $optionCapUy_kiemnhiem = FunctionLib::getOption($arrCapUy, isset($data['person_extend_capuy_kiemnhiem']) ? $data['person_extend_capuy_kiemnhiem'] : 0);
 
-        $arrDanToc = HrDefine::getArrayByType(Define::dan_toc);
-        $optionDanToc = FunctionLib::getOption($arrDanToc, isset($data['person_nation_define_id']) ? $data['person_nation_define_id'] : 0);
+        $arrThanhphangiadinh = HrDefine::getArrayByType(Define::thanh_phan_gia_dinh);
+        $arrThanhphangiadinh = !empty($arrThanhphangiadinh) ? (Define::$arrCheckDefault + $arrThanhphangiadinh) : Define::$arrCheckDefault;
+        $optionThanhphan_giadinh = FunctionLib::getOption($arrThanhphangiadinh, isset($data['person_extend_thanhphan_giadinh']) ? $data['person_extend_thanhphan_giadinh'] : 0);
 
-        $arrProvince = Province::getAllProvince();
-        $optionProvincePlaceBirth = FunctionLib::getOption($arrProvince, isset($data['person_province_place_of_birth']) ? $data['person_province_place_of_birth'] : Define::PROVINCE_HANOI);
-        $optionProvinceHomeTown = FunctionLib::getOption($arrProvince, isset($data['person_province_home_town']) ? $data['person_province_home_town'] : Define::PROVINCE_HANOI);
+        $arrCongtac_danglam = HrDefine::getArrayByType(Define::cong_tac_chinh);
+        $arrCongtac_danglam = !empty($arrCongtac_danglam) ? (Define::$arrCheckDefault + $arrCongtac_danglam) : Define::$arrCheckDefault;
+        $optionCongtac_danglam = FunctionLib::getOption($arrCongtac_danglam, isset($data['person_extend_congtac_danglam']) ? $data['person_extend_congtac_danglam'] : 0);
+        $optionCongviec_launhat = FunctionLib::getOption($arrCongtac_danglam, isset($data['person_extend_congviec_launhat']) ? $data['person_extend_congviec_launhat'] : 0);
 
-        $person_province_current = isset($data['person_province_current']) ? $data['person_province_current'] : Define::PROVINCE_HANOI;
-        $optionProvinceCurrent = FunctionLib::getOption($arrProvince, $person_province_current);
-        $arrDistricts = Districts::getDistrictByProvinceId($person_province_current);
-        $optionDistrictsCurrent = FunctionLib::getOption($arrDistricts, isset($data['person_districts_current']) ? $data['person_districts_current'] : 0);
-        $person_districts_current = isset($data['person_districts_current']) ? $data['person_districts_current'] : 0;
-        $arrWards = Wards::getWardsByDistrictId($person_districts_current);
-        $optionWardsCurrent = FunctionLib::getOption($arrWards, isset($data['person_wards_current']) ? $data['person_wards_current'] : 0);
+        $arrQL_nha_nuoc = HrDefine::getArrayByType(Define::trinh_do_ql_nhanuoc);
+        $arrQL_nha_nuoc = !empty($arrQL_nha_nuoc) ? (Define::$arrCheckDefault + $arrQL_nha_nuoc) : Define::$arrCheckDefault;
+        $optionQL_nha_nuoc = FunctionLib::getOption($arrQL_nha_nuoc, isset($data['person_extend_trinhdo_quanly_nhanuoc']) ? $data['person_extend_trinhdo_quanly_nhanuoc'] : 0);
+
+        $arrQuanham = HrDefine::getArrayByType(Define::quan_ham);
+        $arrQuanham = !empty($arrQuanham) ? (Define::$arrCheckDefault + $arrQuanham) : Define::$arrCheckDefault;
+        $optionQuanham = FunctionLib::getOption($arrQuanham, isset($data['person_extend_chucvu_quanngu']) ? $data['person_extend_chucvu_quanngu'] : 0);
+
+        $arrHocvan = HrDefine::getArrayByType(Define::trinh_do_hoc_van);
+        $arrHocvan = !empty($arrHocvan) ? (Define::$arrCheckDefault + $arrHocvan) : Define::$arrCheckDefault;
+        $optionHocvan = FunctionLib::getOption($arrHocvan, isset($data['person_extend_trinhdo_hocvan']) ? $data['person_extend_trinhdo_hocvan'] : 0);
+
+        $arrTinhoc = HrDefine::getArrayByType(Define::trinh_do_tin_hoc);
+        $arrTinhoc = !empty($arrTinhoc) ? (Define::$arrCheckDefault + $arrTinhoc) : Define::$arrCheckDefault;
+        $optionTinhoc = FunctionLib::getOption($arrTinhoc, isset($data['person_extend_trinhdo_tinhoc']) ? $data['person_extend_trinhdo_tinhoc'] : 0);
+
+        $arrHocHam = HrDefine::getArrayByType(Define::hoc_ham);
+        $arrHocHam = !empty($arrHocHam) ? (Define::$arrCheckDefault + $arrHocHam) : Define::$arrCheckDefault;
+        $optionHocHam = FunctionLib::getOption($arrHocHam, isset($data['person_extend_hoc_ham']) ? $data['person_extend_hoc_ham'] : 0);
+
+        $arrHocvi = HrDefine::getArrayByType(Define::hoc_vi);
+        $arrHocvi = !empty($arrHocvi) ? (Define::$arrCheckDefault + $arrHocvi) : Define::$arrCheckDefault;
+        $optionHocvi = FunctionLib::getOption($arrHocvi, isset($data['person_extend_hoc_vi']) ? $data['person_extend_hoc_vi'] : 0);
+
+        $arrLyluan_chinhtri = HrDefine::getArrayByType(Define::ly_luan_chinh_tri);
+        $arrLyluan_chinhtri = !empty($arrLyluan_chinhtri) ? (Define::$arrCheckDefault + $arrLyluan_chinhtri) : Define::$arrCheckDefault;
+        $optionLyluan_chinhtri = FunctionLib::getOption($arrLyluan_chinhtri, isset($data['person_extend_lyluan_chinhtri']) ? $data['person_extend_lyluan_chinhtri'] : 0);
+
+        $arrNgoaiNgu = HrDefine::getArrayByType(Define::ngoai_ngu);
+        $arrNgoaiNgu = !empty($arrNgoaiNgu) ? (Define::$arrCheckDefault + $arrNgoaiNgu) : Define::$arrCheckDefault;
+        $optionNgoaiNgu_1 = FunctionLib::getOption($arrNgoaiNgu, isset($data['person_extend_language_1']) ? $data['person_extend_language_1'] : 0);
+        $optionNgoaiNgu_2 = FunctionLib::getOption($arrNgoaiNgu, isset($data['person_extend_language_2']) ? $data['person_extend_language_2'] : 0);
+        $optionNgoaiNgu_3 = FunctionLib::getOption($arrNgoaiNgu, isset($data['person_extend_language_3']) ? $data['person_extend_language_3'] : 0);
+        $optionNgoaiNgu_4 = FunctionLib::getOption($arrNgoaiNgu, isset($data['person_extend_language_4']) ? $data['person_extend_language_4'] : 0);
+
+        $arrTrinhdoNgoaiNgu = HrDefine::getArrayByType(Define::trinh_do_ngoai_ngu);
+        $arrTrinhdoNgoaiNgu = !empty($arrTrinhdoNgoaiNgu) ? (Define::$arrCheckDefault + $arrTrinhdoNgoaiNgu) : Define::$arrCheckDefault;
+        $optionTrinhdoNgoaiNgu_1 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_1']) ? $data['person_extend_trinhdo_1'] : 0);
+        $optionTrinhdoNgoaiNgu_2 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_2']) ? $data['person_extend_trinhdo_2'] : 0);
+        $optionTrinhdoNgoaiNgu_3 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_3']) ? $data['person_extend_trinhdo_3'] : 0);
+        $optionTrinhdoNgoaiNgu_4 = FunctionLib::getOption($arrTrinhdoNgoaiNgu, isset($data['person_extend_trinhdo_4']) ? $data['person_extend_trinhdo_4'] : 0);
 
         return $this->viewOptionData = [
-            'optionSex' => $optionSex,
+            'optionYears_namdat_qlnn' => $optionYears_namdat_qlnn,
+            'optionYears_namdat_tinhoc' => $optionYears_namdat_tinhoc,
+            'optionYears_namdat_hoc_ham' => $optionYears_namdat_hoc_ham,
+            'optionYears_namdat_hoc_vi' => $optionYears_namdat_hoc_vi,
+            'optionYears_namdat_lyluan_chinhtri' => $optionYears_namdat_lyluan_chinhtri,
             'optionDepart' => $optionDepart,
             'optionChucVu' => $optionChucVu,
             'optionChucDanhNgheNghiep' => $optionChucDanhNgheNghiep,
-            'optionNhomMau' => $optionNhomMau,
-            'optionDanToc' => $optionDanToc,
-            'optionTonGiao' => $optionTonGiao,
-            'optionProvincePlaceBirth' => $optionProvincePlaceBirth,
-            'optionProvinceHomeTown' => $optionProvinceHomeTown,
-            'optionProvinceCurrent' => $optionProvinceCurrent,
-            'optionDistrictsCurrent' => $optionDistrictsCurrent,
-            'optionWardsCurrent' => $optionWardsCurrent,
+            'optionCapUy_hiennay' => $optionCapUy_hiennay,
+            'optionCapUy_kiemnhiem' => $optionCapUy_kiemnhiem,
+            'optionThanhphan_giadinh' => $optionThanhphan_giadinh,
+            'optionCongtac_danglam' => $optionCongtac_danglam,
+            'optionCongviec_launhat' => $optionCongviec_launhat,
+            'optionQL_nha_nuoc' => $optionQL_nha_nuoc,
+            'optionQuanham' => $optionQuanham,
+            'optionHocvan' => $optionHocvan,
+            'optionTinhoc' => $optionTinhoc,
+            'optionHocvi' => $optionHocvi,
+            'optionHocHam' => $optionHocHam,
+            'optionLyluan_chinhtri' => $optionLyluan_chinhtri,
+            'optionNgoaiNgu_1' => $optionNgoaiNgu_1,
+            'optionNgoaiNgu_2' => $optionNgoaiNgu_2,
+            'optionNgoaiNgu_3' => $optionNgoaiNgu_3,
+            'optionNgoaiNgu_4' => $optionNgoaiNgu_4,
+            'optionTrinhdoNgoaiNgu_1' => $optionTrinhdoNgoaiNgu_1,
+            'optionTrinhdoNgoaiNgu_2' => $optionTrinhdoNgoaiNgu_2,
+            'optionTrinhdoNgoaiNgu_3' => $optionTrinhdoNgoaiNgu_3,
+            'optionTrinhdoNgoaiNgu_4' => $optionTrinhdoNgoaiNgu_4,
         ];
     }
 

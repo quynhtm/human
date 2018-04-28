@@ -183,7 +183,7 @@ class PersonController extends BaseAdminController
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
-        $id_hiden = (int)Request::get('id_hiden', 0);
+        $id_hiden = Request::get('id_hiden', '');
         $data = $_POST;
         $data['ordering'] = (isset($data['person_birth']) && $data['person_birth'] != '') ? strtotime($data['person_birth']) : 0;
         $data['person_date_trial_work'] = (isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != '') ? strtotime($data['person_date_trial_work']) : 0;
@@ -195,7 +195,7 @@ class PersonController extends BaseAdminController
         $data['person_status'] = Define::STATUS_SHOW;
 
         if ($this->valid($data) && empty($this->error)) {
-            $id = ($id == 0) ? $id_hiden : $id;
+            $id = ($id == 0) ? FunctionLib::outputId($id_hiden) : $id;
             if ($id > 0) {
                 //cap nhat
                 if (Person::updateItem($id, $data)) {

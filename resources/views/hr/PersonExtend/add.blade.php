@@ -14,7 +14,7 @@ use App\Library\AdminFunction\CGlobal;
                     <a href="{{URL::route('admin.dashboard')}}">Trang chủ</a>
                 </li>
                 <li><a href="{{URL::route('hr.personnelView')}}"> Danh sách nhân sự</a></li>
-                <li class="active">Thông tin nhân sự mở rộng</li>
+                <li class="active">Bổ xung thêm thông tin nhân sự</li>
             </ul><!-- /.breadcrumb -->
         </div>
         <div class="clear"></div>
@@ -44,7 +44,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Chức vụ (vị trí việc làm)<span class="red"> (*) </span></label>
                                 <select name="person_extend_chucvu_hiennay" id="person_extend_chucvu_hiennay" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionChucVu !!}
                                 </select>
                             </div>
                         </div>
@@ -60,7 +60,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Chức danh KHCN</label>
                                 <select name="person_extend_chucdanh_khcn" id="person_extend_chucdanh_khcn" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionChucDanhNgheNghiep !!}
                                 </select>
                             </div>
                         </div>
@@ -69,7 +69,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Cấp ủy hiện tại</label>
                                 <select name="person_extend_capuy_hiennay" id="person_extend_capuy_hiennay" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionCapUy_hiennay !!}
                                 </select>
                             </div>
                         </div>
@@ -78,7 +78,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Cấp ủy kiêm nhiệm</label>
                                 <select name="person_extend_capuy_kiemnhiem" id="person_extend_capuy_kiemnhiem" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionCapUy_kiemnhiem !!}
                                 </select>
                             </div>
                         </div>
@@ -88,7 +88,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Thành phần gia đình xuất thân</label>
                                 <select name="person_extend_thanhphan_giadinh" id="person_extend_thanhphan_giadinh" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionThanhphan_giadinh !!}
                                 </select>
                             </div>
                         </div>
@@ -126,7 +126,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Công tác chính đang làm</label>
                                 <select name="person_extend_congtac_danglam" id="person_extend_congtac_danglam" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionCongtac_danglam !!}
                                 </select>
                             </div>
                         </div>
@@ -140,7 +140,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Công việc làm lâu nhất</label>
                                 <select name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionCongviec_launhat !!}
                                 </select>
                             </div>
                         </div>
@@ -177,7 +177,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ quản lý nhà nước</label>
                                 <select name="person_extend_trinhdo_quanly_nhanuoc" id="person_extend_trinhdo_quanly_nhanuoc" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionQL_nha_nuoc !!}
                                 </select>
                             </div>
                         </div>
@@ -185,7 +185,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Năm đạt</label>
                                 <select name="person_extend_namdat_qlnn" id="person_extend_namdat_qlnn" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionYears_namdat_qlnn !!}
                                 </select>
                             </div>
                         </div>
@@ -210,7 +210,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Quân hàm, chức vụ cao nhất</label>
                                 <select name="person_extend_chucvu_quanngu" id="person_extend_chucvu_quanngu" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionQuanham !!}
                                 </select>
                             </div>
                         </div>
@@ -218,7 +218,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ học vấn</label>
                                 <select name="person_extend_trinhdo_hocvan" id="person_extend_trinhdo_hocvan" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionHocvan !!}
                                 </select>
                             </div>
                         </div>
@@ -226,7 +226,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ tin học</label>
                                 <select name="person_extend_trinhdo_tinhoc" id="person_extend_trinhdo_tinhoc" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionTinhoc !!}
                                 </select>
                             </div>
                         </div>
@@ -234,7 +234,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Năm đạt</label>
                                 <select name="person_extend_namdat_tinhoc" id="person_extend_namdat_tinhoc" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionYears_namdat_tinhoc !!}
                                 </select>
                             </div>
                         </div>
@@ -244,7 +244,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Học hàm</label>
                                 <select name="person_extend_hoc_ham" id="person_extend_hoc_ham" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionHocHam !!}
                                 </select>
                             </div>
                         </div>
@@ -253,7 +253,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Năm đạt</label>
                                 <select name="person_extend_namdat_hoc_ham" id="person_extend_namdat_hoc_ham" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionYears_namdat_hoc_ham !!}
                                 </select>
                             </div>
                         </div>
@@ -262,7 +262,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Học vị</label>
                                 <select name="person_extend_hoc_vi" id="person_extend_hoc_vi" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionHocvi !!}
                                 </select>
                             </div>
                         </div>
@@ -271,7 +271,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Năm đạt</label>
                                 <select name="person_extend_namdat_hoc_vi" id="person_extend_namdat_hoc_vi" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionYears_namdat_hoc_vi !!}
                                 </select>
                             </div>
                         </div>
@@ -280,7 +280,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Lý luận chính trị</label>
                                 <select name="person_extend_lyluan_chinhtri" id="person_extend_lyluan_chinhtri" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionLyluan_chinhtri !!}
                                 </select>
                             </div>
                         </div>
@@ -289,7 +289,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Năm đạt</label>
                                 <select name="person_extend_namdat_lyluan_chinhtri" id="person_extend_namdat_lyluan_chinhtri" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionYears_namdat_lyluan_chinhtri !!}
                                 </select>
                             </div>
                         </div>
@@ -299,7 +299,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Ngoại ngữ 1</label>
                                 <select name="person_extend_language_1" id="person_extend_language_1" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionNgoaiNgu_1 !!}
                                 </select>
                             </div>
                         </div>
@@ -307,7 +307,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ</label>
                                 <select name="person_extend_trinhdo_1" id="person_extend_trinhdo_1" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionTrinhdoNgoaiNgu_1 !!}
                                 </select>
                             </div>
                         </div>
@@ -316,7 +316,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Ngoại ngữ 2</label>
                                 <select name="person_extend_language_2" id="person_extend_language_2" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionNgoaiNgu_2 !!}
                                 </select>
                             </div>
                         </div>
@@ -324,7 +324,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ</label>
                                 <select name="person_extend_trinhdo_2" id="person_extend_trinhdo_2" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionTrinhdoNgoaiNgu_2 !!}
                                 </select>
                             </div>
                         </div>
@@ -333,7 +333,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Ngoại ngữ 3</label>
                                 <select name="person_extend_language_3" id="person_extend_language_3" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionNgoaiNgu_3 !!}
                                 </select>
                             </div>
                         </div>
@@ -341,7 +341,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ</label>
                                 <select name="person_extend_trinhdo_3" id="person_extend_trinhdo_3" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionTrinhdoNgoaiNgu_3 !!}
                                 </select>
                             </div>
                         </div>
@@ -350,7 +350,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Ngoại ngữ 4</label>
                                 <select name="person_extend_language_4" id="person_extend_language_4" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionNgoaiNgu_4 !!}
                                 </select>
                             </div>
                         </div>
@@ -358,7 +358,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Trình độ</label>
                                 <select name="person_extend_trinhdo_4" id="person_extend_trinhdo_4" class="form-control input-sm">
-                                    {!! $optionDepart !!}
+                                    {!! $optionTrinhdoNgoaiNgu_4 !!}
                                 </select>
                             </div>
                         </div>
@@ -368,7 +368,7 @@ use App\Library\AdminFunction\CGlobal;
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}
-                            <input id="id_hiden" name="id_hiden" @isset($data['person_id'])rel="{{$data['person_id']}}" value="{{FunctionLib::inputId($data['person_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
+                            <input id="id_hiden" name="id_hiden" @isset($data['person_extend_person_id'])rel="{{$data['person_extend_person_id']}}" value="{{FunctionLib::inputId($data['person_extend_person_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                             <a class="btn btn-warning" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-reply"></i> Trở lại</a>
                             <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại</button>
                         </div>
@@ -380,30 +380,14 @@ use App\Library\AdminFunction\CGlobal;
     <script>
         $(document).ready(function(){
             var dateToday = new Date();
-            var person_birth = $('#person_birth').datepicker({
-                timepicker:false,
-                dateFormat: 'dd-mm-yy',
-                lang:'vi',
-                minDate: dateToday,
-            });
-            var person_date_trial_work = $('#person_date_trial_work').datepicker({
-                timepicker:false,
-                dateFormat: 'dd-mm-yy',
-                lang:'vi',
-                minDate: dateToday,
-            });
-            var person_date_start_work = $('#person_date_start_work').datepicker({
-                timepicker:false,
-                dateFormat: 'dd-mm-yy',
-                lang:'vi',
-                minDate: dateToday,
-            });
-            var person_date_range_cmt = $('#person_date_range_cmt').datepicker({
-                timepicker:false,
-                format:'d-m-Y',
-                lang:'vi',
-                minDate: dateToday,
-            });
+            var person_extend_ngaytuyendung = $('#person_extend_ngaytuyendung').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngaylamviec = $('#person_extend_ngaylamviec').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi',});
+            var person_extend_ngaythamgia_cachmang = $('#person_extend_ngaythamgia_cachmang').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngayvaodang = $('#person_extend_ngayvaodang').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngayvaodang_chinhthuc = $('#person_extend_ngayvaodang_chinhthuc').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngaythamgia_tochuc = $('#person_extend_ngaythamgia_tochuc').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngaynhapngu = $('#person_extend_ngaynhapngu').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
+            var person_extend_ngayxuatngu = $('#person_extend_ngayxuatngu').datepicker({timepicker:false,dateFormat: 'dd-mm-yy',lang:'vi'});
         });
     </script>
 @stop
