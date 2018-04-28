@@ -77,7 +77,7 @@ class ReportController extends BaseAdminController
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name';
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id';
         $totalPerson = 0;
         $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
         $arrPerson = array();
@@ -85,7 +85,6 @@ class ReportController extends BaseAdminController
             $arrPerson[$_user->person_id] = array(
                 'person_name'=>$_user->person_name,
                 'person_depart_id'=>$_user->person_depart_id,
-                'person_depart_name'=>$_user->person_depart_name,
             );
         }
 
@@ -148,7 +147,7 @@ class ReportController extends BaseAdminController
 
         //lấy mảng id NS có
         $searchPerson['person_status'] = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU, Define::PERSON_STATUS_CHUYENCONGTAC);
-        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_depart_name,person_code,person_position_define_id';
+        $searchPerson['field_get'] = 'person_id,person_name,person_depart_id,person_code,person_position_define_id';
         $totalPerson = 0;
         $dataPerson = Person::searchByCondition($searchPerson, 0, 0, $totalPerson);
         $arrPerson = array();
