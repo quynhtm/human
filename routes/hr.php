@@ -106,6 +106,7 @@ Route::match(['GET','POST'],'personList/viewPreparingRetirement', array('as' => 
 Route::match(['GET','POST'],'personList/viewDealineContract', array('as' => 'hr.viewDealineContract','uses' => HResources.'\PersonListController@viewDealineContract'));
 Route::match(['GET','POST'],'personList/viewDealineSalary', array('as' => 'hr.viewDealineSalary','uses' => HResources.'\PersonListController@viewDealineSalary'));
 Route::match(['GET','POST'],'personList/viewDeletePerson', array('as' => 'hr.viewDeletePerson','uses' => HResources.'\PersonListController@viewDeletePerson'));
+Route::match(['GET','POST'],'personList/viewDangVienPerson', array('as' => 'hr.viewDangVienPerson','uses' => HResources.'\PersonListController@viewDangVienPerson'));
 
 /*Định nghĩa chung*/
 Route::match(['GET','POST'],'defined/view',array('as' => 'hr.definedView','uses' => HResources.'\HrDefinedController@view'));
