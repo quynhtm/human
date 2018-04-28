@@ -30,249 +30,340 @@ use App\Library\AdminFunction\CGlobal;
                                 @endforeach
                             </div>
                         @endif
-                    <!--Block 1--->
-                        <div class="form-group">
-                            <div class="col-md-2" >
-                                <div class="control-group">
-                                    <div class="controls">
-                                        <label for="name" class="control-label">
-                                            <a class="text-italic" href="javascript:void(0);" onclick="baseUpload.uploadOneImageAdvanced(2);">Up ảnh nhân sự</a>
-                                        </label>
-                                        <div id="sys_show_image_one" style="width:100%; height: 240px; overflow: hidden">
-                                            @if(isset($data['person_avatar']) && $data['person_avatar'] !='')
-                                                <img src="{{ThumbImg::thumbBaseNormal(Define::FOLDER_PERSONAL, $data['person_avatar'], Define::sizeImage_240, Define::sizeImage_300, '', true, true)}}"/>
-                                                <span class="remove_file one" onclick="baseUpload.deleteOneImageAdvanced(0, '{{FunctionLib::inputId($data['person_id'])}}', '{{$data['person_avatar']}}', 2)">X</span>
-                                            @else
-                                                <img src="{{Config::get('config.WEB_ROOT')}}assets/admin/img/icon/no-profile-image.gif"/>
-                                            @endif
-                                        </div>
-                                        <input name="img" type="hidden" id="img" @if(isset($data['person_avatar']))value="{{$data['person_avatar']}}"@endif>
-                                        <input name="img_old" type="hidden" id="img_old" @if(isset($data['person_avatar']))value="{{$data['person_avatar']}}"@endif>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Họ và tên khai sinh<span class="red"> (*) </span></label>
-                                    <input type="text" id="person_name" name="person_name"  class="form-control input-sm" value="@if(isset($data['person_name'])){{$data['person_name']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tên gọi khác</label>
-                                    <input type="text"  id="person_name_other" name="person_name_other" class="form-control input-sm" value="@if(isset($data['person_name_other'])){{$data['person_name_other']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Số di động</label>
-                                    <input type="text"  id="person_phone" name="person_phone"  class="form-control input-sm" value="@if(isset($data['person_phone'])){{$data['person_phone']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">ĐT nhà riêng/cơ quan</label>
-                                    <input type="text" id="person_telephone" name="person_telephone"  class="form-control input-sm" value="@if(isset($data['person_telephone'])){{$data['person_telephone']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày sinh</label>
-                                    <input type="text" class="form-control" id="person_birth" name="person_birth" value="@if(isset($data['person_birth']) && $data['person_birth'] != 0){{date('d-m-Y',$data['person_birth'])}}@endif">
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-4">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Phòng ban đơn vị<span class="red"> (*) </span></label>
-                                    <select name="person_depart_id" id="person_depart_id" class="form-control input-sm">
-                                        {!! $optionDepart !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Số hiệu công chức</label>
-                                    <input type="text" id="person_code" name="person_code"  class="form-control input-sm" value="@if(isset($data['person_code'])){{$data['person_code']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Giới tính</label>
-                                    <select name="person_sex" id="person_sex" class="form-control input-sm">
-                                        {!! $optionSex !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Email</label>
-                                    <input type="text" id="person_mail" name="person_mail"  class="form-control input-sm" value="@if(isset($data['person_mail'])){{$data['person_mail']}}@endif">
-                                </div>
-                            </div>
-
-
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Số CMT<span class="red"> (*) </span></label>
-                                    <input type="text"  id="person_chung_minh_thu" name="person_chung_minh_thu"  class="form-control input-sm" value="@if(isset($data['person_chung_minh_thu'])){{$data['person_chung_minh_thu']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Nơi cấp</label>
-                                    <input type="text"  id="person_issued_cmt" name="person_issued_cmt"  class="form-control input-sm" value="@if(isset($data['person_issued_cmt'])){{$data['person_issued_cmt']}}@endif">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Chức vụ</label>
-                                    <select name="person_position_define_id" id="person_position_define_id" class="form-control input-sm">
-                                        {!! $optionChucVu !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Chức danh nghề nghiệp</label>
-                                    <select name="person_career_define_id" id="person_career_define_id" class="form-control input-sm">
-                                        {!! $optionChucDanhNgheNghiep !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Nhóm máu</label>
-                                    <select name="person_blood_group_define_id" id="person_blood_group_define_id" class="form-control input-sm">
-                                        {!! $optionNhomMau !!}
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày cấp CMT<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_range_cmt" name="person_date_range_cmt"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_range_cmt']) && $data['person_date_range_cmt'] != 0){{date('d-m-Y',$data['person_date_range_cmt'])}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày thử việc</label>
-                                    <input type="text" class="form-control" id="person_date_trial_work" name="person_date_trial_work"  data-date-format="dd-mm-yyyy"value="@if(isset($data['person_date_trial_work']) && $data['person_date_trial_work'] != 0){{date('d-m-Y',$data['person_date_trial_work'])}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Ngày làm chính thức<span class="red"> (*) </span></label>
-                                    <input type="text" class="form-control" id="person_date_start_work" name="person_date_start_work"  data-date-format="dd-mm-yyyy" value="@if(isset($data['person_date_start_work']) && $data['person_date_start_work'] != 0){{date('d-m-Y',$data['person_date_start_work'])}}@endif">
-                                </div>
-                            </div>
-
-                    <!--Block 2--->
                         <div class="clear"></div>
-                        <div class="form-group">
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Địa chỉ nơi sinh<span class="red"> (*) </span></label>
-                                    <input type="text"  id="person_address_place_of_birth" name="person_address_place_of_birth"  class="form-control input-sm" value="@if(isset($data['person_address_place_of_birth'])){{$data['person_address_place_of_birth']}}@endif">
-                                </div>
+                        @if(isset($infoPerson))
+                            <div class="col-sm-12">
+                                <span class="span">Họ và tên:<b> {{$infoPerson->person_name}}</b></span>
+                                <span class="span">&nbsp;&nbsp;&nbsp;Số CMTND:<b> {{$infoPerson->person_chung_minh_thu}}</b></span>
+                                <span class="span">&nbsp;&nbsp;&nbsp;Số cán bộ:<b> {{$infoPerson->person_code}}</b></span>
                             </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tỉnh thành nơi sinh<span class="red"> (*) </span></label>
-                                    <select name="person_province_place_of_birth" id="person_province_place_of_birth" class="form-control input-sm">
-                                        {!! $optionProvincePlaceBirth !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Địa chỉ quê quán<span class="red"> (*) </span></label>
-                                    <input type="text"  id="person_address_home_town" name="person_address_home_town"  class="form-control input-sm" value="@if(isset($data['person_address_home_town'])){{$data['person_address_home_town']}}@endif">
-                                </div>
-                            </div>
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tỉnh thành quê quán<span class="red"> (*) </span></label>
-                                    <select name="person_province_home_town" id="person_province_home_town" class="form-control input-sm">
-                                        {!! $optionProvinceHomeTown !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Dân tộc</label>
-                                    <select name="person_nation_define_id" id="person_nation_define_id" class="form-control input-sm">
-                                        {!! $optionDanToc !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tôn giáo</label>
-                                    <select name="person_respect" id="person_respect" class="form-control input-sm">
-                                        {!! $optionTonGiao !!}
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="clear"></div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Địa chỉ hiện tại<span class="red"> (*) </span></label>
-                                    <input type="text"  id="person_address_current" name="person_address_current"  class="form-control input-sm" value="@if(isset($data['person_address_current'])){{$data['person_address_current']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Tỉnh thành hiện tại<span class="red"> (*) </span></label>
-                                    <select name="person_province_current" id="person_province_current" class="form-control input-sm" onchange="Admin.getAjaxDistrictsProvince(this,1,'person_districts_current')">
-                                        {!! $optionProvinceCurrent !!}
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Quận huyện hiện tại<span class="red"> (*) </span></label>
-                                    <div id="show_person_districts_current">
-                                        <select name="person_districts_current" id="person_districts_current" class="form-control input-sm" onchange="Admin.getAjaxDistrictsProvince(this,2,'person_wards_current')">
-                                            {!! $optionDistrictsCurrent !!}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Phường xã hiện tại<span class="red"> (*) </span></label>
-                                    <div id="show_person_wards_current">
-                                        <select name="person_wards_current" id="person_wards_current" class="form-control input-sm">
-                                            {!! $optionWardsCurrent !!}
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Chiều cao</label>
-                                    <input type="text"  id="person_height" name="person_height"  class="form-control input-sm" value="@if(isset($data['person_height'])){{$data['person_height']}}@endif">
-                                </div>
-                            </div>
-                            <div class="col-sm-2">
-                                <div class="form-group">
-                                    <label for="name" class="control-label">Cân nặng</label>
-                                    <input type="text" id="person_weight" name="person_weight"  class="form-control input-sm" value="@if(isset($data['person_weight'])){{$data['person_weight']}}@endif">
-                                </div>
+                            <hr/>
+                        @endif
+                        <div class="clear"></div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Chức vụ (vị trí việc làm)<span class="red"> (*) </span></label>
+                                <select name="person_extend_chucvu_hiennay" id="person_extend_chucvu_hiennay" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
                             </div>
                         </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Chức vụ kiêm nhiệm</label>
+                                <input type="text" id="person_extend_chucvu_kiemnhiem" name="person_extend_chucvu_kiemnhiem"  class="form-control input-sm" value="@if(isset($data['person_extend_chucvu_kiemnhiem'])){{$data['person_extend_chucvu_kiemnhiem']}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Chức danh KHCN</label>
+                                <select name="person_extend_chucdanh_khcn" id="person_extend_chucdanh_khcn" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Cấp ủy hiện tại</label>
+                                <select name="person_extend_capuy_hiennay" id="person_extend_capuy_hiennay" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Cấp ủy kiêm nhiệm</label>
+                                <select name="person_extend_capuy_kiemnhiem" id="person_extend_capuy_kiemnhiem" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="clear mgt10"></div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Thành phần gia đình xuất thân</label>
+                                <select name="person_extend_thanhphan_giadinh" id="person_extend_thanhphan_giadinh" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Nghề nghiệp trước khi được tuyển dụng</label>
+                                <input type="text" id="person_extend_nghenghiep_hiennay" name="person_extend_nghenghiep_hiennay"  class="form-control input-sm" value="@if(isset($data['person_extend_nghenghiep_hiennay'])){{$data['person_extend_nghenghiep_hiennay']}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày được tuyển dụng</label>
+                                <input type="text" class="form-control" id="person_extend_ngaytuyendung" name="person_extend_ngaytuyendung" value="@if(isset($data['person_extend_ngaytuyendung']) && $data['person_extend_ngaytuyendung'] != 0){{date('d-m-Y',$data['person_extend_ngaytuyendung'])}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Vào cơ quan nào ở đâu</label>
+                                <input type="text" id="person_extend_name_company" name="person_extend_name_company"  class="form-control input-sm" value="@if(isset($data['person_extend_name_company'])){{$data['person_extend_name_company']}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày làm việc</label>
+                                <input type="text" class="form-control" id="person_extend_ngaylamviec" name="person_extend_ngaylamviec" value="@if(isset($data['person_extend_ngaylamviec']) && $data['person_extend_ngaylamviec'] != 0){{date('d-m-Y',$data['person_extend_ngaylamviec'])}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="clear mgt10"></div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Công tác chính đang làm</label>
+                                <select name="person_extend_congtac_danglam" id="person_extend_congtac_danglam" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-5">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Sở trường công tác</label>
+                                <input type="text" id="person_extend_sotruong_congtac" name="person_extend_sotruong_congtac"  class="form-control input-sm" value="@if(isset($data['person_extend_sotruong_congtac'])){{$data['person_extend_sotruong_congtac']}}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Công việc làm lâu nhất</label>
+                                <select name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+
+                        <div class="clear mgt10"></div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày tham gia cách mạng</label>
+                                <input type="text" class="form-control" id="person_extend_ngaythamgia_cachmang" name="person_extend_ngaythamgia_cachmang" value="@if(isset($data['person_extend_ngaythamgia_cachmang']) && $data['person_extend_ngaythamgia_cachmang'] != 0){{date('d-m-Y',$data['person_extend_ngaythamgia_cachmang'])}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày vào Đảng</label>
+                                <input type="text" class="form-control" id="person_extend_ngayvaodang" name="person_extend_ngayvaodang" value="@if(isset($data['person_extend_ngayvaodang']) && $data['person_extend_ngayvaodang'] != 0){{date('d-m-Y',$data['person_extend_ngayvaodang'])}}@endif">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày vào Đảng chính thức</label>
+                                <input type="text" class="form-control" id="person_extend_ngayvaodang_chinhthuc" name="person_extend_ngayvaodang_chinhthuc" value="@if(isset($data['person_extend_ngayvaodang_chinhthuc']) && $data['person_extend_ngayvaodang_chinhthuc'] != 0){{date('d-m-Y',$data['person_extend_ngayvaodang_chinhthuc'])}}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày tham gia các tổ chức</label>
+                                <input type="text" class="form-control" id="person_extend_ngaythamgia_tochuc" name="person_extend_ngaythamgia_tochuc" value="@if(isset($data['person_extend_ngaythamgia_tochuc']) && $data['person_extend_ngaythamgia_tochuc'] != 0){{date('d-m-Y',$data['person_extend_ngaythamgia_tochuc'])}}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ quản lý nhà nước</label>
+                                <select name="person_extend_trinhdo_quanly_nhanuoc" id="person_extend_trinhdo_quanly_nhanuoc" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_qlnn" id="person_extend_namdat_qlnn" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+
+
+
+                        <div class="clear"></div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày nhập ngũ</label>
+                                <input type="text" class="form-control" id="person_extend_ngaynhapngu" name="person_extend_ngaynhapngu" value="@if(isset($data['person_extend_ngaynhapngu']) && $data['person_extend_ngaynhapngu'] != 0){{date('d-m-Y',$data['person_extend_ngaynhapngu'])}}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngày xuất ngũ</label>
+                                <input type="text" class="form-control" id="person_extend_ngayxuatngu" name="person_extend_ngayxuatngu" value="@if(isset($data['person_extend_ngayxuatngu']) && $data['person_extend_ngayxuatngu'] != 0){{date('d-m-Y',$data['person_extend_ngayxuatngu'])}}@endif">
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Quân hàm, chức vụ cao nhất</label>
+                                <select name="person_extend_chucvu_quanngu" id="person_extend_chucvu_quanngu" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ học vấn</label>
+                                <select name="person_extend_trinhdo_hocvan" id="person_extend_trinhdo_hocvan" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ tin học</label>
+                                <select name="person_extend_trinhdo_tinhoc" id="person_extend_trinhdo_tinhoc" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_tinhoc" id="person_extend_namdat_tinhoc" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="clear"></div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Học hàm</label>
+                                <select name="person_extend_hoc_ham" id="person_extend_hoc_ham" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_hoc_ham" id="person_extend_namdat_hoc_ham" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Học vị</label>
+                                <select name="person_extend_hoc_vi" id="person_extend_hoc_vi" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_hoc_vi" id="person_extend_namdat_hoc_vi" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Lý luận chính trị</label>
+                                <select name="person_extend_lyluan_chinhtri" id="person_extend_lyluan_chinhtri" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Năm đạt</label>
+                                <select name="person_extend_namdat_lyluan_chinhtri" id="person_extend_namdat_lyluan_chinhtri" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="clear mgt10"></div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngoại ngữ 1</label>
+                                <select name="person_extend_language_1" id="person_extend_language_1" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ</label>
+                                <select name="person_extend_trinhdo_1" id="person_extend_trinhdo_1" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngoại ngữ 2</label>
+                                <select name="person_extend_language_2" id="person_extend_language_2" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ</label>
+                                <select name="person_extend_trinhdo_2" id="person_extend_trinhdo_2" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngoại ngữ 3</label>
+                                <select name="person_extend_language_3" id="person_extend_language_3" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ</label>
+                                <select name="person_extend_trinhdo_3" id="person_extend_trinhdo_3" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Ngoại ngữ 4</label>
+                                <select name="person_extend_language_4" id="person_extend_language_4" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-1">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Trình độ</label>
+                                <select name="person_extend_trinhdo_4" id="person_extend_trinhdo_4" class="form-control input-sm">
+                                    {!! $optionDepart !!}
+                                </select>
+                            </div>
+                        </div>
+
+
 
                         <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">

@@ -16,10 +16,10 @@ class PersonExtend extends BaseModel
     protected $primaryKey = 'person_extend_id';
     public $timestamps = false;
 
-    protected $fillable = array('person_extend_project', 'person_extend_person_id','person_extend_chucvu_hiennay', 'person_extend_chucvu_kiemnhiem', 'person_extend_chucvu_nghenghiep',
+    protected $fillable = array('person_extend_project', 'person_extend_person_id','person_extend_chucvu_hiennay', 'person_extend_chucvu_kiemnhiem',
         'person_extend_chucdanh_khcn','person_extend_capuy_hiennay','person_extend_capuy_kiemnhiem','person_extend_thanhphan_giadinh','person_extend_nghenghiep_hiennay','person_extend_ngaytuyendung',
-        'person_extend_name_company','person_extend_ngaylamviec','person_extend_ngaythamgia_cachmang','person_extend_ngayvaodang','person_extend_ngayvaodang_chinhthuc','person_extend_tochuc_dathamgia',
-        'person_extend_ngaynhapngu','person_extend_ngayxuatngu','person_extend_quanham','person_extend_chucvu_quanngu','person_extend_trinhdo_hocvan','person_extend_hoc_ham',
+        'person_extend_name_company','person_extend_ngaylamviec','person_extend_ngaythamgia_cachmang','person_extend_ngayvaodang','person_extend_ngayvaodang_chinhthuc','person_extend_ngaythamgia_tochuc',
+        'person_extend_ngaynhapngu','person_extend_ngayxuatngu','person_extend_chucvu_quanngu','person_extend_trinhdo_hocvan','person_extend_hoc_ham',
         'person_extend_namdat_hoc_ham','person_extend_hoc_vi','person_extend_namdat_hoc_vi','person_extend_lyluan_chinhtri','person_extend_namdat_lyluan_chinhtri',
         'person_extend_language_1','person_extend_trinhdo_1','person_extend_language_2','person_extend_trinhdo_2','person_extend_language_3','person_extend_trinhdo_3','person_extend_language_4','person_extend_trinhdo_4',
         'person_extend_congtac_danglam','person_extend_sotruong_congtac','person_extend_congviec_launhat','person_extend_trinhdo_quanly_nhanuoc',

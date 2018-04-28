@@ -82,11 +82,14 @@ class PersonExtendController extends BaseAdminController
 
         $this->getDataDefault();
         $this->viewOptionData($data);
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.PersonExtend.add', array_merge([
             'data' => $data,
             'id' => $person_id,
+            'infoPerson' => $infoPerson,
         ], $this->viewOptionData, $this->viewPermission));
     }
 
@@ -130,11 +133,14 @@ class PersonExtendController extends BaseAdminController
 
         $this->getDataDefault();
         $this->viewOptionData($data);
+        //thong tin nhan sự
+        $infoPerson = Person::getPersonById($person_id);
 
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.PersonExtend.add', array_merge([
             'data' => $data,
             'id' => $person_id,
+            'infoPerson' => $infoPerson,
             'error' => $this->error,
         ], $this->viewOptionData, $this->viewPermission));
     }
