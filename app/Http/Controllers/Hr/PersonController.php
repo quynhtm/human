@@ -109,6 +109,9 @@ class PersonController extends BaseAdminController
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+        $search['person_is_dangvien'] = (int)Request::get('person_is_dangvien', -1);
+        $search['person_type_contracts'] = (int)Request::get('person_type_contracts',0);
+
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);
@@ -121,6 +124,10 @@ class PersonController extends BaseAdminController
         $this->getDataDefault();
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
+        $optionDangVien = FunctionLib::getOption(array(-1=>'--Tìm kiếm theo Đảng viên --')+$this->arrTonGiao, isset($search['person_is_dangvien']) ? $search['person_is_dangvien'] : -1);
+
+        $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
+        $optionLoaihopdong = FunctionLib::getOption(array(-1=>'--Tìm kiếm theo loại HĐ--')+$arrLoaihopdong, isset($search['person_type_contracts']) ? $search['person_type_contracts'] : -1);
 
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
         $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
@@ -136,6 +143,8 @@ class PersonController extends BaseAdminController
             'arrChucVu' => $arrChucVu,
             'arrChucDanhNgheNghiep' => $arrChucDanhNgheNghiep,
             'optionDepart' => $optionDepart,
+            'optionDangVien' => $optionDangVien,
+            'optionLoaihopdong' => $optionLoaihopdong,
             'arrLinkEditPerson' => CGlobal::$arrLinkEditPerson,
         ], $this->viewPermission));
     }

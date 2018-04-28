@@ -40,6 +40,18 @@
                                     {!! $optionDepart !!}
                                 </select>
                             </div>
+                            <div class="form-group col-lg-3">
+                                <label for="user_group"><i>Nhân sự là Đảng viên</i></label>
+                                <select name="person_is_dangvien" id="person_is_dangvien" class="form-control input-sm">
+                                    {!! $optionDangVien !!}
+                                </select>
+                            </div>
+                            <div class="form-group col-lg-3">
+                                <label for="user_group"><i>Loại hợp đồng</i></label>
+                                <select name="person_type_contracts" id="person_type_contracts" class="form-control input-sm">
+                                    {!! $optionLoaihopdong !!}
+                                </select>
+                            </div>
                         </div>
                         <div class="panel-footer text-right">
                             <a class="btn btn-danger btn-sm" href="{{URL::route('hr.personnelEdit',array('id' => FunctionLib::inputId(0)))}}">

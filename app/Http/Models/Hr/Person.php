@@ -154,6 +154,14 @@ class Person extends BaseModel
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
                 $query->where('person_depart_id', $dataSearch['person_depart_id'] );
             }
+            //là đảng viên
+            if (isset($dataSearch['person_is_dangvien']) && $dataSearch['person_is_dangvien'] > -1) {
+                $query->where('person_is_dangvien', '>', $dataSearch['person_is_dangvien']);
+            }
+            //loại hợp đồng
+            if (isset($dataSearch['person_type_contracts']) && $dataSearch['person_type_contracts'] > 0) {
+                $query->where('person_type_contracts', '>', $dataSearch['person_type_contracts']);
+            }
             //sinh nhật
             if (isset($dataSearch['start_birth']) && $dataSearch['start_birth'] > 0) {
                 $query->where('person_birth', '>=', $dataSearch['start_birth']);
