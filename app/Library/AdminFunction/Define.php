@@ -105,6 +105,7 @@ class Define
     const CACHE_HR_DEFINED_ID = 'cache_hr_defined_id_';
     const CACHE_DEPARTMENT_ID = 'cache_department_id_';
     const CACHE_ALL_DEPARTMENT = 'cache_all_department';
+    const CACHE_DEPARTMENT_PARENT_ID = 'cache_department_parent_id_';
     const CACHE_DEFINED_TYPE = 'cache_defined_type_';
     const CACHE_DEFINED_ALL = 'cache_defined_all';
     const CACHE_DEVICE_ID = 'cache_device_id_';

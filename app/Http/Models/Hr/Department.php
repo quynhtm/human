@@ -41,7 +41,7 @@ class Department extends BaseModel{
             $item->save();
 
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->department_id, $item);
+            self::removeCache($item->department_id, $item->department_parent_id);
             return $item->department_id;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -59,7 +59,7 @@ class Department extends BaseModel{
             }
             $item->update();
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->department_id, $item);
+            self::removeCache($id, $item->department_parent_id);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -97,11 +97,13 @@ class Department extends BaseModel{
         try {
             DB::connection()->getPdo()->beginTransaction();
             $item = Department::find($id);
+            $department_parent_id = 0;
             if($item){
+                $department_parent_id = $item->department_parent_id;
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->department_id,$item);
+            self::removeCache($id,$department_parent_id);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
@@ -144,10 +146,9 @@ class Department extends BaseModel{
             throw new PDOException();
         }
     }
-    public static function removeCache($id = 0,$data){
-        if($id > 0){
-            Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
-        }
+    public static function removeCache($id = 0,$department_parent_id){
+        Cache::forget(Define::CACHE_DEPARTMENT_ID.$id);
+        Cache::forget(Define::CACHE_DEPARTMENT_PARENT_ID.$department_parent_id);
         Cache::forget(Define::CACHE_ALL_DEPARTMENT);
     }
     public static function getLevelParentId($id){
@@ -170,6 +171,26 @@ class Department extends BaseModel{
                 }
                 if(!empty($data) && Define::CACHE_ON){
                     Cache::put(Define::CACHE_ALL_DEPARTMENT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                }
+            }
+        }
+        return $data;
+    }
+
+    public static function getDepartmentByParentId($department_parent_id){
+        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_DEPARTMENT_PARENT_ID.$department_parent_id) : array();
+        if (sizeof($data) == 0) {
+            $categories = Department::where('department_id', '>', 0)
+                ->where('department_status', '=', CGlobal::status_show)
+                ->where('department_parent_id', '=', $department_parent_id)
+                ->orderBy('department_order', 'asc')
+                ->orderBy('department_parent_id', 'desc')->get();
+            if($categories){
+                foreach($categories as $itm) {
+                    $data[$itm->department_id] = $itm->department_name;
+                }
+                if(!empty($data) && Define::CACHE_ON){
+                    Cache::put(Define::CACHE_DEPARTMENT_PARENT_ID.$department_parent_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
                 }
             }
         }

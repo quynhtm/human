@@ -155,7 +155,10 @@ class Person extends BaseModel
                 $query->where('person_id', $dataSearch['person_id'] );
             }
             if (isset($dataSearch['person_depart_id']) && $dataSearch['person_depart_id'] >0) {
-                $query->where('person_depart_id', $dataSearch['person_depart_id'] );
+                $arrDepart = Department::getDepartmentByParentId($dataSearch['person_depart_id']);
+                $arrDepartSearch = (!empty($arrDepart))? array_keys($arrDepart): array();
+                $arrDepartSearch = (!empty($arrDepartSearch))? array_merge($arrDepartSearch,array($dataSearch['person_depart_id'])): array($dataSearch['person_depart_id']);
+                $query->whereIn('person_depart_id', $arrDepartSearch );
             }
             //là đảng viên
             if (isset($dataSearch['person_is_dangvien']) && $dataSearch['person_is_dangvien'] > -1) {
