@@ -384,7 +384,6 @@ class PersonListController extends BaseAdminController
 
         $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
-
         if($sbmValue == 2){
             $this->exportData($data,'Danh sách '.CGlobal::$pageAdminTitle, 3);
         }

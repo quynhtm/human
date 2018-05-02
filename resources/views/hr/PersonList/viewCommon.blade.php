@@ -104,7 +104,7 @@
                                     <a class="viewItem" title="Chi tiết nhân sự" onclick="HR.getInfoPersonPopup('{{FunctionLib::inputId($item['person_id'])}}')">
                                         <i class="fa fa-eye"></i>
                                     </a>
-                                    <br/>SN: @if($item['person_birth'] > 0){{date('d-m-Y',$item['person_birth'])}}@endif
+                                    <br/>SN: @if($item['person_birth'] != 0){{date('d-m-Y',$item['person_birth'])}}@endif
                                 </td>
                                 <td class="text-center middle">
                                     @if(isset($arrSex[$item['person_sex']])){{$arrSex[$item['person_sex']]}}@endif
