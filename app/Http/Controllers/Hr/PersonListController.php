@@ -523,7 +523,7 @@ class PersonListController extends BaseAdminController
      ******************************************************************************************************************/
     public function viewDangVienPerson()
     {
-        CGlobal::$pageAdminTitle = 'Nhân sự sắp nghỉ hưu';
+        CGlobal::$pageAdminTitle = 'Nhân sự là Đảng viên';
         //Check phan quyen.
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
@@ -539,7 +539,7 @@ class PersonListController extends BaseAdminController
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_is_dangvien'] = 0;
+        $search['person_is_dangvien'] = Define::DANG_VIEN;
         //$search['field_get'] = '';//cac truong can lay
 
         $data = Person::searchByCondition($search, $limit, $offset, $total);

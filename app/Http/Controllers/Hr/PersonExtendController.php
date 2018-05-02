@@ -192,6 +192,10 @@ class PersonExtendController extends BaseAdminController
         $arrQuanham = !empty($arrQuanham) ? (Define::$arrCheckDefault + $arrQuanham) : Define::$arrCheckDefault;
         $optionQuanham = FunctionLib::getOption($arrQuanham, isset($data['person_extend_chucvu_quanngu']) ? $data['person_extend_chucvu_quanngu'] : 0);
 
+        $arrHangthuongbinh = HrDefine::getArrayByType(Define::hang_thuong_binh);
+        $arrHangthuongbinh = !empty($arrHangthuongbinh) ? (Define::$arrCheckDefault + $arrHangthuongbinh) : Define::$arrCheckDefault;
+        $optionThuongbinh = FunctionLib::getOption($arrHangthuongbinh, isset($data['person_extend_thuongbinh']) ? $data['person_extend_thuongbinh'] : 0);
+
         $arrHocvan = HrDefine::getArrayByType(Define::trinh_do_hoc_van);
         $arrHocvan = !empty($arrHocvan) ? (Define::$arrCheckDefault + $arrHocvan) : Define::$arrCheckDefault;
         $optionHocvan = FunctionLib::getOption($arrHocvan, isset($data['person_extend_trinhdo_hocvan']) ? $data['person_extend_trinhdo_hocvan'] : 0);
@@ -258,6 +262,7 @@ class PersonExtendController extends BaseAdminController
             'optionTrinhdoNgoaiNgu_3' => $optionTrinhdoNgoaiNgu_3,
             'optionTrinhdoNgoaiNgu_4' => $optionTrinhdoNgoaiNgu_4,
             'optionDangVien' => $optionDangVien,
+            'optionThuongbinh' => $optionThuongbinh,
         ];
     }
 

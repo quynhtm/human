@@ -25,7 +25,7 @@ class PersonExtend extends BaseModel
         'person_extend_namdat_hoc_ham', 'person_extend_hoc_vi', 'person_extend_namdat_hoc_vi', 'person_extend_lyluan_chinhtri', 'person_extend_namdat_lyluan_chinhtri',
         'person_extend_language_1', 'person_extend_trinhdo_1', 'person_extend_language_2', 'person_extend_trinhdo_2', 'person_extend_language_3', 'person_extend_trinhdo_3', 'person_extend_language_4', 'person_extend_trinhdo_4',
         'person_extend_congtac_danglam', 'person_extend_sotruong_congtac', 'person_extend_congviec_launhat', 'person_extend_trinhdo_quanly_nhanuoc',
-        'person_extend_namdat_qlnn', 'person_extend_trinhdo_tinhoc', 'person_extend_namdat_tinhoc', 'person_extend_is_dangvien'
+        'person_extend_namdat_qlnn', 'person_extend_trinhdo_tinhoc', 'person_extend_namdat_tinhoc', 'person_extend_is_dangvien', 'person_extend_thuongbinh', 'person_extend_giadinh_chinhsach'
     );
 
     public static function getPersonExtendByPersonId($person_extend_person_id)

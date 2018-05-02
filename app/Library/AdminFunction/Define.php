@@ -129,6 +129,9 @@ class Define
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
 
+    const KHONG_DANG_VIEN = 0;
+    const DANG_VIEN = 1;
+
     const PERSON_STATUS_DANGLAMVIEC = 1;
     const PERSON_STATUS_AN = 0;
     const PERSON_STATUS_DAXOA = -1;
@@ -234,7 +237,6 @@ class Define
         Define::ly_luan_chinh_tri => 'Lý luận chính trị',
         Define::ngoai_ngu => 'Ngoại ngữ',
         Define::cong_tac_chinh => 'Chức vụ công tác',
-        //Define::bac_luong => 'Bậc lương',
         Define::danh_hieu => 'Danh hiệu',
         Define::khen_thuong => 'Khen thưởng',
         Define::ky_luat => 'Kỷ luật',

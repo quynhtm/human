@@ -199,6 +199,22 @@ use App\Library\AdminFunction\CGlobal;
 
 
 
+                        <div class="clear"></div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Thương binh hạng</label>
+                                <select name="person_extend_thuongbinh" id="person_extend_thuongbinh" class="form-control input-sm">
+                                    {!! $optionThuongbinh !!}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <label for="name" class="control-label">Gia đình chính sách</label>
+                                <input type="text" class="form-control" id="person_extend_giadinh_chinhsach" name="person_extend_giadinh_chinhsach" value="@if(isset($data['person_extend_giadinh_chinhsach'])){{$data['person_extend_giadinh_chinhsach']}}@endif">
+                            </div>
+                        </div>
+
 
 
                         <div class="clear"></div>
