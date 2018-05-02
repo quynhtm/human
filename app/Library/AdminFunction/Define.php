@@ -311,6 +311,7 @@ class Define
     const FOLDER_RETIREMENT = 'retirement';
     const FOLDER_QUITJOB = 'quitjob';
     const FOLDER_CONTRACTS = 'contracts';
+    const FOLDER_JOB_ASSIGNMENT = 'job_assignment';
 
     const FILE_TYPE_MAIL = 9;
     const FILE_TYPE_DOCUMENT = 10;
@@ -322,6 +323,7 @@ class Define
     const FILE_TYPE_RETIREMENT = 16;//Ngay nghi huu
     const FILE_TYPE_QUITJOB = 17;//Ngay nghi VIẸC
     const FILE_TYPE_CONTRACTS = 18;//Contracts
+    const FILE_TYPE_JOB_ASSIGNMENT = 19;//Job assignment
 
     const sizeImage_80 = 80;
     const sizeImage_100 = 100;

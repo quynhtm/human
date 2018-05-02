@@ -61,6 +61,22 @@
                         </div>
 
                         <div class="clearfix"></div>
+                        <div class="col-sm-12">
+                            <div class="controls">
+                                <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_RETIREMENT}});">Tải tệp đính kèm</a>
+                                <div id="sys_show_file">
+                                    @if(isset($data->retirement_file_attack) && $data->retirement_file_attack !='')
+                                        <?php $arrfiles = ($data->retirement_file_attack != '') ? unserialize($data->retirement_file_attack) : array(); ?>
+                                        @foreach($arrfiles as $_key=>$file)
+                                            <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_RETIREMENT.'/'.$retirement_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($retirement_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_RETIREMENT}})">X</span></div>
+                                        @endforeach
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                        <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($retirement_id)}}" type="hidden">
+                        <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
+                        <div class="clearfix"></div>
                         <div class="form-group col-sm-12 text-left">
                             {!! csrf_field() !!}
                             <a class="btn btn-warning" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-reply"></i> Trở lại</a>

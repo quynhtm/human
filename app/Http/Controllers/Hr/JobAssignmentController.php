@@ -137,6 +137,8 @@ class JobAssignmentController extends BaseAdminController
         $data = $_POST;
         $person_id = Request::get('person_id', '');
         $job_assignment_id = Request::get('job_assignment_id', '');
+        $id_hiden = Request::get('id_hiden', '');
+
         //FunctionLib::debug($data);
         $arrData = ['intReturn' => 0, 'msg' => ''];
         if ($data['job_assignment_define_id_new'] == '' || $data['job_assignment_define_id_old'] == '') {
@@ -161,6 +163,7 @@ class JobAssignmentController extends BaseAdminController
                 } else {
                     $dataInput['job_assignment_date_creater'] = (isset($data['job_assignment_date_start']) && $data['job_assignment_date_start'] != '') ? strtotime($data['job_assignment_date_start']) : '';
                 }
+                $job_assignment_id = ($job_assignment_id > 0) ? $job_assignment_id : FunctionLib::outputId($id_hiden);
 
                 if ($job_assignment_id > 0) {
                     JobAssignment::updateItem($job_assignment_id, $dataInput);

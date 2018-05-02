@@ -198,15 +198,23 @@ class QuitJobController extends BaseAdminController
     {
         CGlobal::$pageAdminTitle = 'Chuyển phòng ban/ bộ phận';
         $person_id = FunctionLib::outputId($person_ids);
+
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
         $data = array();
         if ($person_id > 0) {
-            $data = QuitJob::getQuitJobByPersonId($person_id,Define::QUITJOB_CHUYEN_PHONG_BAN);
+            $data = QuitJob::getQuitJobByPersonId($person_id, Define::QUITJOB_CHUYEN_PHONG_BAN);
         }
+
         $arrDepart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($arrDepart, isset($data['quit_job_depart_id']) ? $data['quit_job_depart_id'] : '');
+
+        $quit_job_id = 0;
+        if(sizeof($data) > 0){
+            $quit_job_id = $data->quit_job_id;
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
         $this->getDataDefault();
@@ -216,35 +224,49 @@ class QuitJobController extends BaseAdminController
             'infoPerson' => $infoPerson,
             'optionDepart' => $optionDepart,
             'person_id' => $person_id,
+            'quit_job_id' => $quit_job_id,
         ], $this->viewPermission));
     }
     public function postJobMoveDepart($person_ids)
     {
         CGlobal::$pageAdminTitle = 'Chuyển phòng ban/ bộ phận';
         $person_id = FunctionLib::outputId($person_ids);
+        $id_hiden = Request::get('id_hiden', '');
+
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_edit, $this->permission) && !in_array($this->permission_create, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
         }
         $data = $_POST;
 
         if ($this->valid($data) && empty($this->error)) {
-            $passport = QuitJob::getQuitJobByPersonId($person_id,Define::QUITJOB_CHUYEN_PHONG_BAN);
-            $id = ($passport && isset($passport->quit_job_id)) ? $passport->quit_job_id : 0;
+            $passport = QuitJob::getQuitJobByPersonId($person_id, Define::QUITJOB_CHUYEN_PHONG_BAN);
+            $id = ($passport && isset($passport->quit_job_id)) ? $passport->quit_job_id : FunctionLib::outputId($id_hiden);
+
             if ($id > 0) {
                 //cap nhat
+                $data['quit_job_type'] = Define::QUITJOB_CHUYEN_PHONG_BAN;
                 if (QuitJob::updateItem($id, $data)) {
                     return Redirect::route('hr.personnelView');
                 }
             } else {
                 //them moi
-                //FunctionLib::debug($data);
                 $data['quit_job_person_id'] = $person_id;
                 $data['quit_job_type'] = Define::QUITJOB_CHUYEN_PHONG_BAN;
+                FunctionLib::bug($data);
                 if (QuitJob::createItem($data)) {
                     return Redirect::route('hr.personnelView');
                 }
             }
         }
+
+        $quit_job_id = 0;
+        if($person_id > 0){
+            $dataRetirement = QuitJob::getQuitJobByPersonId($person_id, Define::QUITJOB_CHUYEN_PHONG_BAN);
+            if(sizeof($dataRetirement) > 0){
+                $quit_job_id = $dataRetirement->quit_job_id;
+            }
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
         $arrDepart = Department::getDepartmentAll();
@@ -257,6 +279,7 @@ class QuitJobController extends BaseAdminController
             'person_id' => $person_id,
             'infoPerson' => $infoPerson,
             'optionDepart' => $optionDepart,
+            'quit_job_id' => $quit_job_id,
             'error' => $this->error,
         ], $this->viewPermission));
     }

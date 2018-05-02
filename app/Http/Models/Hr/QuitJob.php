@@ -20,7 +20,7 @@ class QuitJob extends BaseModel
     public static function getQuitJobByPersonId($quit_job_person_id,$quit_job_type)
     {
         $data = QuitJob::where('quit_job_person_id', $quit_job_person_id)
-            ->where('quit_job_type', $quit_job_type)->first();
+                        ->where('quit_job_type', $quit_job_type)->first();
         return $data;
     }
 
