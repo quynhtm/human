@@ -37,6 +37,7 @@ class Retirement extends BaseModel
             $item->save();
 
             DB::connection()->getPdo()->commit();
+            $checkData->dataSynPerson($item);
             self::removeCache($item->retirement_id,$item);
             return $item->retirement_id;
         } catch (PDOException $e) {
@@ -56,6 +57,7 @@ class Retirement extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
+            $checkData->dataSynPerson($item);
             self::removeCache($item->retirement_id,$item);
             return true;
         } catch (PDOException $e) {
