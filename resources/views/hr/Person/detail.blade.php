@@ -74,14 +74,24 @@
                                                 <td><span class="lbl text-nowrap">Chức danh</span></td>
                                                 <td colspan="2"><span class="val">@if(isset($arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']])){{$arrChucDanhNgheNghiep[$infoPerson['person_career_define_id']]}}@endif</span></td>
                                             </tr>
-                                            <!--
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chức danh KHCN</span></td>
-                                                <td><span class="val">---------</span></td>
+                                                <td><span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrChucDanhKHCN[$dataExtend->person_extend_chucdanh_khcn]))
+                                                            {{$arrChucDanhKHCN[$dataExtend->person_extend_chucdanh_khcn]}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Cấp ủy hiện tại, cấp ủy kiêm</span></td>
-                                                <td colspan="2"><span class="val">----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrCapUy[$dataExtend->person_extend_capuy_hiennay]))
+                                                            {{$arrCapUy[$dataExtend->person_extend_capuy_hiennay]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
-                                            -->
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi sinh</span></td>
                                                 <td><span class="val">{{$infoPerson['person_address_place_of_birth']}}</span></td>
@@ -97,17 +107,34 @@
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nơi ở hiện nay</span></td>
                                                 <td><span class="val" colspan="3">{{$infoPerson['person_address_current']}}</span></td>
-                                                <!--<td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
-                                                <td colspan="2"><span class="val">------</span></td>-->
+                                                <td><span class="lbl text-nowrap">Thành phần gia đình xuất thân</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrThanhphangiadinh[$dataExtend->person_extend_thanhphan_giadinh]))
+                                                            {{$arrThanhphangiadinh[$dataExtend->person_extend_thanhphan_giadinh]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
-                                            <!--
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Nghề nghiệp bản thân trước khi được tuyển dụng</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                        @if(isset($dataExtend->person_extend_nghenghiep_hiennay))
+                                                            {{$dataExtend->person_extend_nghenghiep_hiennay}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Vào cơ quan nào, ở đâu</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                         @if(isset($dataExtend->person_extend_name_company))
+                                                            {{$dataExtend->person_extend_name_company}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
-                                            -->
+
                                             <tr>
 
                                                 <td><span class="lbl text-nowrap">Ngày được tuyển dụng</span></td>
@@ -115,62 +142,150 @@
                                                 <td><span class="lbl text-nowrap">Ngày vào cơ quan đang công tác</span></td>
                                                 <td colspan="2"><span class="val">{{($infoPerson['person_date_trial_work']  != 0) ? date('d/m/Y', $infoPerson['person_date_trial_work']) : ''}}</span></td>
                                             </tr>
-                                            <!--
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia cách mạng</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td><span class="val">
+                                                        @if(isset($dataExtend->person_extend_ngaythamgia_cachmang) && $dataExtend->person_extend_ngaythamgia_cachmang != 0)
+                                                            {{date('d/m/Y', $dataExtend->person_extend_ngaythamgia_cachmang)}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Ngày vào Đảng</span></td>
-                                                <td colspan="2"><span class="val">-----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend->person_extend_ngayvaodang) && $dataExtend->person_extend_ngayvaodang != 0)
+                                                            {{date('d/m/Y', $dataExtend->person_extend_ngayvaodang)}}
+                                                        @endif
+                                                    </span></td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày tham gia các tổ chức chính trị, xã hội</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                         @if(isset($dataExtend->person_extend_ngaythamgia_tochuc) && $dataExtend->person_extend_ngaythamgia_tochuc != 0)
+                                                            {{date('d/m/Y', $dataExtend->person_extend_ngaythamgia_tochuc)}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Ngày nhập ngũ</span></td>
-                                                <td colspan="2"><span class="val">----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend->person_extend_ngaynhapngu) && $dataExtend->person_extend_ngaynhapngu != 0)
+                                                            {{date('d/m/Y', $dataExtend->person_extend_ngaynhapngu)}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Ngày xuất ngũ</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                         @if(isset($dataExtend->person_extend_ngayxuatngu) && $dataExtend->person_extend_ngayxuatngu != 0)
+                                                            {{date('d/m/Y', $dataExtend->person_extend_ngayxuatngu)}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                                 <td><span class="lbl text-nowrap">Quân hàm, Chức vụ cao nhất (năm)</span></td>
-                                                <td colspan="2"><span class="val">-----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                         @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrQuanham[$dataExtend->person_extend_chucvu_quanngu]))
+                                                            {{$arrQuanham[$dataExtend->person_extend_chucvu_quanngu]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ học vấn: GDPT</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                         @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrHocvan[$dataExtend->person_extend_trinhdo_hocvan]))
+                                                            {{$arrHocvan[$dataExtend->person_extend_trinhdo_hocvan]}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Học hàm</span></td>
-                                                <td colspan="2"><span class="val">----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrHocHam[$dataExtend->person_extend_hoc_ham]))
+                                                            {{$arrHocHam[$dataExtend->person_extend_hoc_ham]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Học vị</span></td>
-                                                <td><span class="val">-----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrHocvi[$dataExtend->person_extend_hoc_vi]))
+                                                            {{$arrHocvi[$dataExtend->person_extend_hoc_vi]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                                 <td><span class="lbl text-nowrap">Lý luận chính trị</span></td>
-                                                <td colspan="2"><span class="val">------</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrLyluan_chinhtri[$dataExtend->person_extend_lyluan_chinhtri]))
+                                                            {{$arrLyluan_chinhtri[$dataExtend->person_extend_lyluan_chinhtri]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Trình độ ngoại ngữ</span></td>
-                                                <td><span class="val">------</span></td>
-                                                <td><span class="lbl text-nowrap">Danh hiệu được phong</span></td>
-                                                <td colspan="2"><span class="val">------</span></td>
+                                                <td><span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrNgoaiNgu[$dataExtend->person_extend_language_1]))
+                                                            {{$arrNgoaiNgu[$dataExtend->person_extend_language_1]}}
+                                                        @endif
+
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrNgoaiNgu[$dataExtend->person_extend_language_2]))
+                                                            , {{$arrNgoaiNgu[$dataExtend->person_extend_language_2]}}
+                                                        @endif
+
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrNgoaiNgu[$dataExtend->person_extend_language_3]))
+                                                            , {{$arrNgoaiNgu[$dataExtend->person_extend_language_3]}}
+                                                        @endif
+
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrNgoaiNgu[$dataExtend->person_extend_language_4]))
+                                                            , {{$arrNgoaiNgu[$dataExtend->person_extend_language_4]}}
+                                                        @endif
+
+                                                    </span></td>
+                                                <td><span class="lbl text-nowrap">Công tác chính đang làm</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrCongtac_danglam[$dataExtend->person_extend_congtac_danglam]))
+                                                            {{$arrCongtac_danglam[$dataExtend->person_extend_congtac_danglam]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
+
                                             </tr>
-                                            <tr>
+                                            <!--<tr>
                                                 <td><span class="lbl text-nowrap">Khen thưởng</span></td>
                                                 <td><span class="val">-------<span></td>
-                                                <td><span class="lbl text-nowrap">Công tác chính đang làm</span></td>
-                                                <td colspan="2"><span class="val">-------</span></td>
-                                            </tr>
+                                                <td><span class="lbl text-nowrap">Danh hiệu được phong</span></td>
+                                                <td colspan="2"><span class="val">------</span></td>
+                                            </tr>-->
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Sở trường công tác</span></td>
-                                                <td><span class="val">------</span></td>
+                                                <td><span class="val">
+                                                        @if(isset($dataExtend->person_extend_sotruong_congtac))
+                                                            {{$dataExtend->person_extend_sotruong_congtac}}
+                                                        @endif
+                                                    </span></td>
                                                 <td><span class="lbl text-nowrap">Công việc làm lâu nhất</span></td>
-                                                <td colspan="2"><span class="val">-------</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                     @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrCongtac_danglam[$dataExtend->person_extend_congviec_launhat]))
+                                                        {{$arrCongtac_danglam[$dataExtend->person_extend_congviec_launhat]}}
+                                                     @endif
+                                                    </span>
+                                                </td>
                                             </tr>
-                                            <tr>
+                                            <!--<tr>
                                                 <td><span class="lbl text-nowrap">Kỷ luật</span></td>
                                                 <td><span class="val">------</span></td>
                                                 <td><span class="lbl text-nowrap">Tình trạng sức khỏe</span></td>
                                                 <td colspan="2"><span class="val">-------</span></td>
-                                            </tr>
-                                            -->
+                                            </tr>-->
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Chiều cao</span></td>
                                                 <td><span class="val">{{$infoPerson->person_height}}</span></td>
@@ -189,14 +304,26 @@
                                                 <td><span class="lbl text-nowrap">Nơi cấp</span></td>
                                                 <td colspan="2"><span class="val">{{$infoPerson['person_issued_cmt']}}</span></td>
                                             </tr>
-                                            <!--
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Thương binh hạng</span></td>
-                                                <td><span class="val">----</span></td>
+                                                <td>
+                                                    <span class="val">
+                                                        @if(isset($dataExtend) && sizeof($dataExtend) > 0 && isset($arrHangthuongbinh[$dataExtend->person_extend_thuongbinh]))
+                                                            {{$arrHangthuongbinh[$dataExtend->person_extend_thuongbinh]}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                                 <td><span class="lbl text-nowrap">Gia đình chính sách</span></td>
-                                                <td colspan="2"><span class="val">----</span></td>
+                                                <td colspan="2">
+                                                    <span class="val">
+                                                        @if(isset($dataExtend->person_extend_giadinh_chinhsach))
+                                                        {{$dataExtend->person_extend_giadinh_chinhsach}}
+                                                        @endif
+                                                    </span>
+                                                </td>
                                             </tr>
-                                             -->
+
                                             <tr>
                                                 <td><span class="lbl text-nowrap">Hộ chiếu phổ thông</span></td>
                                                 <td>
