@@ -150,6 +150,12 @@ class RetirementController extends BaseAdminController
         if ($person_id > 0) {
             $data = Retirement::getRetirementByPersonId($person_id);
         }
+
+        $retirement_id = 0;
+        if(sizeof($data) > 0){
+            $retirement_id = $data->retirement_id;
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
 
@@ -164,6 +170,7 @@ class RetirementController extends BaseAdminController
             'infoPerson' => $infoPerson,
             'optionChucVu' => $optionChucVu,
             'person_id' => $person_id,
+            'retirement_id' => $retirement_id,
         ], $this->viewPermission));
     }
     public function postItemTime($person_ids)
@@ -193,6 +200,15 @@ class RetirementController extends BaseAdminController
                 }
             }
         }
+
+        $retirement_id = 0;
+        if($person_id > 0){
+            $dataRetirement = Retirement::getRetirementByPersonId($person_id);
+            if(sizeof($dataRetirement) > 0){
+                $retirement_id = $dataRetirement->retirement_id;
+            }
+        }
+
         //thong tin nhan sự
         $infoPerson = Person::getPersonById($person_id);
         $this->getDataDefault();
@@ -208,6 +224,7 @@ class RetirementController extends BaseAdminController
             'infoPerson' => $infoPerson,
             'optionChucVu' => $optionChucVu,
             'error' => $this->error,
+            'retirement_id' => $retirement_id,
         ], $this->viewPermission));
     }
 
