@@ -65,6 +65,7 @@ class Define
     const CACHE_TIME_TO_LIVE_15 = 900; //Time cache 15 phut
     const CACHE_TIME_TO_LIVE_30 = 1800; //Time cache 30 phut
     const CACHE_TIME_TO_LIVE_60 = 3600; //Time cache 60 phut
+    const CACHE_TIME_TO_LIVE_HALF_DAY_DAY = 43200; //Time cache nửa ngay
     const CACHE_TIME_TO_LIVE_ONE_DAY = 86400; //Time cache 1 ngay
     const CACHE_TIME_TO_LIVE_ONE_WEEK = 604800; //Time cache 1 tuan
     const CACHE_TIME_TO_LIVE_ONE_MONTH = 2419200; //Time cache 1 thang
@@ -313,6 +314,11 @@ class Define
     const FOLDER_RETIREMENT = 'retirement';
     const FOLDER_QUITJOB = 'quitjob';
     const FOLDER_CONTRACTS = 'contracts';
+
+    const add_one_month = ' +1 month';
+    const add_one_week = ' +1 week';
+    const minus_one_month = ' -1 month';
+    const minus_one_week = ' -1 week';
 
     const FILE_TYPE_MAIL = 9;
     const FILE_TYPE_DOCUMENT = 10;

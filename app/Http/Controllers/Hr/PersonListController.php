@@ -105,7 +105,7 @@ class PersonListController extends BaseAdminController
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::$arrStatusPersonAction;
         $search['start_birth'] = time();
-        $search['end_birth'] = strtotime(time() . " +1 month");
+        $search['end_birth'] = strtotime(time() . Define::add_one_week);
         $search['orderBy'] = 'person_birth';
         $search['sortOrder'] = 'asc';
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
