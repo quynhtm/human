@@ -166,9 +166,9 @@ class PersonExtendController extends BaseAdminController
         $arrChucVu = !empty($arrChucVu) ? (Define::$arrCheckDefault + $arrChucVu) : Define::$arrCheckDefault;
         $optionChucVu = FunctionLib::getOption($arrChucVu, isset($data['person_extend_chucvu_hiennay']) ? $data['person_extend_chucvu_hiennay'] : 0);
 
-        $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
-        $arrChucDanhNgheNghiep = !empty($arrChucDanhNgheNghiep) ? (Define::$arrCheckDefault + $arrChucDanhNgheNghiep) : Define::$arrCheckDefault;
-        $optionChucDanhNgheNghiep = FunctionLib::getOption($arrChucDanhNgheNghiep, isset($data['person_extend_chucdanh_khcn']) ? $data['person_extend_chucdanh_khcn'] : 0);
+        $arrChucDanhKHCN = HrDefine::getArrayByType(Define::chuc_danh_khoa_hoc_cong_nghe);
+        $arrChucDanhKHCN = !empty($arrChucDanhKHCN) ? (Define::$arrCheckDefault + $arrChucDanhKHCN) : Define::$arrCheckDefault;
+        $optionChucDanhKHCN= FunctionLib::getOption($arrChucDanhKHCN, isset($data['person_extend_chucdanh_khcn']) ? $data['person_extend_chucdanh_khcn'] : 0);
 
         $arrCapUy = HrDefine::getArrayByType(Define::cap_uy);
         $arrCapUy = !empty($arrCapUy) ? (Define::$arrCheckDefault + $arrCapUy) : Define::$arrCheckDefault;
@@ -240,7 +240,7 @@ class PersonExtendController extends BaseAdminController
             'optionYears_namdat_lyluan_chinhtri' => $optionYears_namdat_lyluan_chinhtri,
             'optionDepart' => $optionDepart,
             'optionChucVu' => $optionChucVu,
-            'optionChucDanhNgheNghiep' => $optionChucDanhNgheNghiep,
+            'optionChucDanhKHCN' => $optionChucDanhKHCN,
             'optionCapUy_hiennay' => $optionCapUy_hiennay,
             'optionCapUy_kiemnhiem' => $optionCapUy_kiemnhiem,
             'optionThanhphan_giadinh' => $optionThanhphan_giadinh,

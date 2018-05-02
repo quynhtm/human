@@ -60,7 +60,7 @@ use App\Library\AdminFunction\CGlobal;
                             <div class="form-group">
                                 <label for="name" class="control-label">Chức danh KHCN</label>
                                 <select name="person_extend_chucdanh_khcn" id="person_extend_chucdanh_khcn" class="form-control input-sm">
-                                    {!! $optionChucDanhNgheNghiep !!}
+                                    {!! $optionChucDanhKHCN !!}
                                 </select>
                             </div>
                         </div>
