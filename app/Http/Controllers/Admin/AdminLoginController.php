@@ -84,7 +84,7 @@ class AdminLoginController extends Controller{
                                     'user_name' => $user->user_name,
                                     'user_full_name' => $user->user_full_name,
                                     'user_email' => $user->user_email,
-                                    'user_employee_id' => $user->user_employee_id,
+                                    'user_depart_id' => $user->user_depart_id,
                                     'user_is_admin' => $user->user_is_admin,
                                     'user_group_menu' => $user->user_group_menu,
                                     'user_view' => $user->user_view,
