@@ -12,6 +12,7 @@ use App\Http\Models\Hr\Allowance;
 use App\Http\Models\Hr\Bonus;
 use App\Http\Models\Hr\Device;
 use App\Http\Models\Hr\HrContracts;
+use App\Http\Models\Hr\JobAssignment;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDocument;
 use App\Http\Models\Hr\HrMail;
@@ -364,6 +365,15 @@ class AjaxUploadController extends BaseAdminController{
 					}
 				}
 				break;
+			case Define::FILE_TYPE_JOB_ASSIGNMENT:
+				if($id > 0 && $nameImage != ''){
+					$delete_action = $this->delete_image_item($id, $nameImage, $type);
+					if($delete_action == 1){
+						$aryData['intIsOK'] = 1;
+						$aryData['msg'] = "Remove Img!";
+					}
+				}
+				break;
 			default:
 				$folder_image = '';
 				break;
@@ -459,6 +469,14 @@ class AjaxUploadController extends BaseAdminController{
 				$folder_image = 'uploads/'.Define::FOLDER_CONTRACTS;
 				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_CONTRACTS;
 				break;
+			case Define::FILE_TYPE_JOB_ASSIGNMENT :
+				$result = JobAssignment::find($id);
+				if($result != null){
+					$aryImages = unserialize($result->job_assignment_file_attack);
+				}
+				$folder_image = 'uploads/'.Define::FOLDER_JOB_ASSIGNMENT;
+				$folder_thumb = 'uploads/thumbs/'.Define::FOLDER_JOB_ASSIGNMENT;
+				break;
 			default:
 				$folder_image = '';
 				$folder_thumb = '';
@@ -522,6 +540,10 @@ class AjaxUploadController extends BaseAdminController{
 						case Define::FILE_TYPE_CONTRACTS :
 							$new_row['contracts_file_attack'] = $aryImages;
 							HrContracts::updateItem($id, $new_row);
+							break;
+						case Define::FILE_TYPE_JOB_ASSIGNMENT :
+							$new_row['job_assignment_file_attack'] = $aryImages;
+							JobAssignment::updateItem($id, $new_row);
 							break;
 						default:
 							$folder_image = '';
@@ -633,6 +655,9 @@ class AjaxUploadController extends BaseAdminController{
 			case Define::FILE_TYPE_CONTRACTS:
 				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_CONTRACTS, $type, $id_hiden_person);
 				break;
+			case Define::FILE_TYPE_JOB_ASSIGNMENT:
+				$aryData = $this->uploadDocumentToFolder($dataFile, $id_hiden, Define::FOLDER_JOB_ASSIGNMENT, $type, $id_hiden_person);
+				break;
 			default:
 				break;
 		}
@@ -690,7 +715,11 @@ class AjaxUploadController extends BaseAdminController{
 						$new_row['contracts_person_id'] = $id_hiden_person;
 						$item_id = HrContracts::createItem($new_row);
 						break;
-
+					case Define::FILE_TYPE_JOB_ASSIGNMENT:
+						$new_row['job_assignment_date_creater'] = time();
+						$new_row['job_assignment_person_id'] = $id_hiden_person;
+						$item_id = JobAssignment::createItem($new_row);
+						break;
 					default:
 						break;
 				}
@@ -844,6 +873,24 @@ class AjaxUploadController extends BaseAdminController{
 								$new_row['contracts_person_id'] = $id_hiden_person;
 
 								HrContracts::updateItem($item_id, $new_row);
+								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
+								$tmpImg['src'] = $url_file;
+								foreach($arr_file as $_k=>$_v){
+									if($_v == $file_name){
+										$tmpImg['name_key'] = $_k;
+									}
+								}
+							}
+							break;
+						case Define::FILE_TYPE_JOB_ASSIGNMENT:
+							$result = JobAssignment::find($item_id);
+							if($result != null){
+								$arr_file = ($result->job_assignment_file_attack != '') ? unserialize($result->job_assignment_file_attack) : array();
+								$arr_file[] = $file_name;
+								$new_row['job_assignment_file_attack'] = serialize($arr_file);
+								$new_row['job_assignment_person_id'] = $id_hiden_person;
+
+								JobAssignment::updateItem($item_id, $new_row);
 								$url_file = Config::get('config.WEB_ROOT').'uploads/'.$folder.'/'.$item_id.'/'.$file_name;
 								$tmpImg['src'] = $url_file;
 								foreach($arr_file as $_k=>$_v){

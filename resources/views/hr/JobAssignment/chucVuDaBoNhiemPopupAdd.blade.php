@@ -17,6 +17,8 @@
         <input type="hidden" name="person_id" id="person_id" value="{{$person_id}}">
         <input type="hidden" name="job_assignment_id" id="job_assignment_id" value="{{$job_assignment_id}}">
         <input type="hidden" name="typeAction" id="typeAction" value="{{$typeAction}}">
+        <input id="id_hiden" name="id_hiden" value="{{FunctionLib::inputId($job_assignment_id)}}" type="hidden">
+        <input id="id_hiden_person" name="id_hiden_person" value="{{FunctionLib::inputId($person_id)}}"type="hidden">
 
         <div class="row">
             <div class="col-sm-6">
@@ -66,6 +68,19 @@
                 <div class="form-group">
                     <label for="name" class="control-label">Ghi chú</label>
                     <input type="text" class="form-control" id="job_assignment_note" name="job_assignment_note"  value="@if(isset($data['job_assignment_note'])){{$data['job_assignment_note']}}@endif">
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div class="controls">
+                    <a href="javascript:;"class="btn btn-primary link-button" onclick="baseUpload.uploadDocumentAdvanced({{Define::FILE_TYPE_JOB_ASSIGNMENT}});">Tải tệp đính kèm</a>
+                    <div id="sys_show_file">
+                        @if(isset($data->job_assignment_file_attack) && $data->job_assignment_file_attack !='')
+                            <?php $arrfiles = ($data->job_assignment_file_attack != '') ? unserialize($data->job_assignment_file_attack) : array(); ?>
+                            @foreach($arrfiles as $_key=>$file)
+                                <div class="item-file item_{{$_key}}"><a target="_blank" href="{{Config::get('config.WEB_ROOT').'uploads/'.Define::FOLDER_JOB_ASSIGNMENT.'/'.$job_assignment_id.'/'.$file}}">{{$file}}</a><span data="{{$file}}" class="remove_file" onclick="baseUpload.deleteDocumentUpload('{{FunctionLib::inputId($job_assignment_id)}}', {{$_key}}, '{{$file}}',{{Define::FILE_TYPE_JOB_ASSIGNMENT}})">X</span></div>
+                            @endforeach
+                        @endif
+                    </div>
                 </div>
             </div>
             {!! csrf_field() !!}
