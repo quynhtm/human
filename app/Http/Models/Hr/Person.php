@@ -258,6 +258,7 @@ class Person extends BaseModel
             }
             $item->update();
             DB::connection()->getPdo()->commit();
+            PersonTime::createDataPersonTime($item->person_id,$item);
             self::removeCache($item->person_id,$item);
             return true;
         } catch (PDOException $e) {

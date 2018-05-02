@@ -37,6 +37,7 @@ class Define
     const TABLE_HR_CATEGORY = 'hr_category';
     const TABLE_HR_PERSON = 'hr_personnel';
     const TABLE_HR_PERSON_EXTEND = 'hr_personnel_extend';
+    const TABLE_HR_PERSONNEL_TIME= 'hr_personnel_time';
     const TABLE_HR_DEFINE = 'hr_define';
     const TABLE_HR_DEPARTMENT = 'hr_department';
     const TABLE_HR_DEVICE = 'hr_device';
@@ -146,6 +147,8 @@ class Define
     const QUITJOB_THOI_VIEC = 1;//nghỉ việc
     const QUITJOB_CHUYEN_CONGTAC = 2;//chuẩn bị nghỉ việc theo ngày
     const QUITJOB_CHUYEN_PHONG_BAN = 3;
+
+    const PERSONNEL_TIME_TYPE_BIRTH = 1;
 
     const BONUS_KHEN_THUONG = 1;
     const BONUS_DANH_HIEU = 2;
