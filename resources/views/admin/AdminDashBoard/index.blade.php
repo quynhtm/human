@@ -63,7 +63,7 @@
                 <div class="row">
                     <ul class="link-dash">
                         @foreach($listLink as $kl=>$val)
-                            <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}</a></li>
+                            <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url']}}" @if($val['blank']==1) target="_blank"@endif>{{$val['name_url']}}@if(isset($arrNotify[$val['cacheNotify']]) && $arrNotify[$val['cacheNotify']] > 0)<b style="color: red"> ({{$arrNotify[$val['cacheNotify']]}})</b> @endif</a></li>
                         @endforeach
                     </ul>
                 </div>

@@ -137,7 +137,7 @@ class Person extends BaseModel
         return false;
     }
 
-    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
+    public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total,$get_total=false){
         try{
             $query = Person::where('person_id','>',0);
             if (isset($dataSearch['person_name']) && $dataSearch['person_name'] != '') {
@@ -192,6 +192,9 @@ class Person extends BaseModel
             }
 
             $total = $query->count();
+
+            if($get_total)
+                return true;
 
             if(isset($dataSearch['orderBy']) && $dataSearch['orderBy'] != '' && isset($dataSearch['sortOrder']) && $dataSearch['sortOrder'] != ''){
                 $query->orderBy($dataSearch['orderBy'], $dataSearch['sortOrder']);

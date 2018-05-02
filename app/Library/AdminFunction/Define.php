@@ -126,6 +126,7 @@ class Define
     const ENGLISH_LANGUAGE = 2;
     static $arrLanguage = array(Define::VIETNAM_LANGUAGE => 'vi', Define::ENGLISH_LANGUAGE => 'en');
 
+    const TOTAL_MAX = 999999999999;
     const STATUS_SHOW = 1;
     const STATUS_HIDE = 0;
     const STATUS_BLOCK = -2;
