@@ -19,6 +19,7 @@ use App\Http\Models\Admin\User;
 use App\Http\Models\Admin\Role;
 use App\Http\Models\Admin\RoleMenu;
 
+use App\Http\Models\Hr\PersonExtend;
 use App\Http\Models\Hr\Relationship;
 use App\Http\Models\Hr\Salary;
 use App\Library\AdminFunction\FunctionLib;
@@ -282,8 +283,7 @@ class PersonController extends BaseAdminController
         ];
     }
 
-    public function getDetail($personId)
-    {
+    public function getDetail($personId){
 
         $person_id = FunctionLib::outputId($personId);
 
@@ -343,6 +343,20 @@ class PersonController extends BaseAdminController
 
         $infoPassPort = Person::getInfoPersonPassport($person_id);
 
+        //Extent person
+        $dataExtend = PersonExtend::getPersonExtendByPersonId($person_id);
+        $arrChucDanhKHCN = HrDefine::getArrayByType(Define::chuc_danh_khoa_hoc_cong_nghe);
+        $arrThanhphangiadinh = HrDefine::getArrayByType(Define::thanh_phan_gia_dinh);
+        $arrQuanham = HrDefine::getArrayByType(Define::quan_ham);
+        $arrHocvan = HrDefine::getArrayByType(Define::trinh_do_hoc_van);
+        $arrHocHam = HrDefine::getArrayByType(Define::hoc_ham);
+        $arrHocvi = HrDefine::getArrayByType(Define::hoc_vi);
+        $arrLyluan_chinhtri = HrDefine::getArrayByType(Define::ly_luan_chinh_tri);
+        $arrCongtac_danglam = HrDefine::getArrayByType(Define::cong_tac_chinh);
+        $arrHangthuongbinh = HrDefine::getArrayByType(Define::hang_thuong_binh);
+        $arrCapUy = HrDefine::getArrayByType(Define::cap_uy);
+        $arrNgoaiNgu = HrDefine::getArrayByType(Define::ngoai_ngu);
+
         $this->viewPermission = $this->getPermissionPage();
         return view('hr.Person.detail', array_merge([
             'person_id' => $person_id,
@@ -379,6 +393,18 @@ class PersonController extends BaseAdminController
             'arrOptionPhuCap' => Define::$arrOptionPhuCap,
             'arrMethodPhuCap' => Define::$arrMethodPhuCap,
             'infoPassPort' => $infoPassPort,
+            'dataExtend' => $dataExtend,
+            'arrChucDanhKHCN' => $arrChucDanhKHCN,
+            'arrThanhphangiadinh' => $arrThanhphangiadinh,
+            'arrQuanham' => $arrQuanham,
+            'arrHocvan' => $arrHocvan,
+            'arrHocHam' => $arrHocHam,
+            'arrHocvi' => $arrHocvi,
+            'arrLyluan_chinhtri' => $arrLyluan_chinhtri,
+            'arrCongtac_danglam' => $arrCongtac_danglam,
+            'arrHangthuongbinh' => $arrHangthuongbinh,
+            'arrCapUy' => $arrCapUy,
+            'arrNgoaiNgu' => $arrNgoaiNgu,
         ], $this->viewPermission));
     }
 
