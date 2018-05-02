@@ -431,7 +431,7 @@ class PersonListController extends BaseAdminController
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::$arrStatusPersonAction;
         $search['start_dealine_salary'] = time();
-        $search['end_dealine_salary'] = strtotime(time() . " +1 month");
+        $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
         $search['orderBy'] = 'person_date_salary_increase';
         $search['sortOrder'] = 'asc';
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
@@ -485,9 +485,6 @@ class PersonListController extends BaseAdminController
         $search['person_code'] = addslashes(Request::get('person_code', ''));
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_status'] = Define::PERSON_STATUS_DAXOA;
-        $search['start_dealine_salary'] = time();
-        $search['end_dealine_salary'] = strtotime(time() . " +1 month");
-        $search['orderBy'] = 'person_date_salary_increase';
         $search['sortOrder'] = 'asc';
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 

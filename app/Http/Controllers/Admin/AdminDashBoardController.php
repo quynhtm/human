@@ -60,27 +60,49 @@ class AdminDashBoardController extends BaseAdminController{
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item);
                     break;
-                    case 'viewQuitJob';
+                    case 'viewQuitJob';// nghỉ việc
                         $search['person_depart_id'] = $depart_id;
                         $search['person_status'] = Define::PERSON_STATUS_NGHIVIEC;
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item);
                     break;
-                    case 'viewMoveJob';
+                    case 'viewMoveJob';//chuyển công tác
                         $search['person_depart_id'] = $depart_id;
                         $search['person_status'] = Define::PERSON_STATUS_CHUYENCONGTAC;
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item);
                     break;
-                    case 'viewRetired';
+                    case 'viewRetired';//nghỉ hưu
                         $search['person_depart_id'] = $depart_id;
                         $search['person_status'] = Define::PERSON_STATUS_NGHIHUU;
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item);
                     break;
-                    case 'viewPreparingRetirement';
+                    case 'viewPreparingRetirement';//sắp nghỉ hưu
                         $search['person_depart_id'] = $depart_id;
                         $search['person_status'] = Define::PERSON_STATUS_SAPNGHIHUU;
+                        $search['field_get'] = 'person_id';
+                        $data = Person::searchByCondition($search, $limit, $offset, $total_item);
+                    break;
+                    case 'viewDangVienPerson';//Đảng viên
+                        $search['person_depart_id'] = $depart_id;
+                        $search['person_is_dangvien'] = Define::DANG_VIEN;
+                        $search['field_get'] = 'person_id';
+                        $data = Person::searchByCondition($search, $limit, $offset, $total_item);
+                    break;
+                    case 'viewDealineSalary';//đến hạn tăng lương
+                        $search['person_depart_id'] = $depart_id;
+                        $search['person_status'] = Define::$arrStatusPersonAction;
+                        $search['start_dealine_salary'] = time();
+                        $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
+                        $search['field_get'] = 'person_id';
+                        $data = Person::searchByCondition($search, $limit, $offset, $total_item);
+                    break;
+                    case 'viewDealineContract';//đến hạn tăng hợp đồng
+                        $search['person_depart_id'] = $depart_id;
+                        $search['person_status'] = Define::$arrStatusPersonAction;
+                        $search['start_dealine_salary'] = time();
+                        $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item);
                     break;
