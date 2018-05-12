@@ -107,22 +107,21 @@ class PersonTime extends BaseModel
 
     public static function createDataPersonTime($person_id = 0, $dataInput)
     {
-        FunctionLib::debug(date('d/m/Y',925603200));
         if (!empty($dataInput) && $person_id > 0) {
             $ojb_time = new PersonTime();
-            //ngày sinh nhật: hr_personnal
+            //NGÀY SINH NHẬT: hr_personnal
             if (isset($dataInput->person_birth) && abs($dataInput->person_birth) > 0) {
                 $person_time_type = Define::PERSONNEL_TIME_TYPE_BIRTH;
                 $ojb_time->pustDataInput($person_id, $dataInput->person_birth, $person_time_type);
             }
 
-            //Ngày đến hạn tăng lương ăn theo mã ngạch ở tăng lương: hr_personnal
+            //NGÀY ĐẾN HẠN TĂNG LƯƠNG ăn theo mã ngạch ở tăng lương: hr_personnal
             if (isset($dataInput->person_date_salary_increase) && abs($dataInput->person_date_salary_increase) > 0) {
                 $person_time_type = Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE;
                 $ojb_time->pustDataInput($person_id, $dataInput->person_date_salary_increase, $person_time_type);
             }
 
-            //ngày hết hạn hợp đồng: hr_personnal
+            //NGÀY HẾT HẠN HỢP ĐỒNG: hr_personnal
             if (isset($dataInput->contracts_dealine_date) && abs($dataInput->contracts_dealine_date) > 0) {
                 $person_time_type = Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE;
                 $ojb_time->pustDataInput($person_id, $dataInput->contracts_dealine_date, $person_time_type);

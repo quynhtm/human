@@ -11,5 +11,6 @@ Route::match(['GET','POST'],'callRunCronjobLcsSystem', array('as' => 'cr.callRun
 //CronjobHrController
 Route::match(['GET','POST'],'runCronjobQuitJob', array('as' => 'cr.runCronjobQuitJob','uses' => Cronjob.'\CronjobHrController@runCronjobQuitJob'));
 Route::match(['GET','POST'],'runCronjobMoveJob', array('as' => 'cr.runCronjobMoveJob','uses' => Cronjob.'\CronjobHrController@runCronjobMoveJob'));
+Route::match(['GET','POST'],'runPustDateRetirement', array('as' => 'cr.runPustDateRetirement','uses' => Cronjob.'\CronjobHrController@runPustDateRetirement'));
 Route::match(['GET','POST'],'runCronjobRetirement', array('as' => 'cr.runCronjobRetirement','uses' => Cronjob.'\CronjobHrController@runCronjobRetirement'));
 Route::match(['GET','POST'],'runCronjobPayroll', array('as' => 'cr.runCronjobPayroll','uses' => Cronjob.'\CronjobHrController@runCronjobPayroll'));

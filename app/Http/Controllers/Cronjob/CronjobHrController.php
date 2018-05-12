@@ -8,6 +8,7 @@ namespace App\Http\Controllers\Cronjob;
 use App\Http\Controllers\BaseCronjobController;
 use App\Http\Models\Admin\Cronjob;
 
+use App\Http\Models\Hr\DepartmentConfig;
 use App\Http\Models\Hr\Payroll;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\QuitJob;
@@ -170,41 +171,50 @@ class CronjobHrController extends BaseCronjobController{
         return $this->returnResultError($dataQuitJob);
     }
 
-    public function pustDateRetirement(){
-        //Tính ngày nghỉ hưu: hr_retirement field: retirement_date
-        /*if (isset($dataInput->person_depart_id) && isset($dataInput->person_sex) && $dataInput->person_depart_id > 0 && isset($dataInput->person_birth) && abs($dataInput->person_birth) > 0) {
-            //lấy thông tin số năm nghỉ hưu từ depart
-            $depart_config = DepartmentConfig::getItemByDepartmentId($dataInput->person_depart_id);
+    //tính ngày nghỉ hưu lại theo số năm nghỉ hưu trong depart của mỗi user
+    public function runPustDateRetirement(){
+        $search['person_status'] = Define::$arrStatusPersonAction;
+        $search['field_get'] = 'person_id,person_depart_id,person_sex,person_birth';//cac truong can lay
+        $data = Person::searchByCondition($search, CGlobal::number_show_1000, 0, $total);
 
-            if (isset($depart_config->department_config_id) && $depart_config->department_config_id > 0) {
-                $year_now = date('Y', time());
-                $year_brith = date('Y', $dataInput->person_birth);
-                $month_brith = date('m', $dataInput->person_birth);
-                $date_brith = date('d', $dataInput->person_birth);
+        if(!empty($data)){
+            foreach ($data as $k =>$person){
+                //Tính ngày nghỉ hưu: hr_retirement field: retirement_date
+                if (isset($person->person_depart_id) && isset($person->person_sex) && $person->person_depart_id > 0 && isset($person->person_birth) && abs($person->person_birth) > 0) {
+                    //lấy thông tin số năm nghỉ hưu từ depart
+                    $depart_config = DepartmentConfig::getItemByDepartmentId($person->person_depart_id);
 
-                // tính số ngày nghỉ hưu của nhân sự theo setup của depart
-                $numberYearNghihuu = ($dataInput->person_sex == CGlobal::status_hide) ? $depart_config->department_retired_age_min_girl : $depart_config->department_retired_age_min_boy;
-                $soTuoiHienTai = abs($year_now - $year_brith);
-                $soNamSapNghiHuu = $numberYearNghihuu - $soTuoiHienTai;
-                if($soNamSapNghiHuu > 0){
-                    $yearNghiHuuChinhThuc = $year_now +$soNamSapNghiHuu;
-                    $timeNghiHuuChinhThuc = $yearNghiHuuChinhThuc.'/'.$month_brith.'/'.$date_brith;
-                    $dataUpdateRetirement['retirement_date'] = strtotime ($timeNghiHuuChinhThuc) ;
-                }else{
-                    $dataUpdateRetirement['retirement_date'] = $dataInput->person_birth ;
-                }
-                if(!empty($dataUpdateRetirement)){
-                    $dataUpdateRetirement['retirement_person_id'] = $person_id;
-                    $dataUpdateRetirement['retirement_note'] = 'Tính ngày nghỉ hưu từ ngày sinh và thuộc depart';
-                    $retirement = Retirement::getRetirementByPersonId($person_id);
-                    if (isset($retirement->retirement_id)) {
-                        Retirement::updateItem($retirement->retirement_id, $dataUpdateRetirement);
-                    } else {
-                        Retirement::createItem($dataUpdateRetirement);
+                    if (isset($depart_config->department_config_id) && $depart_config->department_config_id > 0) {
+                        $year_now = date('Y', time());
+                        $year_brith = date('Y', $person->person_birth);
+                        $month_brith = date('m', $person->person_birth);
+                        $date_brith = date('d', $person->person_birth);
+
+                        // tính số ngày nghỉ hưu của nhân sự theo setup của depart
+                        $numberYearNghihuu = ($person->person_sex == CGlobal::status_hide) ? $depart_config->department_retired_age_min_girl : $depart_config->department_retired_age_min_boy;
+                        $soTuoiHienTai = abs($year_now - $year_brith);
+                        $soNamSapNghiHuu = $numberYearNghihuu - $soTuoiHienTai;
+                        if($soNamSapNghiHuu > 0){
+                            $yearNghiHuuChinhThuc = $year_now +$soNamSapNghiHuu;
+                            $timeNghiHuuChinhThuc = $yearNghiHuuChinhThuc.'/'.$month_brith.'/'.$date_brith;
+                            $dataUpdateRetirement['retirement_date'] = strtotime ($timeNghiHuuChinhThuc) ;
+                        }else{
+                            $dataUpdateRetirement['retirement_date'] = $person->person_birth ;
+                        }
+                        if(!empty($dataUpdateRetirement)){
+                            $dataUpdateRetirement['retirement_person_id'] = $person->person_id;
+                            $retirement = Retirement::getRetirementByPersonId($person->person_id);
+                            if (isset($retirement->retirement_id)) {
+                                Retirement::updateItem($retirement->retirement_id, $dataUpdateRetirement);
+                            } else {
+                                $dataUpdateRetirement['retirement_note'] = 'Tính ngày nghỉ hưu từ ngày sinh và thuộc depart';
+                                Retirement::createItem($dataUpdateRetirement);
+                            }
+                        }
                     }
                 }
             }
-        }*/
+        }
     }
     //Sắp nghỉ hưu và nghỉ hưu
     public function runCronjobRetirement(){

@@ -83,7 +83,7 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp sinh nhật
+     * NS sắp sinh nhật: Duy sửa lại lấy trong person_time
      ******************************************************************************************************************/
     public function viewBirthday()
     {
@@ -98,7 +98,9 @@ class PersonListController extends BaseAdminController
         $offset = ($page_no - 1) * $limit;
         $search = $data = array();
         $total = 0;
+        //tính toán lấy user_id
 
+        //sau
         $search['person_name'] = addslashes(Request::get('person_name', ''));
         $search['person_mail'] = addslashes(Request::get('person_mail', ''));
         $search['person_code'] = addslashes(Request::get('person_code', ''));
@@ -346,7 +348,7 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp hết hạn hợp đồng
+     * NS sắp hết hạn hợp đồng: Duy sửa lại lấy trong person_time
      ******************************************************************************************************************/
     public function viewDealineContract(){
         CGlobal::$pageAdminTitle = 'Nhân sự sắp hết Hợp đồng';
@@ -408,7 +410,7 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp đến hạn tăng lương
+     * NS sắp đến hạn tăng lương; Duy sửa lại lấy trong person_time
      ******************************************************************************************************************/
     public function viewDealineSalary()
     {
