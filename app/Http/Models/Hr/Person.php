@@ -191,7 +191,7 @@ class Person extends BaseModel
             }
 
             if (isset($dataSearch['list_person_id']) && is_array($dataSearch['list_person_id']) && count($dataSearch['list_person_id']) > 0) {
-                $query->where('person_id',  $dataSearch['list_person_id']);
+                $query->whereIn('person_id',  $dataSearch['list_person_id']);
             }
 
             $total = $query->count();

@@ -328,6 +328,9 @@ class Define
     const minus_one_month = ' -1 month';
     const minus_one_week = ' -1 week';
 
+    //Check ngay sinh nhat truoc 7 ngay
+    const config_date_check_notify = 7;
+
     const FILE_TYPE_MAIL = 9;
     const FILE_TYPE_DOCUMENT = 10;
     const FILE_TYPE_LUONG = 11;//salary
