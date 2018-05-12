@@ -124,7 +124,6 @@ class AdminDashBoardController extends BaseAdminController{
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
                     break;
-
                     default:
                         break;
                 }
