@@ -74,6 +74,7 @@
                             <th width="2%" class="text-center">STT</th>
                             <th width="20%">Tên thiết bị</th>
                             <th width="10%">Mã</th>
+                            <th width="10%">Giá</th>
                             <th width="12%">Loại thiết bị</th>
                             <th width="10%">Ngày bàn giao</th>
                             <th width="10%">Người sử dụng</th>
@@ -87,6 +88,7 @@
                                 <td class="text-center">1</td>
                                 <td>{{$item->device_name}}</td>
                                 <td>{{$item->device_code}}</td>
+                                <td>{{FunctionLib::numberFormat($item->device_price)}}đ</td>
                                 <td>
                                     @if(isset($arrDeviceType[$item['device_type']]))
                                         {{$arrDeviceType[$item['device_type']]}}
