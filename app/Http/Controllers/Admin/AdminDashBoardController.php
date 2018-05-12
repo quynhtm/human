@@ -24,6 +24,7 @@ class AdminDashBoardController extends BaseAdminController{
     }
 
     public function dashboard(){
+
         $total = 0;
         $data = array();
         $listLink = CGlobal::$arrLinkListDash;

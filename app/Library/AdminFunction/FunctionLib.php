@@ -1392,4 +1392,19 @@ html;
             }
         }
     }
+
+    public static function checkConfigDateNotify($date_now,$month_now,$year_now){
+
+        $date1 = ($date_now < 10)? $date_now: $date_now;
+        $month = ($month_now < 10)? $month_now: $month_now;
+        $time_run = $date1.'-'.$month.'-'.$year_now;
+        $time_cong = strtotime ( '+'.Define::config_date_check_notify.' days' , strtotime ( $time_run ));
+        $time_tru = strtotime ( '-'.Define::config_date_check_notify.' days' , strtotime ( $time_run ));
+
+        return array(
+            'time_now'=>$time_run,
+            'time_max'=>date('d-m-Y',$time_cong),
+            'time_min'=>date('d-m-Y',$time_tru)
+        );
+    }
 }

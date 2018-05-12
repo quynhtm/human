@@ -161,9 +161,17 @@ class PersonTime extends BaseModel
     {
         try {
             $query = PersonTime::where('person_time_id', '>', 0);
-            if (isset($dataSearch['menu_name']) && $dataSearch['menu_name'] != '') {
-                $query->where('menu_name', 'LIKE', '%' . $dataSearch['menu_name'] . '%');
+
+            if(isset($dataSearch['date_search']) && $dataSearch['date_search'] > 0) {
+                $query->where('person_time_day','>=', $dataSearch['date_search']);
             }
+            if(isset($dataSearch['date_search_to']) && $dataSearch['date_search_to'] > 0) {
+                $query->where('person_time_day', '<=', $dataSearch['date_search_to']);
+            }
+            if(isset($dataSearch['month_search']) && $dataSearch['month_search'] > 0) {
+                $query->where('person_time_month', $dataSearch['month_search']);
+            }
+
             $total = $query->count();
             $query->orderBy('person_time_id', 'desc');
 
@@ -179,5 +187,23 @@ class PersonTime extends BaseModel
         } catch (PDOException $e) {
             throw new PDOException();
         }
+    }
+    public static function getListPersonIdByTypeTime($person_time_type){
+        $checkTime = FunctionLib::checkConfigDateNotify(date('d', time()), date('m', time()), date('Y', time()));
+        $time_min = isset($checkTime['time_min']) ? $checkTime['time_min'] : '';
+
+        $dataSearch['date_search'] = date('d', strtotime($time_min));
+        $dataSearch['date_search_to'] = date('d', time());
+        $dataSearch['month_search'] = date('m', strtotime($time_min));
+        $dataSearch['person_time_type'] = $person_time_type;
+
+        $listPerson = PersonTime::searchByCondition($dataSearch, CGlobal::number_show_1000, 0, $total);
+        $arrPersonId = array();
+        if($total > 0){
+            foreach($listPerson as $item){
+                $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
+            }
+        }
+        return $arrPersonId;
     }
 }

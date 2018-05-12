@@ -9,6 +9,7 @@ use App\Http\Models\Hr\HrContracts;
 use App\Http\Models\Hr\Person;
 use App\Http\Models\Hr\HrDefine;
 
+use App\Http\Models\Hr\PersonTime;
 use App\Library\AdminFunction\FunctionLib;
 use App\Library\AdminFunction\CGlobal;
 use App\Library\AdminFunction\Define;
@@ -99,22 +100,22 @@ class PersonListController extends BaseAdminController
         $search = $data = array();
         $total = 0;
         //tính toán lấy user_id
-
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH);
         //sau
-        $search['person_name'] = addslashes(Request::get('person_name', ''));
-        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
-        $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::$arrStatusPersonAction;
-        $search['start_birth'] = time();
-        $search['end_birth'] = strtotime(time() . Define::add_one_week);
-        $search['orderBy'] = 'person_birth';
-        $search['sortOrder'] = 'asc';
-        //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+        if(sizeof($arrPersonId) > 0){
+            $search['person_name'] = addslashes(Request::get('person_name', ''));
+            $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+            $search['person_code'] = addslashes(Request::get('person_code', ''));
+            $search['list_person_id'] = $arrPersonId;
+            $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+            $search['person_status'] = Define::$arrStatusPersonAction;
+            $search['orderBy'] = 'person_birth';
+            $search['sortOrder'] = 'asc';
+            $data = Person::searchByCondition($search, $limit, $offset, $total);
+            //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+        }
 
-        $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
-
         if($sbmValue == 2){
             $this->exportData($data,'Danh sách '.CGlobal::$pageAdminTitle);
         }
