@@ -35,15 +35,15 @@
             </div>
             <div class="col-sm-4">
                 <div class="form-group">
-                    <label for="name" class="control-label">Cấp ủy kiêm</label>
-                    <input type="text" id="curriculum_cap_uykiem" name="curriculum_cap_uykiem" class="form-control input-sm input-required" title="Chi bộ"
+                    <label for="name" class="control-label">Cấp ủy kiêm<span class="red"> (*) </span></label>
+                    <input type="text" id="curriculum_cap_uykiem" name="curriculum_cap_uykiem" class="form-control input-sm input-required" title="Cấp ủy kiêm"
                            value="@if(isset($curriculum->curriculum_cap_uykiem)){{$curriculum->curriculum_cap_uykiem}}@endif">
                 </div>
             </div>
 
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="name" class="control-label">Thời gian đào tạo<span class="red"> (*) </span></label>
+                    <label for="name" class="control-label">Thời gian<span class="red"> (*) </span></label>
                     <select name="curriculum_month_in" id="curriculum_month_in"  class="form-control input-sm input-required">
                         {!! $optionMonthIn !!}
                     </select>
