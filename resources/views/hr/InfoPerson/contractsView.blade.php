@@ -77,7 +77,13 @@
                     </div>
                     <a class="btn btn-success" href="#" onclick="HR.getInfoContractsPerson('{{FunctionLib::inputId($person_id)}}','{{FunctionLib::inputId(0)}}')"><i class="fa fa-reply"></i> Thêm mới hợp đồng</a>
                 </div>
+
             </div>
-        </div><!-- /.page-content -->
+            <div class="marginTop20">
+                <a class="btn btn-warning" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-reply"></i> Trở lại</a>
+                <a class="btn btn-primary"  href="/manager/personExtend/edit/{{FunctionLib::inputId($person_id)}}"><i class="fa fa-forward"></i> Lưu và tiếp tục</a>
+            </div>
+        </div>
+
     </div>
 @stop

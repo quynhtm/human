@@ -359,4 +359,7 @@ class Define
     const httpServer = CGlobal::http_not_remove;
 
     public static $arrStatusPersonAction = array(Define::PERSON_STATUS_DANGLAMVIEC, Define::PERSON_STATUS_SAPNGHIHUU);
+
+    const SUBMIT_BACK_LIST = 1;
+    const SUBMIT_BACK_NEXT = 2;
 }

@@ -98,7 +98,8 @@ class PersonController extends BaseAdminController
         ];
     }
 
-    public function view(){
+    public function view()
+    {
         CGlobal::$pageAdminTitle = 'Quản lý nhân sự';
         //Check phan quyen.
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
@@ -117,7 +118,7 @@ class PersonController extends BaseAdminController
         $search['person_status'] = Define::PERSON_STATUS_DANGLAMVIEC;
         $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
         $search['person_is_dangvien'] = (int)Request::get('person_is_dangvien', -1);
-        $search['person_type_contracts'] = (int)Request::get('person_type_contracts',0);
+        $search['person_type_contracts'] = (int)Request::get('person_type_contracts', 0);
 
         //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
 
@@ -131,10 +132,10 @@ class PersonController extends BaseAdminController
         $this->getDataDefault();
         $depart = Department::getDepartmentAll();
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
-        $optionDangVien = FunctionLib::getOption(array(-1=>'--Tìm kiếm theo Đảng viên --')+$this->arrTonGiao, isset($search['person_is_dangvien']) ? $search['person_is_dangvien'] : -1);
+        $optionDangVien = FunctionLib::getOption(array(-1 => '--Tìm kiếm theo Đảng viên --') + $this->arrTonGiao, isset($search['person_is_dangvien']) ? $search['person_is_dangvien'] : -1);
 
         $arrLoaihopdong = HrDefine::getArrayByType(Define::loai_hop_dong);
-        $optionLoaihopdong = FunctionLib::getOption(array(-1=>'--Tìm kiếm theo loại HĐ--')+$arrLoaihopdong, isset($search['person_type_contracts']) ? $search['person_type_contracts'] : -1);
+        $optionLoaihopdong = FunctionLib::getOption(array(-1 => '--Tìm kiếm theo loại HĐ--') + $arrLoaihopdong, isset($search['person_type_contracts']) ? $search['person_type_contracts'] : -1);
 
         $arrChucVu = HrDefine::getArrayByType(Define::chuc_vu);
         $arrChucDanhNgheNghiep = HrDefine::getArrayByType(Define::chuc_danh_nghe_nghiep);
@@ -212,15 +213,16 @@ class PersonController extends BaseAdminController
 
         if ($this->valid($data) && empty($this->error)) {
             $id = ($id == 0) ? FunctionLib::outputId($id_hiden) : $id;
+            $submit = $_POST['save_form'];
             if ($id > 0) {
                 //cap nhat
                 if (Person::updateItem($id, $data)) {
-                    return Redirect::route('hr.personnelView');
+                    return ($submit == Define::SUBMIT_BACK_LIST) ? Redirect::route('hr.personnelView') : Redirect::route('hr.viewSalaryAllowance',array('person_id'=>FunctionLib::inputId($id)));
                 }
             } else {
                 //them moi
                 if (Person::createItem($data)) {
-                    return Redirect::route('hr.personnelView');
+                    return ($submit == Define::SUBMIT_BACK_LIST) ? Redirect::route('hr.personnelView') : Redirect::route('hr.viewSalaryAllowance',array('person_id'=>FunctionLib::inputId($id)));
                 }
             }
         }
@@ -236,7 +238,8 @@ class PersonController extends BaseAdminController
         ], $this->viewOptionData, $this->viewPermission));
     }
 
-    public function viewOptionData($data){
+    public function viewOptionData($data)
+    {
         //thông tin của nhân sự
         $optionSex = FunctionLib::getOption($this->arrSex, isset($data['person_sex']) ? $data['person_sex'] : 0);
         $optionTonGiao = FunctionLib::getOption($this->arrTonGiao, isset($data['person_respect']) ? $data['person_respect'] : 0);
@@ -283,7 +286,8 @@ class PersonController extends BaseAdminController
         ];
     }
 
-    public function getDetail($personId){
+    public function getDetail($personId)
+    {
 
         $person_id = FunctionLib::outputId($personId);
 
@@ -777,7 +781,8 @@ class PersonController extends BaseAdminController
         ], $this->viewPermission));
     }
 
-    public function exportData($data, $title = '', $type=1){
+    public function exportData($data, $title = '', $type = 1)
+    {
         if (empty($data)) {
             return;
         }
@@ -801,7 +806,7 @@ class PersonController extends BaseAdminController
         $sheet->setCellValue("A1", $title);
         $sheet->getRowDimension("1")->setRowHeight(32);
         $sheet->getStyle('A1')->getAlignment()->setHorizontal(PHPExcel_Style_Alignment::HORIZONTAL_CENTER)
-                ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
+            ->setVertical(PHPExcel_Style_Alignment::VERTICAL_CENTER);
         $sheet->getStyle('A1')->applyFromArray(
             array(
                 'fill' => array(
@@ -812,17 +817,17 @@ class PersonController extends BaseAdminController
             )
         );
         $str = '';
-        if($type == 2){
+        if ($type == 2) {
             $str = ' SẮP TĂNG LƯƠNG';
-        }elseif($type == 3){
-             $str = ' SẮP HẾT HẠN HỢP ĐỒNG';
-        }elseif($type == 4){
+        } elseif ($type == 3) {
+            $str = ' SẮP HẾT HẠN HỢP ĐỒNG';
+        } elseif ($type == 4) {
             $str = ' ĐẢNG VIÊN';
-        }elseif($type == 5){
+        } elseif ($type == 5) {
             $str = ' SẮP NGHỈ HƯU';
         }
 
-        $sheet->SetCellValue('A1', 'BÁO CÁO DANH SÁCH NHÂN SỰ'.$str);
+        $sheet->SetCellValue('A1', 'BÁO CÁO DANH SÁCH NHÂN SỰ' . $str);
 
         // setting header
         $position_hearder = 2;
@@ -914,44 +919,44 @@ class PersonController extends BaseAdminController
             $sheet->getStyle('K' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
             $sheet->SetCellValue('K' . $rowCount, '');
 
-            if($type == 1) {
+            if ($type == 1) {
                 $sheet->getStyle('L' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('L' . $rowCount, ($v['person_ngayvao_dang'] != 0)  ? date('d/m/Y', $v['person_ngayvao_dang']) : '');
+                $sheet->SetCellValue('L' . $rowCount, ($v['person_ngayvao_dang'] != 0) ? date('d/m/Y', $v['person_ngayvao_dang']) : '');
 
                 $sheet->getStyle('M' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('M' . $rowCount, ($v['person_date_start_work'] != 0)  ? date('d/m/Y', $v['person_date_start_work']) : '');
+                $sheet->SetCellValue('M' . $rowCount, ($v['person_date_start_work'] != 0) ? date('d/m/Y', $v['person_date_start_work']) : '');
 
                 $sheet->getStyle('N' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
                 $sheet->SetCellValue('N' . $rowCount, isset($arrLoaihopdong[$v['person_type_contracts']]) ? $arrLoaihopdong[$v['person_type_contracts']] : '');
-            }elseif($type == 2){
+            } elseif ($type == 2) {
 
                 $sheet->getStyle('L' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0)  ? date('d/m/Y', $v['person_date_start_work']) : '');
+                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0) ? date('d/m/Y', $v['person_date_start_work']) : '');
 
                 $sheet->getStyle('M' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
                 $sheet->SetCellValue('M' . $rowCount, isset($arrLoaihopdong[$v['person_type_contracts']]) ? $arrLoaihopdong[$v['person_type_contracts']] : '');
 
                 $sheet->getStyle('N' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
                 $sheet->SetCellValue('N' . $rowCount, ($v['person_date_salary_increase'] != 0) ? date('d/m/Y', $v['person_date_salary_increase']) : '');
-            }elseif($type == 3){
+            } elseif ($type == 3) {
 
                 $sheet->getStyle('L' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0)  ? date('d/m/Y', $v['person_date_start_work']) : '');
+                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0) ? date('d/m/Y', $v['person_date_start_work']) : '');
 
                 $sheet->getStyle('M' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
                 $sheet->SetCellValue('M' . $rowCount, isset($arrLoaihopdong[$v['person_type_contracts']]) ? $arrLoaihopdong[$v['person_type_contracts']] : '');
 
                 $sheet->getStyle('N' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('N' . $rowCount, ($v['contracts_dealine_date'] != 0)  ? date('d/m/Y', $v['contracts_dealine_date']) : '');
-            }elseif($type == 4){
+                $sheet->SetCellValue('N' . $rowCount, ($v['contracts_dealine_date'] != 0) ? date('d/m/Y', $v['contracts_dealine_date']) : '');
+            } elseif ($type == 4) {
                 $sheet->getStyle('L' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('L' . $rowCount, ($v['person_ngayvao_dang'] != 0)  ? date('d/m/Y', $v['person_ngayvao_dang']) : '');
-            }elseif($type == 5){
+                $sheet->SetCellValue('L' . $rowCount, ($v['person_ngayvao_dang'] != 0) ? date('d/m/Y', $v['person_ngayvao_dang']) : '');
+            } elseif ($type == 5) {
                 $sheet->getStyle('L' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0)  ? date('d/m/Y', $v['person_date_start_work']) : '');
+                $sheet->SetCellValue('L' . $rowCount, ($v['person_date_start_work'] != 0) ? date('d/m/Y', $v['person_date_start_work']) : '');
 
                 $sheet->getStyle('M' . $rowCount)->getAlignment()->applyFromArray(array('horizontal' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER,));
-                $sheet->SetCellValue('M' . $rowCount, ($v['retirement_date'] != 0)  ? date('d/m/Y', $v['retirement_date']) : '');
+                $sheet->SetCellValue('M' . $rowCount, ($v['retirement_date'] != 0) ? date('d/m/Y', $v['retirement_date']) : '');
             }
             $rowCount++;
             $i++;
@@ -963,13 +968,15 @@ class PersonController extends BaseAdminController
         @header("Cache-Control: ");
         @header("Pragma: ");
         @header("Content-type: application/octet-stream");
-        @header('Content-Disposition: attachment; filename="'.$filename.'.xls"');
+        @header('Content-Disposition: attachment; filename="' . $filename . '.xls"');
 
         $objWriter = PHPExcel_IOFactory::createWriter($objPHPExcel, 'Excel2007');
         $objWriter->save("php://output");
         exit();
     }
-    public function buildHeadExcel($type = 1){
+
+    public function buildHeadExcel($type = 1)
+    {
         $ary_cell = array(
             'A' => array('w' => self::val10, 'val' => 'STT', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             'B' => array('w' => self::val25, 'val' => 'Họ tên', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_LEFT),
@@ -984,30 +991,30 @@ class PersonController extends BaseAdminController
             'K' => array('w' => self::val18, 'val' => 'Trình độ học vấn', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
         );
 
-        if($type == 1){
-            $ary_cell +=  array(
+        if ($type == 1) {
+            $ary_cell += array(
                 'L' => array('w' => self::val18, 'val' => 'Ngày vào Đảng', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'M' => array('w' => self::val18, 'val' => 'Ngày làm việc', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'N' => array('w' => self::val18, 'val' => 'Loại hợp đồng', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             );
-        }elseif($type == 2){
-            $ary_cell +=  array(
+        } elseif ($type == 2) {
+            $ary_cell += array(
                 'L' => array('w' => self::val18, 'val' => 'Ngày làm việc', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'M' => array('w' => self::val18, 'val' => 'Loại hợp đồng', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'N' => array('w' => self::val18, 'val' => 'Ngày tăng lương', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             );
-        }elseif($type == 3){
-            $ary_cell +=  array(
+        } elseif ($type == 3) {
+            $ary_cell += array(
                 'L' => array('w' => self::val18, 'val' => 'Ngày làm việc', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'M' => array('w' => self::val18, 'val' => 'Loại hợp đồng', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'N' => array('w' => self::val18, 'val' => 'Ngày hết hạn HĐ', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             );
-        }elseif($type == 4){
-            $ary_cell +=  array(
+        } elseif ($type == 4) {
+            $ary_cell += array(
                 'L' => array('w' => self::val10, 'val' => 'Ngày vào Đảng', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             );
-        }elseif($type == 5){
-            $ary_cell +=  array(
+        } elseif ($type == 5) {
+            $ary_cell += array(
                 'L' => array('w' => self::val10, 'val' => 'Ngày làm việc', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
                 'M' => array('w' => self::val10, 'val' => 'Ngày nghỉ hưu', 'align' => PHPExcel_Style_Alignment::HORIZONTAL_CENTER),
             );

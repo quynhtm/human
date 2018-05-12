@@ -279,7 +279,8 @@ use App\Library\AdminFunction\CGlobal;
                             {!! csrf_field() !!}
                             <input id="id_hiden" name="id_hiden" @isset($data['person_id'])rel="{{$data['person_id']}}" value="{{FunctionLib::inputId($data['person_id'])}}" @else rel="0" value="{{FunctionLib::inputId(0)}}" @endif type="hidden">
                             <a class="btn btn-warning" href="{{URL::route('hr.personnelView')}}"><i class="fa fa-reply"></i> Trở lại</a>
-                            <button  class="btn btn-primary"><i class="fa fa-floppy-o"></i> Lưu lại</button>
+                            <button class="btn btn-primary" name="save_form" value="{{\App\Library\AdminFunction\Define::SUBMIT_BACK_LIST}}"><i class="fa fa-floppy-o"></i> Lưu lại</button>
+                            <button class="btn btn-success" name="save_form" value="{{\App\Library\AdminFunction\Define::SUBMIT_BACK_NEXT}}"><i class="fa fa-forward"></i> Lưu và tiếp tục</button>
                         </div>
                     </form>
                 </div>
