@@ -162,7 +162,7 @@ class Person extends BaseModel
             }
             //là đảng viên
             if (isset($dataSearch['person_is_dangvien']) && $dataSearch['person_is_dangvien'] > -1) {
-                $query->where('person_is_dangvien', '=', $dataSearch['person_is_dangvien']);
+                $query->where('person_is_dangvien', '>', $dataSearch['person_is_dangvien']);
             }
             //loại hợp đồng
             if (isset($dataSearch['person_type_contracts']) && $dataSearch['person_type_contracts'] > 0) {
@@ -191,7 +191,7 @@ class Person extends BaseModel
             }
 
             if (isset($dataSearch['list_person_id']) && is_array($dataSearch['list_person_id']) && count($dataSearch['list_person_id']) > 0) {
-                $query->whereIn('person_id',  $dataSearch['list_person_id']);
+                $query->where('person_id',  $dataSearch['list_person_id']);
             }
 
             $total = $query->count();

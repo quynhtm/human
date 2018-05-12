@@ -133,7 +133,7 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
-        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
+        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', -1) : $this->user_depart_id;
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
         $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 1);
 
@@ -183,7 +183,7 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
-        $dataSearch['device_depart_id'] = FunctionLib::outputId(Request::get('device_depart_id', -1));
+        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', -1) : $this->user_depart_id;
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
         $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 0);
 

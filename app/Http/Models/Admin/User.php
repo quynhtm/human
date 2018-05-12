@@ -408,7 +408,7 @@ class User extends BaseModel
             $result = User::whereIn('user_object_id',  $arrUserObjectId)->get();
             if(sizeof($result) > 0){
                 foreach($result as $item){
-                    $person[] = $item->user_id;
+                    $person[] = $item->user_object_id;
                 }
             }
         }

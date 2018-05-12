@@ -70,7 +70,7 @@ class HrMailController extends BaseAdminController{
 
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_da_gui;
-        $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
+        $dataSearch['hr_mail_person_send'] = $this->user['user_object_id'];
         $dataSearch['hr_mail_type'] = Define::mail_type_0;
         $dataSearch['field_get'] = '';
 
@@ -103,10 +103,11 @@ class HrMailController extends BaseAdminController{
 
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = (int)Request::get('hr_mail_status', -1);
-        $dataSearch['hr_mail_person_recive'] = $this->user['user_id'];
+        $dataSearch['hr_mail_person_recive'] = $this->user['user_object_id'];
         $dataSearch['hr_mail_type'] = Define::mail_type_1;
         $dataSearch['field_get'] = '';
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
+
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
@@ -136,7 +137,7 @@ class HrMailController extends BaseAdminController{
         $dataSearch['hr_mail_name'] = addslashes(Request::get('hr_mail_name',''));
         $dataSearch['hr_mail_status'] = Define::mail_nhap;
         $dataSearch['hr_mail_type'] = -1;
-        $dataSearch['hr_mail_person_send'] = $this->user['user_id'];
+        $dataSearch['hr_mail_person_send'] = $this->user['user_object_id'];
         $dataSearch['field_get'] = '';
 
         $data = HrMail::searchByCondition($dataSearch, $limit, $offset,$total);
@@ -174,7 +175,7 @@ class HrMailController extends BaseAdminController{
         $arrUser = $this->getArrayUserFromData($dataUser);
 
         if($id > 0) {
-            $user_id = $this->user['user_id'];
+            $user_id = $this->user['user_object_id'];
             $data = HrMail::getItemByIdAndPersonSendId($id, $user_id);
             if(sizeof($data) == 0){
                 return Redirect::route('hr.HrMailViewSend');
@@ -210,7 +211,7 @@ class HrMailController extends BaseAdminController{
         $dataUser = User::getList();
         $arrUser = $this->getArrayUserFromData($dataUser);
         if($id > 0) {
-            $user_id = $this->user['user_id'];
+            $user_id = $this->user['user_object_id'];
             $data = HrMail::getItemByIdAndPersonReciveId($id, $user_id);
             //$dataParent = HrMail::getItemByParentIdAndPersonReciveId($data->hr_mail_id, $user_id);
             if(sizeof($data) == 0){
@@ -247,7 +248,7 @@ class HrMailController extends BaseAdminController{
         }
         $data = array();
         if($id > 0) {
-            $user_id = $this->user['user_id'];
+            $user_id = $this->user['user_object_id'];
             $data = HrMail::getItemDraftById($id, $user_id);
             if(sizeof($data) == 0){
                 return Redirect::route('hr.HrMailViewDraft');
@@ -285,7 +286,7 @@ class HrMailController extends BaseAdminController{
         if($id > 0) {
             $data = HrMail::getItemById($id);
             if(sizeof($data) > 0){
-                $user_id = $this->user['user_id'];
+                $user_id = $this->user['user_object_id'];
                if($data->hr_mail_person_send != $user_id){
                    return Redirect::route('hr.HrMailEdit', array('id'=>FunctionLib::inputId(0)));
                }
@@ -362,7 +363,7 @@ class HrMailController extends BaseAdminController{
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
                     $data['hr_mail_type'] = -1;
-                    $data['hr_mail_person_send'] = $this->user['user_id'];
+                    $data['hr_mail_person_send'] = $this->user['user_object_id'];
                     HrMail::updateItem($id, $data);
                 }else{
                     $data['hr_mail_date_send'] = time();
@@ -387,11 +388,10 @@ class HrMailController extends BaseAdminController{
                 }
             }else{
                 $data['hr_mail_created'] = time();
-                $data['hr_mail_person_send'] = $this->user['user_id'];
+                $data['hr_mail_person_send'] = $this->user['user_object_id'];
                 if(isset($data['submitMailDraft'])){
                     $data['hr_mail_status'] = Define::mail_nhap;
                     $data['hr_mail_type'] = -1;
-                    $data['hr_mail_person_send'] = $this->user['user_id'];
                 }else{
                     $data['hr_mail_type'] = Define::mail_type_0;
                     $data['hr_mail_status'] = Define::mail_da_gui;
