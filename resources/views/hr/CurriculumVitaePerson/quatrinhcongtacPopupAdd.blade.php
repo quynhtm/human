@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-sm-6">
                 <div class="form-group">
-                    <label for="name" class="control-label">Thời gian đào tạo<span class="red"> (*) </span></label>
+                    <label for="name" class="control-label">Thời gian công tác<span class="red"> (*) </span></label>
                     <select name="curriculum_month_in" id="curriculum_month_in"  class="form-control input-sm input-required">
                         {!! $optionMonthIn !!}
                     </select>
