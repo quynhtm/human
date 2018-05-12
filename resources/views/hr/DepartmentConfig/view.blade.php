@@ -37,8 +37,8 @@
                                     <th>Tuổi tối đa về hưu với nữ</th>
                                     <th>Tuổi tối thiểu về hưu với nam</th>
                                     <th>Tuổi tối đa về hưu với nam</th>
-                                    <th>Số tháng cần sét tăng lương thường xuyên(mặc định 36 tháng)</th>
-                                    <th>Số tháng tối thiểu để sét tăng lương trước thời hạn(mặc định 24 tháng)</th>
+                                    {{--<th>Số tháng cần sét tăng lương thường xuyên(mặc định 36 tháng)</th>
+                                    <th>Số tháng tối thiểu để sét tăng lương trước thời hạn(mặc định 24 tháng)</th>--}}
                                     <th>Trạng thái</th>
                                     <th class="text-center">Chức năng</th>
                                 </tr>
@@ -58,8 +58,8 @@
                                         <td>{{$item->department_retired_age_max_girl}}</td>
                                         <td>{{$item->department_retired_age_min_boy}}</td>
                                         <td>{{$item->department_retired_age_max_boy}}</td>
-                                        <td>{{$item->month_regular_wage_increases}}</td>
-                                        <td>{{$item->month_raise_the_salary_ahead_of_time}}</td>
+                                        {{--<td>{{$item->month_regular_wage_increases}}</td>
+                                        <td>{{$item->month_raise_the_salary_ahead_of_time}}</td>--}}
                                         <td>
                                             @if(isset($arrStatus[$item['department_config_status']]) && $arrStatus[$item['department_config_status']] != -1)
                                                 {{$arrStatus[$item['department_config_status']]}}

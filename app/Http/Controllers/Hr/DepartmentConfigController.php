@@ -151,13 +151,13 @@ class DepartmentConfigController extends BaseAdminController{
             }
             if($id > 0) {
                 if(DepartmentConfig::updateItem($id, $data)) {
-                    //return Redirect::route('hr.departmentConfigView');
-                    return Redirect::route('hr.departmentView');
+                    return Redirect::route('hr.departmentConfigView');
+                    //return Redirect::route('hr.departmentView');
                 }
             }else{
                 if(DepartmentConfig::createItem($data)) {
-                    //return Redirect::route('hr.departmentConfigView');
-                    return Redirect::route('hr.departmentView');
+                    return Redirect::route('hr.departmentConfigView');
+                    //return Redirect::route('hr.departmentView');
                 }
             }
         }

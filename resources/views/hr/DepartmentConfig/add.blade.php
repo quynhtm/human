@@ -75,7 +75,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="row">
+                                <div class="row" style="display: none">
                                     <div class="col-md-3">
                                         <div class="form-group">
                                             <label>Số tháng cần sét tăng lương thường xuyên(mặc định 36 tháng) <span class="clred">(*)</span></label>
