@@ -84,7 +84,7 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp sinh nhật: Duy sửa lại lấy trong person_time
+     * NS sắp sinh nhật:
      ******************************************************************************************************************/
     public function viewBirthday()
     {
@@ -349,26 +349,13 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp hết hạn hợp đồng: Duy sửa lại lấy trong person_time
+     * NS sắp hết hạn hợp đồng:
      ******************************************************************************************************************/
     public function viewDealineContract(){
         CGlobal::$pageAdminTitle = 'Nhân sự sắp hết Hợp đồng';
         //Check phan quyen.
         if (!$this->is_root && !in_array($this->permission_full, $this->permission) && !in_array($this->permission_view, $this->permission)) {
             return Redirect::route('admin.dashboard', array('error' => Define::ERROR_PERMISSION));
-        }
-
-        $searchContract['start_dealine_date'] = time();
-        $searchContract['end_dealine_date'] = strtotime(time() . " +1 month");
-        $searchContract['orderBy'] = 'contracts_dealine_date';
-        $searchContract['sortOrder'] = 'asc';
-        $search['field_get'] = 'contracts_person_id,contracts_id';//cac truong can lay
-        $dataContract = HrContracts::searchByCondition($search, 5000, 0, $total2);
-        $arrPersonId = array();
-        if(count($dataContract) > 0){
-            foreach ($dataContract as $contr){
-                $arrPersonId[$contr->contracts_person_id] = $contr->contracts_person_id;
-            }
         }
 
         $page_no = (int)Request::get('page_no', 1);
@@ -378,13 +365,17 @@ class PersonListController extends BaseAdminController
         $search = $data = array();
         $total = 0;
 
-        $search['person_name'] = addslashes(Request::get('person_name', ''));
-        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
-        $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::$arrStatusPersonAction;
-        $search['list_person_id'] = $arrPersonId;
-
+        //tính toán lấy user_id
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE);
+        //sau
+        if(sizeof($arrPersonId) > 0){
+            $search['person_name'] = addslashes(Request::get('person_name', ''));
+            $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+            $search['person_code'] = addslashes(Request::get('person_code', ''));
+            $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+            $search['person_status'] = Define::$arrStatusPersonAction;
+            $search['list_person_id'] = $arrPersonId;
+        }
         $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
         if($sbmValue == 2){
@@ -411,7 +402,7 @@ class PersonListController extends BaseAdminController
     }
 
     /******************************************************************************************************************
-     * NS sắp đến hạn tăng lương; Duy sửa lại lấy trong person_time
+     * NS sắp đến hạn tăng lương;
      ******************************************************************************************************************/
     public function viewDealineSalary()
     {
@@ -426,18 +417,19 @@ class PersonListController extends BaseAdminController
         $offset = ($page_no - 1) * $limit;
         $search = $data = array();
         $total = 0;
-
-        $search['person_name'] = addslashes(Request::get('person_name', ''));
-        $search['person_mail'] = addslashes(Request::get('person_mail', ''));
-        $search['person_code'] = addslashes(Request::get('person_code', ''));
-        $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
-        $search['person_status'] = Define::$arrStatusPersonAction;
-        $search['start_dealine_salary'] = time();
-        $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
-        $search['orderBy'] = 'person_date_salary_increase';
-        $search['sortOrder'] = 'asc';
-        //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
-
+        //tính toán lấy user_id
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE);
+        if(sizeof($arrPersonId) > 0) {
+            $search['person_name'] = addslashes(Request::get('person_name', ''));
+            $search['person_mail'] = addslashes(Request::get('person_mail', ''));
+            $search['person_code'] = addslashes(Request::get('person_code', ''));
+            $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
+            $search['person_status'] = Define::$arrStatusPersonAction;
+            $search['list_person_id'] = $arrPersonId;
+            $search['orderBy'] = 'person_date_salary_increase';
+            $search['sortOrder'] = 'asc';
+            //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+        }
         $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 

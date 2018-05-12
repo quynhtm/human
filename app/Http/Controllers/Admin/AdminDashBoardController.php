@@ -9,6 +9,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Models\Hr\HrContracts;
 use App\Http\Models\Hr\Person;
+use App\Http\Models\Hr\PersonTime;
 use App\Library\AdminFunction\CGlobal;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Request;
@@ -60,13 +61,39 @@ class AdminDashBoardController extends BaseAdminController{
                 $offset = 0;
                 switch ($nameCache){
                     case 'viewBirthday';
-                        $search['person_depart_id'] = $depart_id;
-                        $search['person_status'] = Define::$arrStatusPersonAction;
-                        $search['start_birth'] = time();
-                        $search['end_birth'] = strtotime(time() . Define::add_one_week);
-                        $search['field_get'] = 'person_id';
-                        $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH);
+                        if(sizeof($arrPersonId) > 0){
+                            $search['person_depart_id'] = $depart_id;
+                            $search['person_status'] = Define::$arrStatusPersonAction;
+                            $search['start_birth'] = time();
+                            $search['end_birth'] = strtotime(time() . Define::add_one_week);
+                            $search['list_person_id'] = $arrPersonId;
+                            $search['field_get'] = 'person_id';
+                            $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
+                        }
                     break;
+                    case 'viewDealineSalary';//đến hạn tăng lương
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE);
+                        if(!empty($arrPersonId)) {
+                            $search['person_depart_id'] = $depart_id;
+                            $search['person_status'] = Define::$arrStatusPersonAction;
+                            $search['start_dealine_salary'] = time();
+                            $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
+                            $search['field_get'] = 'person_id';
+                            $search['list_person_id'] = $arrPersonId;
+                            $data = Person::searchByCondition($search, $limit, $offset, $total_item, true);
+                        }
+                        break;
+                    case 'viewDealineContract';//đến hạn tăng hợp đồng
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE);
+                        if(!empty($arrPersonId)){
+                            $search['person_depart_id'] = $depart_id;
+                            $search['person_status'] = Define::$arrStatusPersonAction;
+                            $search['list_person_id'] = $arrPersonId;
+                            $search['field_get'] = 'person_id';
+                            $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
+                        }
+                        break;
                     case 'viewQuitJob';// nghỉ việc
                         $search['person_depart_id'] = $depart_id;
                         $search['person_status'] = Define::PERSON_STATUS_NGHIVIEC;
@@ -97,35 +124,7 @@ class AdminDashBoardController extends BaseAdminController{
                         $search['field_get'] = 'person_id';
                         $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
                     break;
-                    case 'viewDealineSalary';//đến hạn tăng lương
-                        $search['person_depart_id'] = $depart_id;
-                        $search['person_status'] = Define::$arrStatusPersonAction;
-                        $search['start_dealine_salary'] = time();
-                        $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
-                        $search['field_get'] = 'person_id';
-                        $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
-                    break;
-                    case 'viewDealineContract';//đến hạn tăng hợp đồng
-                        $searchContract['start_dealine_date'] = time();
-                        $searchContract['end_dealine_date'] = strtotime(time() . " +1 month");
-                        $searchContract['orderBy'] = 'contracts_dealine_date';
-                        $searchContract['sortOrder'] = 'asc';
-                        $search['field_get'] = 'contracts_person_id,contracts_id';//cac truong can lay
-                        $dataContract = HrContracts::searchByCondition($search, 5000, 0, $total2);
-                        $arrPersonId = array();
-                        if(count($dataContract) > 0){
-                            foreach ($dataContract as $contr){
-                                $arrPersonId[$contr->contracts_person_id] = $contr->contracts_person_id;
-                            }
-                        }
-                        if(!empty($arrPersonId)){
-                            $search['person_depart_id'] = $depart_id;
-                            $search['person_status'] = Define::$arrStatusPersonAction;
-                            $search['list_person_id'] = $arrPersonId;
-                            $search['field_get'] = 'person_id';
-                            $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
-                        }
-                    break;
+
                     default:
                         break;
                 }
