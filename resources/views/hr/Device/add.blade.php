@@ -61,6 +61,12 @@ use App\Library\AdminFunction\CGlobal;
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-group">
+                                            <label>Giá thiết bị</label>
+                                            <input class="formatMoney form-control input-sm input-required" title="Giá thiết bị" id="device_price" name="device_price" @isset($data['device_price'])value="{{$data['device_price']}}"@endif type="text" class="formatMoney text-left form-control" data-v-max="999999999999999" data-v-min="0" data-a-sep="." data-a-dec="," data-a-sign=" đ" data-p-sign="s">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-group">
                                             <label>Người sử dụng</label>
                                             <select class="form-control input-sm"  id="device_person_id" name="device_person_id">
                                                 {!! $optionPersion !!}}
@@ -190,6 +196,7 @@ use App\Library\AdminFunction\CGlobal;
             format:'d-m-Y',
             lang:'vi',
         });
+        jQuery('.formatMoney').autoNumeric('init');
     });
 </script>
 @stop

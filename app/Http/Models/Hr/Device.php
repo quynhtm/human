@@ -21,7 +21,7 @@ class Device extends BaseModel{
 
     protected $fillable = array('device_project', 'device_person_id', 'device_code', 'device_name', 'device_type',
         'device_depart_id', 'device_describe','device_image','device_infor_technical'
-        , 'device_date_of_manufacture','device_date_warranty', 'device_date_return','device_date_use','device_date_resfun', 'device_status');
+        , 'device_date_of_manufacture','device_date_warranty', 'device_date_return','device_date_use','device_date_resfun', 'device_price','device_status');
 
     public static function createItem($data){
         try {

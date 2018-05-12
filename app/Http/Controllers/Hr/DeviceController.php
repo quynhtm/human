@@ -226,6 +226,7 @@ class DeviceController extends BaseAdminController{
         Loader::loadJS('lib/dragsort/jquery.dragsort.js', CGlobal::$POS_HEAD);
         Loader::loadCSS('lib/jAlert/jquery.alerts.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/jAlert/jquery.alerts.js', CGlobal::$POS_END);
+        Loader::loadJS('lib/number/autoNumeric.js', CGlobal::$POS_HEAD);
 
         $id = FunctionLib::outputId($ids);
 
@@ -291,7 +292,9 @@ class DeviceController extends BaseAdminController{
         if(isset($data['device_depart_id'])) {
             $data['device_depart_id'] = FunctionLib::outputId($data['device_depart_id']);
         }
-
+        if(isset($data['device_price'])) {
+            $data['device_price'] = str_replace('.', '', $data['device_price']);
+        }
         $data['device_status'] = (int)($data['device_status']);
         $img_current = '';
         if($id > 0){
