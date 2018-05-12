@@ -260,11 +260,11 @@ span.lbl {
 }
 .link-dash{
     list-style: none;
-    font-size: 18px;
+    font-size: 14px;
     padding: 20px 0;
 }
 .link-dash li{
-    width: 45%;
+    width: 100%;
     display: inline-block
 }
 .link-dash li a:hover{

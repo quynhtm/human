@@ -84,11 +84,15 @@ class CGlobal
           1 => ['name_url' => 'Danh sách nhân sự sắp đến ngày sinh nhật', 'link_url' => '/manager/personList/viewBirthday','blank'=>1,'cacheNotify'=>'viewBirthday'],
           2 => ['name_url' => 'Danh sách nhân sự buộc thôi việc', 'link_url' => '/manager/personList/viewQuitJob','blank'=>1,'cacheNotify'=>'viewQuitJob'],
           3 => ['name_url' => 'Danh sách nhân sự nghỉ việc, chuyển công tác', 'link_url' => '/manager/personList/viewMoveJob','blank'=>1,'cacheNotify'=>'viewMoveJob'],
+    ];
+    public static $arrLinkListDash_2 = [
           4 => ['name_url' => 'Danh sách nhân sự đã nghỉ hưu', 'link_url' => '/manager/personList/viewRetired','blank'=>1,'cacheNotify'=>'viewRetired'],
           5 => ['name_url' => 'Danh sách nhân sự sắp nghỉ hưu', 'link_url' => '/manager/personList/viewPreparingRetirement','blank'=>1,'cacheNotify'=>'viewPreparingRetirement'],
           6 => ['name_url' => 'Danh sách nhân sự sắp hết hợp đồng', 'link_url' => '/manager/personList/viewDealineContract','blank'=>1,'cacheNotify'=>'viewDealineContract'],
+    ];
+    public static $arrLinkListDash_3 = [
           7 => ['name_url' => 'Danh sách nhân sự sắp đến ngày tăng lương', 'link_url' => '/manager/personList/viewDealineSalary','blank'=>1,'cacheNotify'=>'viewDealineSalary'],
-          9 => ['name_url' => 'Danh sách nhân sự là Đảng viên', 'link_url' => '/manager/personList/viewDangVienPerson','blank'=>1,'cacheNotify'=>'viewDangVienPerson'],
-          8 => ['name_url' => 'Chi tiết bảng lương', 'link_url' => '/manager/report/viewLuongDetailPerson','blank'=>1,'cacheNotify'=>'viewLuongDetailPerson'],
+          8 => ['name_url' => 'Danh sách nhân sự là Đảng viên', 'link_url' => '/manager/personList/viewDangVienPerson','blank'=>1,'cacheNotify'=>'viewDangVienPerson'],
+          9 => ['name_url' => 'Chi tiết bảng lương', 'link_url' => '/manager/report/viewLuongDetailPerson','blank'=>1,'cacheNotify'=>'viewLuongDetailPerson'],
     ];
 }
