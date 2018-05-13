@@ -22,6 +22,7 @@ Route::post('personnel/edit/{id?}', array('as' => 'hr.personnelEdit','uses' => H
 Route::get('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@getPersonWithAccount'));
 Route::post('personnel/editAccount/{id?}', array('as' => 'hr.personnelEditAccount','uses' => HResources.'\PersonController@postPersonWithAccount'));
 Route::get('personnel/personStatusDelete/{id?}', array('as' => 'hr.personnelStatusDelete','uses' => HResources.'\PersonController@statusDeletePerson'));
+Route::post('personnel/personDelete/{id?}', array('as' => 'hr.personnelDelete','uses' => HResources.'\PersonController@deletePerson'));
 Route::get('personnel/viewInfoPersonal', array('as' => 'hr.personnelInfo','uses' => HResources.'\PersonController@viewInfoPersonal'));
 
 //thông tin nhân sự mở rộng

@@ -647,6 +647,21 @@ class PersonController extends BaseAdminController
         }
     }
 
+    //xóa hẳn các thông tin liên quan đến user
+    public function deletePerson($personId){
+        $person_id = FunctionLib::outputId($personId);
+        $data['success'] = 0;
+        if(!$this->is_root && !in_array($this->permission_delete, $this->permission)&& !in_array($this->permission_full, $this->permission)){
+            return Response::json($data);
+        }
+        if($person_id >0){
+            if(Person::deleteItem($person_id)){
+                $data['success'] = 1;
+            }
+        }
+        return Response::json($data);
+    }
+
     private function valid($data = array())
     {
         if (!empty($data)) {

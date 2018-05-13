@@ -75,26 +75,36 @@
                                 <td class="text-center middle">{{ $stt+$key+1 }}</td>
                                 @if(isset($action_person) && $action_person == 1)
                                 <td>
-                                    <div class="dropdown">
-                                        <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                            - Chọn -
-                                            <span class="caret"></span>
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach($arrLinkEditPerson as $kl=>$val)
-                                                @if(isset($val['javascript']) && $val['javascript'] >0)
-                                                    @if($val['javascript'] == 1)
-                                                        <?php $msg = 'Bạn có chắc muốn xóa thông tin Nhân sự này?';?>
+                                    @if(isset($is_delete) && $is_delete == 1)
+                                        @if($is_root || $permission_delete || $permission_full)
+                                            <a href="javascript:void(0)" class="sys_delete_user" data-content="Xóa tài khoản" data-placement="bottom" data-trigger="hover" data-rel="popover" data-url="personnel/personDelete/" data-id="{{FunctionLib::inputId($item['person_id'])}}">
+                                                <i class="fa fa-trash fa-2x"></i>
+                                            </a>
+                                        @else
+                                            ---
+                                        @endif
+                                    @else
+                                        <div class="dropdown">
+                                            <button class="btn btn-primary btn-sm dropdown-toggle btn-block" type="button" id="dropdownMenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                                - Chọn -
+                                                <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                @foreach($arrLinkEditPerson as $kl=>$val)
+                                                    @if(isset($val['javascript']) && $val['javascript'] >0)
+                                                        @if($val['javascript'] == 1)
+                                                            <?php $msg = 'Bạn có chắc muốn xóa thông tin Nhân sự này?';?>
+                                                        @else
+                                                            <?php $msg = 'Bạn có chắc muốn khôi phục thông tin Nhân sự này?';?>
+                                                        @endif
+                                                        <li><a title="{{$val['name_url']}}" href="javascript:void(0);" onclick="HR.onclickActionDeletePerson('{{$msg}}','{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}');"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
                                                     @else
-                                                        <?php $msg = 'Bạn có chắc muốn khôi phục thông tin Nhân sự này?';?>
+                                                        <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" @if($val['blank']==1) target="_blank"@endif><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
                                                     @endif
-                                                    <li><a title="{{$val['name_url']}}" href="javascript:void(0);" onclick="HR.onclickActionDeletePerson('{{$msg}}','{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}');"><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
-                                                @else
-                                                    <li><a title="{{$val['name_url']}}" href="{{URL::to('/').$val['link_url'].FunctionLib::inputId($item['person_id'])}}" @if($val['blank']==1) target="_blank"@endif><i class="{{$val['icons']}}"></i> {{$val['name_url']}}</a></li>
-                                                @endif
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                     @endif
                                 </td>
                                 @endif
                                 <td>

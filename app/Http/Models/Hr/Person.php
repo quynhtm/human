@@ -287,17 +287,47 @@ class Person extends BaseModel
         try {
             DB::connection()->getPdo()->beginTransaction();
             $item = Person::find($id);
+            $person_id = 0;
             if($item){
+                $person_id = $item->person_id;
                 $item->delete();
             }
             DB::connection()->getPdo()->commit();
-            self::removeCache($item->person_id,$item);
+            $checkData = new Person();
+            $checkData->deleteAllInfoPerson($person_id);
+            self::removeCache($person_id,$item);
             return true;
         } catch (PDOException $e) {
             DB::connection()->getPdo()->rollBack();
             throw new PDOException();
             return false;
         }
+    }
+
+    public function deleteAllInfoPerson($person_id) {
+        if($person_id > 0){
+            DB::table(Define::TABLE_USER)->where('user_object_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_PERSON_EXTEND)->where('person_extend_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_PERSONNEL_TIME)->where('person_time_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_DEVICE)->where('device_person_id', $person_id)->delete();
+
+            DB::table(Define::TABLE_HR_BONUS)->where('bonus_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_RELATIONSHIP)->where('relationship_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_CONTRACTS)->where('contracts_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_CURRICULUM_VITAE)->where('curriculum_person_id', $person_id)->delete();
+
+            DB::table(Define::TABLE_HR_DOCUMENT)->where('hr_document_person_recive', $person_id)->delete();
+            DB::table(Define::TABLE_HR_MAIL)->where('hr_mail_person_recive', $person_id)->delete();
+            DB::table(Define::TABLE_HR_JOB_ASSIGNMENT)->where('job_assignment_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_RETIREMENT)->where('retirement_person_id', $person_id)->delete();
+
+            DB::table(Define::TABLE_HR_QUIT_JOB)->where('quit_job_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_PASSPORT)->where('passport_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_SALARY)->where('salary_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_ALLOWANCE)->where('allowance_person_id', $person_id)->delete();
+            DB::table(Define::TABLE_HR_PAYROLL)->where('payroll_person_id', $person_id)->delete();
+        }
+        return true;
     }
 
     public static function removeCache($id = 0,$data){

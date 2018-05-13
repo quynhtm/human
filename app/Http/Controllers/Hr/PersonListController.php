@@ -495,6 +495,7 @@ class PersonListController extends BaseAdminController
         return view('hr.PersonList.viewCommon', array_merge([
             'data' => $data,
             'search' => $search,
+            'is_delete' => 1,
             'total' => $total,
             'action_person' => $this->action_person,
             'stt' => ($page_no - 1) * $limit,
