@@ -80,6 +80,18 @@ class CGlobal
           15 => ['icons' => 'fa fa-share', 'name_url' => 'Khôi phục không xóa NS này', 'link_url' => '/manager/personnel/personStatusDelete/','blank'=>0,'javascript'=>2]
     ];
 
+    public static $arrLinkListNotify = [
+        1 => ['name_url' => 'Danh sách nhân sự sắp đến ngày sinh nhật', 'link_url' => '/manager/personList/viewBirthday','blank'=>1,'cacheNotify'=>'viewBirthday'],
+        2 => ['name_url' => 'Danh sách nhân sự buộc thôi việc', 'link_url' => '/manager/personList/viewQuitJob','blank'=>1,'cacheNotify'=>'viewQuitJob'],
+        3 => ['name_url' => 'Danh sách nhân sự nghỉ việc, chuyển công tác', 'link_url' => '/manager/personList/viewMoveJob','blank'=>1,'cacheNotify'=>'viewMoveJob'],
+        4 => ['name_url' => 'Danh sách nhân sự đã nghỉ hưu', 'link_url' => '/manager/personList/viewRetired','blank'=>1,'cacheNotify'=>'viewRetired'],
+        5 => ['name_url' => 'Danh sách nhân sự sắp nghỉ hưu', 'link_url' => '/manager/personList/viewPreparingRetirement','blank'=>1,'cacheNotify'=>'viewPreparingRetirement'],
+        6 => ['name_url' => 'Danh sách nhân sự sắp hết hợp đồng', 'link_url' => '/manager/personList/viewDealineContract','blank'=>1,'cacheNotify'=>'viewDealineContract'],
+        7 => ['name_url' => 'Danh sách nhân sự sắp đến ngày tăng lương', 'link_url' => '/manager/personList/viewDealineSalary','blank'=>1,'cacheNotify'=>'viewDealineSalary'],
+        8 => ['name_url' => 'Danh sách nhân sự là Đảng viên', 'link_url' => '/manager/personList/viewDangVienPerson','blank'=>1,'cacheNotify'=>'viewDangVienPerson'],
+        9 => ['name_url' => 'Chi tiết bảng lương', 'link_url' => '/manager/report/viewLuongDetailPerson','blank'=>1,'cacheNotify'=>'viewLuongDetailPerson'],
+    ];
+
     public static $arrLinkListDash = [
           1 => ['name_url' => 'Danh sách nhân sự sắp đến ngày sinh nhật', 'link_url' => '/manager/personList/viewBirthday','blank'=>1,'cacheNotify'=>'viewBirthday'],
           2 => ['name_url' => 'Danh sách nhân sự buộc thôi việc', 'link_url' => '/manager/personList/viewQuitJob','blank'=>1,'cacheNotify'=>'viewQuitJob'],

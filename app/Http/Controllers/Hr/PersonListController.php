@@ -376,8 +376,8 @@ class PersonListController extends BaseAdminController
             $search['person_depart_id'] = ($this->is_root) ? (int)Request::get('person_depart_id', Define::STATUS_HIDE) : $this->user_depart_id;
             $search['person_status'] = Define::$arrStatusPersonAction;
             $search['list_person_id'] = $arrPersonId;
+            $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
         }
-        $data = (count($arrPersonId) > 0)? Person::searchByCondition($search, $limit, $offset, $total): array();
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
         if($sbmValue == 2){
             $this->exportData($data,'Danh sách '.CGlobal::$pageAdminTitle, 3);
@@ -430,8 +430,8 @@ class PersonListController extends BaseAdminController
             $search['orderBy'] = 'person_date_salary_increase';
             $search['sortOrder'] = 'asc';
             //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
+            $data = Person::searchByCondition($search, $limit, $offset, $total);
         }
-        $data = Person::searchByCondition($search, $limit, $offset, $total);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
 
         if($sbmValue == 2){

@@ -42,7 +42,7 @@ class AdminDashBoardController extends BaseAdminController{
 
     public function getNotifyList(){
         $depar_id =  ($this->is_root) ? (int)Define::STATUS_HIDE : (int)$this->user_depart_id;
-        $listLink = CGlobal::$arrLinkListDash;
+        $listLink = CGlobal::$arrLinkListNotify;
         $arrCacheNotify = array();
         foreach ($listLink as $val){
             $total = self::sumTotalData($val['cacheNotify'],$depar_id);
@@ -54,7 +54,7 @@ class AdminDashBoardController extends BaseAdminController{
     public function sumTotalData($nameCache, $depart_id){
         if($nameCache != ''){
             $total_item = Cache::get($nameCache .'_'. $depart_id);
-            //$total_item = false;
+            $total_item = false;
             if (!$total_item) {
                 $total_item = Define::TOTAL_MAX;
                 $limit = CGlobal::number_show_20;
@@ -65,8 +65,6 @@ class AdminDashBoardController extends BaseAdminController{
                         if(sizeof($arrPersonId) > 0){
                             $search['person_depart_id'] = $depart_id;
                             $search['person_status'] = Define::$arrStatusPersonAction;
-                            $search['start_birth'] = time();
-                            $search['end_birth'] = strtotime(time() . Define::add_one_week);
                             $search['list_person_id'] = $arrPersonId;
                             $search['field_get'] = 'person_id';
                             $data = Person::searchByCondition($search, $limit, $offset, $total_item,true);
@@ -77,8 +75,6 @@ class AdminDashBoardController extends BaseAdminController{
                         if(!empty($arrPersonId)) {
                             $search['person_depart_id'] = $depart_id;
                             $search['person_status'] = Define::$arrStatusPersonAction;
-                            $search['start_dealine_salary'] = time();
-                            $search['end_dealine_salary'] = strtotime(time() . Define::add_one_week);
                             $search['field_get'] = 'person_id';
                             $search['list_person_id'] = $arrPersonId;
                             $data = Person::searchByCondition($search, $limit, $offset, $total_item, true);

@@ -165,9 +165,10 @@ class PersonTime extends BaseModel
             //FunctionLib::bug($dataSearch);
             $query = PersonTime::where('person_time_id', '>', 0);
 
-            if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
-                $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
+            if (isset($dataSearch['person_time_type']) && $dataSearch['person_time_type'] != 0) {
+                $query->where('person_time_type',  $dataSearch['person_time_type']);
             }
+
             if(isset($dataSearch['year_search']) && $dataSearch['year_search'] == 1){
                 if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
                     $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
@@ -184,8 +185,7 @@ class PersonTime extends BaseModel
                 }
             }
 
-
-            $total = $query->count();
+            //$total = $query->count();
             $query->orderBy('person_time_id', 'desc');
 
             //get field can lay du lieu
@@ -225,11 +225,14 @@ class PersonTime extends BaseModel
 
         $listPerson = PersonTime::searchByCondition($dataSearch, CGlobal::number_show_1000, 0, $total);
         $arrPersonId = array();
-        if ($total > 0) {
+        if (count($listPerson) > 0) {
             foreach ($listPerson as $item) {
-                if ($date_now <= $item->person_time_year_now || $date_now <= $item->person_time_year_next) {
+                if ($date_now <= $item->person_time_year_now) {
                     $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
                 }
+                /*if($year_min !== $year_max && $date_now <= $item->person_time_year_next){
+                    $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
+                }*/
             }
         }
         return $arrPersonId;
