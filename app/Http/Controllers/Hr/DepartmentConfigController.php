@@ -55,18 +55,17 @@ class DepartmentConfigController extends BaseAdminController{
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-        $search = array();
 
         $pageNo = (int) Request::get('page_no',1);
         $limit = CGlobal::number_limit_show;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
-        $dataSearch['department_id'] = addslashes(Request::get('department_id',''));
+        //$dataSearch['department_id'] = addslashes(Request::get('department_id',''));
+        $dataSearch['department_id'] = ($this->is_root) ? (int)Request::get('department_id', -1) : $this->user_depart_id;
         $dataSearch['department_config_status'] = (int)Request::get('department_config_status', -1);
         $dataSearch['field_get'] = '';
-
-        $data = DepartmentConfig::searchByCondition($search, $limit, $offset,$total);
+        $data = DepartmentConfig::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
         //Get data cate department

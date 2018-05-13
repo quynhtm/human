@@ -60,18 +60,18 @@ class HrDepartmentController extends BaseAdminController
         if(!$this->is_root && !in_array($this->permission_full,$this->permission)&& !in_array($this->permission_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
-        $search = array();
 
         $pageNo = (int) Request::get('page_no',1);
         $limit = CGlobal::number_limit_show;
         $total = 0;
         $offset = ($pageNo - 1) * $limit;
 
+        $dataSearch['department_id'] = ($this->is_root) ? (int)Request::get('department_id', -1) : $this->user_depart_id;
         $dataSearch['department_name'] = addslashes(Request::get('department_name',''));
         $dataSearch['department_status'] = (int)Request::get('department_status', -1);
         $dataSearch['field_get'] = 'department_id,department_type,department_name,department_phone,department_fax,department_parent_id,department_creater_time,department_update_time';
 
-        $data = Department::searchByCondition($search, $limit, $offset,$total);
+        $data = Department::searchByCondition($dataSearch, $limit, $offset,$total);
         unset($dataSearch['field_get']);
         $paging = $total > 0 ? Pagging::getNewPager(3,$pageNo,$total,$limit,$dataSearch) : '';
 
