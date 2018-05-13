@@ -19,7 +19,7 @@ class PersonTime extends BaseModel
     protected $primaryKey = 'person_time_id';
     public $timestamps = false;
 
-    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year','person_time_year_now', 'person_time_full');
+    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year', 'person_time_year_now', 'person_time_full');
 
     public static function getPersonTimeByPersonId($person_time_person_id, $person_time_type)
     {
@@ -137,7 +137,7 @@ class PersonTime extends BaseModel
             $dataTime['person_time_month'] = date('m', $time_int);
             $dataTime['person_time_year'] = date('Y', $time_int);
             $dataTime['person_time_full'] = $time_int;
-            $dataTime['person_time_year_now'] = date('Y', time()).date('m', $time_int).date('d', $time_int);
+            $dataTime['person_time_year_now'] = date('Y', time()) . date('m', $time_int) . date('d', $time_int);
             $dataTime['person_time_person_id'] = $person_id;
             $dataTime['person_time_type'] = $person_time_type;
         }
@@ -161,12 +161,13 @@ class PersonTime extends BaseModel
     public static function searchByCondition($dataSearch = array(), $limit = 0, $offset = 0, &$total)
     {
         try {
+            //FunctionLib::bug($dataSearch);
             $query = PersonTime::where('person_time_id', '>', 0);
 
-            if(isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
-                $query->where('person_time_year_now','>=', $dataSearch['date_search_min']);
+            if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
+                $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
             }
-            if(isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
+            if (isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
                 $query->where('person_time_year_now', '<=', $dataSearch['date_search_max']);
             }
 
@@ -186,24 +187,29 @@ class PersonTime extends BaseModel
             throw new PDOException();
         }
     }
-    public static function getListPersonIdByTypeTime($person_time_type){
-        $checkTime = FunctionLib::checkConfigDateNotify(date('d', time()), date('m', time()), date('Y', time()));
+
+    public static function getListPersonIdByTypeTime($person_time_type, $number_date_run = Define::config_date_check_notify_7)
+    {
+        $checkTime = FunctionLib::checkConfigDateNotify(date('d', time()), date('m', time()), date('Y', time()), $number_date_run);
         $time_min = isset($checkTime['time_min']) ? $checkTime['time_min'] : '';
+        $time_now = isset($checkTime['time_now']) ? $checkTime['time_now'] : '';
         $time_max = isset($checkTime['time_max']) ? $checkTime['time_max'] : '';
 
         $date_min = (int)date('Ymd', strtotime($time_min));
         $date_max = (int)date('Ymd', strtotime($time_max));
+        $date_now = (int)date('Ymd', strtotime($time_now));
 
         $dataSearch['date_search_min'] = $date_min;
         $dataSearch['date_search_max'] = $date_max;
-
         $dataSearch['person_time_type'] = $person_time_type;
 
         $listPerson = PersonTime::searchByCondition($dataSearch, CGlobal::number_show_1000, 0, $total);
         $arrPersonId = array();
-        if($total > 0){
-            foreach($listPerson as $item){
-                $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
+        if ($total > 0) {
+            foreach ($listPerson as $item) {
+                if ($date_now <= $item->person_time_year_now) {
+                    $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
+                }
             }
         }
         return $arrPersonId;

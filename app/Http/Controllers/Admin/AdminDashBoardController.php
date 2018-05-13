@@ -61,7 +61,7 @@ class AdminDashBoardController extends BaseAdminController{
                 $offset = 0;
                 switch ($nameCache){
                     case 'viewBirthday';
-                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH);
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH,Define::config_date_check_notify_7);
                         if(sizeof($arrPersonId) > 0){
                             $search['person_depart_id'] = $depart_id;
                             $search['person_status'] = Define::$arrStatusPersonAction;
@@ -73,7 +73,7 @@ class AdminDashBoardController extends BaseAdminController{
                         }
                     break;
                     case 'viewDealineSalary';//đến hạn tăng lương
-                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE);
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE,Define::config_date_check_notify_7);
                         if(!empty($arrPersonId)) {
                             $search['person_depart_id'] = $depart_id;
                             $search['person_status'] = Define::$arrStatusPersonAction;
@@ -85,7 +85,7 @@ class AdminDashBoardController extends BaseAdminController{
                         }
                         break;
                     case 'viewDealineContract';//đến hạn tăng hợp đồng
-                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE);
+                        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE,Define::config_date_check_notify_7);
                         if(!empty($arrPersonId)){
                             $search['person_depart_id'] = $depart_id;
                             $search['person_status'] = Define::$arrStatusPersonAction;

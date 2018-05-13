@@ -329,7 +329,7 @@ class Define
     const minus_one_week = ' -1 week';
 
     //Check ngay sinh nhat truoc 7 ngay
-    const config_date_check_notify = 7;
+    const config_date_check_notify_7 = 7;
 
     const FILE_TYPE_MAIL = 9;
     const FILE_TYPE_DOCUMENT = 10;

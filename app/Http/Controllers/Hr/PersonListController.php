@@ -100,8 +100,8 @@ class PersonListController extends BaseAdminController
         $search = $data = array();
         $total = 0;
         //tính toán lấy user_id
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH,Define::config_date_check_notify_7);
 
-        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH);
         //sau
         if(sizeof($arrPersonId) > 0){
             $search['person_name'] = addslashes(Request::get('person_name', ''));
@@ -115,7 +115,7 @@ class PersonListController extends BaseAdminController
             $data = Person::searchByCondition($search, $limit, $offset, $total);
             //$search['field_get'] = 'menu_name,menu_id,parent_id';//cac truong can lay
         }
-
+        //FunctionLib::bug($search);
         $paging = $total > 0 ? Pagging::getNewPager(3, $page_no, $total, $limit, $search) : '';
         if($sbmValue == 2){
             $this->exportData($data,'Danh sách '.CGlobal::$pageAdminTitle);
@@ -367,7 +367,7 @@ class PersonListController extends BaseAdminController
         $total = 0;
 
         //tính toán lấy user_id
-        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE);
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_CONTRACTS_DEALINE_DATE,Define::config_date_check_notify_7);
         //sau
         if(sizeof($arrPersonId) > 0){
             $search['person_name'] = addslashes(Request::get('person_name', ''));
@@ -419,7 +419,7 @@ class PersonListController extends BaseAdminController
         $search = $data = array();
         $total = 0;
         //tính toán lấy user_id
-        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE);
+        $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_DATE_SALARY_INCREASE,Define::config_date_check_notify_7);
         if(sizeof($arrPersonId) > 0) {
             $search['person_name'] = addslashes(Request::get('person_name', ''));
             $search['person_mail'] = addslashes(Request::get('person_mail', ''));
