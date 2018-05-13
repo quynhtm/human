@@ -164,9 +164,6 @@ class HrMailController extends BaseAdminController{
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
 
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -201,9 +198,6 @@ class HrMailController extends BaseAdminController{
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
 
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -235,9 +229,6 @@ class HrMailController extends BaseAdminController{
     }
     public function viewItemDraft($ids) {
 
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -271,9 +262,6 @@ class HrMailController extends BaseAdminController{
     }
     public function getItem($ids) {
 
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
@@ -309,9 +297,6 @@ class HrMailController extends BaseAdminController{
     }
     public function postItem($ids) {
 
-        Loader::loadCSS('lib/upload/cssUpload.css', CGlobal::$POS_HEAD);
-        Loader::loadJS('lib/upload/jquery.uploadfile.js', CGlobal::$POS_END);
-        Loader::loadJS('admin/js/baseUpload.js', CGlobal::$POS_END);
         Loader::loadCSS('lib/multiselect/fastselect.min.css', CGlobal::$POS_HEAD);
         Loader::loadJS('lib/multiselect/fastselect.min.js', CGlobal::$POS_HEAD);
 
