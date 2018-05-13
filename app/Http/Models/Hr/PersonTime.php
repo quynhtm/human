@@ -19,7 +19,7 @@ class PersonTime extends BaseModel
     protected $primaryKey = 'person_time_id';
     public $timestamps = false;
 
-    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year', 'person_time_full');
+    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year','person_time_year_now', 'person_time_full');
 
     public static function getPersonTimeByPersonId($person_time_person_id, $person_time_type)
     {
@@ -137,6 +137,7 @@ class PersonTime extends BaseModel
             $dataTime['person_time_month'] = date('m', $time_int);
             $dataTime['person_time_year'] = date('Y', $time_int);
             $dataTime['person_time_full'] = $time_int;
+            $dataTime['person_time_year_now'] = date('Y', time()).date('m', $time_int).date('d', $time_int);
             $dataTime['person_time_person_id'] = $person_id;
             $dataTime['person_time_type'] = $person_time_type;
         }
