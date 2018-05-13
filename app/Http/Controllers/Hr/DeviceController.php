@@ -86,8 +86,9 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
-        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', -1) : $this->user_depart_id;
+        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', 0) : $this->user_depart_id;
         $dataSearch['device_status'] = (int)Request::get('device_status', -2);
+        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', -1);// ca hai: chua su dung va da su dung
         $dataSearch['field_get'] = '';
 
         $data = Device::searchByCondition($dataSearch, $limit, $offset,$total);
@@ -133,9 +134,9 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
-        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', -1) : $this->user_depart_id;
+        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', 0) : $this->user_depart_id;
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
-        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 1);
+        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 1);// true: da su dung
 
         $dataSearch['field_get'] = '';
 
@@ -183,9 +184,9 @@ class DeviceController extends BaseAdminController{
 
         $dataSearch['device_name'] = addslashes(Request::get('device_name',''));
         $dataSearch['device_type'] = addslashes(Request::get('device_type', -1));
-        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', -1) : $this->user_depart_id;
+        $dataSearch['device_depart_id'] = ($this->is_root) ? (int)Request::get('device_depart_id', 0) : $this->user_depart_id;
         $dataSearch['device_status'] = (int)Request::get('device_status', CGlobal::status_show);
-        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 0);
+        $dataSearch['device_person_id'] = (int)Request::get('device_person_id', 0);// false: chua su dung
 
         $dataSearch['field_get'] = '';
 

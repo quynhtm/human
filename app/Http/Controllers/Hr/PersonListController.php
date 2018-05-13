@@ -100,6 +100,7 @@ class PersonListController extends BaseAdminController
         $search = $data = array();
         $total = 0;
         //tính toán lấy user_id
+
         $arrPersonId = PersonTime::getListPersonIdByTypeTime(Define::PERSONNEL_TIME_TYPE_BIRTH);
         //sau
         if(sizeof($arrPersonId) > 0){

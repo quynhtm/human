@@ -1402,9 +1402,9 @@ html;
         $time_tru = strtotime ( '-'.Define::config_date_check_notify.' days' , strtotime ( $time_run ));
 
         return array(
+            'time_min'=>date('d-m-Y',$time_tru),
             'time_now'=>$time_run,
-            'time_max'=>date('d-m-Y',$time_cong),
-            'time_min'=>date('d-m-Y',$time_tru)
+            'time_max'=>date('d-m-Y',$time_cong)
         );
     }
 }

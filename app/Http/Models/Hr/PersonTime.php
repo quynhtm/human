@@ -162,14 +162,11 @@ class PersonTime extends BaseModel
         try {
             $query = PersonTime::where('person_time_id', '>', 0);
 
-            if(isset($dataSearch['date_search']) && $dataSearch['date_search'] > 0) {
-                $query->where('person_time_day','>=', $dataSearch['date_search']);
+            if(isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
+                $query->where('person_time_year_now','>=', $dataSearch['date_search_min']);
             }
-            if(isset($dataSearch['date_search_to']) && $dataSearch['date_search_to'] > 0) {
-                $query->where('person_time_day', '<=', $dataSearch['date_search_to']);
-            }
-            if(isset($dataSearch['month_search']) && $dataSearch['month_search'] > 0) {
-                $query->where('person_time_month', $dataSearch['month_search']);
+            if(isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
+                $query->where('person_time_year_now', '<=', $dataSearch['date_search_max']);
             }
 
             $total = $query->count();
@@ -191,10 +188,14 @@ class PersonTime extends BaseModel
     public static function getListPersonIdByTypeTime($person_time_type){
         $checkTime = FunctionLib::checkConfigDateNotify(date('d', time()), date('m', time()), date('Y', time()));
         $time_min = isset($checkTime['time_min']) ? $checkTime['time_min'] : '';
+        $time_max = isset($checkTime['time_max']) ? $checkTime['time_max'] : '';
 
-        $dataSearch['date_search'] = date('d', strtotime($time_min));
-        $dataSearch['date_search_to'] = date('d', time());
-        $dataSearch['month_search'] = date('m', strtotime($time_min));
+        $date_min = (int)date('Ymd', strtotime($time_min));
+        $date_max = (int)date('Ymd', strtotime($time_max));
+
+        $dataSearch['date_search_min'] = $date_min;
+        $dataSearch['date_search_max'] = $date_max;
+
         $dataSearch['person_time_type'] = $person_time_type;
 
         $listPerson = PersonTime::searchByCondition($dataSearch, CGlobal::number_show_1000, 0, $total);

@@ -85,7 +85,7 @@
                         <tbody>
                         @foreach($data as $k=>$item)
                             <tr>
-                                <td class="text-center">1</td>
+                                <td class="text-center">{{$k+1}}</td>
                                 <td>{{$item->device_name}}</td>
                                 <td>{{$item->device_code}}</td>
                                 <td>{{FunctionLib::numberFormat($item->device_price)}}đ</td>
@@ -98,8 +98,12 @@
                                 </td>
                                 <td>{{date('d-m-Y', $item['device_date_return'])}}</td>
                                 <td>
-                                    @if(isset($arrPersion[$item['device_person_id']])  && $item['device_person_id'] > 0 )
-                                        {{$arrPersion[$item['device_person_id']]}}
+                                    @if($item['device_person_id'] > 0 )
+                                        @if(isset($arrPersion[$item['device_person_id']]))
+                                            {{$arrPersion[$item['device_person_id']]}}
+                                        @else
+                                            <span class="red">NS này đã bị xóa</span>
+                                        @endif
                                     @else
                                        <span class="red">Chưa xác định</span>
                                     @endif
