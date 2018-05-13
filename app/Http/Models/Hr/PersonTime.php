@@ -19,7 +19,7 @@ class PersonTime extends BaseModel
     protected $primaryKey = 'person_time_id';
     public $timestamps = false;
 
-    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year', 'person_time_year_now', 'person_time_full');
+    protected $fillable = array('person_time_project', 'person_time_person_id', 'person_time_type', 'person_time_day', 'person_time_month', 'person_time_year', 'person_time_year_now', 'person_time_year_next', 'person_time_full');
 
     public static function getPersonTimeByPersonId($person_time_person_id, $person_time_type)
     {
@@ -138,6 +138,7 @@ class PersonTime extends BaseModel
             $dataTime['person_time_year'] = date('Y', $time_int);
             $dataTime['person_time_full'] = $time_int;
             $dataTime['person_time_year_now'] = date('Y', time()) . date('m', $time_int) . date('d', $time_int);
+            $dataTime['person_time_year_next'] = (date('Y', time())+1) . date('m', $time_int) . date('d', $time_int);
             $dataTime['person_time_person_id'] = $person_id;
             $dataTime['person_time_type'] = $person_time_type;
         }
@@ -167,9 +168,22 @@ class PersonTime extends BaseModel
             if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
                 $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
             }
-            if (isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
-                $query->where('person_time_year_now', '<=', $dataSearch['date_search_max']);
+            if(isset($dataSearch['year_search']) && $dataSearch['year_search'] == 1){
+                if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
+                    $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
+                }
+                if (isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
+                    $query->where('person_time_year_next', '<=', $dataSearch['date_search_max']);
+                }
+            }else{
+                if (isset($dataSearch['date_search_min']) && $dataSearch['date_search_min'] != '') {
+                    $query->where('person_time_year_now', '>=', $dataSearch['date_search_min']);
+                }
+                if (isset($dataSearch['date_search_max']) && $dataSearch['date_search_max'] != '') {
+                    $query->where('person_time_year_now', '<=', $dataSearch['date_search_max']);
+                }
             }
+
 
             $total = $query->count();
             $query->orderBy('person_time_id', 'desc');
@@ -199,6 +213,12 @@ class PersonTime extends BaseModel
         $date_max = (int)date('Ymd', strtotime($time_max));
         $date_now = (int)date('Ymd', strtotime($time_now));
 
+        $year_min = (int)date('Y', strtotime($time_min));
+        $year_max = (int)date('Y', strtotime($time_max));
+        if($year_min !== $year_max){
+            $dataSearch['year_search'] = 1;
+        }
+
         $dataSearch['date_search_min'] = $date_min;
         $dataSearch['date_search_max'] = $date_max;
         $dataSearch['person_time_type'] = $person_time_type;
@@ -207,7 +227,7 @@ class PersonTime extends BaseModel
         $arrPersonId = array();
         if ($total > 0) {
             foreach ($listPerson as $item) {
-                if ($date_now <= $item->person_time_year_now) {
+                if ($date_now <= $item->person_time_year_now || $date_now <= $item->person_time_year_next) {
                     $arrPersonId[$item->person_time_person_id] = $item->person_time_person_id;
                 }
             }
