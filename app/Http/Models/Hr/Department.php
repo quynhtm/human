@@ -113,12 +113,22 @@ class Department extends BaseModel{
     }
     public static function searchByCondition($dataSearch = array(), $limit =0, $offset=0, &$total){
         try{
+
             $query = Department::where('department_id','>',0);
             if (isset($dataSearch['department_name']) && $dataSearch['department_name'] != '') {
                 $query->where('department_name','LIKE', '%' . $dataSearch['department_name'] . '%');
             }
             if (isset($dataSearch['department_status']) && $dataSearch['department_status']!= -1) {
                 $query->where('department_status', $dataSearch['department_status']);
+            }
+            if (isset($dataSearch['department_id']) && $dataSearch['department_id'] > 0) {
+                //$query->where('department_id', $dataSearch['department_id']);
+                $catid = $dataSearch['department_id'];
+                $arrCat = array($catid);
+                Department::makeListCatId($catid, 0, $arrCat);
+                if(is_array($arrCat) && !empty($arrCat)){
+                    $query->whereIn('department_id', $arrCat);
+                }
             }
 
             if (isset($dataSearch['department_type']) && $dataSearch['department_type']!= -1) {
@@ -195,5 +205,27 @@ class Department extends BaseModel{
             }
         }
         return $data;
+    }
+
+    public static function makeListCatId($catid=0, $level=0, &$arrCat){
+        $listcat = explode(',', $catid);
+        if(!empty($listcat)){
+            $query = Department::where('department_status', '=', CGlobal::status_show);
+            foreach($listcat as $cat){
+                if($cat != end($listcat)){
+                    $query->orWhere('department_parent_id',$cat);
+                }else{
+                    $query->where('department_parent_id', $cat);
+                }
+            }
+            $result = $query->get();
+        }
+        if ($result != null){
+            foreach ($result as $k => $v){
+                array_push($arrCat, $v->department_id);
+                self::makeListCatId($v->department_id, $level+1, $arrCat);
+            }
+        }
+        return true;
     }
 }
