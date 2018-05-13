@@ -162,7 +162,7 @@ class Person extends BaseModel
             }
             //là đảng viên
             if (isset($dataSearch['person_is_dangvien']) && $dataSearch['person_is_dangvien'] > -1) {
-                $query->where('person_is_dangvien', '>', $dataSearch['person_is_dangvien']);
+                $query->where('person_is_dangvien', '=', $dataSearch['person_is_dangvien']);
             }
             //loại hợp đồng
             if (isset($dataSearch['person_type_contracts']) && $dataSearch['person_type_contracts'] > 0) {
