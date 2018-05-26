@@ -6,7 +6,7 @@ use App\Library\AdminFunction\CGlobal;
 ?>
 @extends('admin.AdminLayouts.index')
 @section('content')
-    <div class="main-content-inner">
+    <div class="main-content-inner personExt">
         <div class="breadcrumbs breadcrumbs-fixed" id="breadcrumbs">
             <ul class="breadcrumb">
                 <li>
@@ -125,9 +125,7 @@ use App\Library\AdminFunction\CGlobal;
                         <div class="col-sm-4">
                             <div class="form-group">
                                 <label for="name" class="control-label">Công tác chính đang làm</label>
-                                <select name="person_extend_congtac_danglam" id="person_extend_congtac_danglam" class="form-control input-sm">
-                                    {!! $optionCongtac_danglam !!}
-                                </select>
+                                <textarea style="height:30px;" class="form-control input-sm" name="person_extend_congtac_danglam" id="person_extend_congtac_danglam" cols="30" rows="5">@isset($data['person_extend_congtac_danglam']){{$data['person_extend_congtac_danglam']}}@endif</textarea>
                             </div>
                         </div>
                         <div class="col-sm-4">
@@ -191,13 +189,9 @@ use App\Library\AdminFunction\CGlobal;
                         <div class="col-sm-3">
                             <div class="form-group">
                                 <label for="name" class="control-label">Công việc làm lâu nhất</label>
-                                <select name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" class="form-control input-sm">
-                                    {!! $optionCongviec_launhat !!}
-                                </select>
+                                <textarea style="height:30px;" class="form-control input-sm" name="person_extend_congviec_launhat" id="person_extend_congviec_launhat" cols="30" rows="5">@isset($data['person_extend_congviec_launhat']){{$data['person_extend_congviec_launhat']}}@endif</textarea>
                             </div>
                         </div>
-
-
 
                         <div class="clear"></div>
                         <div class="col-sm-4">
