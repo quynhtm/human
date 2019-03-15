@@ -171,16 +171,29 @@ class Department extends BaseModel{
         }
         return $level;
     }
-    public static function getDepartmentAll(){
-        $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_DEPARTMENT) : array();
+    public static function getDepartmentAll($user_depart_id = -1){
+        if($user_depart_id > 0){
+            $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_DEPARTMENT.$user_depart_id) : array();
+        }else{
+            $data = (Define::CACHE_ON)? Cache::get(Define::CACHE_ALL_DEPARTMENT) : array();
+        }
+
         if (sizeof($data) == 0) {
-            $categories = Department::where('department_id', '>', 0)->where('department_status', '=', CGlobal::status_show)->orderBy('department_order', 'asc')->orderBy('department_parent_id', 'desc')->get();
+            if($user_depart_id > 0){
+                $categories = Department::where('department_id', '>', 0)->where('department_id', $user_depart_id)->where('department_status', '=', CGlobal::status_show)->orderBy('department_order', 'asc')->orderBy('department_parent_id', 'desc')->get();
+            }else{
+                $categories = Department::where('department_id', '>', 0)->where('department_status', '=', CGlobal::status_show)->orderBy('department_order', 'asc')->orderBy('department_parent_id', 'desc')->get();
+            }
             if($categories){
                 foreach($categories as $itm) {
                     $data[$itm->department_id] = $itm->department_name;
                 }
                 if(!empty($data) && Define::CACHE_ON){
-                    Cache::put(Define::CACHE_ALL_DEPARTMENT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    if($user_depart_id > 0){
+                        Cache::put(Define::CACHE_ALL_DEPARTMENT.$user_depart_id, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    }else{
+                        Cache::put(Define::CACHE_ALL_DEPARTMENT, $data, Define::CACHE_TIME_TO_LIVE_ONE_MONTH);
+                    }
                 }
             }
         }
