@@ -280,9 +280,11 @@ class AdminGroupUserController extends BaseAdminController{
     /**********************************************Role menu*********************************************************************/
     public function viewRole() {
         //Check phan quyen.
+
         if(!$this->is_root && !in_array($this->permission_role_view,$this->permission)){
             return Redirect::route('admin.dashboard',array('error'=>Define::ERROR_PERMISSION));
         }
+
         $pageNo = (int) Request::get('page_no',1);
         $sbmValue = Request::get('submit', 1);
         $limit = 200;

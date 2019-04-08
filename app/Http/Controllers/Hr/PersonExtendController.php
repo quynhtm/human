@@ -178,12 +178,12 @@ class PersonExtendController extends BaseAdminController
         $arrThanhphangiadinh = HrDefine::getArrayByType(Define::thanh_phan_gia_dinh);
         $arrThanhphangiadinh = !empty($arrThanhphangiadinh) ? (Define::$arrCheckDefault + $arrThanhphangiadinh) : Define::$arrCheckDefault;
         $optionThanhphan_giadinh = FunctionLib::getOption($arrThanhphangiadinh, isset($data['person_extend_thanhphan_giadinh']) ? $data['person_extend_thanhphan_giadinh'] : 0);
-
+        /*
         $arrCongtac_danglam = HrDefine::getArrayByType(Define::cong_tac_chinh);
         $arrCongtac_danglam = !empty($arrCongtac_danglam) ? (Define::$arrCheckDefault + $arrCongtac_danglam) : Define::$arrCheckDefault;
         $optionCongtac_danglam = FunctionLib::getOption($arrCongtac_danglam, isset($data['person_extend_congtac_danglam']) ? $data['person_extend_congtac_danglam'] : 0);
         $optionCongviec_launhat = FunctionLib::getOption($arrCongtac_danglam, isset($data['person_extend_congviec_launhat']) ? $data['person_extend_congviec_launhat'] : 0);
-
+        */
         $arrQL_nha_nuoc = HrDefine::getArrayByType(Define::trinh_do_ql_nhanuoc);
         $arrQL_nha_nuoc = !empty($arrQL_nha_nuoc) ? (Define::$arrCheckDefault + $arrQL_nha_nuoc) : Define::$arrCheckDefault;
         $optionQL_nha_nuoc = FunctionLib::getOption($arrQL_nha_nuoc, isset($data['person_extend_trinhdo_quanly_nhanuoc']) ? $data['person_extend_trinhdo_quanly_nhanuoc'] : 0);
@@ -244,8 +244,8 @@ class PersonExtendController extends BaseAdminController
             'optionCapUy_hiennay' => $optionCapUy_hiennay,
             'optionCapUy_kiemnhiem' => $optionCapUy_kiemnhiem,
             'optionThanhphan_giadinh' => $optionThanhphan_giadinh,
-            'optionCongtac_danglam' => $optionCongtac_danglam,
-            'optionCongviec_launhat' => $optionCongviec_launhat,
+            //'optionCongtac_danglam' => $optionCongtac_danglam,
+            //'optionCongviec_launhat' => $optionCongviec_launhat,
             'optionQL_nha_nuoc' => $optionQL_nha_nuoc,
             'optionQuanham' => $optionQuanham,
             'optionHocvan' => $optionHocvan,

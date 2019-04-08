@@ -130,7 +130,8 @@ class PersonController extends BaseAdminController
         }
 
         $this->getDataDefault();
-        $depart = Department::getDepartmentAll();
+        $user_depart_id = $search['person_depart_id'];
+        $depart = Department::getDepartmentAll($user_depart_id);
         $optionDepart = FunctionLib::getOption($depart, isset($search['person_depart_id']) ? $search['person_depart_id'] : 0);
         $optionDangVien = FunctionLib::getOption(array(-1 => '--Tìm kiếm theo Đảng viên --') + $this->arrTonGiao, isset($search['person_is_dangvien']) ? $search['person_is_dangvien'] : -1);
 

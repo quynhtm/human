@@ -105,11 +105,19 @@ class HrDepartmentController extends BaseAdminController
         }
 
         $this->getDataDefault();
-
         $this->arrDepartment =  Department::getDepartmentAll();
+        /*
         if(in_array($id, array_keys($this->arrDepartment))){
             unset($this->arrDepartment[$id]);
         }
+        */
+        foreach($this->arrDepartment as $k=>$dp){
+            if($id != $k){
+                unset($this->arrDepartment[$k]);
+            }
+        }
+
+
         $optionStatus = FunctionLib::getOption($this->arrStatus, isset($data['department_status'])? $data['department_status']: CGlobal::status_show);
         $optionDepartmentType = FunctionLib::getOption($this->arrDepartmentType, isset($data['department_type'])? $data['department_type']: 0);
         $optionDepartmentParent = FunctionLib::getOption($this->arrDepartment, isset($data['department_parent_id'])? $data['department_parent_id']: 0);

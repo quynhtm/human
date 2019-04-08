@@ -270,3 +270,6 @@ span.lbl {
 .link-dash li a:hover{
     text-decoration: underline;
 }
+.personExt .control-label{
+    font-size: 12px;
+}
