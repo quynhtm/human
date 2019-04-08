@@ -60,7 +60,7 @@ class BaseAdminController extends Controller
                     $this->user_object_id = $this->user['user_object_id'];
                 }
             }
-            if (in_array('is_boss', $this->permission) || $this->user['user_view'] == CGlobal::status_hide) {
+            if (in_array('is_boss', $this->permission) || (isset($this->user['user_view']) && $this->user['user_view'] == CGlobal::status_hide)) {
                 $this->is_boss = true;
             }
             if (in_array('root', $this->permission)) {
